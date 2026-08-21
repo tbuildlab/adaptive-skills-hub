@@ -34,14 +34,11 @@ interceptor. Codex must load the project instructions for a new task; it does
 not invoke Nexus for a task already started before this file was loaded.
 
 Codex's restricted workspace sandbox may not permit a process in AI
-Coordinator to read Nexus from its separate directory. For a full R1 run,
-start the project through `D:\chatgpt\AI Coordinator\scripts\start-codex-r1.ps1`.
-That project-local launcher passes the fixed Nexus root and fixed local Skill
-Library via Codex's supported `--add-dir` option; it changes no global
-configuration and does not grant access to an arbitrary project or the whole
-`D:\chatgpt\安装skills` parent directory. The `AGENTS.md` activation gate remains
-the primary routing mechanism. A session started without this bounded directory
-access follows the documented native fallback rather than bypassing the sandbox.
+Coordinator to read Nexus from its separate directory. R1 does not widen that
+sandbox: it adds no external writable directories, copies no Skills into the
+project, and changes no global configuration. A session that cannot read the
+fixed command or selected `SKILL.md` follows the documented native fallback
+rather than bypassing the sandbox.
 
 ## Handoff and execution contract
 
@@ -76,9 +73,8 @@ remain controlling.
 
 To disable R1 for AI Coordinator, remove the clearly labelled `Nexus Runtime
 R1 pilot` section from its root `AGENTS.md` (or remove that file if it contains
-only this pilot), and remove `scripts\start-codex-r1.ps1` if desired. No global
-file, Nexus state file, MCP configuration, or installed package must be
-removed.
+only this pilot). No global file, Nexus state file, MCP configuration, copied
+Skill, or installed package must be removed.
 
 To add the pilot to another project, create that project's own `AGENTS.md`,
 adapt the fixed `--project` root, preserve the one-consult activation gate and

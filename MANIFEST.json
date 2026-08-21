@@ -36,8 +36,8 @@
     "sha256": "8328522830f139badd29e60f269047f353ddf89e66534f88c28107e9fb4d4f20"
   },
   "docs/nexus-runtime-r1-pilot.md": {
-    "bytes": 4744,
-    "sha256": "89339149f40749c819fcbed69c3fcdc56044d5dd8674c20598b848ace20033bd"
+    "bytes": 4422,
+    "sha256": "d23ab41db232908409c1d2b81eb630258d416f00d7ec9a121691cb9e81a9f93a"
   },
   "docs/test-prompts.md": {
     "bytes": 1242,
