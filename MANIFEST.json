@@ -56,8 +56,8 @@
     "sha256": "5073f02ad8f9133b838216e32645d06aaf62c38601d97bfb69b472def0b4a031"
   },
   "scripts/build_manifest.py": {
-    "bytes": 1070,
-    "sha256": "cfa1079d406c8e48cf168146e3bf35679b83e97bef6c9db355b9e9541e9eeece"
+    "bytes": 1356,
+    "sha256": "553df5b3a62d9130ef476162e22d3a07a130548c549158570f08dadcfbeffd98"
   },
   "scripts/check_updates.py": {
     "bytes": 2515,
