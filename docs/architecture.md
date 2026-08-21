@@ -1,8 +1,16 @@
-# Adaptive Skills Hub architecture
+# Nexus architecture
+
+## Adaptive AI Capability Hub
+
+Nexus is the user-facing name of the Adaptive Skills Hub system. The existing
+repository, package names, `hub.py` entry point, and frozen V1.1 baseline remain
+compatible. Nexus understands tasks and project rules, plans required
+capabilities, selects Skills, may recommend advisory Agents, and records
+validation/provenance evidence; it does not claim automatic runtime integration.
 
 ## Runtime boundary
 
-V1.1 is a local, standard-library-only router. It does not replace Codex's native
+The Adaptive Skills Hub V1.1 runtime is a local, standard-library-only router. It does not replace Codex's native
 Skill runtime and it does not download, install, or update external repositories.
 
 ```text
@@ -70,8 +78,8 @@ pulls, merges, installs, overwrites local/custom Skills, or changes an active pr
 
 ## V1.2 planner (additive)
 
-V1.2 adds `ash.v2` and the explicit `python scripts/hub.py plan "<task>"`
-entry point. It does not change the V1.1 route/run contracts and does not alter
+V1.2 adds `ash.v2`, the compatible `python scripts/hub.py plan "<task>"`, and
+the Nexus alias `python scripts/nexus.py plan "<task>"`. It does not change the V1.1 route/run contracts and does not alter
 the frozen `v1.1-final` tag.
 
 ```text

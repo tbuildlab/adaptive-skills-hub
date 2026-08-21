@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adaptive Skills Hub V1.1 commands plus the additive V1.2 planner entry point."""
+"""Nexus CLI, preserving Adaptive Skills Hub V1.1/V1.2 compatibility."""
 from __future__ import annotations
 
 import argparse
@@ -14,6 +14,9 @@ if hasattr(sys.stderr, "reconfigure"):
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
+PRODUCT_NAME = "Nexus"
+PRODUCT_SUBTITLE = "Adaptive AI Capability Hub"
+
 from ash.common import read_json, write_json  # noqa: E402
 from ash.discovery import build_index  # noqa: E402
 from ash.execution import execute_route, write_packet  # noqa: E402
@@ -27,6 +30,40 @@ def _workspace(value: str | None) -> Path:
 
 def _sources() -> list[dict]:
     return read_json(ROOT / "sources.json", {"sources": []}).get("sources", [])
+
+
+def _print_product_header() -> None:
+    print(PRODUCT_NAME)
+    print(PRODUCT_SUBTITLE)
+
+
+def _friendly_task_label(task_type: str, original_task: str) -> str:
+    lowered = original_task.casefold()
+    if task_type == "backend":
+        return "Backend defect repair" if {"fix", "bug", "error", "failure", "debug"} & set(lowered.replace(".", " ").split()) else "Backend task"
+    labels = {
+        "frontend": "Frontend/UI task",
+        "research": "Research task",
+        "artifact": "Artifact creation",
+        "general": "General task",
+    }
+    return labels.get(task_type, task_type.replace("_", " ").title())
+
+
+def _friendly_validation_label(kind: str) -> str:
+    labels = {
+        "plan_coverage": "capability coverage",
+        "targeted_test": "reproduce and verify the focused failure",
+        "regression_test": "targeted regression tests",
+        "presentation_open_render": "presentation structure and render checks",
+        "workbook_formula_integrity": "workbook formula integrity",
+        "document_render": "document structure and render checks",
+        "pdf_structure_render": "PDF structure and render checks",
+        "evidence_ledger": "evidence ledger",
+        "ui_behavior_accessibility": "UI behavior and accessibility review",
+        "security_boundary_review": "security boundary review",
+    }
+    return labels.get(kind, kind.replace("_", " "))
 
 
 def _v2_catalog(project: Path, extra_roots: list[str]) -> dict:
@@ -59,7 +96,7 @@ def load_index(workspace: Path, extra_roots: list[str], refresh: bool) -> dict:
 
 
 def parser() -> argparse.ArgumentParser:
-    cli = argparse.ArgumentParser(description="Adaptive Skills Hub (V1.1 runtime and V1.2 planner)")
+    cli = argparse.ArgumentParser(description="Nexus — Adaptive AI Capability Hub (compatible Adaptive Skills Hub V1.1/V1.2 commands)")
     cli.add_argument("--workspace", help="Workspace to scan; defaults to the Hub parent directory")
     cli.add_argument("--extra-root", action="append", default=[], help="Additional local root to scan")
     sub = cli.add_subparsers(dest="command", required=True)
@@ -91,11 +128,13 @@ def main() -> int:
     workspace = _workspace(args.workspace)
     if args.command == "rescan":
         index = rescan(workspace, args.extra_root)
-        print(f"Rescanned {workspace}")
+        _print_product_header()
+        print(f"Index refreshed: {workspace}")
         print(f"Skills: {len(index['skills'])}; agents: {len(index['agents'])}")
         return 0
     if args.command == "status":
         index = load_index(workspace, args.extra_root, refresh=False)
+        _print_product_header()
         print(f"Workspace: {index.get('workspace_root', workspace)}")
         print(f"Skills: {len(index.get('skills', []))}; agents: {len(index.get('agents', []))}")
         return 0
@@ -118,25 +157,30 @@ def main() -> int:
             write_plan_packet(ROOT / "state" / "last-plan.json", v2_plan, loaded, validation)
         if args.packet:
             write_plan_packet(Path(args.packet), v2_plan, loaded, validation)
-        print(f"TaskProfile: {v2_plan.task_profile.task_type}; capabilities: {', '.join(item.capability for item in v2_plan.requirements) or 'none'}")
+        _print_product_header()
+        print(f"Task: {_friendly_task_label(v2_plan.task_profile.task_type, v2_plan.task_profile.original_task)}")
         if v2_plan.selected:
-            print("Selected Skills (loaded):")
-            for position, resource in enumerate(v2_plan.selected, start=1):
-                print(f"{position}. {resource.name} -> {resource.path}")
+            print("Skills:")
+            for resource in v2_plan.selected:
+                print(f"- {resource.name}")
         else:
-            print("Selected Skills: none")
+            print("Skills: none selected")
         if v2_plan.advisory_agents:
             print("Advisory Agents (not executed):")
             for agent in v2_plan.advisory_agents:
                 print(f"- {agent.name}")
         if v2_plan.fallback["status"] == "needed":
             print(f"Fallback: native Codex capability required for {', '.join(v2_plan.fallback['missing_capabilities'])}")
-        print(f"Plan validation: {validation['status']}")
+        print("Validation:")
+        for check in v2_plan.validation_plan.checks:
+            print(f"- {_friendly_validation_label(check['kind'])}")
+        print(f"Status: {validation['status']}")
         return 0
     index = load_index(workspace, args.extra_root, refresh=False)
     route = route_task(args.task, index, _sources(), args.max_skills)
     if args.command == "route":
         write_json(ROOT / "state" / "last-route.json", route)
+        _print_product_header()
         print(f"Capabilities: {', '.join(route['capabilities'])}")
         if route["selected_skills"]:
             for position, skill in enumerate(route["selected_skills"], start=1):
@@ -148,6 +192,7 @@ def main() -> int:
     write_json(ROOT / "state" / "last-run.json", result)
     if args.packet:
         write_packet(Path(args.packet), result)
+    _print_product_header()
     print("Loaded skills:")
     for item in result["loaded_skills"]:
         print(f"- {item['name']}: {'failed' if 'load_error' in item else 'loaded'}")

@@ -290,6 +290,8 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         payload = json.loads(target.read_text(encoding="utf-8"))
         self.assertNotIn("content", payload["project_context"]["items"][0])
         self.assertIn("plan_validation", payload)
+        self.assertEqual(payload["product_identity"]["display_name"], "Nexus")
+        self.assertEqual(payload["product_identity"]["system_name"], "Adaptive Skills Hub")
 
     def test_uncovered_capability_is_an_honest_native_fallback(self) -> None:
         plan = plan_task("Create an editable PowerPoint presentation", {"skills": [], "agents": []}, self.root)
@@ -308,6 +310,15 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertEqual(result.returncode, 2)
         self.assertIn("task must be a non-empty string", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
+
+    def test_nexus_alias_runs_compatible_plan_with_branded_output(self) -> None:
+        nexus = Path(__file__).resolve().parents[1] / "scripts" / "nexus.py"
+        result = subprocess.run([sys.executable, str(nexus), "plan", "Translate this text into Klingon", "--project", str(self.root), "--no-state"], capture_output=True, text=True, check=False)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Nexus", result.stdout)
+        self.assertIn("Adaptive AI Capability Hub", result.stdout)
+        self.assertIn("Skills: none selected", result.stdout)
+        self.assertIn("Status: unvalidated", result.stdout)
 
     def test_scale_sanity_for_100_and_500_metadata_records(self) -> None:
         seed = dict(self.ppt)

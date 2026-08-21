@@ -1,12 +1,22 @@
-# Adaptive Skills Hub
+# Nexus
 
-A Codex-first meta-skill for discovering, selecting, loading, chaining, and executing relevant Skills instead of merely recommending them. V1.1 remains frozen; V1.2 is an additive, explicit capability-planning layer.
+## Adaptive AI Capability Hub
+
+Nexus is the user-facing name of the Adaptive Skills Hub system. It is a
+Codex-first meta-skill for discovering, selecting, loading, chaining, and
+executing relevant Skills instead of merely recommending them. V1.1 remains
+frozen; V1.2 is an additive, explicit capability-planning layer.
+
+Nexus understands the task, reads project rules, identifies required
+capabilities, selects relevant Skills, can recommend advisory Agents, creates
+an execution/validation plan, and preserves provenance and evidence. It does
+not claim automatic ChatGPT or Codex runtime integration.
 
 ## V1.1 capability
 
 Task -> Discover -> Rank -> Load -> Execute -> Validate -> Report
 
-The hub separately indexes:
+Nexus separately indexes:
 - skills
 - agents
 - reference repositories
@@ -22,9 +32,16 @@ It is intentionally not installed into the user-wide Codex Skills directory yet.
 Codex session that has loaded this Skill, run the router and then carry out the task:
 
 ```powershell
+# Compatible Adaptive Skills Hub entry point
 python scripts/hub.py rescan
 python scripts/hub.py route "Improve this React dashboard UI."
 python scripts/hub.py run "Improve this React dashboard UI." --packet state/example-packet.json
+```
+
+The Nexus-friendly alias preserves the same commands and behavior:
+
+```powershell
+python scripts/nexus.py plan "Fix this API bug and add regression tests."
 ```
 
 The skill's description is intentionally broad enough that Codex can also select it automatically when capability routing is useful.
@@ -89,9 +106,10 @@ TaskProfile -> bounded Project Context -> Rules -> Capability Requirements
 -> ExecutionPlan -> selected SKILL.md loading -> ValidationPlan -> evidence
 ```
 
-Run it from the Hub root (or pass a project path):
+Run Nexus from the existing Hub root (or pass a project path):
 
 ```powershell
+python scripts/nexus.py plan "Fix an API HTTP 500 and add regression tests." --project D:\work\my-project
 python scripts/hub.py plan "Research evidence and prepare an editable Word report." --project D:\work\my-project
 python scripts/hub.py plan "Fix an API HTTP 500 and add regression tests." --project D:\work\my-project --packet state\api-plan.json
 python scripts/hub.py plan "Create an editable PowerPoint presentation." --no-state

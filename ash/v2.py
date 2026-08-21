@@ -910,6 +910,13 @@ def replan_after_failure(plan: ExecutionPlan, failure_kind: str, index: Mapping[
 
 def write_plan_packet(path: Path, plan: ExecutionPlan, loaded: list[dict[str, Any]] | None = None, validation: Mapping[str, Any] | None = None) -> None:
     payload = plan.to_dict()
+    # Additive display metadata only: existing evidence keys and planning
+    # semantics remain stable for Adaptive Skills Hub compatibility.
+    payload["product_identity"] = {
+        "display_name": "Nexus",
+        "subtitle": "Adaptive AI Capability Hub",
+        "system_name": "Adaptive Skills Hub",
+    }
     payload["loaded_skills"] = loaded or []
     payload["plan_validation"] = dict(validation or validate_plan(plan, loaded))
     write_json(path, payload)
