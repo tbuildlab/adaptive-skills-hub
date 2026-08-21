@@ -1,0 +1,140 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "agency-agents",
+      "kind": "agent",
+      "repo": "msitarzewski/agency-agents",
+      "url": "https://github.com/msitarzewski/agency-agents",
+      "default_branch": "main",
+      "categories": [
+        "agents",
+        "specialists",
+        "software",
+        "marketing",
+        "design",
+        "operations"
+      ],
+      "use_for": [
+        "specialist role selection",
+        "agent process patterns",
+        "expert review roles"
+      ],
+      "avoid_for": [
+        "treating every persona as an executable skill",
+        "overriding project requirements"
+      ]
+    },
+    {
+      "id": "agency-agents-zh",
+      "kind": "agent",
+      "repo": "jnMetaCode/agency-agents-zh",
+      "url": "https://github.com/jnMetaCode/agency-agents-zh",
+      "default_branch": "main",
+      "categories": [
+        "agents",
+        "chinese",
+        "specialists"
+      ],
+      "use_for": [
+        "Chinese-language agent references",
+        "agent role discovery"
+      ],
+      "avoid_for": [
+        "duplicating the English source unnecessarily"
+      ]
+    },
+    {
+      "id": "awesome-llm-apps",
+      "kind": "reference",
+      "repo": "Shubhamsaboo/awesome-llm-apps",
+      "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
+      "default_branch": "main",
+      "categories": [
+        "llm",
+        "agents",
+        "rag",
+        "ai-apps",
+        "examples",
+        "architecture"
+      ],
+      "use_for": [
+        "LLM application examples",
+        "architecture references",
+        "implementation pattern discovery"
+      ],
+      "avoid_for": [
+        "blind code copying",
+        "assuming examples are production requirements"
+      ]
+    },
+    {
+      "id": "emilkowalski-skills",
+      "kind": "skill",
+      "repo": "emilkowalski/skills",
+      "url": "https://github.com/emilkowalski/skills",
+      "default_branch": "main",
+      "categories": [
+        "design",
+        "frontend",
+        "engineering",
+        "interaction",
+        "ui"
+      ],
+      "use_for": [
+        "design workflows",
+        "frontend quality",
+        "interaction and engineering practices"
+      ],
+      "avoid_for": [
+        "unrelated backend or academic tasks"
+      ]
+    },
+    {
+      "id": "liquid-glass-react",
+      "kind": "reference",
+      "repo": "rdev/liquid-glass-react",
+      "url": "https://github.com/rdev/liquid-glass-react",
+      "default_branch": "master",
+      "categories": [
+        "react",
+        "frontend",
+        "ui",
+        "liquid-glass",
+        "visual-effects"
+      ],
+      "use_for": [
+        "Liquid Glass implementation reference",
+        "React glass visual patterns"
+      ],
+      "avoid_for": [
+        "forcing glass UI onto unrelated projects",
+        "overriding an existing design system"
+      ]
+    },
+    {
+      "id": "deer-flow",
+      "kind": "framework",
+      "repo": "bytedance/deer-flow",
+      "url": "https://github.com/bytedance/deer-flow",
+      "default_branch": "main",
+      "categories": [
+        "agents",
+        "workflow",
+        "research",
+        "orchestration",
+        "multi-agent"
+      ],
+      "use_for": [
+        "complex agent workflows",
+        "research orchestration",
+        "multi-step agent systems"
+      ],
+      "avoid_for": [
+        "simple tasks",
+        "UI-only changes",
+        "adding framework complexity without need"
+      ]
+    }
+  ]
+}

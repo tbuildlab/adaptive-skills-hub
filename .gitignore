@@ -1,0 +1,36 @@
+# Secrets and local credentials
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+*.cer
+credentials*.json
+*token*.json
+*oauth*.json
+*session*.json
+cookies*.txt
+
+# Local runtimes, caches, and temporary files
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+node_modules/
+*.log
+*.tmp
+*.temp
+*.bak
+Thumbs.db
+Desktop.ini
+
+# Generated local indexes and live-test evidence
+state/
+output/
+registry.json

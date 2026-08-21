@@ -1,0 +1,78 @@
+{
+  ".gitignore": {
+    "bytes": 430,
+    "sha256": "3972df25696bc0d45ae30ed48bb142e91ea0272a4e7194a246e0548efe2f1be5"
+  },
+  "ash/__init__.py": {
+    "bytes": 64,
+    "sha256": "ef9d5dfba3ca09358973433bfb0e057a9c68b46e7313c2075c29c4cd21eeb524"
+  },
+  "ash/common.py": {
+    "bytes": 5600,
+    "sha256": "0faeb2eebd8f66f101303eea024f35914b1ff57eb591f7ae482476b01618375d"
+  },
+  "ash/discovery.py": {
+    "bytes": 11372,
+    "sha256": "14f90ac702fc9d8545558ccc5ed18a2104d3d797f582b3a3c2118c1a70b771da"
+  },
+  "ash/execution.py": {
+    "bytes": 4023,
+    "sha256": "1d26cefc3a59184559dd06ef92279eb8bba809ba30cef139fe30a2a966f48b30"
+  },
+  "ash/router.py": {
+    "bytes": 23144,
+    "sha256": "528a39bf267070aed3dd2100fe884a4eb5f5d656fd24c78a7d25e151b4411838"
+  },
+  "docs/architecture.md": {
+    "bytes": 3184,
+    "sha256": "c35fa808307bbb6490c6106a1bbe9edde866891dfa4e95ba4e699cc622d3de12"
+  },
+  "docs/test-prompts.md": {
+    "bytes": 1199,
+    "sha256": "3d6c75a82f9549021f4e3547536d2ac542501b2f6c700d6530bce8cca36fdd16"
+  },
+  "docs/update-policy.md": {
+    "bytes": 1076,
+    "sha256": "0df5b3226e378e7c14a3c8c4da5b01e847bdd2a42ab9fb5a9c6e659e3b79a67d"
+  },
+  "docs/v1.1-final-baseline.md": {
+    "bytes": 4692,
+    "sha256": "dbbb55335b8935f1a6128f1847668a15fef16b68ae2c2b27ade65553a5902ed9"
+  },
+  "README.md": {
+    "bytes": 2324,
+    "sha256": "0de2a552d1762cdb7151e904b06f371c220a1c88d67042e048ab675858cf585c"
+  },
+  "scripts/build_manifest.py": {
+    "bytes": 1070,
+    "sha256": "cfa1079d406c8e48cf168146e3bf35679b83e97bef6c9db355b9e9541e9eeece"
+  },
+  "scripts/check_updates.py": {
+    "bytes": 2498,
+    "sha256": "752cd5fe037832ff13c04591ab0a4e40e54c4a302cb694083c341d46710b0be5"
+  },
+  "scripts/final_smoke.py": {
+    "bytes": 4261,
+    "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
+  },
+  "scripts/hub.py": {
+    "bytes": 4860,
+    "sha256": "25688dcc0f7dccd460b8bb8158380da8d5ed0153e0b4afd454def369ec1104ba"
+  },
+  "scripts/rebuild_registry.py": {
+    "bytes": 1726,
+    "sha256": "05c3ff325aabf576e9c4ca49d026a8d8b7d5e410e166bbc6709ac19412080907"
+  },
+  "SKILL.md": {
+    "bytes": 7941,
+    "sha256": "b4bef894b550f8c7c0e50abd0d95eb2fde02d344653361b742295eaef976e45e"
+  },
+  "sources.json": {
+    "bytes": 3457,
+    "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
+  },
+  "tests/test_hub.py": {
+    "bytes": 21706,
+    "sha256": "df8b5b28299f2a78e551572aea13c00957cf8da10946963cadfffa0f69a6dc2c"
+  }
+}
