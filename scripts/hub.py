@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Adaptive Skills Hub V1.1 command line entry point."""
+"""Adaptive Skills Hub V1.1 commands plus the additive V1.2 planner entry point."""
 from __future__ import annotations
 
 import argparse
@@ -18,6 +18,7 @@ from ash.common import read_json, write_json  # noqa: E402
 from ash.discovery import build_index  # noqa: E402
 from ash.execution import execute_route, write_packet  # noqa: E402
 from ash.router import route_task  # noqa: E402
+from ash.v2 import load_plan_skills, plan_task, validate_plan, write_plan_packet  # noqa: E402
 
 
 def _workspace(value: str | None) -> Path:
@@ -26,6 +27,19 @@ def _workspace(value: str | None) -> Path:
 
 def _sources() -> list[dict]:
     return read_json(ROOT / "sources.json", {"sources": []}).get("sources", [])
+
+
+def _v2_catalog(project: Path, extra_roots: list[str]) -> dict:
+    """Build a fresh V2 catalog with the actual local Codex Skill locations.
+
+    This is intentionally V2-only.  V1.1's cached rescan/route/run behaviour
+    remains unchanged, while the explicit V2 planner must not accidentally rely
+    on a stale index created with an old --extra-root argument.
+    """
+    codex_home = Path.home() / ".codex"
+    defaults = [ROOT.parent, codex_home / "skills", codex_home / "plugins" / "cache"]
+    roots = [path for path in [*defaults, *[Path(item) for item in extra_roots]] if path.exists()]
+    return build_index(project, ROOT, roots)
 
 
 def rescan(workspace: Path, extra_roots: list[str]) -> dict:
@@ -45,7 +59,7 @@ def load_index(workspace: Path, extra_roots: list[str], refresh: bool) -> dict:
 
 
 def parser() -> argparse.ArgumentParser:
-    cli = argparse.ArgumentParser(description="Adaptive Skills Hub V1.1")
+    cli = argparse.ArgumentParser(description="Adaptive Skills Hub (V1.1 runtime and V1.2 planner)")
     cli.add_argument("--workspace", help="Workspace to scan; defaults to the Hub parent directory")
     cli.add_argument("--extra-root", action="append", default=[], help="Additional local root to scan")
     sub = cli.add_subparsers(dest="command", required=True)
@@ -58,23 +72,68 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--max-skills", type=int, default=3)
     run.add_argument("--allow-skill-commands", action="store_true", help="Run selected skills' explicit hub_command arrays with shell disabled")
     run.add_argument("--packet", help="Write the full loaded work packet to this JSON path")
+    plan = sub.add_parser("plan", help="V1.2: build an auditable capability plan without executing Skills")
+    plan.add_argument("task")
+    plan.add_argument("--project", help="Project root for bounded V1.2 context discovery; defaults to the current directory")
+    plan.add_argument("--packet", help="Write the V1.2 plan/evidence packet to this JSON path")
+    plan.add_argument("--no-state", action="store_true", help="Do not write state/last-plan.json")
+    plan.add_argument("--soft-context-files", type=int, default=8, help="Initial soft project-context file budget")
+    plan.add_argument("--soft-context-kib", type=int, default=64, help="Initial soft project-context byte budget in KiB")
+    plan.add_argument("--hard-context-files", type=int, default=50, help="Hard project-context file ceiling")
+    plan.add_argument("--hard-context-kib", type=int, default=512, help="Hard project-context byte ceiling in KiB")
     sub.add_parser("status", help="Show current local index counts")
     return cli
 
 
 def main() -> int:
-    args = parser().parse_args()
+    cli = parser()
+    args = cli.parse_args()
     workspace = _workspace(args.workspace)
     if args.command == "rescan":
         index = rescan(workspace, args.extra_root)
         print(f"Rescanned {workspace}")
         print(f"Skills: {len(index['skills'])}; agents: {len(index['agents'])}")
         return 0
-    index = load_index(workspace, args.extra_root, refresh=False)
     if args.command == "status":
+        index = load_index(workspace, args.extra_root, refresh=False)
         print(f"Workspace: {index.get('workspace_root', workspace)}")
         print(f"Skills: {len(index.get('skills', []))}; agents: {len(index.get('agents', []))}")
         return 0
+    if args.command == "plan":
+        project = Path(args.project).resolve() if args.project else Path.cwd().resolve()
+        index = _v2_catalog(project, args.extra_root)
+        context_options = {
+            "soft_file_budget": args.soft_context_files,
+            "soft_byte_budget": args.soft_context_kib * 1024,
+            "hard_file_ceiling": args.hard_context_files,
+            "hard_byte_ceiling": args.hard_context_kib * 1024,
+        }
+        try:
+            v2_plan = plan_task(args.task, index, project, context_options=context_options, sources=_sources())
+        except ValueError as exc:
+            cli.error(str(exc))
+        loaded = load_plan_skills(v2_plan)
+        validation = validate_plan(v2_plan, loaded)
+        if not args.no_state:
+            write_plan_packet(ROOT / "state" / "last-plan.json", v2_plan, loaded, validation)
+        if args.packet:
+            write_plan_packet(Path(args.packet), v2_plan, loaded, validation)
+        print(f"TaskProfile: {v2_plan.task_profile.task_type}; capabilities: {', '.join(item.capability for item in v2_plan.requirements) or 'none'}")
+        if v2_plan.selected:
+            print("Selected Skills (loaded):")
+            for position, resource in enumerate(v2_plan.selected, start=1):
+                print(f"{position}. {resource.name} -> {resource.path}")
+        else:
+            print("Selected Skills: none")
+        if v2_plan.advisory_agents:
+            print("Advisory Agents (not executed):")
+            for agent in v2_plan.advisory_agents:
+                print(f"- {agent.name}")
+        if v2_plan.fallback["status"] == "needed":
+            print(f"Fallback: native Codex capability required for {', '.join(v2_plan.fallback['missing_capabilities'])}")
+        print(f"Plan validation: {validation['status']}")
+        return 0
+    index = load_index(workspace, args.extra_root, refresh=False)
     route = route_task(args.task, index, _sources(), args.max_skills)
     if args.command == "route":
         write_json(ROOT / "state" / "last-route.json", route)

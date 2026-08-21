@@ -1,8 +1,8 @@
-# Adaptive Skills Hub V1.1
+# Adaptive Skills Hub
 
-A Codex-first meta-skill for automatically discovering, selecting, loading, chaining, and executing relevant skills instead of merely recommending them.
+A Codex-first meta-skill for discovering, selecting, loading, chaining, and executing relevant Skills instead of merely recommending them. V1.1 remains frozen; V1.2 is an additive, explicit capability-planning layer.
 
-## V1 capability
+## V1.1 capability
 
 Task -> Discover -> Rank -> Load -> Execute -> Validate -> Report
 
@@ -77,3 +77,42 @@ acceptance suite.
 
 The frozen V1.1 evidence snapshot is in
 [docs/v1.1-final-baseline.md](docs/v1.1-final-baseline.md).
+
+## V1.2 explicit planning
+
+V1.2 does not replace the V1.1 `route` or `run` path. It makes the decision
+before handoff explicit and auditable:
+
+```text
+TaskProfile -> bounded Project Context -> Rules -> Capability Requirements
+-> hard filters -> deterministic ranking -> greedy minimal selection
+-> ExecutionPlan -> selected SKILL.md loading -> ValidationPlan -> evidence
+```
+
+Run it from the Hub root (or pass a project path):
+
+```powershell
+python scripts/hub.py plan "Research evidence and prepare an editable Word report." --project D:\work\my-project
+python scripts/hub.py plan "Fix an API HTTP 500 and add regression tests." --project D:\work\my-project --packet state\api-plan.json
+python scripts/hub.py plan "Create an editable PowerPoint presentation." --no-state
+```
+
+`plan` is the V1.2 MUST-HAVE entry point. It does not execute arbitrary Skill
+prose or command hooks. It loads only the full `SKILL.md` files actually
+selected by the plan, records their paths and hashes, and emits an honest native
+Codex fallback when no installed compatible Skill covers a requirement.
+
+V2 follows `hard filters -> required capability coverage -> deterministic
+scoring -> greedy minimal-sufficient selection -> redundancy elimination`.
+It deliberately does not use embeddings, vector retrieval, a general optimizer,
+automatic Skill installation, or a multi-Agent runtime.
+
+Agents are advisory recommendations only. References and frameworks, including
+DeerFlow, remain reference-only and are never promoted to executable Skills.
+Project content is bounded evidence; only recognized project-rule files can
+contribute project rules, and those rules cannot override system or current-user
+constraints.
+
+See [docs/v1.2-usage.md](docs/v1.2-usage.md) for context budgets, evidence
+packets, validation, re-planning, safety boundaries, and optional project-level
+Codex integration.

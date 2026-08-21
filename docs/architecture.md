@@ -1,4 +1,4 @@
-# V1.1 Architecture
+# Adaptive Skills Hub architecture
 
 ## Runtime boundary
 
@@ -67,3 +67,53 @@ script.
 
 `check_updates.py` remains CHECK-ONLY. It records observed remote branch SHAs; it never
 pulls, merges, installs, overwrites local/custom Skills, or changes an active project.
+
+## V1.2 planner (additive)
+
+V1.2 adds `ash.v2` and the explicit `python scripts/hub.py plan "<task>"`
+entry point. It does not change the V1.1 route/run contracts and does not alter
+the frozen `v1.1-final` tag.
+
+```text
+TaskProfile (Codex structured extraction when supplied; conservative parser fallback)
+  -> bounded Project Context
+  -> Rules and conflict detection
+  -> capability requirements
+  -> hard filters
+  -> deterministic ranking
+  -> greedy minimal-sufficient selection
+  -> redundancy elimination
+  -> ExecutionPlan / selected SKILL.md load / ValidationPlan / evidence packet
+```
+
+### Context and rules
+
+Project context is read-only and progressive. V2 examines a small known set of
+root-level governing/configuration files plus task-named files; it does not
+recursively ingest repositories. The initial file/byte budgets are soft defaults.
+Every expansion is recorded, while configurable hard ceilings reject giant files,
+binary input, root escapes, secret-looking files, and silent truncation.
+
+Rules are ordered: system/security constraints, explicit current-user
+requirements, project-rule files, project Skills, installed Skills, advisory
+Agents, then references. README text, external references, and ordinary repository
+content are evidence only. Equal-priority incompatible rules block selection.
+
+### Resource and execution boundary
+
+- Skill: executable procedural instructions, loaded only after selection.
+- Agent: advisory recommendation only; V2 never spawns or delegates one.
+- Reference/Framework: visible reference-only metadata; never executed or loaded as a Skill.
+
+The planner emits serializable `TaskProfile`, `ProjectContext`, `Rule`,
+`CapabilityRequirement`, `ResourceCandidate`, `ExecutionPlan`, `ExecutionStep`,
+`ValidationPlan`, `DecisionEvidence`, and `ReplanResult` records. A plan validates
+coverage, duplicate selection, and selected-Skill loading. Artifact- and
+task-specific validation checks are planned before execution handoff.
+
+Only `wrong_resource`, `missing_capability`, and `bad_plan` can request a re-plan.
+There is one re-plan maximum; implementation defects, dependency failures, and rule
+conflicts report a focused repair path, blocker, or native Codex fallback instead.
+
+V2 state is optional local evidence only. `--no-state` keeps planning in memory;
+there is no cloud synchronization or automatic retention scheduler.
