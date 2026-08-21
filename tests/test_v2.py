@@ -320,6 +320,25 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertIn("Skills: none selected", result.stdout)
         self.assertIn("Status: unvalidated", result.stdout)
 
+    def test_cli_handoff_is_redacted_and_records_actual_selected_skill_loads(self) -> None:
+        hub = Path(__file__).resolve().parents[1] / "scripts" / "hub.py"
+        result = subprocess.run(
+            [sys.executable, str(hub), "plan", "Fix an API validation bug and add a regression test", "--project", str(self.root), "--no-state", "--handoff"],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        handoff = json.loads(result.stdout.split("Handoff:\n", 1)[1])
+        self.assertEqual(handoff["schema_version"], "nexus.plan-handoff.v1")
+        selected_names = [item["name"] for item in handoff["selected_skills"]]
+        self.assertEqual(selected_names[0], "backend-debug")
+        self.assertTrue(any("regression" in name for name in selected_names))
+        self.assertTrue(all(item["loaded"] for item in handoff["selected_skills"]))
+        self.assertTrue(all(item["sha256"] for item in handoff["selected_skills"]))
+        self.assertNotIn("instructions", json.dumps(handoff))
+        self.assertEqual(handoff["fallback"]["status"], "not_needed")
+
     def test_scale_sanity_for_100_and_500_metadata_records(self) -> None:
         seed = dict(self.ppt)
         hundred = []

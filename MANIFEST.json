@@ -35,6 +35,10 @@
     "bytes": 28785,
     "sha256": "8328522830f139badd29e60f269047f353ddf89e66534f88c28107e9fb4d4f20"
   },
+  "docs/nexus-runtime-r1-pilot.md": {
+    "bytes": 4744,
+    "sha256": "89339149f40749c819fcbed69c3fcdc56044d5dd8674c20598b848ace20033bd"
+  },
   "docs/test-prompts.md": {
     "bytes": 1242,
     "sha256": "ad9f84a64fa25b1ad43349f1e250187bf9fa927834d0147ad466b1a98cab13f8"
@@ -72,8 +76,8 @@
     "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
   },
   "scripts/hub.py": {
-    "bytes": 10164,
-    "sha256": "e55fb91bd6b522e81d3db5a6f7210ed5075db2c8830f206562af6e52c0b20873"
+    "bytes": 12945,
+    "sha256": "0b4cce2f340005622b5798b8cab4ca3948fc6318da5902b3d86a924c4728e2df"
   },
   "scripts/nexus.py": {
     "bytes": 213,
@@ -96,7 +100,7 @@
     "sha256": "df8b5b28299f2a78e551572aea13c00957cf8da10946963cadfffa0f69a6dc2c"
   },
   "tests/test_v2.py": {
-    "bytes": 21619,
-    "sha256": "49a64f5bfda7c3d027a1e0c9ec1f2c5ab2777f0e8da94734d6386db159609ac6"
+    "bytes": 22795,
+    "sha256": "f1467fa677664ae069f6ff86400c48d47cfd6a237b39925a53d9e431729b4906"
   }
 }

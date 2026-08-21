@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
@@ -66,6 +67,65 @@ def _friendly_validation_label(kind: str) -> str:
     return labels.get(kind, kind.replace("_", " "))
 
 
+def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path) -> dict:
+    """Return a redacted, stdout-safe R1 host handoff.
+
+    Full plan packets retain selected Skill instructions for a same-user local
+    handoff. Restricted Codex sandboxes can lack a usable temporary packet
+    location, so this optional view carries only metadata needed to open the
+    selected files. It never serializes instructions, project context, or
+    credentials.
+    """
+    loaded_by_name = {str(item.get("name")): item for item in loaded}
+    selected_skills = []
+    for resource in plan.selected:
+        if resource.resource_type != "skill":
+            continue
+        item = loaded_by_name.get(resource.name, {})
+        selected_skills.append({
+            "name": resource.name,
+            "skill_md_path": resource.path,
+            "sha256": item.get("sha256"),
+            "characters": item.get("characters"),
+            "loaded": "load_error" not in item,
+            "load_error": item.get("load_error"),
+            "source_scope": resource.provenance.get("source_scope", resource.trust),
+            "runtime_compatibility": resource.runtime_compatibility,
+        })
+    return {
+        "schema_version": "nexus.plan-handoff.v1",
+        "product": {"name": PRODUCT_NAME, "subtitle": PRODUCT_SUBTITLE},
+        "project_root": str(project),
+        "task_profile": {
+            "task_type": plan.task_profile.task_type,
+            "required_capabilities": plan.task_profile.required_capabilities,
+        },
+        "selected_skills": selected_skills,
+        "execution_steps": [
+            {
+                "step_id": step.step_id,
+                "capability": step.capability,
+                "selected_resource_name": step.selected_resource_name,
+                "reason": step.reason,
+                "dependencies": step.dependencies,
+                "validation": step.validation,
+            }
+            for step in plan.steps
+        ],
+        "validation_checks": plan.validation_plan.checks,
+        "advisory_agents": [item.name for item in plan.advisory_agents],
+        "fallback": plan.fallback,
+        "prohibited_operations": [
+            "automatic_skill_install_or_update",
+            "automatic_skill_command_execution",
+            "automatic_agent_delegation",
+            "cross_project_scanning",
+            "credential_or_raw_skill_content_disclosure",
+        ],
+        "plan_validation": validation,
+    }
+
+
 def _v2_catalog(project: Path, extra_roots: list[str]) -> dict:
     """Build a fresh V2 catalog with the actual local Codex Skill locations.
 
@@ -113,6 +173,7 @@ def parser() -> argparse.ArgumentParser:
     plan.add_argument("task")
     plan.add_argument("--project", help="Project root for bounded V1.2 context discovery; defaults to the current directory")
     plan.add_argument("--packet", help="Write the V1.2 plan/evidence packet to this JSON path")
+    plan.add_argument("--handoff", action="store_true", help="Print a redacted host handoff JSON without writing a packet")
     plan.add_argument("--no-state", action="store_true", help="Do not write state/last-plan.json")
     plan.add_argument("--soft-context-files", type=int, default=8, help="Initial soft project-context file budget")
     plan.add_argument("--soft-context-kib", type=int, default=64, help="Initial soft project-context byte budget in KiB")
@@ -175,6 +236,9 @@ def main() -> int:
         for check in v2_plan.validation_plan.checks:
             print(f"- {_friendly_validation_label(check['kind'])}")
         print(f"Status: {validation['status']}")
+        if args.handoff:
+            print("Handoff:")
+            print(json.dumps(_plan_handoff(v2_plan, loaded, validation, project), ensure_ascii=False, sort_keys=True))
         return 0
     index = load_index(workspace, args.extra_root, refresh=False)
     route = route_task(args.task, index, _sources(), args.max_skills)
