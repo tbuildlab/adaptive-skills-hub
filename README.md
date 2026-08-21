@@ -1,12 +1,22 @@
-# Adaptive Skills Hub V1.1
+# Nexus
 
-A Codex-first meta-skill for automatically discovering, selecting, loading, chaining, and executing relevant skills instead of merely recommending them.
+## Adaptive AI Capability Hub
 
-## V1 capability
+Nexus is the user-facing name of the Adaptive Skills Hub system. It is a
+Codex-first meta-skill for discovering, selecting, loading, chaining, and
+executing relevant Skills instead of merely recommending them. V1.1 remains
+frozen; V1.2 is an additive, explicit capability-planning layer.
+
+Nexus understands the task, reads project rules, identifies required
+capabilities, selects relevant Skills, can recommend advisory Agents, creates
+an execution/validation plan, and preserves provenance and evidence. It does
+not claim automatic ChatGPT or Codex runtime integration.
+
+## V1.1 capability
 
 Task -> Discover -> Rank -> Load -> Execute -> Validate -> Report
 
-The hub separately indexes:
+Nexus separately indexes:
 - skills
 - agents
 - reference repositories
@@ -22,9 +32,16 @@ It is intentionally not installed into the user-wide Codex Skills directory yet.
 Codex session that has loaded this Skill, run the router and then carry out the task:
 
 ```powershell
+# Compatible Adaptive Skills Hub entry point
 python scripts/hub.py rescan
 python scripts/hub.py route "Improve this React dashboard UI."
 python scripts/hub.py run "Improve this React dashboard UI." --packet state/example-packet.json
+```
+
+The Nexus-friendly alias preserves the same commands and behavior:
+
+```powershell
+python scripts/nexus.py plan "Fix this API bug and add regression tests."
 ```
 
 The skill's description is intentionally broad enough that Codex can also select it automatically when capability routing is useful.
@@ -77,3 +94,43 @@ acceptance suite.
 
 The frozen V1.1 evidence snapshot is in
 [docs/v1.1-final-baseline.md](docs/v1.1-final-baseline.md).
+
+## V1.2 explicit planning
+
+V1.2 does not replace the V1.1 `route` or `run` path. It makes the decision
+before handoff explicit and auditable:
+
+```text
+TaskProfile -> bounded Project Context -> Rules -> Capability Requirements
+-> hard filters -> deterministic ranking -> greedy minimal selection
+-> ExecutionPlan -> selected SKILL.md loading -> ValidationPlan -> evidence
+```
+
+Run Nexus from the existing Hub root (or pass a project path):
+
+```powershell
+python scripts/nexus.py plan "Fix an API HTTP 500 and add regression tests." --project D:\work\my-project
+python scripts/hub.py plan "Research evidence and prepare an editable Word report." --project D:\work\my-project
+python scripts/hub.py plan "Fix an API HTTP 500 and add regression tests." --project D:\work\my-project --packet state\api-plan.json
+python scripts/hub.py plan "Create an editable PowerPoint presentation." --no-state
+```
+
+`plan` is the V1.2 MUST-HAVE entry point. It does not execute arbitrary Skill
+prose or command hooks. It loads only the full `SKILL.md` files actually
+selected by the plan, records their paths and hashes, and emits an honest native
+Codex fallback when no installed compatible Skill covers a requirement.
+
+V2 follows `hard filters -> required capability coverage -> deterministic
+scoring -> greedy minimal-sufficient selection -> redundancy elimination`.
+It deliberately does not use embeddings, vector retrieval, a general optimizer,
+automatic Skill installation, or a multi-Agent runtime.
+
+Agents are advisory recommendations only. References and frameworks, including
+DeerFlow, remain reference-only and are never promoted to executable Skills.
+Project content is bounded evidence; only recognized project-rule files can
+contribute project rules, and those rules cannot override system or current-user
+constraints.
+
+See [docs/v1.2-usage.md](docs/v1.2-usage.md) for context budgets, evidence
+packets, validation, re-planning, safety boundaries, and optional project-level
+Codex integration.

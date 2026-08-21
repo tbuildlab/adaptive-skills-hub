@@ -23,13 +23,17 @@
     "bytes": 23144,
     "sha256": "528a39bf267070aed3dd2100fe884a4eb5f5d656fd24c78a7d25e151b4411838"
   },
+  "ash/v2.py": {
+    "bytes": 47537,
+    "sha256": "ef0394145c3daecfec5d2718b72f282cf026aab78123110f9ace685eb74e8d48"
+  },
   "docs/architecture.md": {
-    "bytes": 3184,
-    "sha256": "c35fa808307bbb6490c6106a1bbe9edde866891dfa4e95ba4e699cc622d3de12"
+    "bytes": 6059,
+    "sha256": "e76900d66ff4b9ca0b505e16d6bcf164ebc31fd14fa5e6b5a6d9f54b2d505962"
   },
   "docs/test-prompts.md": {
-    "bytes": 1199,
-    "sha256": "3d6c75a82f9549021f4e3547536d2ac542501b2f6c700d6530bce8cca36fdd16"
+    "bytes": 1242,
+    "sha256": "ad9f84a64fa25b1ad43349f1e250187bf9fa927834d0147ad466b1a98cab13f8"
   },
   "docs/update-policy.md": {
     "bytes": 1076,
@@ -39,25 +43,37 @@
     "bytes": 4692,
     "sha256": "dbbb55335b8935f1a6128f1847668a15fef16b68ae2c2b27ade65553a5902ed9"
   },
+  "docs/v1.2-product-architecture-spec.md": {
+    "bytes": 35226,
+    "sha256": "ac2e9c15137f2afc60c3e149ec7bd9806a912275616d54e6cf135ecea666c3d5"
+  },
+  "docs/v1.2-usage.md": {
+    "bytes": 3749,
+    "sha256": "cb88147be7fe6507ec51cdd5fd052d1ab7061f540d568dea039f17b159e2d7f2"
+  },
   "README.md": {
-    "bytes": 2324,
-    "sha256": "0de2a552d1762cdb7151e904b06f371c220a1c88d67042e048ab675858cf585c"
+    "bytes": 4948,
+    "sha256": "5073f02ad8f9133b838216e32645d06aaf62c38601d97bfb69b472def0b4a031"
   },
   "scripts/build_manifest.py": {
     "bytes": 1070,
     "sha256": "cfa1079d406c8e48cf168146e3bf35679b83e97bef6c9db355b9e9541e9eeece"
   },
   "scripts/check_updates.py": {
-    "bytes": 2498,
-    "sha256": "752cd5fe037832ff13c04591ab0a4e40e54c4a302cb694083c341d46710b0be5"
+    "bytes": 2515,
+    "sha256": "2debd7ddb271869a7dabcc48147f51bab4488dd23ff711958589b2eae1293588"
   },
   "scripts/final_smoke.py": {
     "bytes": 4261,
     "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
   },
   "scripts/hub.py": {
-    "bytes": 4860,
-    "sha256": "25688dcc0f7dccd460b8bb8158380da8d5ed0153e0b4afd454def369ec1104ba"
+    "bytes": 10164,
+    "sha256": "e55fb91bd6b522e81d3db5a6f7210ed5075db2c8830f206562af6e52c0b20873"
+  },
+  "scripts/nexus.py": {
+    "bytes": 213,
+    "sha256": "6a4baf5ce4707f9ba25708bd7dcf72efdc6aabf697470f9989d77a08c23d1ec5"
   },
   "scripts/rebuild_registry.py": {
     "bytes": 1726,
@@ -74,5 +90,9 @@
   "tests/test_hub.py": {
     "bytes": 21706,
     "sha256": "df8b5b28299f2a78e551572aea13c00957cf8da10946963cadfffa0f69a6dc2c"
+  },
+  "tests/test_v2.py": {
+    "bytes": 21619,
+    "sha256": "49a64f5bfda7c3d027a1e0c9ec1f2c5ab2777f0e8da94734d6386db159609ac6"
   }
 }

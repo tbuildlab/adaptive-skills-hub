@@ -67,7 +67,7 @@ STATE_PATH.write_text(
     encoding="utf-8",
 )
 
-print("Adaptive Skills Hub - upstream check")
+print("Nexus — Adaptive AI Capability Hub (upstream check)")
 print(f"Checked: {len(new_state['sources'])}/{len(SOURCES['sources'])}")
 
 if changed:
