@@ -6,7 +6,7 @@ R1 is a project-level Codex pilot for `D:\chatgpt\AI Coordinator`. It uses
 the existing Nexus V1.2 command, not a new runtime service:
 
 ```powershell
-python "D:\chatgpt\安装skills\adaptive-skills-hub\scripts\nexus.py" plan "<task intent>" --project "D:\chatgpt\AI Coordinator" --no-state --handoff
+python "D:\chatgpt\安装skills\adaptive-skills-hub\scripts\nexus.py" plan "<task intent>" --project "D:\chatgpt\AI Coordinator" --handoff
 ```
 
 It is intentionally **not** a global interceptor, MCP server, ChatGPT
@@ -45,8 +45,9 @@ rather than bypassing the sandbox.
 1. Nexus discovers the fixed AI Coordinator root, applies bounded project
    rules/context, ranks the smallest sufficient set, loads only selected
    `SKILL.md` files, validates the plan load, and writes a redacted JSON
-   handoff to stdout. `--no-state --handoff` creates no packet or persistent
-   state.
+   handoff to stdout. `--handoff` is strictly stateless: it creates no packet
+   or persistent state and rejects `--packet`. `--no-state` remains accepted
+   with `--handoff` for compatible callers.
 2. Codex reads only the JSON after `Handoff:`, opens the selected `SKILL.md`
    locations, follows the applicable instructions, performs authorized work,
    then runs relevant validation.
@@ -78,7 +79,7 @@ Skill, or installed package must be removed.
 
 To add the pilot to another project, create that project's own `AGENTS.md`,
 adapt the fixed `--project` root, preserve the one-consult activation gate and
-`--no-state --handoff` exchange, then run its project-specific routing
+`--handoff` exchange, then run its project-specific routing
 and safety tests. Do not copy this instruction to `~/.codex` and do not claim
 that it activates every project.
 

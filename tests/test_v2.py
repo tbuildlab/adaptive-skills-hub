@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -25,6 +26,7 @@ from ash.v2 import (
     validate_task_profile,
     write_plan_packet,
 )
+from scripts.hub import _plan_handoff
 
 
 def make_skill(root: Path, folder: str, name: str, description: str, extra: str = "") -> dict:
@@ -320,10 +322,22 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertIn("Skills: none selected", result.stdout)
         self.assertIn("Status: unvalidated", result.stdout)
 
-    def test_cli_handoff_is_redacted_and_records_actual_selected_skill_loads(self) -> None:
+    def _single_presentation_skill_plan(self):
+        return plan_task(
+            "Create an editable PowerPoint presentation",
+            {"skills": [self.ppt], "agents": []},
+            self.root,
+        )
+
+    def test_cli_handoff_is_strictly_stateless_and_records_actual_selected_skill_loads(self) -> None:
         hub = Path(__file__).resolve().parents[1] / "scripts" / "hub.py"
+        state_path = hub.parents[1] / "state" / "last-plan.json"
+        state_before = (
+            (state_path.read_bytes(), state_path.stat().st_mtime_ns)
+            if state_path.exists() else None
+        )
         result = subprocess.run(
-            [sys.executable, str(hub), "plan", "Fix an API validation bug and add a regression test", "--project", str(self.root), "--no-state", "--handoff"],
+            [sys.executable, str(hub), "plan", "Fix an API validation bug and add a regression test", "--project", str(self.root), "--handoff"],
             capture_output=True,
             text=True,
             check=False,
@@ -336,8 +350,139 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertTrue(any("regression" in name for name in selected_names))
         self.assertTrue(all(item["loaded"] for item in handoff["selected_skills"]))
         self.assertTrue(all(item["sha256"] for item in handoff["selected_skills"]))
-        self.assertNotIn("instructions", json.dumps(handoff))
+        self.assertTrue(all(item["load_status"] == "loaded" for item in handoff["selected_skills"]))
+        state_after = (
+            (state_path.read_bytes(), state_path.stat().st_mtime_ns)
+            if state_path.exists() else None
+        )
+        self.assertEqual(state_after, state_before)
+        packet = self.root / "handoff-packet.json"
+        rejected = subprocess.run(
+            [sys.executable, str(hub), "plan", "Create a report", "--project", str(self.root), "--handoff", "--packet", str(packet)],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(rejected.returncode, 2)
+        self.assertFalse(packet.exists())
+        state_after_rejected_packet = (
+            (state_path.read_bytes(), state_path.stat().st_mtime_ns)
+            if state_path.exists() else None
+        )
+        self.assertEqual(state_after_rejected_packet, state_before)
         self.assertEqual(handoff["fallback"]["status"], "not_needed")
+
+    def test_cli_normal_plan_retains_stateful_compatibility(self) -> None:
+        hub = Path(__file__).resolve().parents[1] / "scripts" / "hub.py"
+        state_path = hub.parents[1] / "state" / "last-plan.json"
+        before = (
+            (state_path.read_bytes(), state_path.stat().st_atime_ns, state_path.stat().st_mtime_ns)
+            if state_path.exists() else None
+        )
+        try:
+            result = subprocess.run(
+                [sys.executable, str(hub), "plan", "Create an editable PowerPoint presentation", "--project", str(self.root)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertTrue(state_path.exists())
+            self.assertIn("plan_validation", json.loads(state_path.read_text(encoding="utf-8")))
+        finally:
+            if before is None:
+                state_path.unlink(missing_ok=True)
+            else:
+                state_path.write_bytes(before[0])
+                os.utime(state_path, ns=(before[1], before[2]))
+
+    def test_handoff_uses_exact_skill_path_evidence_and_fails_closed(self) -> None:
+        plan = self._single_presentation_skill_plan()
+        successful = load_plan_skills(plan)
+        validation = validate_plan(plan, successful)
+        success = _plan_handoff(plan, successful, validation, self.root)["selected_skills"][0]
+        self.assertEqual(success["resource_id"], plan.selected[0].resource_id)
+        self.assertTrue(success["loaded"])
+        self.assertEqual(success["load_status"], "loaded")
+
+        same_name_other_path = dict(successful[0])
+        same_name_other_path["path"] = str(self.root / "same-name-other" / "SKILL.md")
+        same_name = _plan_handoff(plan, [successful[0], same_name_other_path], validation, self.root)["selected_skills"][0]
+        self.assertTrue(same_name["loaded"])
+        self.assertEqual(same_name["load_status"], "loaded")
+
+        ambiguous = _plan_handoff(plan, [successful[0], dict(successful[0])], validation, self.root)["selected_skills"][0]
+        self.assertFalse(ambiguous["loaded"])
+        self.assertEqual(ambiguous["load_status"], "ambiguous_load_evidence")
+
+        missing = _plan_handoff(plan, [], validation, self.root)["selected_skills"][0]
+        self.assertFalse(missing["loaded"])
+        self.assertEqual(missing["load_status"], "missing_load_evidence")
+
+        shadowed = _plan_handoff(plan, [same_name_other_path], validation, self.root)["selected_skills"][0]
+        self.assertFalse(shadowed["loaded"])
+        self.assertEqual(shadowed["load_status"], "missing_load_evidence")
+
+        failed = dict(successful[0])
+        failed.pop("sha256")
+        failed.pop("characters")
+        failed["load_error"] = "unreadable"
+        failed_handoff = _plan_handoff(plan, [failed], validation, self.root)["selected_skills"][0]
+        self.assertFalse(failed_handoff["loaded"])
+        self.assertEqual(failed_handoff["load_status"], "load_failed")
+
+        self.ppt["skill_md_path"] = str(self.root / "missing" / "SKILL.md")
+        malformed_plan = self._single_presentation_skill_plan()
+        malformed_loaded = load_plan_skills(malformed_plan)
+        malformed_handoff = _plan_handoff(
+            malformed_plan,
+            malformed_loaded,
+            validate_plan(malformed_plan, malformed_loaded),
+            self.root,
+        )["selected_skills"][0]
+        self.assertFalse(malformed_handoff["loaded"])
+        self.assertEqual(malformed_handoff["load_status"], "load_failed")
+
+        invalid = dict(successful[0])
+        invalid.pop("sha256")
+        invalid_handoff = _plan_handoff(plan, [invalid], validation, self.root)["selected_skills"][0]
+        self.assertFalse(invalid_handoff["loaded"])
+        self.assertEqual(invalid_handoff["load_status"], "invalid_load_evidence")
+
+    def test_handoff_redacts_raw_context_rules_and_skill_text(self) -> None:
+        context_sentinel = "RAW_PROJECT_CONTEXT_SENTINEL"
+        rule_sentinel = "RAW_RULE_TEXT_SENTINEL"
+        skill_sentinel = "RAW_SKILL_TEXT_SENTINEL"
+        secret_sentinel = "SECRET_VALUE_SENTINEL"
+        (self.root / "AGENTS.md").write_text(
+            f"{context_sentinel}\nMUST NOT publish {rule_sentinel}\n",
+            encoding="utf-8",
+        )
+        skill_path = Path(self.ppt["skill_md_path"])
+        skill_path.write_text(
+            skill_path.read_text(encoding="utf-8") + f"\n{skill_sentinel}\n{secret_sentinel}\n",
+            encoding="utf-8",
+        )
+        plan = self._single_presentation_skill_plan()
+        loaded = load_plan_skills(plan)
+        handoff = _plan_handoff(plan, loaded, validate_plan(plan, loaded), self.root)
+        serialized = json.dumps(handoff)
+        for forbidden in (
+            context_sentinel,
+            rule_sentinel,
+            skill_sentinel,
+            secret_sentinel,
+            "instructions",
+            "project_context",
+            "raw_project_context",
+            "rules",
+            "candidates",
+            "rejected",
+            "external_resources",
+        ):
+            self.assertNotIn(forbidden, serialized)
+        self.assertNotIn("project_context", handoff)
+        self.assertNotIn("rules", handoff)
 
     def test_scale_sanity_for_100_and_500_metadata_records(self) -> None:
         seed = dict(self.ppt)

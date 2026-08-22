@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -67,6 +68,11 @@ def _friendly_validation_label(kind: str) -> str:
     return labels.get(kind, kind.replace("_", " "))
 
 
+def _normalized_skill_path(path: str) -> str:
+    """Return a local, canonical identity for matching selected Skill loads."""
+    return os.path.normcase(str(Path(path).resolve(strict=False)))
+
+
 def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path) -> dict:
     """Return a redacted, stdout-safe R1 host handoff.
 
@@ -76,19 +82,42 @@ def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path) -> 
     selected files. It never serializes instructions, project context, or
     credentials.
     """
-    loaded_by_name = {str(item.get("name")): item for item in loaded}
+    loaded_by_path: dict[str, list[dict]] = {}
+    for item in loaded:
+        path = item.get("path")
+        if isinstance(path, str) and path:
+            loaded_by_path.setdefault(_normalized_skill_path(path), []).append(item)
     selected_skills = []
     for resource in plan.selected:
         if resource.resource_type != "skill":
             continue
-        item = loaded_by_name.get(resource.name, {})
+        matches = loaded_by_path.get(_normalized_skill_path(resource.path), [])
+        item = matches[0] if len(matches) == 1 else {}
+        sha256 = item.get("sha256")
+        characters = item.get("characters")
+        if not matches:
+            load_status = "missing_load_evidence"
+            loaded_successfully = False
+        elif len(matches) != 1:
+            load_status = "ambiguous_load_evidence"
+            loaded_successfully = False
+        elif "load_error" in item:
+            load_status = "load_failed"
+            loaded_successfully = False
+        elif isinstance(sha256, str) and sha256 and isinstance(characters, int) and characters >= 0:
+            load_status = "loaded"
+            loaded_successfully = True
+        else:
+            load_status = "invalid_load_evidence"
+            loaded_successfully = False
         selected_skills.append({
+            "resource_id": resource.resource_id,
             "name": resource.name,
             "skill_md_path": resource.path,
-            "sha256": item.get("sha256"),
-            "characters": item.get("characters"),
-            "loaded": "load_error" not in item,
-            "load_error": item.get("load_error"),
+            "sha256": sha256 if loaded_successfully else None,
+            "characters": characters if loaded_successfully else None,
+            "loaded": loaded_successfully,
+            "load_status": load_status,
             "source_scope": resource.provenance.get("source_scope", resource.trust),
             "runtime_compatibility": resource.runtime_compatibility,
         })
@@ -172,9 +201,9 @@ def parser() -> argparse.ArgumentParser:
     plan = sub.add_parser("plan", help="V1.2: build an auditable capability plan without executing Skills")
     plan.add_argument("task")
     plan.add_argument("--project", help="Project root for bounded V1.2 context discovery; defaults to the current directory")
-    plan.add_argument("--packet", help="Write the V1.2 plan/evidence packet to this JSON path")
-    plan.add_argument("--handoff", action="store_true", help="Print a redacted host handoff JSON without writing a packet")
-    plan.add_argument("--no-state", action="store_true", help="Do not write state/last-plan.json")
+    plan.add_argument("--packet", help="Write the V1.2 plan/evidence packet to this JSON path; incompatible with --handoff")
+    plan.add_argument("--handoff", action="store_true", help="Print a redacted, strictly stateless host handoff JSON; no packets or persistent plan state are written")
+    plan.add_argument("--no-state", action="store_true", help="Do not write state/last-plan.json; implied by --handoff")
     plan.add_argument("--soft-context-files", type=int, default=8, help="Initial soft project-context file budget")
     plan.add_argument("--soft-context-kib", type=int, default=64, help="Initial soft project-context byte budget in KiB")
     plan.add_argument("--hard-context-files", type=int, default=50, help="Hard project-context file ceiling")
@@ -200,6 +229,8 @@ def main() -> int:
         print(f"Skills: {len(index.get('skills', []))}; agents: {len(index.get('agents', []))}")
         return 0
     if args.command == "plan":
+        if args.handoff and args.packet:
+            cli.error("--handoff is strictly stateless and cannot be combined with --packet")
         project = Path(args.project).resolve() if args.project else Path.cwd().resolve()
         index = _v2_catalog(project, args.extra_root)
         context_options = {
@@ -214,7 +245,7 @@ def main() -> int:
             cli.error(str(exc))
         loaded = load_plan_skills(v2_plan)
         validation = validate_plan(v2_plan, loaded)
-        if not args.no_state:
+        if not (args.no_state or args.handoff):
             write_plan_packet(ROOT / "state" / "last-plan.json", v2_plan, loaded, validation)
         if args.packet:
             write_plan_packet(Path(args.packet), v2_plan, loaded, validation)
