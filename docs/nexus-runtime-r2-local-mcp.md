@@ -94,6 +94,11 @@ closed-world. The `writes` policy therefore permits these bounded calls while
 continuing to require approval for any future tool that is not explicitly
 read-only. Do not replace it with an unrestricted policy.
 
+Release validation exercised this registration with the real local Codex host:
+`nexus.health`, `nexus.discover_capabilities`, and one bounded
+`nexus.plan_task` call completed without execution authority. This is local
+Codex-host evidence only; it is not ChatGPT App integration or remote MCP.
+
 Remove it without touching Nexus source, branches, or tags:
 
 ```powershell

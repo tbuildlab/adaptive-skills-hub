@@ -76,8 +76,8 @@
     "sha256": "f2b563baae87606041576a124e373dd55e75492e1cd5507fdf0fca864cb9865a"
   },
   "docs/nexus-runtime-r2-local-mcp.md": {
-    "bytes": 5454,
-    "sha256": "57a63f8791d9d95d2e127a32fa537c963028965c56a57a15fc9cc881d25e7ef2"
+    "bytes": 5748,
+    "sha256": "74a9d7b42c6c271dcd265b766a845128aff2986f4ded44446aef1035ef12b659"
   },
   "docs/nexus-runtime-r2-mcp-architecture.md": {
     "bytes": 29464,
