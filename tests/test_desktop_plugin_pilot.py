@@ -52,7 +52,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
     def test_plugin_lifecycle_delegates_only_to_official_codex_commands(self) -> None:
         import scripts.setup_nexus as setup
 
-        with patch.object(setup.subprocess, "run") as run:
+        with patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(setup.subprocess, "run") as run:
             run.return_value.returncode = 1
             run.return_value.stdout = ""
             setup.run_plugin_install("codex")
@@ -60,18 +60,18 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(run.call_args_list[1].args[0], ["codex", "plugin", "marketplace", "list"])
         self.assertEqual(run.call_args_list[2].args[0], ["codex", "plugin", "marketplace", "add", str(ROOT)])
         self.assertEqual(run.call_args_list[3].args[0], ["codex", "plugin", "add", "nexus-desktop@nexus-local-pilot"])
-        with patch.object(setup.subprocess, "run") as run:
+        with patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(setup.subprocess, "run") as run:
             run.return_value.returncode = 1
             run.return_value.stdout = "nexus-local-pilot"
             setup.run_plugin_install("codex")
         self.assertEqual(len(run.call_args_list), 3)
         self.assertEqual(run.call_args_list[2].args[0], ["codex", "plugin", "add", "nexus-desktop@nexus-local-pilot"])
-        with patch.object(setup.subprocess, "run") as run:
+        with patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(setup.subprocess, "run") as run:
             run.return_value.returncode = 0
             with self.assertRaises(setup.SetupError):
                 setup.run_plugin_install("codex")
         self.assertEqual(run.call_args_list[0].args[0], ["codex", "mcp", "get", "nexus-r2-local"])
-        with patch.object(setup.subprocess, "run") as run:
+        with patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(setup.subprocess, "run") as run:
             setup.run_plugin_uninstall("codex")
         self.assertEqual(run.call_args_list[0].args[0], ["codex", "plugin", "remove", "nexus-desktop@nexus-local-pilot"])
         self.assertEqual(run.call_args_list[1].args[0], ["codex", "plugin", "marketplace", "remove", "nexus-local-pilot"])

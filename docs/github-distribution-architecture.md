@@ -48,6 +48,24 @@ The official CPython `LICENSE.txt` is retained inside the runtime. Before a
 public release, the owner must retain/ship complete third-party notices for the
 vendored wheels and make the Nexus public-license decision separately.
 
+## RC3 host-CLI preflight correction
+
+RC2 removed the Python prerequisite, but a fresh user without a runnable
+Codex CLI still reached the first Plugin registration command and received an
+opaque Windows `WinError 2`. RC3 treats the Codex CLI as a distinct, required
+host dependency for **Plugin mode only**. Before it reads an existing MCP
+registration, writes a lifecycle journal, changes Nexus-local configuration,
+or invokes a Plugin command, it resolves the requested CLI and runs the
+non-mutating `codex plugin --help` probe.
+
+The installer reports one of three bounded errors: unavailable CLI, CLI that
+cannot start, or CLI without the Plugin command. It does not fall back to
+editing Codex or ChatGPT configuration files, copying an OpenAI binary, or
+switching to standalone mode invisibly. A user who only has a ChatGPT Desktop
+UI but no supported local Codex CLI therefore receives a precise prerequisite
+error rather than a partial installation. Standalone mode remains available
+for local MCP use, but it deliberately cannot claim `@Nexus` Plugin visibility.
+
 ## Artifact contract
 
 Each GitHub Release candidate supplies a versioned ZIP, its SHA-256 receipt,
@@ -107,7 +125,7 @@ neither claim.
 ## Versioning and future compatibility
 
 Frozen Core tags stay unchanged. Distribution has a separate SemVer stream in
-`release/VERSION`; `0.1.0-rc.2` is a release candidate, not a Core tag. A
+`release/VERSION`; `0.1.0-rc.3` is a release candidate, not a Core tag. A
 future GitHub Skill Scout must remain separately approved, preserve provenance,
 license/reputation/pinned-hash review, and never turn this installer into an
 automatic Skill installation channel.

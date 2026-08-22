@@ -72,12 +72,12 @@
     "sha256": "e76900d66ff4b9ca0b505e16d6bcf164ebc31fd14fa5e6b5a6d9f54b2d505962"
   },
   "docs/github-distribution-architecture.md": {
-    "bytes": 6521,
-    "sha256": "c8024d54ac2c164eb387066aae73304c8631c72c528e4334a7c281e17b824286"
+    "bytes": 7593,
+    "sha256": "514d5156562ca69d997c2481981fb920615df11d7dff36f7695e8bff7ae6df88"
   },
   "docs/github-release-installation.md": {
-    "bytes": 3315,
-    "sha256": "5f7f182448ebd62ca760e1ab95289412cca777c651a78763524fbefe8cb5a719"
+    "bytes": 3933,
+    "sha256": "06257afa3c8af5745c5d59566c9511c043cc19b2019f16c1659de84ca3a2d55e"
   },
   "docs/license-inventory.md": {
     "bytes": 1315,
@@ -161,7 +161,7 @@
   },
   "release/VERSION": {
     "bytes": 11,
-    "sha256": "b0b5813e7156d4ad22becc185a387f84a901d471c07592ecd5d4cf48e601b60d"
+    "sha256": "93f893b9b51cd2ee055332a64d4656e5bbbb652788acbaeaa7d1a6b32099d23f"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -220,12 +220,12 @@
     "sha256": "b5e48a6dbdf4f2c039fb72db8867055949e2bda36c53b733ef1ecd8cc0cc8b22"
   },
   "scripts/release_install.py": {
-    "bytes": 13493,
-    "sha256": "ad3f7a9a3a436348459f8468acb83bbf1f1bfdcea535c67c0a8ce788c2006084"
+    "bytes": 13733,
+    "sha256": "629cdf767164c92a23160a96accc3d975746e2addd2cb42329e67c2b4c03c8c6"
   },
   "scripts/setup_nexus.py": {
-    "bytes": 11567,
-    "sha256": "66a7c2fe490ea1802d0989a8f417c26ed6ac23a52f04c3b6b5903f57799f1b9e"
+    "bytes": 13328,
+    "sha256": "f0de915950381eedd343f010c5ddd3102393bdc0d5e5928cc22613b750ab93c8"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -236,12 +236,12 @@
     "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
   },
   "tests/test_desktop_plugin_pilot.py": {
-    "bytes": 9874,
-    "sha256": "490f99d643a3d8d2c01b01efd98e4d90a1dbe2618fb6783cb47f90775d1749e7"
+    "bytes": 10130,
+    "sha256": "1c668603ef0411b1d07a13f0770b0f9b545afdaaa4e2a48b83e127e2e8b8d136"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 17007,
-    "sha256": "5241363f01a6835a41dea114463ee83954f6be56baa37bcb00af92d1fc69890d"
+    "bytes": 25344,
+    "sha256": "0eb2fe6505232c2c6b03e49b4519f26236141bdcb6474f9303a55e1b560ce6ea"
   },
   "tests/test_hub.py": {
     "bytes": 21706,

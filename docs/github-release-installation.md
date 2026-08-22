@@ -5,11 +5,13 @@
 This path needs no repository clone, `D:` drive, administrator rights, API key,
 OAuth, remote MCP, Microsoft Store, `py.exe`, or preinstalled Python. RC2
 contains a pinned, Nexus-owned CPython 3.13.15 x64 runtime and the reviewed R2
-dependencies. You need supported 64-bit Windows, one real non-root workspace
-directory, and (for Plugin mode) a compatible Codex/ChatGPT Desktop host.
-Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap receipt from
-the same trusted GitHub Release.
-
+dependencies. You need supported 64-bit Windows and one real non-root
+workspace directory. **Plugin mode additionally requires a runnable local
+Codex CLI with the `plugin` command for the same Windows user.** The CLI is the
+only supported component that registers a local marketplace; ChatGPT Desktop
+visibility alone does not expose a configuration interface this installer may
+rewrite. Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap
+receipt from the same trusted GitHub Release.
 The release stays restricted/private until the owner separately chooses a
 license and repository visibility. Do not install files from a mirror.
 
@@ -42,6 +44,12 @@ The bootstrap uses the verified release-local runtime. It does not alter
 Alias, modify another Python, or download packages. If `python` resolves to a
 WindowsApps alias or another system interpreter, it is reported only as ignored
 diagnostics; a missing or incompatible system interpreter is not a blocker.
+
+Before Plugin activation, Nexus probes the requested Codex CLI without changing
+its configuration. If the CLI is unavailable, cannot start, or has no Plugin
+command, installation fails closed before any Nexus-local setup state is
+written. Do not manually edit host configuration as a workaround. You may use
+`-Mode standalone` only when `@Nexus` Plugin visibility is not required.
 
 ## Existing standalone MCP
 

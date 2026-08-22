@@ -186,7 +186,10 @@ def install(args: argparse.Namespace) -> int:
     # Plugin mode uses the release-local runtime declared in its staged MCP
     # manifest.  Do not consult python.exe, py.exe, aliases, or PATH.
     bundled_runtime(ROOT)
-    standalone = standalone_snapshot(args.codex_command) if args.mode == "plugin" else None
+    # Do this before reading/migrating host registrations or creating a journal.
+    # A missing host must never degrade into raw WinError 2 after partial setup.
+    codex_command = setup.require_codex_cli(args.codex_command) if args.mode == "plugin" else args.codex_command
+    standalone = standalone_snapshot(codex_command) if args.mode == "plugin" else None
     if args.mode == "plugin" and standalone and not args.migrate_standalone:
         raise ReleaseError("standalone nexus-r2-local exists; use --migrate-standalone or choose standalone mode")
     journal = local / "transactions" / f"install-{setup.utc_stamp()}.json"
@@ -195,13 +198,13 @@ def install(args: argparse.Namespace) -> int:
     standalone_removed = False
     try:
         if prior and prior.get("mode") == "plugin":
-            remove_plugin(args.codex_command)
+            remove_plugin(codex_command)
             plugin_removed = True
         if args.mode == "plugin" and standalone:
-            remove_standalone(args.codex_command)
+            remove_standalone(codex_command)
             standalone_removed = True
         if args.mode == "plugin":
-            enable_plugin(args.codex_command)
+            enable_plugin(codex_command)
         configure(args, ROOT)
         new_state = {
             "schema_version": STATE_SCHEMA,
@@ -217,13 +220,13 @@ def install(args: argparse.Namespace) -> int:
     except Exception:
         try:
             if args.mode == "plugin":
-                remove_plugin(args.codex_command)
+                remove_plugin(codex_command)
             restore_file(config, previous_files["config"])
             restore_file(workspaces, previous_files["workspaces"])
             if standalone_removed and standalone:
-                restore_standalone(args.codex_command, standalone)
+                restore_standalone(codex_command, standalone)
             elif plugin_removed:
-                restore_previous(local, args.codex_command, prior)
+                restore_previous(local, codex_command, prior)
             atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "rolled_back", "release_root": str(ROOT)})
         except Exception as rollback_error:
             atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "manual_recovery_required", "release_root": str(ROOT), "error": str(rollback_error)})

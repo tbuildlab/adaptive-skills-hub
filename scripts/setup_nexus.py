@@ -42,6 +42,38 @@ def default_codex_command() -> str:
     return shutil.which("codex.cmd") or shutil.which("codex.exe") or "codex"
 
 
+def require_codex_cli(value: str) -> str:
+    """Resolve and harmlessly probe the supported host CLI before mutation."""
+    if not isinstance(value, str) or not value.strip():
+        raise SetupError("Codex CLI is unavailable: plugin registration requires a runnable Codex CLI for this Windows user")
+    requested = value.strip()
+    candidate = Path(requested).expanduser()
+    if candidate.is_absolute():
+        try:
+            resolved = candidate.resolve(strict=True)
+        except OSError as exc:
+            raise SetupError(
+                "Codex CLI is unavailable: plugin registration requires a runnable Codex CLI for this Windows user"
+            ) from exc
+        if not resolved.is_file() or resolved.is_symlink():
+            raise SetupError("Codex CLI is unavailable: plugin registration requires a runnable Codex CLI for this Windows user")
+        command = str(resolved)
+    else:
+        command = shutil.which(requested) or ""
+        if not command:
+            raise SetupError("Codex CLI is unavailable: plugin registration requires a runnable Codex CLI for this Windows user")
+    try:
+        probe = subprocess.run(
+            [command, "plugin", "--help"], check=False, stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL, timeout=15, shell=False,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise SetupError("Codex CLI cannot start: plugin registration requires a runnable Codex CLI for this Windows user") from exc
+    if probe.returncode:
+        raise SetupError("Codex CLI is incompatible: its plugin command is unavailable for this Windows user")
+    return command
+
+
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
@@ -132,6 +164,7 @@ def load_workspaces(path: Path) -> dict[str, Any]:
 def run_plugin_install(codex_command: str) -> None:
     # The official CLI owns config mutation and marketplace identity; no TOML is
     # parsed or rewritten by this installer.
+    codex_command = require_codex_cli(codex_command)
     standalone = subprocess.run(
         [codex_command, "mcp", "get", "nexus-r2-local"],
         check=False,
@@ -155,6 +188,7 @@ def run_plugin_install(codex_command: str) -> None:
 
 
 def run_plugin_uninstall(codex_command: str) -> None:
+    codex_command = require_codex_cli(codex_command)
     subprocess.run([codex_command, "plugin", "remove", f"{PLUGIN_NAME}@{MARKETPLACE_NAME}"], check=True)
     subprocess.run([codex_command, "plugin", "marketplace", "remove", MARKETPLACE_NAME], check=True)
 
