@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "nexus_desktop_local": {
+      "title": "Nexus local planner",
+      "description": "Private local read/plan-only Nexus capability routing. Never executes a plan or accesses caller-selected paths.",
+      "command": "python",
+      "args": [
+        "./scripts/launch_nexus_mcp.py"
+      ],
+      "cwd": ".",
+      "startup_timeout_sec": 15,
+      "tool_timeout_sec": 60,
+      "default_tools_approval_mode": "writes"
+    }
+  }
+}

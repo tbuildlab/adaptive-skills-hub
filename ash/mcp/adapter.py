@@ -36,7 +36,11 @@ class NexusMcpRuntime:
     @staticmethod
     def _build_catalog() -> Mapping[str, Any]:
         codex_home = Path.home() / ".codex"
-        roots = [path for path in [ROOT.parent, codex_home / "skills", codex_home / "plugins" / "cache"] if path.exists()]
+        # ``build_index`` always scans ``workspace_root`` itself.  Passing that
+        # same root again as an additional source produces equal-authority
+        # duplicate records for every project Skill, which then fail closed as
+        # ``duplicate_conflict`` and cannot be selected by the planner.
+        roots = [path for path in [codex_home / "skills", codex_home / "plugins" / "cache"] if path.exists()]
         return build_index(ROOT.parent, ROOT, roots)
 
     def health(self) -> dict[str, Any]:
