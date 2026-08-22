@@ -102,9 +102,10 @@ state, but refuses to delete host-managed state or unrelated configuration.
 
 ## Artifact contract
 
-Each GitHub Release candidate supplies a versioned ZIP, its SHA-256 receipt,
-a PowerShell bootstrap, and a receipt for that bootstrap. The ZIP has exactly
-one `Nexus-<version>` top-level directory. `release-manifest.json` contains an
+Each GitHub Release candidate supplies six assets: a versioned ZIP and its
+SHA-256 receipt, a PowerShell bootstrap and its receipt, plus an extracted copy
+of the ZIP's `release-manifest.json` and that manifest's receipt. The ZIP has
+exactly one `Nexus-<version>` top-level directory. The manifest contains an
 exact allowlisted file set with a byte size and SHA-256 for each payload file.
 The installer verifies that tree before it changes local configuration.
 

@@ -288,6 +288,14 @@ def build(output: Path, version: str, wheelhouse: Path, python_embed: Path) -> t
     bootstrap_receipt = bootstrap.with_suffix(".ps1.sha256")
     shutil.copy2(ROOT / "scripts" / "Install-Nexus.ps1", bootstrap)
     bootstrap_receipt.write_text(f"{sha256_file(bootstrap)}  {bootstrap.name}\n", encoding="ascii", newline="\n")
+    # Publish the exact in-archive manifest as a separately hashable release
+    # asset. This gives a downloader a six-asset receipt set without trusting
+    # an extraction step just to inspect the allowlisted payload contract.
+    manifest_asset = output / f"Nexus-{version}.release-manifest.json"
+    with zipfile.ZipFile(archive) as bundle:
+        manifest_asset.write_bytes(bundle.read(f"Nexus-{version}/{MANIFEST_NAME}"))
+    manifest_receipt = manifest_asset.with_suffix(manifest_asset.suffix + ".sha256")
+    manifest_receipt.write_text(f"{sha256_file(manifest_asset)}  {manifest_asset.name}\n", encoding="ascii", newline="\n")
     return archive, receipt
 
 

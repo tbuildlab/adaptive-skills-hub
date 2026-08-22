@@ -72,8 +72,8 @@
     "sha256": "e76900d66ff4b9ca0b505e16d6bcf164ebc31fd14fa5e6b5a6d9f54b2d505962"
   },
   "docs/github-distribution-architecture.md": {
-    "bytes": 9637,
-    "sha256": "ff7a8bd1274bafc6d9dfa2193a96dfc89b2706ac9d7becd5c7029923eb42d1d6"
+    "bytes": 9712,
+    "sha256": "bb477f1c929827df4bd67a962dc2213617873eca605038838ddb262a1f04569e"
   },
   "docs/github-release-installation.md": {
     "bytes": 4196,
@@ -180,8 +180,8 @@
     "sha256": "3800fef19549bf29f8aa4af51ab2ffff8e00bbd05282bbef0f73875f8651d4b0"
   },
   "scripts/build_release.py": {
-    "bytes": 14750,
-    "sha256": "b2d2c6a7c33984962f5a142bc285d07aedfcda7891895995ca5161345ba1b968"
+    "bytes": 15388,
+    "sha256": "ad5e6ee6271527e45f7088ff86bd5a34efb7452cedf1c3d15429e24c55053e97"
   },
   "scripts/check_updates.py": {
     "bytes": 2515,
@@ -244,8 +244,8 @@
     "sha256": "1c668603ef0411b1d07a13f0770b0f9b545afdaaa4e2a48b83e127e2e8b8d136"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 29109,
-    "sha256": "89f7c6b3078275bd4e253186be2d4308562db16e6da6fe363c3b2f44d3251af6"
+    "bytes": 29388,
+    "sha256": "e985bd7f640bbdb6cfad9ae6aaef0ecb0a57011fe7f76342bebc2d86754f9151"
   },
   "tests/test_hub.py": {
     "bytes": 21706,

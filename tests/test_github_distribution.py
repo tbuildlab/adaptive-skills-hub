@@ -63,6 +63,9 @@ class GitHubDistributionTests(unittest.TestCase):
         self.assertTrue(archive.with_suffix(".zip.sha256").is_file())
         self.assertTrue((output / "Install-Nexus-0.1.0-rc.2.ps1").is_file())
         self.assertTrue((output / "Install-Nexus-0.1.0-rc.2.ps1.sha256").is_file())
+        manifest = output / "Nexus-0.1.0-rc.2.release-manifest.json"
+        self.assertTrue(manifest.is_file())
+        self.assertEqual(manifest.with_suffix(manifest.suffix + ".sha256").read_text(encoding="ascii").split()[0], hashlib.sha256(manifest.read_bytes()).hexdigest())
         return archive, output
 
     def test_release_artifact_is_allowlisted_hashed_and_location_independent(self) -> None:
