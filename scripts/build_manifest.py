@@ -11,6 +11,10 @@ ROOT = Path(__file__).resolve().parents[1]
 # generated vendor assets, and large transient artifacts.  The static manifest
 # intentionally covers only version-controlled package files.
 EXCLUDED_PARTS = {"state", "output", "__pycache__", ".git"}
+# This is intentionally an ignored, machine-local setup record.  Keeping it out
+# of the static package manifest preserves the manifest's version-controlled
+# package boundary while allowing local environment documentation to exist.
+LOCAL_ONLY_PATHS = {Path("docs/local-development-environment.md")}
 entries: dict[str, dict[str, int | str]] = {}
 
 
@@ -23,9 +27,10 @@ def _manifest_bytes(contents: bytes) -> bytes:
 
 
 for path in sorted(ROOT.rglob("*")):
-    if not path.is_file() or path.name in {"MANIFEST.json", "registry.json"} or any(part in EXCLUDED_PARTS for part in path.parts):
+    relative = path.relative_to(ROOT)
+    if not path.is_file() or relative in LOCAL_ONLY_PATHS or path.name in {"MANIFEST.json", "registry.json"} or any(part in EXCLUDED_PARTS for part in path.parts):
         continue
     contents = _manifest_bytes(path.read_bytes())
-    entries[path.relative_to(ROOT).as_posix()] = {"bytes": len(contents), "sha256": hashlib.sha256(contents).hexdigest()}
+    entries[relative.as_posix()] = {"bytes": len(contents), "sha256": hashlib.sha256(contents).hexdigest()}
 (ROOT / "MANIFEST.json").write_text(json.dumps(entries, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(f"Built static manifest with {len(entries)} files.")
