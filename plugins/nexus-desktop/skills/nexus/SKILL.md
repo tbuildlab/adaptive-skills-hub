@@ -9,7 +9,9 @@ Use this plugin only for a substantive task. It is a planning layer, not an
 execution runtime.
 
 1. Call `nexus.plan_task` with a concise `task`, the configured opaque
-   `workspace_id`, and only bounded constraints needed for planning.
+   `workspace_id` `nexus-default`, and only bounded constraints needed for
+   planning. The installer maps that alias to exactly one locally approved
+   workspace; never replace it with a filesystem path.
 2. Treat the returned plan as advisory. It has no file-write, shell, network, or
    automatic Skill-install authority.
 3. Report the selected Skills and validation steps from the redacted result.

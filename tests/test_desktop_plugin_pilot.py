@@ -38,6 +38,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(mapping["mcpServers"]["nexus_desktop_local"]["args"], ["./scripts/launch_nexus_mcp.py"])
         self.assertEqual(marketplace["plugins"][0]["source"]["path"], "./plugins/nexus-desktop")
         self.assertIn("nexus.plan_task", skill)
+        self.assertIn("nexus-default", skill)
         self.assertIn("substantive", skill)
         self.assertNotIn("execute a plan", skill.casefold())
         source = "\n".join(path.read_text(encoding="utf-8") for path in PLUGIN_ROOT.rglob("*.py"))
@@ -53,9 +54,17 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
 
         with patch.object(setup.subprocess, "run") as run:
             run.return_value.returncode = 1
+            run.return_value.stdout = ""
             setup.run_plugin_install("codex")
         self.assertEqual(run.call_args_list[0].args[0], ["codex", "mcp", "get", "nexus-r2-local"])
-        self.assertEqual(run.call_args_list[1].args[0], ["codex", "plugin", "marketplace", "add", str(ROOT)])
+        self.assertEqual(run.call_args_list[1].args[0], ["codex", "plugin", "marketplace", "list"])
+        self.assertEqual(run.call_args_list[2].args[0], ["codex", "plugin", "marketplace", "add", str(ROOT)])
+        self.assertEqual(run.call_args_list[3].args[0], ["codex", "plugin", "add", "nexus-desktop@nexus-local-pilot"])
+        with patch.object(setup.subprocess, "run") as run:
+            run.return_value.returncode = 1
+            run.return_value.stdout = "nexus-local-pilot"
+            setup.run_plugin_install("codex")
+        self.assertEqual(len(run.call_args_list), 3)
         self.assertEqual(run.call_args_list[2].args[0], ["codex", "plugin", "add", "nexus-desktop@nexus-local-pilot"])
         with patch.object(setup.subprocess, "run") as run:
             run.return_value.returncode = 0
@@ -66,6 +75,12 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
             setup.run_plugin_uninstall("codex")
         self.assertEqual(run.call_args_list[0].args[0], ["codex", "plugin", "remove", "nexus-desktop@nexus-local-pilot"])
         self.assertEqual(run.call_args_list[1].args[0], ["codex", "plugin", "marketplace", "remove", "nexus-local-pilot"])
+
+    def test_windows_default_prefers_a_spawnable_codex_executable(self) -> None:
+        import scripts.setup_nexus as setup
+
+        with patch.object(setup.shutil, "which", side_effect=["C:/npm/codex.cmd", "C:/Codex/codex.exe"]):
+            self.assertEqual(setup.default_codex_command(), "C:/npm/codex.cmd")
 
     async def test_isolated_install_health_discover_plan_and_uninstall(self) -> None:
         runtime_python = self._runtime_python()

@@ -37,6 +37,11 @@ def default_data_root() -> Path:
     return Path(local_app_data) / "Nexus" if local_app_data else Path.home() / ".nexus"
 
 
+def default_codex_command() -> str:
+    """Prefer the npm CMD shim; PowerShell and packaged EXEs may not be spawnable."""
+    return shutil.which("codex.cmd") or shutil.which("codex.exe") or "codex"
+
+
 def utc_stamp() -> str:
     return datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
@@ -120,7 +125,14 @@ def run_plugin_install(codex_command: str) -> None:
             "standalone nexus-r2-local is already configured; do not install a duplicate Plugin MCP. "
             "Remove or disable it temporarily, keep its trusted configuration for rollback, then retry."
         )
-    subprocess.run([codex_command, "plugin", "marketplace", "add", str(ROOT)], check=True)
+    marketplaces = subprocess.run(
+        [codex_command, "plugin", "marketplace", "list"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    if MARKETPLACE_NAME not in marketplaces.stdout:
+        subprocess.run([codex_command, "plugin", "marketplace", "add", str(ROOT)], check=True)
     subprocess.run([codex_command, "plugin", "add", f"{PLUGIN_NAME}@{MARKETPLACE_NAME}"], check=True)
 
 
@@ -197,10 +209,10 @@ def uninstall(args: argparse.Namespace) -> int:
 def parser() -> argparse.ArgumentParser:
     cli = argparse.ArgumentParser(description="Nexus Desktop Plugin pilot setup")
     cli.add_argument("--data-root", default=str(default_data_root()), help="Nexus-owned private local data directory")
-    cli.add_argument("--codex-command", default="codex", help="Codex CLI executable for explicit plugin lifecycle commands")
+    cli.add_argument("--codex-command", default=default_codex_command(), help="Codex CLI executable for explicit plugin lifecycle commands")
     commands = cli.add_subparsers(dest="command", required=True)
     install_command = commands.add_parser("install", help="create local Nexus runtime configuration")
-    install_command.add_argument("--workspace-id", required=True)
+    install_command.add_argument("--workspace-id", default="nexus-default", help="opaque Plugin workspace alias; defaults to nexus-default")
     install_command.add_argument("--workspace-root", required=True)
     install_command.add_argument("--runtime-python", help="existing Python that already has the fixed R2 MCP dependency")
     install_command.add_argument("--with-plugin", action="store_true", help="also use the official Codex CLI to add the local marketplace and plugin")

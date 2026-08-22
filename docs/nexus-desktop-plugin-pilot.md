@@ -32,7 +32,6 @@ backup copies before replacing Nexus-owned JSON files:
 
 ```powershell
 python scripts/setup_nexus.py install `
-  --workspace-id my-project `
   --workspace-root D:\work\my-project
 ```
 
@@ -42,7 +41,6 @@ absolute Python executable explicitly:
 
 ```powershell
 python scripts/setup_nexus.py install `
-  --workspace-id my-project `
   --workspace-root D:\work\my-project `
   --runtime-python D:\path\to\python.exe
 ```
@@ -55,13 +53,15 @@ Plugin:
 
 ```powershell
 python scripts/setup_nexus.py install `
-  --workspace-id my-project `
   --workspace-root D:\work\my-project `
   --with-plugin
 ```
 
 The setup script never parses, edits, or overwrites `~/.codex/config.toml`.
 `--with-plugin` delegates only Plugin lifecycle changes to `codex plugin`.
+The Plugin uses the fixed opaque alias `nexus-default`; setup maps it to the
+single approved `--workspace-root` without putting a filesystem path in the
+bundled Skill.
 
 ## Verify, update, remove, and rollback
 

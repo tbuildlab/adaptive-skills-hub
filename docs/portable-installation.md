@@ -18,7 +18,7 @@ personal Skill library is required.
 
 1. Clone/download the private source into any normal local directory. The source
    is location-independent; no `D:` path is embedded in package files.
-2. Run `python scripts/setup_nexus.py install --workspace-id <id> --workspace-root <absolute-project-root>`.
+2. Run `python scripts/setup_nexus.py install --workspace-root <absolute-project-root>`. It assigns the private Plugin alias `nexus-default`; an explicit alternate `--workspace-id` remains available for standalone administrative use.
 3. Run `python scripts/setup_nexus.py check`.
 4. For an optional Desktop Plugin test, add the local marketplace and Plugin with
    the same install command plus `--with-plugin`, then restart Desktop and use a

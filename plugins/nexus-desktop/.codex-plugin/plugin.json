@@ -1,6 +1,6 @@
 {
   "name": "nexus-desktop",
-  "version": "0.1.0",
+  "version": "0.1.0+codex.20260822110714",
   "description": "Private local Nexus task-planning workflow for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
