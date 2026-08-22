@@ -44,8 +44,8 @@
     "sha256": "53953f3d3b186afccc766a8eab1f001455db564defdfef5d4c3c1091c9a62b73"
   },
   "ash/mcp/server.py": {
-    "bytes": 3813,
-    "sha256": "f0cf917d53abddc8b4bcc7af32363bd9e4eba18942443a00ecc72345b5a70596"
+    "bytes": 5012,
+    "sha256": "5c73dfeff3fe48493021048589f235ecb4dc1fcc7d826800aaa207d61936c9ab"
   },
   "ash/mcp/telemetry.py": {
     "bytes": 549,
@@ -56,8 +56,8 @@
     "sha256": "528a39bf267070aed3dd2100fe884a4eb5f5d656fd24c78a7d25e151b4411838"
   },
   "ash/v2.py": {
-    "bytes": 47999,
-    "sha256": "ef89685f0b63f2dec7980ebcc89ed467858c18797b9f47eb2f92a2a2256127f5"
+    "bytes": 52140,
+    "sha256": "be6db9edca9acb523f4b93b3c7afebaf104455326692c4fae1c93fef7c7a81bc"
   },
   "config/nexus-mcp-workspaces.example.json": {
     "bytes": 146,
@@ -83,13 +83,17 @@
     "bytes": 29464,
     "sha256": "c322c9fa95cef310dad80339a9ec706613959c54f92350a6ff0de82a92dfeabc"
   },
+  "docs/nexus-runtime-r3-auto-invocation.md": {
+    "bytes": 6156,
+    "sha256": "dcca0d505c18102d3b567ef33796bf04efdc9fde4e314939068a20838f691d32"
+  },
   "docs/nexus-runtime-r3-chatgpt-architecture.md": {
     "bytes": 32644,
     "sha256": "328c856740184403695e34e423d9165329b19914bdaf4fbb3cbdbd3c7321827c"
   },
   "docs/nexus-runtime-r3-desktop-pilot.md": {
-    "bytes": 6483,
-    "sha256": "9f94ffedcabeb2881f6237392d52a58cb9e9c6164116a4261479b11d4617d1e3"
+    "bytes": 6364,
+    "sha256": "2abb8490dac22c26e69c875d5b75f0f4acd65b60da87f83efb8f646f3fe85220"
   },
   "docs/test-prompts.md": {
     "bytes": 1242,
@@ -176,15 +180,15 @@
     "sha256": "ce9696518ea600a46635883daeb6a08e0c5d9441301af2164c8e4c488798163b"
   },
   "tests/test_mcp_protocol.py": {
-    "bytes": 3845,
-    "sha256": "4708dd266238ca5a4ba1e49303cc4b311fd6b9dad39baef1ff4db9fd4c07caf7"
+    "bytes": 5028,
+    "sha256": "b53cc382528009775d6b548bbd0de0e37312e7a88f0ad1072b82308344511235"
   },
   "tests/test_mcp_redaction.py": {
     "bytes": 3656,
     "sha256": "2a3acde0aa437060ca334e654f162764ea712130f175c1d5e57fae4b72413210"
   },
   "tests/test_v2.py": {
-    "bytes": 29421,
-    "sha256": "41d40b58194347fc440f0a3241a3e03907dc878b2c1393e527ab3d8eba0bf570"
+    "bytes": 34763,
+    "sha256": "56d977e2543ff2cae08bac273ec97ce7ad42a41b84a985c7ae6b02db41f452d5"
   }
 }

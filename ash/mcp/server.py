@@ -23,6 +23,27 @@ READ_ONLY_TOOL_ANNOTATIONS = types.ToolAnnotations(
     openWorldHint=False,
 )
 
+# Tool descriptions are the host's primary semantic routing signal.  Keep each
+# description concise, explicit, and mutually exclusive: routine task routing
+# belongs only to ``nexus.plan_task``; diagnostics and catalog inspection do
+# not compete for ordinary conversations.
+HEALTH_TOOL_DESCRIPTION = (
+    "Check Nexus local MCP availability and safe capability flags. Use only for "
+    "diagnostics or connection status, not for task planning, execution, or ordinary chat."
+)
+DISCOVER_TOOL_DESCRIPTION = (
+    "Inspect the bounded Nexus capability catalog when the user explicitly asks "
+    "which Skills or capabilities are available. Returns metadata only; do not use "
+    "for ordinary task planning, execution, or casual conversation."
+)
+PLAN_TOOL_DESCRIPTION = (
+    "Plan a substantive multi-step task and select the smallest suitable Nexus Skills "
+    "before the host executes. Use for professional artifacts (presentations, documents, "
+    "spreadsheets, PDFs), engineering/debugging/testing/security, evidence-based research, "
+    "coursework, or work where choosing capabilities improves reliability. Do not use for "
+    "greetings, simple calculations or facts, simple translation, short rewrites, or execution."
+)
+
 
 def _text_for(payload: dict[str, Any]) -> str:
     # TextContent is the baseline MCP result representation supported by current
@@ -38,9 +59,9 @@ def _result(payload: dict[str, Any], error: bool = False) -> types.CallToolResul
 def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
     async def list_tools(_ctx: Any, _params: Any) -> types.ListToolsResult:
         return types.ListToolsResult(tools=[
-            types.Tool(name="nexus.health", description="Read Nexus R2 local MCP health and safe capability flags.", inputSchema=HEALTH_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
-            types.Tool(name="nexus.discover_capabilities", description="Read bounded Nexus Skill capability metadata only; no instructions or paths.", inputSchema=DISCOVER_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
-            types.Tool(name="nexus.plan_task", description="Create a read/plan-only Nexus plan. This never executes the task.", inputSchema=PLAN_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.health", title="Nexus status", description=HEALTH_TOOL_DESCRIPTION, inputSchema=HEALTH_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.discover_capabilities", title="Nexus capability catalog", description=DISCOVER_TOOL_DESCRIPTION, inputSchema=DISCOVER_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.plan_task", title="Nexus substantive-task planner", description=PLAN_TOOL_DESCRIPTION, inputSchema=PLAN_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
         ])
 
     async def call_tool(_ctx: Any, params: types.CallToolRequestParams) -> types.CallToolResult:

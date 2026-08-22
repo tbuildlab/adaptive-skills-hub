@@ -45,6 +45,18 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
                     self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task"])
+                    metadata = {item.name: item for item in tools.tools}
+                    self.assertEqual(metadata["nexus.health"].title, "Nexus status")
+                    self.assertIn("diagnostics", metadata["nexus.health"].description)
+                    self.assertIn("not for task planning", metadata["nexus.health"].description)
+                    self.assertEqual(metadata["nexus.discover_capabilities"].title, "Nexus capability catalog")
+                    self.assertIn("explicitly asks", metadata["nexus.discover_capabilities"].description)
+                    self.assertIn("not use for ordinary task planning", metadata["nexus.discover_capabilities"].description)
+                    self.assertEqual(metadata["nexus.plan_task"].title, "Nexus substantive-task planner")
+                    self.assertIn("substantive multi-step task", metadata["nexus.plan_task"].description)
+                    self.assertIn("presentations", metadata["nexus.plan_task"].description)
+                    self.assertIn("Do not use for greetings", metadata["nexus.plan_task"].description)
+                    self.assertIn("or execution", metadata["nexus.plan_task"].description)
                     for tool in tools.tools:
                         self.assertIsNotNone(tool.annotations)
                         self.assertTrue(tool.annotations.read_only_hint)

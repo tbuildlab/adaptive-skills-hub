@@ -26,7 +26,7 @@ SECRET_NAME_RE = re.compile(r"(^|[._-])(secret|token|password|credential|private
 EXPLICIT_PATH_RE = re.compile(r"(?<![\w.])(?:[\w.-]+[\\/])+[\w.-]+|(?<![\w.])[\w.-]+\.[a-z0-9]{1,12}(?![\w.])", re.I)
 
 CAPABILITY_TERMS: dict[str, set[str]] = {
-    "presentation": {"presentation", "powerpoint", "ppt", "slides", "deck"},
+    "presentation": {"presentation", "powerpoint", "ppt", "pptx", "slides", "deck"},
     "spreadsheet": {"excel", "workbook", "spreadsheet", "xlsx", "xls", "formula", "formulas"},
     "document": {"document", "docx", "word", "memo", "letter"},
     "pdf": {"pdf"},
@@ -34,14 +34,14 @@ CAPABILITY_TERMS: dict[str, set[str]] = {
     "frontend": {"frontend", "react", "ui", "ux", "dashboard", "css", "html", "accessibility"},
     "backend": {"backend", "api", "endpoint", "server", "service", "http", "500", "database"},
     "testing": {"test", "tests", "testing", "regression", "reproduce", "reproduction", "validate", "validation", "qa"},
-    "security": {"security", "secure", "authorization", "authz", "access", "cross-user", "cross user", "tenant", "invoice"},
+    "security": {"security", "secure", "authorization", "authz", "access", "cross-user", "cross user", "tenant", "invoice", "vulnerability", "vulnerabilities", "injection"},
 }
 # Resource identity terms are intentionally stricter than task-understanding
 # terms.  A workflow that happens to say it can "verify" something must not
 # become a research workflow, and a slide Skill that can export PDF must not
 # become the canonical PDF workflow.
 RESOURCE_CAPABILITY_TERMS: dict[str, set[str]] = {
-    "presentation": {"presentation", "powerpoint", "ppt", "pptx", "slides", "slide", "deck"},
+    "presentation": {"presentation", "presentations", "powerpoint", "ppt", "pptx", "slides", "slide", "deck"},
     "spreadsheet": {"excel", "workbook", "spreadsheet", "spreadsheets", "xlsx", "xls"},
     "document": {"document", "documents", "docx", "word", "memo", "letter"},
     "pdf": {"pdf"},
@@ -52,6 +52,12 @@ RESOURCE_CAPABILITY_TERMS: dict[str, set[str]] = {
     "security": {"security", "secure", "authorization", "authz", "appsec", "vulnerability"},
 }
 ARTIFACT_CAPABILITIES = {"presentation", "spreadsheet", "document", "pdf"}
+INFORMATIONAL_QUERY_PREFIXES = ("what is ", "what are ", "what does ", "define ", "explain ")
+SUBSTANTIVE_ACTION_TERMS = {
+    "create", "prepare", "write", "build", "generate", "edit", "diagnose", "debug", "fix",
+    "audit", "review", "plan", "verify", "validate", "test", "testing", "analyze", "analyse",
+}
+ACADEMIC_PLANNING_TERMS = {"assignment", "coursework", "rubric", "lecturer"}
 RULE_FILENAMES = {"agents.md", "project_rules.md", "decisions.md", "frozen-decisions.md"}
 CONTEXT_FILENAMES = (
     "AGENTS.md", "PROJECT_RULES.md", "DECISIONS.md", "FROZEN-DECISIONS.md", "README.md", "SKILL.md",
@@ -77,6 +83,7 @@ class TaskProfile:
     inferred_constraints: list[str] = field(default_factory=list)
     required_capabilities: list[str] = field(default_factory=list)
     validation_expectations: list[str] = field(default_factory=list)
+    output_format_constraints: list[str] = field(default_factory=list)
     risk_relevance: str = "low"
     ambiguities: list[str] = field(default_factory=list)
     confidence: float = 0.5
@@ -300,9 +307,10 @@ def _fallback_task_profile(task: str) -> TaskProfile:
     raw = task.strip()
     tokens = tokenize(raw)
     lowered = raw.lower()
+    information_only = lowered.startswith(INFORMATIONAL_QUERY_PREFIXES) and not bool(tokens & SUBSTANTIVE_ACTION_TERMS)
     repair = bool(tokens & {"fix", "debug", "diagnose", "error", "exception", "failure", "failed", "500"})
     artifact_type: str | None = None
-    if not repair:
+    if not repair and not information_only:
         for artifact, terms in (("presentation", CAPABILITY_TERMS["presentation"]), ("spreadsheet", CAPABILITY_TERMS["spreadsheet"]), ("document", CAPABILITY_TERMS["document"]), ("pdf", CAPABILITY_TERMS["pdf"])):
             if tokens & terms:
                 artifact_type = artifact
@@ -312,7 +320,7 @@ def _fallback_task_profile(task: str) -> TaskProfile:
         task_type = "backend"
     elif tokens & CAPABILITY_TERMS["frontend"]:
         task_type = "frontend"
-    elif tokens & {"research", "evidence", "citation", "citations", "fact", "facts", "source", "sources"}:
+    elif not information_only and tokens & ({"research", "evidence", "citation", "citations", "fact", "facts", "source", "sources"} | ACADEMIC_PLANNING_TERMS):
         task_type = "research"
     elif artifact_type:
         task_type = "artifact"
@@ -321,7 +329,7 @@ def _fallback_task_profile(task: str) -> TaskProfile:
         operations.append("repair")
     if tokens & {"create", "prepare", "write", "build", "generate"}:
         operations.append("create")
-    if tokens & CAPABILITY_TERMS["research"]:
+    if not information_only and tokens & (CAPABILITY_TERMS["research"] | ACADEMIC_PLANNING_TERMS):
         operations.append("research")
     if tokens & CAPABILITY_TERMS["testing"]:
         operations.append("test")
@@ -341,15 +349,19 @@ def _fallback_task_profile(task: str) -> TaskProfile:
         capabilities.append(artifact_type)
     if task_type in {"backend", "frontend", "research"}:
         capabilities.append(task_type)
-    if "test" in operations and task_type == "backend":
+    if "test" in operations and (task_type == "backend" or "security" in capabilities):
         capabilities.append("testing")
     if task_type == "research" and artifact_type:
         capabilities = ["research", artifact_type]
-    security_evidence = {"authorization", "authz", "cross-user", "tenant", "invoice"}
-    if tokens & security_evidence or "another user's" in lowered:
+    security_evidence = {"authorization", "authz", "cross-user", "tenant", "invoice", "vulnerability", "vulnerabilities", "injection"}
+    if not information_only and (tokens & security_evidence or "another user's" in lowered):
         capabilities.append("security")
+    if "test" in operations and "security" in capabilities and "testing" not in capabilities:
+        capabilities.append("testing")
     capabilities = list(dict.fromkeys(capabilities))
     negative: list[str] = []
+    if information_only:
+        negative.append("informational query has no substantive deliverable or capability-planning requirement")
     if repair and any(term in tokens for term in CAPABILITY_TERMS["presentation"] | CAPABILITY_TERMS["document"] | CAPABILITY_TERMS["spreadsheet"] | CAPABILITY_TERMS["pdf"]):
         negative.append("artifact terminology appears inside a repair request and is not an artifact-production requirement")
     if task_type != "frontend":
@@ -363,6 +375,7 @@ def _fallback_task_profile(task: str) -> TaskProfile:
         validations.append(f"{artifact_type}_integrity")
     if task_type == "research":
         validations.append("evidence_ledger")
+    output_format_constraints = _infer_output_format_constraints(tokens, artifact_type)
     return TaskProfile(
         original_task=raw,
         primary_objective=raw,
@@ -375,11 +388,39 @@ def _fallback_task_profile(task: str) -> TaskProfile:
         inferred_constraints=["no_automatic_install", "no_automatic_external_write"],
         required_capabilities=capabilities,
         validation_expectations=validations,
+        output_format_constraints=output_format_constraints,
         risk_relevance="high" if "security" in capabilities else "medium" if repair else "low",
         confidence=0.55,
         negative_evidence=negative,
         extraction_source="fallback_parser",
     )
+
+
+def _infer_output_format_constraints(tokens: set[str], artifact_type: str | None) -> list[str]:
+    """Extract portable artifact constraints without adding new public tags.
+
+    A request for a PowerPoint/PPTX artifact names a native file family.  When
+    it also asks for editing, that is a required property of the deliverable,
+    not merely a generic presentation preference.  Keep this representation
+    internal to V1.2 planning so existing discovery tags and R1/R2 envelopes
+    remain unchanged.
+    """
+    constraints: list[str] = []
+    if artifact_type == "presentation" and tokens & {"powerpoint", "pptx"}:
+        constraints.append("native_pptx")
+        if tokens & {"editable", "edit", "editing"}:
+            constraints.append("editable")
+    return constraints
+
+
+def _apply_output_format_constraints(profile: TaskProfile) -> TaskProfile:
+    """Backfill deterministic constraints for both fallback and semantic profiles."""
+    inferred = _infer_output_format_constraints(tokenize(profile.original_task), profile.artifact_type)
+    profile.output_format_constraints = list(dict.fromkeys([
+        *profile.output_format_constraints,
+        *inferred,
+    ]))
+    return profile
 
 
 def task_profile_for(task: str, semantic_extractor: Callable[[str], Mapping[str, Any]] | None = None) -> tuple[TaskProfile, list[DecisionEvidence]]:
@@ -394,12 +435,13 @@ def task_profile_for(task: str, semantic_extractor: Callable[[str], Mapping[str,
             proposed["extraction_source"] = "codex_structured_semantic_extraction"
             profile, errors = validate_task_profile(proposed)
             if profile is not None:
+                profile = _apply_output_format_constraints(profile)
                 evidence.append(DecisionEvidence("task_profile", "accepted schema-valid Codex structured semantic extraction", {"source": profile.extraction_source}))
                 return profile, evidence
             evidence.append(DecisionEvidence("task_profile", "rejected invalid structured extraction; used conservative fallback", {"errors": errors}))
         except Exception as exc:  # boundary: extractor is an optional runtime integration
             evidence.append(DecisionEvidence("task_profile", "structured extraction unavailable; used conservative fallback", {"error": type(exc).__name__}))
-    profile = _fallback_task_profile(task)
+    profile = _apply_output_format_constraints(_fallback_task_profile(task))
     evidence.append(DecisionEvidence("task_profile", "used minimal deterministic fallback parser", {"source": profile.extraction_source}))
     return profile, evidence
 
@@ -612,6 +654,22 @@ def _coverage_for(record: Mapping[str, Any], requirements: list[CapabilityRequir
     return coverage
 
 
+def _supports_native_pptx(record: Mapping[str, Any], *, require_editable: bool) -> bool:
+    """Return whether a Skill explicitly describes native PowerPoint/PPTX work.
+
+    This is deliberately based on the Skill's own name/description/declared
+    metadata, not broad discovery tags.  A Canva or web/HTML presentation may
+    be a good generic presentation workflow, but it cannot satisfy a native
+    PPTX requirement merely because it is tagged ``presentation``.
+    """
+    tokens = _candidate_tokens(record)
+    if not tokens & {"powerpoint", "pptx"}:
+        return False
+    if tokens & {"canva", "html", "web"}:
+        return False
+    return not require_editable or bool(tokens & {"editable", "edit", "editing"})
+
+
 def _eligible_skill(record: Mapping[str, Any], profile: TaskProfile, rules: list[Rule]) -> tuple[bool, str | None]:
     if record.get("status") != "available":
         return False, f"not executable: {record.get('status')}"
@@ -637,6 +695,12 @@ def _eligible_skill(record: Mapping[str, Any], profile: TaskProfile, rules: list
         return False, "GSAP requires an explicit frontend animation/motion task"
     if name.startswith("artifact-template-") and "template" not in tokenize(profile.original_task):
         return False, "artifact template requires an explicit template request"
+    output_constraints = set(profile.output_format_constraints)
+    is_presentation_candidate = bool(_resource_identity_tokens(record) & RESOURCE_CAPABILITY_TERMS["presentation"])
+    if "native_pptx" in output_constraints and is_presentation_candidate and not _supports_native_pptx(
+        record, require_editable="editable" in output_constraints,
+    ):
+        return False, "native editable PPTX requirement is not explicitly supported by this Skill"
     if name == "research" and "product-design" in str(skill_path).casefold() and not (tokenize(profile.original_task) & {"ux", "user", "users", "onboarding", "workflow", "friction", "product"}):
         return False, "product-design research requires an explicit product or UX research task"
     if "threat-model" in name and "threat_model" not in profile.required_operations and "threat" not in tokenize(profile.original_task):
@@ -676,6 +740,12 @@ def rank_resources(index: Mapping[str, Any], profile: TaskProfile, requirements:
         if profile.artifact_type in coverage:
             score += 25
             signals.append("artifact match")
+        if "native_pptx" in profile.output_format_constraints and "presentation" in coverage:
+            score += 40
+            signals.append("native PPTX format match")
+        if "editable" in profile.output_format_constraints and "presentation" in coverage:
+            score += 20
+            signals.append("editable artifact match")
         provenance = dict(record.get("provenance", {}))
         precedence = int(provenance.get("precedence", 0))
         if precedence:

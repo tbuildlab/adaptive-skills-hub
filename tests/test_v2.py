@@ -170,6 +170,79 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         secure, _ = task_profile_for("Fix this endpoint and verify users cannot access another user's invoice")
         self.assertIn("security", secure.required_capabilities)
 
+    def test_task_profile_extracts_native_editable_pptx_constraint_from_output_format(self) -> None:
+        profile, _ = task_profile_for("Create an editable PowerPoint presentation")
+        self.assertEqual(profile.artifact_type, "presentation")
+        self.assertEqual(profile.output_format_constraints, ["native_pptx", "editable"])
+        semantic, _ = task_profile_for(
+            "Create an editable PowerPoint presentation",
+            lambda task: {
+                "original_task": task,
+                "primary_objective": task,
+                "task_type": "artifact",
+                "artifact_type": "presentation",
+                "required_capabilities": ["presentation"],
+            },
+        )
+        self.assertEqual(semantic.output_format_constraints, ["native_pptx", "editable"])
+
+    def test_native_editable_pptx_prefers_explicit_powerpoint_skill_over_canva(self) -> None:
+        canva = make_skill(self.root, "canva", "canva-branded-presentation", "Create branded Canva presentations from an outline")
+        presentations = make_skill(self.root, "presentations", "Presentations", "Read, create or edit PowerPoint PPTX or Google Slides decks")
+        plan = plan_task("Create an editable PowerPoint presentation", {"skills": [canva, presentations], "agents": []}, self.root)
+        self.assertEqual([item.name for item in plan.selected], ["Presentations"])
+        self.assertTrue(any(item["name"] == "canva-branded-presentation" and "native editable PPTX" in item["reason"] for item in plan.rejected))
+        self.assertIn("native PPTX format match", plan.selected[0].score_signals)
+        self.assertIn("editable artifact match", plan.selected[0].score_signals)
+
+    def test_canva_request_remains_eligible_without_native_pptx_requirement(self) -> None:
+        canva = make_skill(self.root, "canva", "canva-branded-presentation", "Create branded Canva presentations from an outline")
+        presentations = make_skill(self.root, "presentations", "Presentations", "Read, create or edit PowerPoint PPTX or Google Slides decks")
+        plan = plan_task("Create a branded Canva presentation", {"skills": [canva, presentations], "agents": []}, self.root)
+        self.assertEqual(plan.task_profile.output_format_constraints, [])
+        self.assertEqual([item.name for item in plan.selected], ["canva-branded-presentation"])
+        self.assertFalse(any(item["name"] == "canva-branded-presentation" and "native editable PPTX" in item["reason"] for item in plan.rejected))
+
+    def test_native_powerpoint_without_editable_is_a_supported_boundary_case(self) -> None:
+        canva = make_skill(self.root, "canva", "canva-branded-presentation", "Create branded Canva presentations from an outline")
+        presentations = make_skill(self.root, "presentations", "Presentations", "Read, create or edit PowerPoint PPTX or Google Slides decks")
+        plan = plan_task("Create a PowerPoint presentation", {"skills": [canva, presentations], "agents": []}, self.root)
+        self.assertEqual(plan.task_profile.output_format_constraints, ["native_pptx"])
+        self.assertEqual([item.name for item in plan.selected], ["Presentations"])
+
+    def test_precision_first_activation_corpus_has_substantive_and_information_boundaries(self) -> None:
+        positive_cases = {
+            "I need to create an editable PowerPoint presentation. Plan the work first.": {"presentation"},
+            "Create a professional Excel forecasting workbook from my data.": {"spreadsheet"},
+            "Help me diagnose this backend API bug and add regression tests.": {"backend", "testing"},
+            "Review this application for cross-user authorization vulnerabilities.": {"security"},
+            "Prepare an evidence-based Word report from these sources.": {"research", "document"},
+            "Help me plan my business assignment using the rubric and lecturer materials.": {"research"},
+            "Create and verify a PDF report.": {"pdf"},
+            "Build a responsive frontend page from this design.": {"frontend"},
+            "Audit this API for SQL injection and propose regression tests.": {"security", "testing"},
+            "Analyze these sources and prepare a cited report.": {"research"},
+        }
+        for task, expected in positive_cases.items():
+            profile, _ = task_profile_for(task)
+            self.assertTrue(expected.issubset(profile.required_capabilities), task)
+
+        negative_cases = (
+            "Hello.", "What is 2 + 2?", "Explain inflation in one sentence.",
+            "Translate thank you into Chinese.", "Rewrite this sentence to sound friendlier.",
+            "What does GDP stand for?", "Explain what PowerPoint is.",
+            "What is an Excel workbook?", "What is SQL injection?", "Summarize this short paragraph.",
+        )
+        for task in negative_cases:
+            profile, _ = task_profile_for(task)
+            self.assertEqual(profile.required_capabilities, [], task)
+            self.assertIsNone(profile.artifact_type, task)
+
+        powerpoint, _ = task_profile_for("Help me create a PowerPoint.")
+        workbook, _ = task_profile_for("Build an Excel workbook with formulas and charts.")
+        self.assertEqual(powerpoint.required_capabilities, ["presentation"])
+        self.assertEqual(workbook.required_capabilities, ["spreadsheet"])
+
     def test_hard_filters_reject_incidental_presentation_and_security(self) -> None:
         plan = plan_task("Fix the backend endpoint that uploads PowerPoint files", self.index, self.root)
         names = [item.name for item in plan.selected]

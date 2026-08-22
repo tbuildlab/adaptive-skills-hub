@@ -5,16 +5,19 @@ MCP server. This is not Remote MCP, a tunnel, OAuth, Skill Scout, or Core V1.3.
 
 ## Outcome
 
-The local Nexus R2 integration is healthy and registered with Codex as
-`nexus-r2-local`, but this pilot cannot truthfully confirm that the currently
-running ChatGPT Desktop instance has consumed that registration. The required
-Desktop MCP surface was not accessible to this text-only agent session through
-an approved UI-observation channel. No Desktop-originated MCP call was made.
+The local Nexus R2 integration is healthy and registered as `nexus-r2-local`.
+Subsequent real ChatGPT Desktop acceptance established that the server is
+visible and enabled, and that explicit Desktop calls to `nexus.health`,
+`nexus.discover_capabilities`, and `nexus.plan_task` succeed. An explicit
+editable PowerPoint planning request selected `ppt-master`, preserving native
+editable PPTX routing.
 
-This is a **Desktop UI verification gap**, not evidence that ChatGPT Desktop
-does not support local stdio MCP. The current OpenAI documentation states that
-Codex Desktop shares `~/.codex/config.toml`, that Desktop servers can be added
-in **Settings -> MCP servers**, and that `/mcp` displays connected servers after
+The remaining R3 gap is **automatic** selection: a fresh, unqualified
+presentation-planning conversation received a useful native response without
+observed `nexus.plan_task` use. That observation is not evidence that Desktop
+lacks local stdio MCP support. Current OpenAI documentation states that Codex
+Desktop shares `~/.codex/config.toml`, that Desktop servers can be added in
+**Settings -> MCP servers**, and that `/mcp` displays connected servers after
 restart. See [Extending Codex with MCP](https://learn.chatgpt.com/docs/extend/mcp).
 
 ## Environment and supported configuration evidence
@@ -27,7 +30,7 @@ restart. See [Extending Codex with MCP](https://learn.chatgpt.com/docs/extend/mc
 | Server command | Existing dedicated Nexus R2 Python environment and `scripts/nexus_mcp.py`; no environment values configured |
 | R2 tool surface | `nexus.health`, `nexus.discover_capabilities`, `nexus.plan_task` only |
 | Authority | Read/plan-only; no shell, file-write, network, or arbitrary-path input authority |
-| Desktop visibility | **Not verified**: no approved normal-text Desktop UI control surface was available to this session |
+| Desktop visibility | PASS: `nexus-r2-local` visible and enabled in real ChatGPT Desktop acceptance |
 
 The registration is user-level machine configuration. It is not committed to
 this repository and this pilot did not modify it.
@@ -50,24 +53,22 @@ not substituted for ChatGPT Desktop evidence.
 
 | Required Desktop test | Result | Reason / next evidence required |
 | --- | --- | --- |
-| Server visible in `/mcp` or MCP server settings | NOT VERIFIED | The Desktop UI was not observable through an approved tool in this text session. |
-| `nexus.health` from Desktop | NOT RUN | Must originate from the visible Desktop tool surface. |
-| `nexus.discover_capabilities` from Desktop | NOT RUN | Same boundary. |
-| `nexus.plan_task` from Desktop | NOT RUN | Same boundary; use opaque `nexus-r2-validation`, never a path. |
-| Natural explicit selection | NOT RUN | Record the actual UI mechanism, not an assumed `@Nexus` syntax. |
-| Automatic positive/negative selection | NOT RUN | Only test if the Desktop product exposes autonomous MCP tool selection. |
+| Server visible in `/mcp` or MCP server settings | PASS | `nexus-r2-local` was visible and enabled in real Desktop acceptance. |
+| `nexus.health` from Desktop | PASS | Explicit Desktop request completed successfully. |
+| `nexus.discover_capabilities` from Desktop | PASS | Explicit Desktop request completed successfully. |
+| `nexus.plan_task` from Desktop | PASS | Explicit Desktop request completed successfully; editable PowerPoint selected `ppt-master`. |
+| Natural explicit selection | PASS | An explicit request can use Nexus. |
+| Automatic positive/negative selection | NOT YET ACCEPTED | One unqualified presentation-planning prompt did not show a Nexus call. |
 | Literal `@Nexus` | NOT EXPOSED | Do not claim support unless the UI visibly offers custom App/tool references. |
 | Local D: file execution after planning | NOT GRANTED | A plan does not authorize file access. Do not broaden MCP to make this work. |
 
-## Required single user interaction to resume
+## Remaining Desktop acceptance
 
-In **ChatGPT Desktop**, restart the app if it was already open, open a new
-conversation, type `/mcp`, and confirm whether `nexus-r2-local` appears as
-connected. If the command is unavailable, open **Settings -> MCP servers** and
-confirm the visible status of `nexus-r2-local`. Provide the visible result (a
-screenshot or exact status text). This is the only user interaction required to
-resume the Desktop-originated health, discovery, plan, natural UX, and optional
-auto-selection tests.
+Automatic selection remains a host/model heuristic, not a server guarantee.
+Use the four fresh-chat prompts in
+[`nexus-runtime-r3-auto-invocation.md`](nexus-runtime-r3-auto-invocation.md)
+to record the post-optimization Desktop result. Do not infer literal `@Nexus`
+support unless that UI surface is visible.
 
 ## Privacy, authorization, and fallback contract
 
@@ -105,7 +106,6 @@ surface if it is shown there. Neither operation changes Nexus source code.
 
 ## Pilot decision
 
-Do not represent Nexus as available in ChatGPT Desktop until the Desktop
-surface and Desktop-originated calls are observed. The R2 implementation is
-safe to leave installed for Codex; daily ChatGPT Desktop use remains pending
-the single UI confirmation above.
+Nexus is available for explicit ChatGPT Desktop use. Automatic invocation is
+not yet accepted and must be judged only from the fresh-conversation retest
+packet after the metadata optimization.
