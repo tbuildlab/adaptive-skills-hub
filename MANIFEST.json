@@ -83,6 +83,10 @@
     "bytes": 29464,
     "sha256": "c322c9fa95cef310dad80339a9ec706613959c54f92350a6ff0de82a92dfeabc"
   },
+  "docs/nexus-runtime-r3-chatgpt-architecture.md": {
+    "bytes": 32647,
+    "sha256": "39ec457154a631dd67feceb1cfabb4f538d5261e7394636793adaf27e527244c"
+  },
   "docs/test-prompts.md": {
     "bytes": 1242,
     "sha256": "ad9f84a64fa25b1ad43349f1e250187bf9fa927834d0147ad466b1a98cab13f8"
