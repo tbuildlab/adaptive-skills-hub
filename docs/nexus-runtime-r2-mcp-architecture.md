@@ -252,6 +252,14 @@ content hash, character count, and load status, but R2 intentionally omits the l
 file path and raw instructions. The same information is serialized into a concise
 `TextContent` block for clients that do not expose `structuredContent`.
 
+### Implementation compatibility note
+
+The implemented R2 server uses the redacted `nexus.mcp.v1` envelope as compact JSON
+in standard `TextContent` for the current local Codex host. This is the MCP baseline
+representation and retains all fields above; it avoids making optional
+`structuredContent` support a required local-host dependency. The fixed outbound
+allowlist, byte ceiling, and no-raw-content guarantees are unchanged.
+
 The tool has no write or network behavior. It never auto-installs/updates a Skill,
 executes Skill metadata, starts an Agent, invokes a shell, or asks a model to execute
 the plan. Hard budget: 15 seconds planning, absolute 30 seconds, 64 KiB response.

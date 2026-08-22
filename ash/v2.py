@@ -829,11 +829,13 @@ def plan_task(
     excluded_resource_ids: set[str] | None = None,
     replan_attempt: int = 0,
     context_options: Mapping[str, int] | None = None,
+    context_reader: Callable[..., ProjectContext] | None = None,
     sources: Iterable[Mapping[str, Any]] = (),
 ) -> ExecutionPlan:
     context_options = dict(context_options or {})
     profile, evidence = task_profile_for(task, semantic_extractor)
-    context = discover_project_context(project_root, task, **context_options)
+    reader = context_reader or discover_project_context
+    context = reader(project_root, task, **context_options)
     rules, conflicts = extract_rules(profile, context, user_requirements)
     for conflict in conflicts:
         evidence.append(DecisionEvidence("rule_conflict", "unresolved equal-priority rule conflict", conflict))
@@ -866,10 +868,23 @@ def plan_task(
     return ExecutionPlan(str(uuid4()), utc_now(), profile, context, rules, requirements, candidates, selected, rejected, external_resources, agents, validation, steps, evidence, fallback, replan_attempt)
 
 
-def load_plan_skills(plan: ExecutionPlan) -> list[dict[str, Any]]:
+def load_plan_skills(
+    plan: ExecutionPlan,
+    *,
+    path_guard: Callable[[Path], None] | None = None,
+    read_guard: Callable[[Path], bytes] | None = None,
+    max_file_bytes: int | None = None,
+    max_total_bytes: int | None = None,
+) -> list[dict[str, Any]]:
     """Use V1.1's actual loader for selected Skills only; never load candidates."""
     route = {"selected_skills": [candidate.record for candidate in plan.selected if candidate.resource_type == "skill"]}
-    return load_selected_skills(route)
+    return load_selected_skills(
+        route,
+        path_guard=path_guard,
+        read_guard=read_guard,
+        max_file_bytes=max_file_bytes,
+        max_total_bytes=max_total_bytes,
+    )
 
 
 def validate_plan(plan: ExecutionPlan, loaded: list[dict[str, Any]] | None = None) -> dict[str, Any]:

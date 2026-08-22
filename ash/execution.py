@@ -4,7 +4,7 @@ import json
 import subprocess
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from .common import sha256_text, utc_now
 
@@ -17,14 +17,36 @@ def _command_from_metadata(metadata: dict[str, Any], key: str, skill_dir: Path) 
     return [replacements.get(part, part) for part in command]
 
 
-def load_selected_skills(route: dict[str, Any]) -> list[dict[str, Any]]:
+def load_selected_skills(
+    route: dict[str, Any],
+    *,
+    path_guard: Callable[[Path], None] | None = None,
+    read_guard: Callable[[Path], bytes] | None = None,
+    max_file_bytes: int | None = None,
+    max_total_bytes: int | None = None,
+) -> list[dict[str, Any]]:
+    """Load exactly the selected Skill instructions.
+
+    The default remains byte-for-byte compatible with the V1.1 loader.  Optional
+    guards let a constrained host (such as the local R2 MCP adapter) verify a
+    selected path and bound reads without creating a second loader.
+    """
     loaded: list[dict[str, Any]] = []
+    total_bytes = 0
     for skill in route.get("selected_skills", []):
         path = Path(skill["skill_md_path"])
         try:
-            instructions = path.read_text(encoding="utf-8")
+            if path_guard is not None and read_guard is None:
+                path_guard(path)
+            raw = read_guard(path) if read_guard is not None else path.read_bytes()
+            if max_file_bytes is not None and len(raw) > max_file_bytes:
+                raise ValueError("selected Skill exceeds the configured byte limit")
+            if max_total_bytes is not None and total_bytes + len(raw) > max_total_bytes:
+                raise ValueError("selected Skill aggregate byte limit exceeded")
+            instructions = raw.decode("utf-8")
+            total_bytes += len(raw)
             loaded.append({"name": skill["name"], "path": str(path), "sha256": sha256_text(instructions), "characters": len(instructions), "instructions": instructions})
-        except (OSError, UnicodeDecodeError) as exc:
+        except (OSError, UnicodeDecodeError, ValueError) as exc:
             loaded.append({"name": skill["name"], "path": str(path), "load_error": str(exc)})
     return loaded
 

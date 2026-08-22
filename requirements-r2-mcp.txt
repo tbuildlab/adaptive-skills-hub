@@ -1,0 +1,3 @@
+# Nexus Runtime R2 local MCP dependency.  Verified from the official PyPI wheel.
+# Wheel SHA256: 1cb4c75d2d2c7b8c1d756355e5d82a39f2822cc7f13e22a2051d7ca3592349d6
+mcp==2.0.0

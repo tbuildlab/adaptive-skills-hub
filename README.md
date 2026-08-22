@@ -10,7 +10,9 @@ frozen; V1.2 is an additive, explicit capability-planning layer.
 Nexus understands the task, reads project rules, identifies required
 capabilities, selects relevant Skills, can recommend advisory Agents, creates
 an execution/validation plan, and preserves provenance and evidence. It does
-not claim automatic ChatGPT or Codex runtime integration.
+not claim automatic ChatGPT integration. Runtime R2 adds an explicit,
+locally configured stdio MCP planning interface; it does not create an automatic
+or remote Codex/ChatGPT integration.
 
 ## V1.1 capability
 
@@ -134,3 +136,12 @@ constraints.
 See [docs/v1.2-usage.md](docs/v1.2-usage.md) for context budgets, evidence
 packets, validation, re-planning, safety boundaries, and optional project-level
 Codex integration.
+
+## Runtime R2 local MCP
+
+Runtime R2 is a separately configured, local stdio-only MCP adapter. Its three
+read/plan-only tools are `nexus.health`, `nexus.discover_capabilities`, and
+`nexus.plan_task`. It accepts a configured opaque workspace ID rather than a caller
+path, uses bounded safe context, returns redacted plan/load evidence, and never
+executes a plan. See [docs/nexus-runtime-r2-local-mcp.md](docs/nexus-runtime-r2-local-mcp.md)
+for installation, local configuration, security boundaries, and removal.

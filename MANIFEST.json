@@ -16,16 +16,52 @@
     "sha256": "14f90ac702fc9d8545558ccc5ed18a2104d3d797f582b3a3c2118c1a70b771da"
   },
   "ash/execution.py": {
-    "bytes": 4023,
-    "sha256": "1d26cefc3a59184559dd06ef92279eb8bba809ba30cef139fe30a2a966f48b30"
+    "bytes": 5086,
+    "sha256": "e7c488521cb2b0ea9ff81f91f8be908b79018fa34e2442c3bf37bb6dfa0091bc"
+  },
+  "ash/mcp/__init__.py": {
+    "bytes": 154,
+    "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
+  },
+  "ash/mcp/adapter.py": {
+    "bytes": 3675,
+    "sha256": "dbc023788833e7d927fe1153c13c7ed6b87478dd4e057ba5719a1f6cffef90c6"
+  },
+  "ash/mcp/authorization.py": {
+    "bytes": 6154,
+    "sha256": "b57fbf40f050078a73f72f579b9f6fa74d21dfb4cb2edcb48055fe8acf01b35d"
+  },
+  "ash/mcp/context.py": {
+    "bytes": 3887,
+    "sha256": "130cc028931bc54e982bde2d505dd083fb3ad39dd0a5922cc7c044497f33b628"
+  },
+  "ash/mcp/redaction.py": {
+    "bytes": 5250,
+    "sha256": "3ae842bfb240d72d4b8bf2913c1ca38af4a31134905e1702e08dd0ea4c44c056"
+  },
+  "ash/mcp/schemas.py": {
+    "bytes": 4387,
+    "sha256": "53953f3d3b186afccc766a8eab1f001455db564defdfef5d4c3c1091c9a62b73"
+  },
+  "ash/mcp/server.py": {
+    "bytes": 3537,
+    "sha256": "601f6e181180b8fcccfa0ee1d099382e199f3c296689b59f9551393d09f10bdd"
+  },
+  "ash/mcp/telemetry.py": {
+    "bytes": 549,
+    "sha256": "3c446a5003110a7e310f37c4c7cddbc8382fd9a6da0e2bec3e626578d56ca887"
   },
   "ash/router.py": {
     "bytes": 23144,
     "sha256": "528a39bf267070aed3dd2100fe884a4eb5f5d656fd24c78a7d25e151b4411838"
   },
   "ash/v2.py": {
-    "bytes": 47537,
-    "sha256": "ef0394145c3daecfec5d2718b72f282cf026aab78123110f9ace685eb74e8d48"
+    "bytes": 47999,
+    "sha256": "ef89685f0b63f2dec7980ebcc89ed467858c18797b9f47eb2f92a2a2256127f5"
+  },
+  "config/nexus-mcp-workspaces.example.json": {
+    "bytes": 146,
+    "sha256": "bcb0ab2edbd8e230d3e007d7eb5c64223dd8e7d16d8b5b9d379e033bdf4ca3a8"
   },
   "docs/architecture.md": {
     "bytes": 6059,
@@ -39,9 +75,13 @@
     "bytes": 4512,
     "sha256": "f2b563baae87606041576a124e373dd55e75492e1cd5507fdf0fca864cb9865a"
   },
+  "docs/nexus-runtime-r2-local-mcp.md": {
+    "bytes": 4885,
+    "sha256": "75aec7b3301cd58f2a662d3955724fe361a26cc359a1e82f20c7b7a562f6c6b6"
+  },
   "docs/nexus-runtime-r2-mcp-architecture.md": {
-    "bytes": 29033,
-    "sha256": "ddff11d967e6f4bf9c5cc33a2dbb1ca0e7c4fc6cef92fad110efa7ddcbcb38f2"
+    "bytes": 29464,
+    "sha256": "c322c9fa95cef310dad80339a9ec706613959c54f92350a6ff0de82a92dfeabc"
   },
   "docs/test-prompts.md": {
     "bytes": 1242,
@@ -64,8 +104,16 @@
     "sha256": "cb88147be7fe6507ec51cdd5fd052d1ab7061f540d568dea039f17b159e2d7f2"
   },
   "README.md": {
-    "bytes": 4948,
-    "sha256": "5073f02ad8f9133b838216e32645d06aaf62c38601d97bfb69b472def0b4a031"
+    "bytes": 5590,
+    "sha256": "bea86b6389a4f26b46f2be26d00abdcab711100d321687354526723fd86fa33d"
+  },
+  "requirements-r2-mcp.lock": {
+    "bytes": 831,
+    "sha256": "bf7ce90c2830c3b6cbd3eb77272a621695493b878e33c34cf0af20f83e34e82b"
+  },
+  "requirements-r2-mcp.txt": {
+    "bytes": 173,
+    "sha256": "886eb229741aff4a96f88bef1ef667eaf2f635d9d33c12ff64b9ab4666bc2ca1"
   },
   "scripts/build_manifest.py": {
     "bytes": 1712,
@@ -87,6 +135,10 @@
     "bytes": 213,
     "sha256": "6a4baf5ce4707f9ba25708bd7dcf72efdc6aabf697470f9989d77a08c23d1ec5"
   },
+  "scripts/nexus_mcp.py": {
+    "bytes": 1130,
+    "sha256": "28debb684067ddbf936df327a2d1c3a78dde5757e4867fd36fddd94e706647ec"
+  },
   "scripts/rebuild_registry.py": {
     "bytes": 1726,
     "sha256": "05c3ff325aabf576e9c4ca49d026a8d8b7d5e410e166bbc6709ac19412080907"
@@ -102,6 +154,26 @@
   "tests/test_hub.py": {
     "bytes": 21706,
     "sha256": "df8b5b28299f2a78e551572aea13c00957cf8da10946963cadfffa0f69a6dc2c"
+  },
+  "tests/test_mcp_authorization.py": {
+    "bytes": 4440,
+    "sha256": "f7f8ebd7be8e3c3df80138f7a9c63e67087ded256b4f00fe34d5f98f13004668"
+  },
+  "tests/test_mcp_boundaries.py": {
+    "bytes": 1398,
+    "sha256": "06f0d7c3c7430a5e2428ad0f6c7ef7b81f4358dbd536545dbd762813db222bdb"
+  },
+  "tests/test_mcp_context_security.py": {
+    "bytes": 2212,
+    "sha256": "ce9696518ea600a46635883daeb6a08e0c5d9441301af2164c8e4c488798163b"
+  },
+  "tests/test_mcp_protocol.py": {
+    "bytes": 3439,
+    "sha256": "af6561f6af11d8a763b66cbd2eb64f60eff3054f1198b1a22266cb2d53740d1a"
+  },
+  "tests/test_mcp_redaction.py": {
+    "bytes": 3656,
+    "sha256": "2a3acde0aa437060ca334e654f162764ea712130f175c1d5e57fae4b72413210"
   },
   "tests/test_v2.py": {
     "bytes": 29421,
