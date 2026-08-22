@@ -87,6 +87,10 @@
     "bytes": 32644,
     "sha256": "328c856740184403695e34e423d9165329b19914bdaf4fbb3cbdbd3c7321827c"
   },
+  "docs/nexus-runtime-r3-desktop-pilot.md": {
+    "bytes": 6483,
+    "sha256": "9f94ffedcabeb2881f6237392d52a58cb9e9c6164116a4261479b11d4617d1e3"
+  },
   "docs/test-prompts.md": {
     "bytes": 1242,
     "sha256": "ad9f84a64fa25b1ad43349f1e250187bf9fa927834d0147ad466b1a98cab13f8"
