@@ -170,7 +170,7 @@ def install(args: argparse.Namespace) -> int:
             atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "manual_recovery_required", "release_root": str(ROOT), "error": str(rollback_error)})
         raise
     if args.mode == "plugin":
-        print("Nexus personal marketplace is ready. Restart ChatGPT Desktop; if Nexus is not already visible, use Plugins > Personal > Nexus > Install.")
+        print("Nexus personal marketplace and host-indexed Plugin source are ready. Restart ChatGPT Desktop and verify @Nexus in a fresh conversation.")
     print(f"Nexus {manifest['version']} installed in {args.mode} mode")
     return 0
 

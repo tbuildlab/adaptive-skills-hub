@@ -76,11 +76,13 @@ the officially documented per-user personal marketplace file:
 
 The adapter validates the manifest's minimum host schema, preserves unrelated
 entries, and adds only the standard `nexus-desktop` entry. Its source path is
-relative to the personal marketplace root and contained under the Nexus-owned
-sibling directory `nexus-marketplace`. The copied Plugin bridge is versioned,
-contains an ownership marker, and its generated `.mcp.json` uses an absolute
-path to the verified embedded runtime inside the Nexus release. No development
-path, system Python, PATH lookup, or host CLI is used.
+the documented personal-plugin value `./plugins/nexus-desktop`, which resolves
+to the Nexus-owned copy at `~/plugins/nexus-desktop`. Marketplace state and
+rollback receipts remain under `~/.agents/plugins/nexus-marketplace`, but the
+host-indexed Plugin bridge is not staged beneath `.agents`. The copied Plugin
+bridge is versioned, contains an ownership marker, and its generated `.mcp.json`
+uses an absolute path to the verified embedded runtime inside the Nexus release.
+No development path, system Python, PATH lookup, or host CLI is used.
 
 Before its atomic write, the adapter records an exact base64 Marketplace backup
 and a SHA-256 receipt in Nexus-owned state. Rollback restores that exact prior
@@ -100,6 +102,28 @@ Plugin browser remains the supported way to remove that host-side installation.
 The release uninstaller cleans all Nexus-owned release and Marketplace source
 state, but refuses to delete host-managed state or unrelated configuration.
 
+## RC5 Desktop `@` exposure correction
+
+Clean-machine RC4 acceptance established an important host distinction:
+ChatGPT Desktop's Plugin Management can discover and report a Personal
+marketplace Plugin as installed while the chat composer still does not index it
+for `@` invocation. RC4 staged the copied Plugin below
+`~/.agents/plugins/nexus-marketplace/...`; that layout was sufficient for the
+marketplace card but differs from the official personal-plugin layout.
+
+RC5 keeps the marketplace manifest and Nexus-only state under
+`~/.agents/plugins`, but copies the loadable Plugin—including its real
+`skills/nexus/SKILL.md`—to `~/plugins/nexus-desktop` and registers exactly
+`./plugins/nexus-desktop`. This is the smallest source-layout correction. It
+does not add Codex CLI, alter `config.toml`, add a remote endpoint, or automate
+the Desktop UI. A verified RC4 installation can migrate to the new layout; a
+rollback restores its exact marketplace entry and retained Plugin source.
+
+Automated checks can verify the source path, ownership, bridge health, and
+rollback, but the actual `@Nexus` menu remains a required human Desktop
+acceptance check. Marketplace discovery and `@` exposure are reported as
+separate acceptance states.
+
 ## Artifact contract
 
 Each GitHub Release candidate supplies six assets: a versioned ZIP and its
@@ -115,6 +139,13 @@ lock with every wheel hash and vendors those wheels into the embedded runtime,
 so installation never resolves packages from PyPI. It never
 packages a developer checkout, workspace, credentials, cache, runtime state,
 or absolute development path.
+
+RC5 was reproducibly rebased from the immutable, receipt-verified RC4 release
+archive because the original reviewed wheelhouse and CPython build inputs are
+not retained in this checkout. `scripts/rebase_release.py` pins and verifies
+that exact RC4 archive before replacing only the reviewed Nexus source files;
+it does not download dependencies or produce an artifact from the development
+repository state alone.
 
 ## Local lifecycle
 
@@ -162,7 +193,7 @@ neither claim.
 ## Versioning and future compatibility
 
 Frozen Core tags stay unchanged. Distribution has a separate SemVer stream in
-`release/VERSION`; `0.1.0-rc.4` is a release candidate, not a Core tag. A
+`release/VERSION`; `0.1.0-rc.5` is a release candidate, not a Core tag. A
 future GitHub Skill Scout must remain separately approved, preserve provenance,
 license/reputation/pinned-hash review, and never turn this installer into an
 automatic Skill installation channel.

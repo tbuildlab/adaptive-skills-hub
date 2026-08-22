@@ -1,10 +1,13 @@
 """Safe per-user Nexus Marketplace adapter for ChatGPT Desktop.
 
-The adapter deliberately manages only ``~/.agents/plugins/marketplace.json``
-and a sibling ``nexus-marketplace`` directory that it owns.  It does *not*
-write ``~/.codex/config.toml``, invoke Codex, alter PATH, or automate Desktop
-UI.  ChatGPT Desktop remains responsible for consuming the documented personal
-marketplace and for any host-side install or uninstall state.
+The adapter deliberately manages only the documented personal marketplace at
+``~/.agents/plugins/marketplace.json``, its own state directory beside that
+manifest, and its own plugin copy at ``~/plugins/nexus-desktop``.  The latter
+is important: ChatGPT Desktop discovers marketplace entries and loads their
+bundled skills through different host paths.  The documented personal-marketplace
+layout uses ``./plugins/<plugin>`` (relative to the user profile), not a plugin
+copy nested below ``.agents``.  It does *not* write ``~/.codex/config.toml``,
+invoke Codex, alter PATH, or automate Desktop UI.
 """
 from __future__ import annotations
 
@@ -78,7 +81,7 @@ def _real_directory(path: Path) -> Path:
 
 
 def paths(profile_home: Path | None = None) -> tuple[Path, Path, Path]:
-    """Return trusted personal marketplace, Nexus-owned root, and state path."""
+    """Return trusted personal marketplace, Nexus-owned state root, and state path."""
     profile = _profile_root(profile_home)
     agents = _real_directory(profile / ".agents")
     marketplace_root = _real_directory(agents / "plugins")
@@ -86,6 +89,16 @@ def paths(profile_home: Path | None = None) -> tuple[Path, Path, Path]:
     if marketplace_root not in managed_root.parents:
         raise ReleaseError("Nexus marketplace root is outside the personal marketplace")
     return marketplace_root / MARKETPLACE_FILENAME, managed_root, managed_root / STATE_FILENAME
+
+
+def plugin_root(profile_home: Path | None = None) -> Path:
+    """Return the documented, host-indexed personal plugin location."""
+    profile = _profile_root(profile_home)
+    root = _real_directory(profile / "plugins")
+    target = root / PLUGIN_NAME
+    if root not in target.parents:
+        raise ReleaseError("Nexus plugin root is outside the user plugin directory")
+    return target
 
 
 def _uncreated_marketplace_path(profile_home: Path | None = None) -> Path:
@@ -115,8 +128,14 @@ def _load_marketplace(path: Path) -> tuple[dict[str, Any], bytes | None]:
     return payload, raw
 
 
-def _relative_plugin_path(version: str) -> str:
-    candidate = f"./{MANAGED_DIRECTORY}/versions/{version}/{PLUGIN_FOLDER}"
+def _relative_plugin_path(_version: str) -> str:
+    """Return the canonical source path for ``~/.agents/plugins``.
+
+    Personal marketplaces resolve ``./plugins/<name>`` from the user profile.
+    Keeping this path stable also allows Desktop to refresh the installed
+    plugin's skills instead of leaving them in a marketplace-only staging tree.
+    """
+    candidate = f"./plugins/{PLUGIN_NAME}"
     pure = PurePosixPath(candidate)
     if not candidate.startswith("./") or ".." in pure.parts or pure.is_absolute():
         raise ReleaseError("Nexus marketplace plugin path is invalid")
@@ -142,6 +161,11 @@ def _load_state(path: Path) -> dict[str, Any] | None:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ReleaseError("Nexus marketplace ownership state is invalid") from exc
+    return _validate_state(payload)
+
+
+def _validate_state(payload: Any) -> dict[str, Any]:
+    """Validate an in-memory ownership record, including rollback state."""
     required = {
         "schema_version", "owner", "version", "marketplace_path", "plugin_root",
         "marketplace_before", "marketplace_after_sha256", "entry", "previous_state",
@@ -174,7 +198,14 @@ def _same_path(left: Path, right: Path) -> bool:
     return os.path.normcase(str(left.resolve(strict=False))) == os.path.normcase(str(right.resolve(strict=False)))
 
 
-def _prepare_plugin(release_root: Path, managed_root: Path, version: str, runtime: Path, nexus_data_root: Path) -> Path:
+def _prepare_plugin(
+    release_root: Path,
+    managed_root: Path,
+    version: str,
+    runtime: Path,
+    nexus_data_root: Path,
+    profile_home: Path | None = None,
+) -> Path:
     source = release_root / PLUGIN_FOLDER
     if not source.is_dir() or source.is_symlink():
         raise ReleaseError("verified release plugin source is unavailable")
@@ -188,10 +219,16 @@ def _prepare_plugin(release_root: Path, managed_root: Path, version: str, runtim
         raise ReleaseError("Nexus marketplace launcher data root is unavailable") from exc
     if not nexus_data_root.is_dir() or nexus_data_root.is_symlink() or nexus_data_root == Path(nexus_data_root.anchor):
         raise ReleaseError("Nexus marketplace launcher data root is invalid")
-    target = managed_root / "versions" / version / PLUGIN_FOLDER
+    target = plugin_root(profile_home)
+    target_parent = target.parent
     if target.exists():
-        _contained(target, managed_root)
-        return target
+        existing = _owned_plugin(target, target_parent)
+        try:
+            existing_owner = json.loads((existing / ".nexus-marketplace-owner.json").read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise ReleaseError("Nexus marketplace plugin ownership cannot be verified") from exc
+        if existing_owner.get("version") == version:
+            return existing
     stage = managed_root / ".staging" / version / "nexus-desktop"
     if stage.exists():
         raise ReleaseError("interrupted Nexus marketplace preparation requires rollback before retry")
@@ -224,8 +261,24 @@ def _prepare_plugin(release_root: Path, managed_root: Path, version: str, runtim
     }
     _atomic_bytes(stage / ".nexus-marketplace-owner.json", _json_bytes(marker))
     target.parent.mkdir(parents=True, exist_ok=True)
-    stage.replace(target)
-    _contained(target, managed_root)
+    if target.exists():
+        # Preserve the exact earlier Nexus-owned plugin until the new source is
+        # fully staged.  This is per-user, reversible state; no third-party
+        # plugin is ever moved or overwritten.
+        retired = managed_root / "retired" / f"nexus-desktop-{existing_owner['version']}"
+        if retired.exists():
+            _contained(retired, managed_root)
+            raise ReleaseError("a previous Nexus plugin backup already exists; use rollback before retry")
+        retired.parent.mkdir(parents=True, exist_ok=True)
+        target.replace(retired)
+        try:
+            stage.replace(target)
+        except Exception:
+            retired.replace(target)
+            raise
+    else:
+        stage.replace(target)
+    _contained(target, target_parent)
     return target
 
 
@@ -243,9 +296,20 @@ def _owned_plugin(path: Path, managed_root: Path) -> Path:
     return resolved
 
 
-def _remove_owned_plugin(path: Path, managed_root: Path) -> None:
-    resolved = _owned_plugin(path, managed_root)
+def _remove_owned_plugin(path: Path, owner_root: Path) -> None:
+    resolved = _owned_plugin(path, owner_root)
     shutil.rmtree(resolved)
+
+
+def _remove_retired_plugins(managed_root: Path) -> None:
+    """Remove only Nexus-owned superseded copies after ownership verification."""
+    retired_root = managed_root / "retired"
+    if not retired_root.exists():
+        return
+    _contained(retired_root, managed_root)
+    for candidate in retired_root.iterdir():
+        _owned_plugin(candidate, retired_root)
+    shutil.rmtree(retired_root)
 
 
 def install(release_root: Path, version: str, runtime: Path, nexus_data_root: Path, profile_home: Path | None = None) -> dict[str, Any]:
@@ -263,13 +327,25 @@ def install(release_root: Path, version: str, runtime: Path, nexus_data_root: Pa
     if matches:
         if existing_state and len(matches) == 1 and matches[0] == existing_state["entry"]:
             if existing_state["version"] == version and matches[0] == desired:
-                plugin_root = _contained(Path(existing_state["plugin_root"]), managed_root)
-                if plugin_root.is_dir() and (plugin_root / ".nexus-marketplace-owner.json").is_file():
-                    return existing_state
+                # RC5+ entries use the host-indexed profile plugin root.  A
+                # legacy RC4 entry may be Nexus-owned too, but it must never
+                # be treated as a successful RC5 installation merely because
+                # Plugin Management can see its marketplace card.
+                current_plugin = Path(existing_state["plugin_root"])
+                expected_plugin = plugin_root(profile_home)
+                if _same_path(current_plugin, expected_plugin):
+                    verified = _owned_plugin(current_plugin, current_plugin.parent)
+                    if verified.is_dir():
+                        return existing_state
+                else:
+                    # Preserve a verified RC4 copy as the previous state for
+                    # rollback.  The new marketplace entry will point only to
+                    # the documented profile-level source path.
+                    _owned_plugin(current_plugin, managed_root)
             payload["plugins"] = [item for item in payload["plugins"] if item.get("name") != PLUGIN_NAME]
         else:
             raise ReleaseError("an unmanaged Nexus marketplace entry already exists; refusing to overwrite it")
-    plugin_root = _prepare_plugin(release_root, managed_root, version, runtime, nexus_data_root)
+    plugin_location = _prepare_plugin(release_root, managed_root, version, runtime, nexus_data_root, profile_home)
     backup_bytes = before if before is not None else b""
     backup_path = managed_root / "backups" / f"marketplace-{_sha256_bytes(backup_bytes)}.json.b64"
     if not backup_path.exists():
@@ -283,7 +359,7 @@ def install(release_root: Path, version: str, runtime: Path, nexus_data_root: Pa
             "owner": "Nexus",
             "version": version,
             "marketplace_path": str(marketplace),
-            "plugin_root": str(plugin_root),
+            "plugin_root": str(plugin_location),
             "marketplace_before": str(backup_path),
             "marketplace_after_sha256": _sha256_bytes(after),
             "entry": desired,
@@ -299,7 +375,7 @@ def install(release_root: Path, version: str, runtime: Path, nexus_data_root: Pa
                 marketplace.unlink(missing_ok=True)
             else:
                 _atomic_bytes(marketplace, before)
-        _remove_owned_plugin(plugin_root, managed_root)
+        _remove_owned_plugin(plugin_location, plugin_location.parent)
         raise
 
 
@@ -333,14 +409,50 @@ def uninstall(profile_home: Path | None = None, rollback: bool = False) -> dict[
         raise ReleaseError("Nexus marketplace entry changed; refusing to remove unrelated configuration")
     # Verify every controlled deletion target before changing the user's
     # Marketplace manifest. A forged state file must be entirely fail-closed.
-    plugin_root = _owned_plugin(Path(state["plugin_root"]), managed_root)
+    plugin_location = Path(state["plugin_root"])
+    current_plugin_root = _owned_plugin(plugin_location, plugin_location.parent)
+    previous = state["previous_state"] if rollback else None
+    previous_location: Path | None = None
+    retired_previous: Path | None = None
+    if previous is not None:
+        # State nesting is trusted only after the same schema checks used for a
+        # top-level record.  This is important before moving any retained copy.
+        _validate_state(previous)
+        previous_location = Path(previous["plugin_root"])
+        if _same_path(previous_location, plugin_root(profile_home)):
+            candidate = managed_root / "retired" / f"nexus-desktop-{previous['version']}"
+            if candidate.exists():
+                retired_previous = _owned_plugin(candidate, candidate.parent)
+            elif not previous_location.exists():
+                raise ReleaseError("Nexus rollback source is unavailable; refusing to remove current plugin")
+        else:
+            # An RC4 source was already in the managed tree and was retained
+            # in place during migration to the host-indexed layout.
+            _owned_plugin(previous_location, managed_root)
     if rollback and _sha256_bytes(raw) == state["marketplace_after_sha256"]:
         _restore_backup(state, marketplace)
     else:
         current["plugins"] = [item for item in current["plugins"] if item != entry]
         _atomic_bytes(marketplace, _json_bytes(current))
-    _remove_owned_plugin(plugin_root, managed_root)
-    previous = state["previous_state"] if rollback else None
+    _remove_owned_plugin(current_plugin_root, current_plugin_root.parent)
+    if rollback and retired_previous is not None and previous_location is not None:
+        if previous_location.exists():
+            raise ReleaseError("Nexus rollback target already exists; refusing to overwrite it")
+        previous_location.parent.mkdir(parents=True, exist_ok=True)
+        retired_previous.replace(previous_location)
+        if not any(retired_previous.parent.iterdir()):
+            retired_previous.parent.rmdir()
+    if not rollback:
+        _remove_retired_plugins(managed_root)
+    if not rollback and isinstance(state["previous_state"], dict):
+        # RC4 stored its copied source below our managed marketplace tree.
+        # RC5 preserves that verified copy only long enough to make rollback
+        # lossless.  A normal uninstall must clean it up too; otherwise an
+        # obsolete Nexus-owned source could survive after its marketplace
+        # entry has been removed.
+        legacy_location = Path(state["previous_state"].get("plugin_root", ""))
+        if legacy_location.exists():
+            _remove_owned_plugin(legacy_location, managed_root)
     if previous is not None:
         _atomic_bytes(state_path, _json_bytes(previous))
     else:

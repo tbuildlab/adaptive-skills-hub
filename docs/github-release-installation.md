@@ -4,7 +4,7 @@
 
 This path needs no repository clone, `D:` drive, administrator rights, API key,
 OAuth, remote MCP, Microsoft Store, `py.exe`, preinstalled Python, Codex CLI,
-Node, or npm. RC4
+Node, or npm. RC5
 contains a pinned, Nexus-owned CPython 3.13.15 x64 runtime and the reviewed R2
 dependencies. You need supported 64-bit Windows and one real non-root
 workspace directory. The installer registers a Nexus-owned source in the
@@ -45,11 +45,13 @@ Alias, modify another Python, or download packages. If `python` resolves to a
 WindowsApps alias or another system interpreter, it is reported only as ignored
 diagnostics; a missing or incompatible system interpreter is not a blocker.
 
-The documented Marketplace policy requests `INSTALLED_BY_DEFAULT`. After a
-restart, a supported ChatGPT Desktop build may make Nexus available directly.
-That is an empirical Desktop behavior, not an installer guarantee. If it is not
-visible, use **Plugins > Personal > Nexus > Install**, then start a fresh
-conversation and type `@`. This fallback uses no CLI and no manual JSON edit.
+The documented Marketplace policy requests `INSTALLED_BY_DEFAULT`. RC5 copies
+the Plugin to the host-indexed personal location `~/plugins/nexus-desktop` and
+registers it as `./plugins/nexus-desktop`; it does not treat marketplace
+discovery alone as proof that the `@` selector can load Nexus. After a full
+Desktop restart, open a fresh conversation and type `@`. If Nexus is absent,
+stop the acceptance test and report it as an exposure failure—do not treat an
+"installed" marketplace card as a substitute and do not edit host files.
 
 ## Existing standalone MCP
 
