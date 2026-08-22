@@ -34,3 +34,8 @@ Desktop.ini
 state/
 output/
 registry.json
+github-release-state.json
+transactions/
+releases/
+wheelhouse/
+requirements-release.lock

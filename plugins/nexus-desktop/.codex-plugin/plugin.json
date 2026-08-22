@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
   "version": "0.1.0+codex.20260822110714",
-  "description": "Private local Nexus task-planning workflow for ChatGPT Desktop and Codex.",
+  "description": "Local Nexus task-planning workflow for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
   },
@@ -17,7 +17,7 @@
   "interface": {
     "displayName": "Nexus",
     "shortDescription": "Plan substantive work with local capability evidence.",
-    "longDescription": "Nexus is a private, local planning plugin. It uses the existing read/plan-only Nexus Runtime R2 MCP server, exposes no remote endpoint, and never grants execution authority.",
+    "longDescription": "Nexus is a local planning plugin. It uses the existing read/plan-only Nexus Runtime R2 MCP server, exposes no remote endpoint, and never grants execution authority.",
     "developerName": "Nexus Project",
     "category": "Developer tools",
     "capabilities": [

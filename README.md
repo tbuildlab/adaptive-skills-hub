@@ -26,11 +26,7 @@ Nexus separately indexes:
 
 ## Local use
 
-This approved V1.1 stays at:
-
-`D:\chatgpt\安装skills\adaptive-skills-hub`
-
-It is intentionally not installed into the user-wide Codex Skills directory yet. In a
+The source tree is location-independent. In a
 Codex session that has loaded this Skill, run the router and then carry out the task:
 
 ```powershell
@@ -47,6 +43,10 @@ python scripts/nexus.py plan "Fix this API bug and add regression tests."
 ```
 
 The skill's description is intentionally broad enough that Codex can also select it automatically when capability routing is useful.
+
+For the Windows GitHub Release candidate and a no-clone installation path, see
+[GitHub Release installation](docs/github-release-installation.md). It is
+separate from the frozen Core tags and does not package local runtime state.
 
 `route` uses metadata only. `run` then fully reads each selected Skill's `SKILL.md`.
 For normal natural-language Skills, Codex follows those loaded instructions to do the

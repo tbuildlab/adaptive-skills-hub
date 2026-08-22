@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Safe local setup lifecycle for the Nexus Desktop Plugin pilot.
+"""Safe local setup lifecycle for the Nexus Desktop Plugin.
 
 The script writes only a Nexus-owned user-data directory.  It never edits an
 existing ``~/.codex/config.toml`` or registers a global MCP server; the plugin
@@ -93,10 +93,28 @@ def default_runtime_python(data_root: Path) -> Path:
 
 def create_runtime(data_root: Path) -> Path:
     runtime_root = data_root / "runtime-r2"
-    subprocess.run([sys.executable, "-m", "venv", str(runtime_root)], check=True)
-    python = default_runtime_python(data_root)
-    subprocess.run([str(python), "-m", "pip", "install", "-r", str(ROOT / "requirements-r2-mcp.txt")], check=True)
-    return require_file(str(python), "runtime Python")
+    if sys.version_info < (3, 10):
+        raise SetupError("Python 3.10 or newer is required")
+    if runtime_root.exists():
+        raise SetupError("Nexus runtime already exists; use an explicit compatible runtime or uninstall it first")
+    try:
+        subprocess.run([sys.executable, "-m", "venv", str(runtime_root)], check=True)
+        python = default_runtime_python(data_root)
+        release_lock = ROOT / "requirements-release.lock"
+        wheelhouse = ROOT / "wheelhouse"
+        if release_lock.is_file() and wheelhouse.is_dir():
+            subprocess.run([
+                str(python), "-m", "pip", "install", "--quiet", "--no-index", "--only-binary=:all:",
+                "--find-links", str(wheelhouse), "--require-hashes", "--no-compile", "-r", str(release_lock),
+            ], check=True)
+        else:
+            # Compatibility path for the pre-distribution private pilot only.
+            subprocess.run([str(python), "-m", "pip", "install", "-r", str(ROOT / "requirements-r2-mcp.txt")], check=True)
+        return require_file(str(python), "runtime Python")
+    except Exception:
+        if runtime_root.exists():
+            shutil.rmtree(runtime_root)
+        raise
 
 
 def load_workspaces(path: Path) -> dict[str, Any]:
@@ -147,6 +165,8 @@ def install(args: argparse.Namespace) -> int:
     if not args.workspace_id.replace("-", "").replace("_", "").isalnum():
         raise SetupError("workspace ID must contain only letters, numbers, hyphens, or underscores")
     runtime_python = require_file(args.runtime_python, "runtime Python") if args.runtime_python else create_runtime(data_root)
+    if args.runtime_python:
+        subprocess.run([str(runtime_python), "-c", "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)"], check=True)
     config_path = data_root / CONFIG_FILENAME
     workspace_path = data_root / "workspaces.json"
     backups = data_root / "backups"
