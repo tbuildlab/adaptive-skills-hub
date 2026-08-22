@@ -16,6 +16,7 @@ from scripts.release_common import ReleaseError, safe_extract, verify_release_tr
 import scripts.release_install as release_install
 import scripts.build_release as release_build
 import scripts.setup_nexus as setup
+import scripts.desktop_marketplace as desktop_marketplace
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -161,48 +162,105 @@ class GitHubDistributionTests(unittest.TestCase):
                 self.assertEqual(release_install.uninstall(args), 0)
             self.assertFalse((data / "nexus-desktop-plugin.json").exists())
 
-    def test_plugin_mode_missing_codex_fails_before_any_local_state_mutation(self) -> None:
+    def test_plugin_mode_requires_no_codex_cli_and_prepares_personal_marketplace(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             data = root / "local data"
             project = root / "project"
             project.mkdir()
+            profile = root / "fresh user"
+            profile.mkdir()
             args = type("Args", (), {
                 "data_root": str(data), "workspace_root": str(project), "workspace_id": "nexus-default",
                 "mode": "plugin", "migrate_standalone": False, "remove_runtime": False,
-                "codex_command": "missing-codex-cli",
             })()
-            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.3"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(setup.shutil, "which", return_value=None):
-                with self.assertRaisesRegex(setup.SetupError, "Codex CLI is unavailable"):
-                    release_install.install(args)
-            self.assertFalse((data / "github-release-state.json").exists())
-            self.assertFalse((data / "transactions").exists())
-
-    def test_plugin_mode_rejects_duplicate_or_restores_migrated_standalone(self) -> None:
-        with tempfile.TemporaryDirectory() as temporary:
-            data = Path(temporary) / "local"
-            project = Path(temporary) / "project"
-            project.mkdir()
-            args = type("Args", (), {
-                "data_root": str(data), "workspace_root": str(project), "workspace_id": "nexus-default",
-                "runtime_python": str(Path(sys.executable).resolve()), "mode": "plugin",
-                "migrate_standalone": False, "codex_command": "codex",
-            })()
-            snapshot = {"name": "nexus-r2-local", "transport": {"type": "stdio", "command": str(Path(sys.executable).resolve()), "args": ["server.py"], "cwd": None, "env": None}}
-            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.2"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(release_install, "standalone_snapshot", return_value=snapshot), patch.object(release_install, "remove_standalone") as remove, patch.object(release_install, "configure") as configure:
-                with self.assertRaises(ReleaseError):
-                    release_install.install(args)
-                remove.assert_not_called()
-                configure.assert_not_called()
-            args.migrate_standalone = True
-            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.2"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(release_install, "standalone_snapshot", return_value=snapshot), patch.object(release_install, "remove_standalone") as remove, patch.object(release_install, "enable_plugin"), patch.object(release_install, "configure"):
+            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.4"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(release_install.desktop_marketplace, "install", return_value={"owner": "Nexus"}) as marketplace, patch.object(release_install, "configure"):
                 self.assertEqual(release_install.install(args), 0)
-                remove.assert_called_once_with("codex")
-            args.migrate_standalone = True
-            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.2"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(setup, "require_codex_cli", return_value="codex"), patch.object(release_install, "standalone_snapshot", return_value=snapshot), patch.object(release_install, "remove_standalone"), patch.object(release_install, "enable_plugin", side_effect=RuntimeError("host failed")), patch.object(release_install, "remove_plugin"), patch.object(release_install, "restore_standalone") as restore:
-                with self.assertRaises(RuntimeError):
-                    release_install.install(args)
-                restore.assert_called_once_with("codex", snapshot)
+            marketplace.assert_called_once()
+            self.assertTrue((data / "github-release-state.json").is_file())
+
+    def test_marketplace_adapter_preserves_unrelated_entries_and_rolls_back_exactly(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            profile = root / "fresh profile"
+            profile.mkdir()
+            release = root / "release with spaces"
+            plugin = release / "plugins" / "nexus-desktop"
+            (plugin / "scripts").mkdir(parents=True)
+            (plugin / ".codex-plugin").mkdir()
+            (plugin / ".mcp.json").write_text(json.dumps({"mcpServers": {"nexus_desktop_local": {"command": "python", "args": ["./scripts/launch_nexus_mcp.py"], "cwd": "."}}}), encoding="utf-8")
+            (plugin / "scripts" / "launch_nexus_mcp.py").write_text("# bridge\n", encoding="utf-8")
+            runtime = release / "runtime" / "python" / "python.exe"
+            runtime.parent.mkdir(parents=True)
+            shutil.copy2(sys.executable, runtime)
+            manifest = profile / ".agents" / "plugins" / "marketplace.json"
+            manifest.parent.mkdir(parents=True)
+            before = b'{"name":"Personal","plugins":[{"name":"other","source":{"source":"local","path":"./other"}}]}\n'
+            manifest.write_bytes(before)
+            state = desktop_marketplace.install(release, "0.1.0-rc.4", runtime, release, profile)
+            payload = json.loads(manifest.read_text(encoding="utf-8"))
+            self.assertEqual([item["name"] for item in payload["plugins"]], ["other", "nexus-desktop"])
+            self.assertEqual(payload["plugins"][-1]["policy"]["installation"], "INSTALLED_BY_DEFAULT")
+            source = profile / ".agents" / "plugins" / "nexus-marketplace" / "versions" / "0.1.0-rc.4" / "plugins" / "nexus-desktop"
+            staged = json.loads((source / ".mcp.json").read_text(encoding="utf-8"))
+            self.assertEqual(staged["mcpServers"]["nexus_desktop_local"]["command"], str(runtime.resolve()))
+            self.assertEqual(staged["mcpServers"]["nexus_desktop_local"]["env"], {"NEXUS_DATA_ROOT": str(release.resolve())})
+            self.assertNotIn("codex", manifest.read_text(encoding="utf-8").lower())
+            self.assertEqual(desktop_marketplace.install(release, "0.1.0-rc.4", runtime, release, profile)["version"], state["version"])
+            desktop_marketplace.uninstall(profile, rollback=True)
+            self.assertEqual(manifest.read_bytes(), before)
+            self.assertFalse(source.exists())
+
+    def test_marketplace_adapter_rejects_malformed_or_unmanaged_conflicting_entry(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            profile = Path(temporary)
+            profile.mkdir(exist_ok=True)
+            manifest = profile / ".agents" / "plugins" / "marketplace.json"
+            manifest.parent.mkdir(parents=True)
+            manifest.write_text("not-json", encoding="utf-8")
+            with self.assertRaisesRegex(ReleaseError, "personal marketplace manifest is invalid"):
+                desktop_marketplace.install(profile, "0.1.0-rc.4", Path(sys.executable), profile, profile)
+            self.assertFalse((profile / ".agents" / "plugins" / "nexus-marketplace").exists())
+            manifest.write_text(json.dumps({"name": "Personal", "plugins": [{"name": "nexus-desktop", "source": {"source": "local", "path": "./other"}}]}), encoding="utf-8")
+            with self.assertRaisesRegex(ReleaseError, "unmanaged Nexus marketplace entry"):
+                desktop_marketplace.install(profile, "0.1.0-rc.4", Path(sys.executable), profile, profile)
+
+    def test_marketplace_uninstall_preserves_new_unrelated_entry_and_rejects_escaped_state(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            profile = root / "profile"
+            profile.mkdir()
+            release = root / "release"
+            plugin = release / "plugins" / "nexus-desktop"
+            (plugin / "scripts").mkdir(parents=True)
+            (plugin / ".codex-plugin").mkdir()
+            (plugin / ".mcp.json").write_text(json.dumps({"mcpServers": {"nexus_desktop_local": {}}}), encoding="utf-8")
+            runtime = release / "runtime" / "python" / "python.exe"
+            runtime.parent.mkdir(parents=True)
+            shutil.copy2(sys.executable, runtime)
+            desktop_marketplace.install(release, "0.1.0-rc.4", runtime, release, profile)
+            marketplace = profile / ".agents" / "plugins" / "marketplace.json"
+            payload = json.loads(marketplace.read_text(encoding="utf-8"))
+            payload["plugins"].append({"name": "later-user-plugin", "source": {"source": "local", "path": "./later"}})
+            marketplace.write_text(json.dumps(payload), encoding="utf-8")
+            desktop_marketplace.uninstall(profile)
+            self.assertEqual([item["name"] for item in json.loads(marketplace.read_text(encoding="utf-8"))["plugins"]], ["later-user-plugin"])
+            # A forged ownership record must not turn cleanup into a recursive
+            # delete outside Nexus' personal-marketplace namespace.
+            _, managed, state_path = desktop_marketplace.paths(profile)
+            forged_entry = {"name": "nexus-desktop"}
+            payload = json.loads(marketplace.read_text(encoding="utf-8"))
+            payload["plugins"].append(forged_entry)
+            marketplace.write_text(json.dumps(payload), encoding="utf-8")
+            before_forged_cleanup = marketplace.read_bytes()
+            state_path.write_text(json.dumps({
+                "schema_version": desktop_marketplace.STATE_SCHEMA, "owner": "Nexus", "version": "x",
+                "marketplace_path": str(marketplace), "plugin_root": str(root), "marketplace_before": str(managed / "missing"),
+                "marketplace_after_sha256": "0" * 64, "entry": forged_entry, "previous_state": None,
+            }), encoding="utf-8")
+            with self.assertRaisesRegex(ReleaseError, "escapes its owned directory"):
+                desktop_marketplace.uninstall(profile)
+            self.assertEqual(marketplace.read_bytes(), before_forged_cleanup)
 
     def test_pinned_embedded_runtime_rejects_substitution(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -294,14 +352,14 @@ asyncio.run(main())
             self.assertEqual(mcp_result.returncode, 0, mcp_result.stderr + mcp_result.stdout)
 
     @unittest.skipUnless(os.environ.get("NEXUS_RELEASE_TEST_EMBED") and os.environ.get("NEXUS_RELEASE_TEST_WHEELHOUSE"), "real embedded runtime inputs are not configured")
-    def test_real_plugin_bootstrap_without_codex_fails_closed_precisely(self) -> None:
-        """The RC2 fresh-user failure must name the missing host, not WinError 2."""
+    def test_real_plugin_bootstrap_without_codex_uses_personal_marketplace(self) -> None:
+        """RC4's release-only path has neither host CLI nor system Python."""
         embed = Path(os.environ["NEXUS_RELEASE_TEST_EMBED"])
         wheelhouse = Path(os.environ["NEXUS_RELEASE_TEST_WHEELHOUSE"])
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             output = root / "release output"
-            archive, _ = release_build.build(output, "0.1.0-rc.3", wheelhouse, embed)
+            archive, _ = release_build.build(output, "0.1.0-rc.4", wheelhouse, embed)
             project = root / "workspace"
             project.mkdir()
             data = root / "Nexus local data"
@@ -310,40 +368,45 @@ asyncio.run(main())
             environment = dict(os.environ)
             environment["PATH"] = os.pathsep.join((str(Path(powershell).parent), str(Path(os.environ["SystemRoot"]) / "System32")))
             environment["LOCALAPPDATA"] = str(root / "LocalAppData")
+            environment["USERPROFILE"] = str(root / "Fresh Standard User")
+            environment["HOME"] = environment["USERPROFILE"]
             environment["PSModulePath"] = str(Path(os.environ["SystemRoot"]) / "System32" / "WindowsPowerShell" / "v1.0" / "Modules")
             environment["SystemDrive"] = Path(os.environ["SystemRoot"]).anchor
             for key in tuple(environment):
                 if key.upper().startswith("PYTHON"):
                     environment.pop(key)
-            missing_codex = root / "missing host" / "codex.cmd"
             result = subprocess.run([
-                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.3.ps1"),
+                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.4.ps1"),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "plugin",
-                "-CodexCommand", str(missing_codex),
             ], capture_output=True, text=True, env=environment, timeout=60)
             output_text = result.stdout + result.stderr
-            self.assertNotEqual(result.returncode, 0)
-            self.assertIn("Codex CLI is unavailable", output_text)
+            self.assertEqual(result.returncode, 0, output_text)
             self.assertNotIn("[WinError 2]", output_text)
-            self.assertFalse((data / "github-release-state.json").exists())
-            self.assertFalse((data / "transactions").exists())
+            self.assertTrue((data / "github-release-state.json").exists())
+            marketplace = Path(environment["USERPROFILE"]) / ".agents" / "plugins" / "marketplace.json"
+            payload = json.loads(marketplace.read_text(encoding="utf-8"))
+            entry = next(item for item in payload["plugins"] if item["name"] == "nexus-desktop")
+            self.assertEqual(entry["policy"]["installation"], "INSTALLED_BY_DEFAULT")
+            release = next((data / "releases").iterdir())
+            staged = Path(environment["USERPROFILE"]) / ".agents" / "plugins" / "nexus-marketplace" / "versions" / "0.1.0-rc.4" / "plugins" / "nexus-desktop" / ".mcp.json"
+            staged_server = json.loads(staged.read_text(encoding="utf-8"))["mcpServers"]["nexus_desktop_local"]
+            self.assertEqual(staged_server["command"], str((release / "runtime" / "python" / "python.exe").resolve()))
+            self.assertEqual(staged_server["env"], {"NEXUS_DATA_ROOT": str(data.resolve())})
 
     @unittest.skipUnless(
         os.environ.get("NEXUS_RELEASE_TEST_EMBED")
-        and os.environ.get("NEXUS_RELEASE_TEST_WHEELHOUSE")
-        and os.environ.get("NEXUS_RELEASE_TEST_CODEX"),
-        "real embedded runtime and supported Codex CLI inputs are not configured",
+        and os.environ.get("NEXUS_RELEASE_TEST_WHEELHOUSE"),
+        "real embedded runtime inputs are not configured",
     )
-    def test_real_plugin_registration_without_system_python(self) -> None:
-        """Use a real isolated Codex CLI profile; never mutate the developer profile."""
+    def test_real_plugin_health_without_system_python_or_codex(self) -> None:
+        """The registered plugin bridge and MCP server work with only RC files."""
         embed = Path(os.environ["NEXUS_RELEASE_TEST_EMBED"])
         wheelhouse = Path(os.environ["NEXUS_RELEASE_TEST_WHEELHOUSE"])
-        codex = Path(os.environ["NEXUS_RELEASE_TEST_CODEX"]).resolve(strict=True)
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             output = root / "release output"
-            archive, _ = release_build.build(output, "0.1.0-rc.3", wheelhouse, embed)
+            archive, _ = release_build.build(output, "0.1.0-rc.4", wheelhouse, embed)
             project = root / "workspace"
             project.mkdir()
             data = root / "Nexus local data"
@@ -354,32 +417,32 @@ asyncio.run(main())
             # Python directory is available to the bootstrap or plugin launcher.
             environment["PATH"] = os.pathsep.join(item for item in environment.get("PATH", "").split(os.pathsep) if "python" not in item.casefold())
             environment["LOCALAPPDATA"] = str(root / "LocalAppData")
-            environment["CODEX_HOME"] = str(root / "Codex Host Local State")
+            environment["USERPROFILE"] = str(root / "Fresh Standard User")
+            environment["HOME"] = environment["USERPROFILE"]
             environment["PSModulePath"] = str(Path(os.environ["SystemRoot"]) / "System32" / "WindowsPowerShell" / "v1.0" / "Modules")
             environment["SystemDrive"] = Path(os.environ["SystemRoot"]).anchor
-            Path(environment["CODEX_HOME"]).mkdir()
             for key in tuple(environment):
                 if key.upper().startswith("PYTHON"):
                     environment.pop(key)
             result = subprocess.run([
-                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.3.ps1"),
+                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.4.ps1"),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "plugin",
-                "-CodexCommand", str(codex),
             ], capture_output=True, text=True, env=environment, timeout=90)
             self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
-            listed = subprocess.run([str(codex), "plugin", "list"], capture_output=True, text=True, env=environment, timeout=30)
-            self.assertEqual(listed.returncode, 0, listed.stderr)
-            self.assertIn("nexus-desktop", listed.stdout)
             release = next((data / "releases").iterdir())
             runtime = release / "runtime" / "python" / "python.exe"
             probe = """
 import asyncio
+import json
+from pathlib import Path
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
 async def main():
-    params = StdioServerParameters(command=RUNTIME, args=[SERVER, '--workspace-config', WORKSPACES], cwd=RELEASE)
+    plugin = PLUGIN
+    server = json.loads((plugin / '.mcp.json').read_text(encoding='utf-8'))['mcpServers']['nexus_desktop_local']
+    params = StdioServerParameters(command=server['command'], args=[str(plugin / 'scripts' / 'launch_nexus_mcp.py')], cwd=str(plugin), env=server['env'])
     async with stdio_client(params) as (reader, writer):
         async with ClientSession(reader, writer) as session:
             await session.initialize()
@@ -388,8 +451,8 @@ async def main():
             assert not (await session.call_tool('nexus.plan_task', {'workspace_id': 'nexus-default', 'task': 'Plan a safe release check', 'constraints': []})).is_error
 
 asyncio.run(main())
-""".replace("RUNTIME", repr(str(runtime))).replace("SERVER", repr(str(release / "scripts" / "nexus_mcp.py"))).replace("WORKSPACES", repr(str(data / "workspaces.json"))).replace("RELEASE", repr(str(release)))
+""".replace("PLUGIN", "Path(" + repr(str(Path(environment["USERPROFILE"]) / ".agents" / "plugins" / "nexus-marketplace" / "versions" / "0.1.0-rc.4" / "plugins" / "nexus-desktop")) + ")")
             mcp_result = subprocess.run([str(runtime), "-I", "-B", "-c", probe], capture_output=True, text=True, env=environment, timeout=45)
             self.assertEqual(mcp_result.returncode, 0, mcp_result.stderr + mcp_result.stdout)
-            cleanup = subprocess.run([str(runtime), "-I", "-B", str(release / "scripts" / "release_install.py"), "--data-root", str(data), "--codex-command", str(codex), "uninstall"], capture_output=True, text=True, env=environment, timeout=45)
+            cleanup = subprocess.run([str(runtime), "-I", "-B", str(release / "scripts" / "release_install.py"), "--data-root", str(data), "uninstall"], capture_output=True, text=True, env=environment, timeout=45)
             self.assertEqual(cleanup.returncode, 0, cleanup.stderr + cleanup.stdout)

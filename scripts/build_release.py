@@ -37,6 +37,7 @@ EXTRA_FILES = {
     ".agents/plugins/marketplace.json",
     "scripts/nexus_mcp.py",
     "scripts/setup_nexus.py",
+    "scripts/desktop_marketplace.py",
     "scripts/release_common.py",
     "scripts/release_install.py",
     "scripts/Install-Nexus.ps1",

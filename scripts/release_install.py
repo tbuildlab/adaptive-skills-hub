@@ -2,10 +2,9 @@
 """Transactional installer for a verified Nexus GitHub Release tree.
 
 It is intentionally a local-only lifecycle tool.  It never downloads code,
-edits TOML, invokes a shell, starts a remote MCP server, or accepts an
-unverified release root.  Plugin configuration changes are delegated to the
-official Codex CLI and are journaled so a failed migration restores the former
-standalone MCP registration.
+edits TOML, invokes a shell, starts a remote MCP server, invokes Codex, or
+accepts an unverified release root.  Plugin discovery is registered through
+the documented per-user ChatGPT Desktop personal marketplace instead.
 """
 from __future__ import annotations
 
@@ -28,16 +27,23 @@ if str(SCRIPT_DIRECTORY) not in sys.path:
 
 if __package__:
     from . import setup_nexus as setup
+    from . import desktop_marketplace
     from .release_common import ReleaseError, atomic_json_write, verify_release_tree
 else:
     import setup_nexus as setup
+    import desktop_marketplace
     from release_common import ReleaseError, atomic_json_write, verify_release_tree
 
 
 ROOT = Path(__file__).resolve().parents[1]
 STATE_FILENAME = "github-release-state.json"
-STATE_SCHEMA = "nexus.github.release.state.v1"
-STANDALONE_NAME = "nexus-r2-local"
+STATE_SCHEMA = "nexus.github.release.state.v2"
+
+
+def diagnostic(message: str) -> None:
+    """Emit opt-in lifecycle diagnostics without exposing configuration values."""
+    if os.environ.get("NEXUS_RELEASE_DIAGNOSTICS") == "1":
+        print(f"Nexus release diagnostic: {message}", file=sys.stderr, flush=True)
 
 
 def data_root(value: str | None) -> Path:
@@ -75,54 +81,6 @@ def restore_file(path: Path, value: str | None) -> None:
     temporary.replace(path)
 
 
-def standalone_snapshot(codex: str) -> dict[str, Any] | None:
-    result = subprocess.run([codex, "mcp", "get", STANDALONE_NAME, "--json"], check=False, capture_output=True, text=True, shell=False)
-    if result.returncode:
-        return None
-    try:
-        payload = json.loads(result.stdout)
-    except json.JSONDecodeError as exc:
-        raise ReleaseError("existing standalone MCP configuration is unreadable") from exc
-    validate_standalone_snapshot(payload)
-    return payload
-
-
-def validate_standalone_snapshot(payload: Any) -> None:
-    if not isinstance(payload, dict) or payload.get("name") != STANDALONE_NAME:
-        raise ReleaseError("existing standalone MCP configuration is unreadable")
-    transport = payload.get("transport")
-    if not isinstance(transport, dict) or transport.get("type") != "stdio":
-        raise ReleaseError("only a stdio standalone Nexus MCP can be migrated")
-    command, args, cwd, env = transport.get("command"), transport.get("args"), transport.get("cwd"), transport.get("env")
-    if not isinstance(command, str) or not isinstance(args, list) or not all(isinstance(item, str) for item in args):
-        raise ReleaseError("existing standalone MCP configuration is unreadable")
-    executable = Path(command)
-    if not executable.is_absolute() or not executable.is_file() or executable.is_symlink():
-        raise ReleaseError("standalone MCP migration requires an absolute real executable")
-    if cwd is not None or env not in (None, {}):
-        raise ReleaseError("standalone MCP migration would not be lossless; remove it manually or use standalone mode")
-
-
-def restore_standalone(codex: str, snapshot: dict[str, Any]) -> None:
-    validate_standalone_snapshot(snapshot)
-    transport = snapshot["transport"]
-    command = transport["command"]
-    args = transport["args"]
-    subprocess.run([codex, "mcp", "add", STANDALONE_NAME, "--", command, *args], check=True, shell=False)
-
-
-def remove_standalone(codex: str) -> None:
-    subprocess.run([codex, "mcp", "remove", STANDALONE_NAME], check=True, shell=False)
-
-
-def remove_plugin(codex: str) -> None:
-    setup.run_plugin_uninstall(codex)
-
-
-def enable_plugin(codex: str) -> None:
-    setup.run_plugin_install(codex)
-
-
 def configure(args: argparse.Namespace, root: Path) -> None:
     runtime = bundled_runtime(root)
     setup.install(argparse.Namespace(
@@ -131,7 +89,9 @@ def configure(args: argparse.Namespace, root: Path) -> None:
         workspace_id=args.workspace_id,
         runtime_python=str(runtime),
         with_plugin=False,
-        codex_command=args.codex_command,
+        # This remains a compatibility field of the pre-RC4 local setup
+        # helper.  The distributable marketplace path never invokes it.
+        codex_command="",
     ))
 
 
@@ -144,6 +104,7 @@ def bundled_runtime(root: Path) -> Path:
         raise ReleaseError("release-owned embedded Python runtime is unavailable") from exc
     if not resolved.is_file() or resolved.is_symlink():
         raise ReleaseError("release-owned embedded Python runtime is unavailable")
+    diagnostic("probing the release-owned embedded Python runtime")
     result = subprocess.run(
         [str(resolved), "-I", "-B", "-c", "import mcp, sys; raise SystemExit(0 if sys.version_info[:2] == (3, 13) else 1)"],
         cwd=str(resolved.parent), capture_output=True, text=True, timeout=20, shell=False,
@@ -155,28 +116,13 @@ def bundled_runtime(root: Path) -> Path:
 
 def current_install(root: Path) -> dict[str, Any] | None:
     current = read_json(state_path(root))
-    if current is not None and current.get("schema_version") != STATE_SCHEMA:
+    if current is not None and current.get("schema_version") not in {"nexus.github.release.state.v1", STATE_SCHEMA}:
         raise ReleaseError("existing Nexus release state is invalid")
     return current
 
 
-def restore_previous(root: Path, codex: str, previous: dict[str, Any] | None) -> None:
-    """Best-effort rollback after a failed activation, preserving the first error."""
-    if not previous:
-        return
-    mode = previous.get("mode")
-    if mode == "plugin":
-        old_root = Path(previous.get("release_root", ""))
-        if old_root.is_dir():
-            verify_release_tree(old_root)
-            subprocess.run([codex, "plugin", "marketplace", "add", str(old_root)], check=True, shell=False)
-            subprocess.run([codex, "plugin", "add", f"{setup.PLUGIN_NAME}@{setup.MARKETPLACE_NAME}"], check=True, shell=False)
-    standalone = previous.get("standalone_before")
-    if isinstance(standalone, dict):
-        restore_standalone(codex, standalone)
-
-
 def install(args: argparse.Namespace) -> int:
+    diagnostic("verifying extracted release integrity")
     manifest = verify_release_tree(ROOT)
     local = data_root(args.data_root)
     prior = current_install(local)
@@ -185,33 +131,29 @@ def install(args: argparse.Namespace) -> int:
     previous_files = {"config": snapshot_file(config), "workspaces": snapshot_file(workspaces)}
     # Plugin mode uses the release-local runtime declared in its staged MCP
     # manifest.  Do not consult python.exe, py.exe, aliases, or PATH.
-    bundled_runtime(ROOT)
-    # Do this before reading/migrating host registrations or creating a journal.
-    # A missing host must never degrade into raw WinError 2 after partial setup.
-    codex_command = setup.require_codex_cli(args.codex_command) if args.mode == "plugin" else args.codex_command
-    standalone = standalone_snapshot(codex_command) if args.mode == "plugin" else None
-    if args.mode == "plugin" and standalone and not args.migrate_standalone:
-        raise ReleaseError("standalone nexus-r2-local exists; use --migrate-standalone or choose standalone mode")
+    runtime = bundled_runtime(ROOT)
+    if prior and prior.get("schema_version") != STATE_SCHEMA and prior.get("mode") == "plugin":
+        raise ReleaseError("an earlier CLI-managed Nexus plugin installation must be uninstalled with its original release before Marketplace installation")
+    if args.migrate_standalone:
+        raise ReleaseError("standalone MCP migration is intentionally unavailable in Marketplace mode; keep standalone mode separate")
     journal = local / "transactions" / f"install-{setup.utc_stamp()}.json"
     atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "prepared", "release_root": str(ROOT), "version": manifest["version"]})
-    plugin_removed = False
-    standalone_removed = False
+    marketplace_prepared = False
     try:
-        if prior and prior.get("mode") == "plugin":
-            remove_plugin(codex_command)
-            plugin_removed = True
-        if args.mode == "plugin" and standalone:
-            remove_standalone(codex_command)
-            standalone_removed = True
         if args.mode == "plugin":
-            enable_plugin(codex_command)
+            diagnostic("preparing the Nexus personal Marketplace source")
+            marketplace_state = desktop_marketplace.install(ROOT, manifest["version"], runtime, local)
+            marketplace_prepared = True
+        else:
+            marketplace_state = None
+        diagnostic("writing Nexus-owned workspace configuration")
         configure(args, ROOT)
         new_state = {
             "schema_version": STATE_SCHEMA,
             "version": manifest["version"],
             "release_root": str(ROOT.resolve()),
             "mode": args.mode,
-            "standalone_before": standalone,
+            "marketplace": marketplace_state,
             "previous_install": prior,
             "previous_files": previous_files,
         }
@@ -219,30 +161,29 @@ def install(args: argparse.Namespace) -> int:
         atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "committed", "release_root": str(ROOT), "version": manifest["version"]})
     except Exception:
         try:
-            if args.mode == "plugin":
-                remove_plugin(codex_command)
             restore_file(config, previous_files["config"])
             restore_file(workspaces, previous_files["workspaces"])
-            if standalone_removed and standalone:
-                restore_standalone(codex_command, standalone)
-            elif plugin_removed:
-                restore_previous(local, codex_command, prior)
+            if marketplace_prepared:
+                desktop_marketplace.uninstall(rollback=True)
             atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "rolled_back", "release_root": str(ROOT)})
         except Exception as rollback_error:
             atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "manual_recovery_required", "release_root": str(ROOT), "error": str(rollback_error)})
         raise
+    if args.mode == "plugin":
+        print("Nexus personal marketplace is ready. Restart ChatGPT Desktop; if Nexus is not already visible, use Plugins > Personal > Nexus > Install.")
     print(f"Nexus {manifest['version']} installed in {args.mode} mode")
     return 0
 
 
 def uninstall(args: argparse.Namespace, rollback: bool = False) -> int:
+    diagnostic("verifying extracted release integrity")
     verify_release_tree(ROOT)
     local = data_root(args.data_root)
     state = current_install(local)
     if not state:
         raise ReleaseError("no Nexus GitHub Release installation is recorded")
     if state.get("mode") == "plugin":
-        remove_plugin(args.codex_command)
+        desktop_marketplace.uninstall(rollback=rollback)
     if rollback:
         previous = state.get("previous_install")
         files = state.get("previous_files", {})
@@ -250,17 +191,13 @@ def uninstall(args: argparse.Namespace, rollback: bool = False) -> int:
             raise ReleaseError("existing Nexus release state is invalid")
         restore_file(local / setup.CONFIG_FILENAME, files.get("config"))
         restore_file(local / "workspaces.json", files.get("workspaces"))
-        restore_previous(local, args.codex_command, previous if isinstance(previous, dict) else None)
-        standalone = state.get("standalone_before")
-        if not previous and isinstance(standalone, dict):
-            restore_standalone(args.codex_command, standalone)
         if isinstance(previous, dict):
             atomic_json_write(state_path(local), previous)
         else:
             state_path(local).unlink(missing_ok=True)
         print("Nexus release rollback restored the prior local state")
         return 0
-    setup.uninstall(argparse.Namespace(data_root=str(local), remove_plugin=False, remove_runtime=args.remove_runtime, codex_command=args.codex_command))
+    setup.uninstall(argparse.Namespace(data_root=str(local), remove_plugin=False, remove_runtime=args.remove_runtime, codex_command=""))
     state_path(local).unlink(missing_ok=True)
     print("Nexus GitHub Release installation removed; backups remain in the Nexus data directory")
     return 0
@@ -269,7 +206,6 @@ def uninstall(args: argparse.Namespace, rollback: bool = False) -> int:
 def parser() -> argparse.ArgumentParser:
     cli = argparse.ArgumentParser(description="Install a verified Nexus GitHub Release")
     cli.add_argument("--data-root", help="Nexus-owned local data directory; defaults to LOCALAPPDATA/Nexus")
-    cli.add_argument("--codex-command", default=setup.default_codex_command())
     commands = cli.add_subparsers(dest="command", required=True)
     commands.add_parser("verify", help="verify this extracted release tree").set_defaults(handler=lambda _args: (verify_release_tree(ROOT), print("Nexus release integrity check passed"), 0)[2])
     for name, handler, description in (("install", install, "install a verified release"), ("upgrade", install, "activate this verified release as an upgrade")):
@@ -277,7 +213,7 @@ def parser() -> argparse.ArgumentParser:
         command.add_argument("--workspace-root", required=True)
         command.add_argument("--workspace-id", default="nexus-default")
         command.add_argument("--mode", choices=("standalone", "plugin"), default="plugin")
-        command.add_argument("--migrate-standalone", action="store_true")
+        command.add_argument("--migrate-standalone", action="store_true", help=argparse.SUPPRESS)
         command.set_defaults(handler=handler)
     for name, rollback, description in (("uninstall", False, "remove Nexus-owned configuration"), ("rollback", True, "restore the pre-install local state")):
         command = commands.add_parser(name, help=description)

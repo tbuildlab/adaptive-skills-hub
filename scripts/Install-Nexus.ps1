@@ -5,12 +5,17 @@ param(
     [Parameter(Mandatory = $true)][string]$WorkspaceRoot,
     [ValidateSet('plugin', 'standalone')][string]$Mode = 'plugin',
     [switch]$MigrateStandalone,
-    [string]$DataRoot,
-    [string]$CodexCommand = 'codex'
+    [string]$DataRoot
 )
 
 $ErrorActionPreference = 'Stop'
 function Fail([string]$Message) { throw "Nexus installation failed: $Message" }
+function ExtendedPath([string]$Path) {
+    $full = [IO.Path]::GetFullPath($Path)
+    if ($full.StartsWith('\\?\')) { return $full }
+    if ($full.StartsWith('\\')) { return ('\\?\UNC\' + $full.TrimStart('\')) }
+    return ('\\?\' + $full)
+}
 if (-not (Test-Path -LiteralPath $ArchivePath -PathType Leaf)) { Fail 'archive was not found' }
 if (-not (Test-Path -LiteralPath $ChecksumPath -PathType Leaf)) { Fail 'checksum receipt was not found' }
 $expected = ((Get-Content -LiteralPath $ChecksumPath -Raw).Trim() -split '\s+')[0]
@@ -35,14 +40,14 @@ try {
     $base = if ($DataRoot) { Join-Path $DataRoot 'releases' } elseif ($env:LOCALAPPDATA) { Join-Path $env:LOCALAPPDATA 'Nexus\releases' } else { Join-Path $HOME '.nexus\releases' }
     $target = Join-Path $base $top
     if (Test-Path -LiteralPath $target) { Fail 'this release is already extracted; use release_install.py upgrade or rollback' }
-    New-Item -ItemType Directory -Force -Path $base | Out-Null
+    [IO.Directory]::CreateDirectory((ExtendedPath $base)) | Out-Null
     foreach ($entry in $archive.Entries) {
         if ([string]::IsNullOrEmpty($entry.Name)) { continue }
         $relative = $entry.FullName.Replace('/', [IO.Path]::DirectorySeparatorChar)
         $output = Join-Path $base $relative
         $parent = Split-Path -Parent $output
-        New-Item -ItemType Directory -Force -Path $parent | Out-Null
-        $input = $entry.Open(); try { $stream = [IO.File]::Open($output, [IO.FileMode]::CreateNew); try { $input.CopyTo($stream) } finally { $stream.Dispose() } } finally { $input.Dispose() }
+        [IO.Directory]::CreateDirectory((ExtendedPath $parent)) | Out-Null
+        $input = $entry.Open(); try { $stream = [IO.File]::Open((ExtendedPath $output), [IO.FileMode]::CreateNew); try { $input.CopyTo($stream) } finally { $stream.Dispose() } } finally { $input.Dispose() }
     }
 } finally { $archive.Dispose() }
 
@@ -60,7 +65,7 @@ if ($pythonCommand -and $pythonCommand.Source -match 'WindowsApps') {
 }
 $arguments = @((Join-Path $target 'scripts\release_install.py'))
 if ($DataRoot) { $arguments += @('--data-root', $DataRoot) }
-$arguments += @('--codex-command', $CodexCommand, 'install', '--workspace-root', $WorkspaceRoot, '--mode', $Mode)
+$arguments += @('install', '--workspace-root', $WorkspaceRoot, '--mode', $Mode)
 if ($MigrateStandalone) { $arguments += '--migrate-standalone' }
 & $python @arguments
 if ($LASTEXITCODE -ne 0) { Fail 'release configuration failed; extracted files remain verified for inspection' }

@@ -66,6 +66,40 @@ UI but no supported local Codex CLI therefore receives a precise prerequisite
 error rather than a partial installation. Standalone mode remains available
 for local MCP use, but it deliberately cannot claim `@Nexus` Plugin visibility.
 
+## RC4 Desktop Marketplace Adapter
+
+RC3 established that a fresh ChatGPT Desktop user cannot be assumed to have
+Codex CLI. RC4 therefore removes the CLI from the distribution path. It uses
+the officially documented per-user personal marketplace file:
+
+`~/.agents/plugins/marketplace.json`
+
+The adapter validates the manifest's minimum host schema, preserves unrelated
+entries, and adds only the standard `nexus-desktop` entry. Its source path is
+relative to the personal marketplace root and contained under the Nexus-owned
+sibling directory `nexus-marketplace`. The copied Plugin bridge is versioned,
+contains an ownership marker, and its generated `.mcp.json` uses an absolute
+path to the verified embedded runtime inside the Nexus release. No development
+path, system Python, PATH lookup, or host CLI is used.
+
+Before its atomic write, the adapter records an exact base64 Marketplace backup
+and a SHA-256 receipt in Nexus-owned state. Rollback restores that exact prior
+manifest only when Nexus was the last writer; otherwise it fails closed rather
+than overwrite a newer user change. Uninstall removes only the exact recorded
+Nexus entry and ownership-verified Nexus source.
+
+`INSTALLED_BY_DEFAULT` is a documented Marketplace policy requested by the
+entry. Desktop behavior after restart is intentionally not claimed by automated
+tests: if the current Desktop build does not install it automatically, the
+supported fallback is **Plugins > Personal > Nexus > Install**. No unsupported
+UI automation is attempted.
+
+The adapter never reads or writes `~/.codex/config.toml`. Consequently, once a
+Desktop host has materialized its own installed-plugin cache, its documented
+Plugin browser remains the supported way to remove that host-side installation.
+The release uninstaller cleans all Nexus-owned release and Marketplace source
+state, but refuses to delete host-managed state or unrelated configuration.
+
 ## Artifact contract
 
 Each GitHub Release candidate supplies a versioned ZIP, its SHA-256 receipt,
@@ -88,23 +122,25 @@ Mutable data is restricted to `%LOCALAPPDATA%\Nexus` (or an explicit
 workspace allowlist, launch config, backups, and transaction journals. These
 files are Git-ignored and are never part of a release artifact.
 
-The lifecycle is `verify -> preflight -> journal -> host activation -> atomic
-Nexus config -> commit`. A failure restores prior Nexus config and a safely
-captured standalone registration. `uninstall` removes only Nexus-owned config;
-`rollback` restores the state before the activation; `upgrade` is another
-explicit verified activation, never an automatic download or downgrade.
+The lifecycle is `verify -> preflight -> journal -> atomic Nexus config +
+Marketplace preparation -> commit`. A failure restores prior Nexus config and
+the exact Marketplace backup when safe. `uninstall` removes only Nexus-owned
+config and Marketplace source; `rollback` restores the state before the
+activation; `upgrade` is another explicit verified activation, never an
+automatic download or downgrade.
 
 ## Host modes
 
 | Mode | Purpose | Rule |
 | --- | --- | --- |
-| `plugin` | ChatGPT Desktop `@Nexus` and Codex Plugin workflow | Default; official `codex plugin` lifecycle only. |
+| `plugin` | ChatGPT Desktop `@Nexus` Plugin workflow | Default; documented personal Marketplace adapter; no CLI. |
 | `standalone` | Existing R3 `nexus-r2-local` local MCP workflow | Does not install the Plugin. |
 
-Only one Nexus MCP registration may be active. If `nexus-r2-local` exists,
-Plugin installation fails closed. `--migrate-standalone` is explicit and only
-accepts a losslessly restorable stdio mapping returned by the official CLI. It
-uses the CLI to remove/restore the mapping and never edits Codex TOML.
+Plugin mode creates no standalone `nexus-r2-local` mapping. Its MCP definition
+is bundled with the Plugin and the launcher uses only the release-owned runtime.
+Standalone R3 remains a separate developer/Codex lifecycle and is not inspected
+or migrated by the Marketplace adapter; this avoids reading or rewriting host
+configuration.
 
 ## Threat controls
 
@@ -112,7 +148,7 @@ uses the CLI to remove/restore the mapping and never edits Codex TOML.
 | --- | --- |
 | Artifact tampering | ZIP receipt plus exact per-file manifest validation. |
 | Archive traversal/symlinks | Bootstrap and extractor reject absolute, drive, `..`, multi-root, and symlink entries. |
-| Local configuration tampering | Strict schema and real-path validation; only Nexus-owned state is written. |
+| Local configuration tampering | Strict marketplace/state schema, contained real-path validation, ownership marker, atomic write, exact backup receipt; only Nexus-owned state is written. |
 | Dependency confusion | Reviewed offline wheelhouse and hash-locked installation. |
 | Interrupted activation | Fresh extraction target, durable journal, atomic writes, prior-state restoration. |
 | Privilege or execution expansion | Per-user paths, no shell, no elevation, no remote/OAuth; existing fixed read/plan-only MCP tools remain unchanged. |
@@ -125,7 +161,7 @@ neither claim.
 ## Versioning and future compatibility
 
 Frozen Core tags stay unchanged. Distribution has a separate SemVer stream in
-`release/VERSION`; `0.1.0-rc.3` is a release candidate, not a Core tag. A
+`release/VERSION`; `0.1.0-rc.4` is a release candidate, not a Core tag. A
 future GitHub Skill Scout must remain separately approved, preserve provenance,
 license/reputation/pinned-hash review, and never turn this installer into an
 automatic Skill installation channel.

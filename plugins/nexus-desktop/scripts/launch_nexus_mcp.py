@@ -18,6 +18,18 @@ CONFIG_FILENAME = "nexus-desktop-plugin.json"
 
 
 def _data_root() -> Path:
+    explicit = os.environ.get("NEXUS_DATA_ROOT")
+    if explicit:
+        candidate = Path(explicit)
+        if not candidate.is_absolute():
+            raise ValueError("Nexus data root is invalid")
+        try:
+            resolved = candidate.resolve(strict=True)
+        except OSError as exc:
+            raise ValueError("Nexus data root is unavailable") from exc
+        if not resolved.is_dir() or resolved.is_symlink() or resolved == Path(resolved.anchor):
+            raise ValueError("Nexus data root is invalid")
+        return resolved
     local_app_data = os.environ.get("LOCALAPPDATA")
     if local_app_data:
         return Path(local_app_data) / "Nexus"

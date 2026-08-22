@@ -3,15 +3,15 @@
 ## Prerequisites
 
 This path needs no repository clone, `D:` drive, administrator rights, API key,
-OAuth, remote MCP, Microsoft Store, `py.exe`, or preinstalled Python. RC2
+OAuth, remote MCP, Microsoft Store, `py.exe`, preinstalled Python, Codex CLI,
+Node, or npm. RC4
 contains a pinned, Nexus-owned CPython 3.13.15 x64 runtime and the reviewed R2
 dependencies. You need supported 64-bit Windows and one real non-root
-workspace directory. **Plugin mode additionally requires a runnable local
-Codex CLI with the `plugin` command for the same Windows user.** The CLI is the
-only supported component that registers a local marketplace; ChatGPT Desktop
-visibility alone does not expose a configuration interface this installer may
-rewrite. Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap
-receipt from the same trusted GitHub Release.
+workspace directory. The installer registers a Nexus-owned source in the
+documented per-user personal marketplace at
+`~/.agents/plugins/marketplace.json`; it never edits `~/.codex/config.toml`.
+Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap receipt from
+the same trusted GitHub Release.
 The release stays restricted/private until the owner separately chooses a
 license and repository visibility. Do not install files from a mirror.
 
@@ -45,18 +45,19 @@ Alias, modify another Python, or download packages. If `python` resolves to a
 WindowsApps alias or another system interpreter, it is reported only as ignored
 diagnostics; a missing or incompatible system interpreter is not a blocker.
 
-Before Plugin activation, Nexus probes the requested Codex CLI without changing
-its configuration. If the CLI is unavailable, cannot start, or has no Plugin
-command, installation fails closed before any Nexus-local setup state is
-written. Do not manually edit host configuration as a workaround. You may use
-`-Mode standalone` only when `@Nexus` Plugin visibility is not required.
+The documented Marketplace policy requests `INSTALLED_BY_DEFAULT`. After a
+restart, a supported ChatGPT Desktop build may make Nexus available directly.
+That is an empirical Desktop behavior, not an installer guarantee. If it is not
+visible, use **Plugins > Personal > Nexus > Install**, then start a fresh
+conversation and type `@`. This fallback uses no CLI and no manual JSON edit.
 
 ## Existing standalone MCP
 
-If `nexus-r2-local` already exists, Plugin installation defaults to refusal to
-avoid double registration. Keep it with `-Mode standalone`, or explicitly run
-with `-MigrateStandalone`. The latter supports only a losslessly restorable
-official CLI stdio configuration and restores it if activation fails.
+Plugin mode never registers `nexus-r2-local`; its bundled `.mcp.json` owns the
+single Plugin MCP definition and launches it with the verified release-owned
+embedded Python executable. Existing standalone R3 is a separate developer
+mode. The Marketplace installer intentionally does not inspect or rewrite
+Codex/ChatGPT host configuration to migrate it.
 
 ## Maintenance
 
@@ -73,5 +74,10 @@ Nexus never auto-downloads, auto-installs, or silently downgrades. Uninstall
 retains Nexus-local backups and verified release files for rollback; it never
 removes a workspace, another MCP server, or an unrelated system runtime. Close
 active Plugin sessions before uninstalling because the host may hold plugin
-files open. After uninstall and any required rollback have completed, a user
-may remove the exact Nexus-owned release directory under `%LOCALAPPDATA%\Nexus\releases`.
+files open. If Desktop has already installed the Plugin, use its documented
+**Uninstall plugin** control first; the release installer then removes only the
+Nexus Marketplace source, Nexus launch configuration, and Nexus-owned runtime
+state. It never removes an unrelated Plugin, Skill, workspace, or Desktop
+configuration. After uninstall and any required rollback have completed, a
+user may remove the exact Nexus-owned release directory under
+`%LOCALAPPDATA%\Nexus\releases`.

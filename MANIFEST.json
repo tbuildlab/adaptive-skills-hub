@@ -72,16 +72,16 @@
     "sha256": "e76900d66ff4b9ca0b505e16d6bcf164ebc31fd14fa5e6b5a6d9f54b2d505962"
   },
   "docs/github-distribution-architecture.md": {
-    "bytes": 7593,
-    "sha256": "514d5156562ca69d997c2481981fb920615df11d7dff36f7695e8bff7ae6df88"
+    "bytes": 9637,
+    "sha256": "ff7a8bd1274bafc6d9dfa2193a96dfc89b2706ac9d7becd5c7029923eb42d1d6"
   },
   "docs/github-release-installation.md": {
-    "bytes": 3933,
-    "sha256": "06257afa3c8af5745c5d59566c9511c043cc19b2019f16c1659de84ca3a2d55e"
+    "bytes": 4196,
+    "sha256": "25c3d852fff8f3a01b71348758de0508b2ea3eb29e8a3ebde37732932c0f8a91"
   },
   "docs/license-inventory.md": {
-    "bytes": 1315,
-    "sha256": "2ac4c874830c24494863435cac836c8cdb0299b400ee2e21a056182277652d7e"
+    "bytes": 1679,
+    "sha256": "cbe1458bd344b1525e33edd469e1245bd874e911dc77602eff005da357c34548"
   },
   "docs/nexus-desktop-plugin-pilot.md": {
     "bytes": 5179,
@@ -148,8 +148,8 @@
     "sha256": "2c69bf20ebd093da82a9f139c57e29c8f2e7c82d637dd6a6e5fb416b5694347f"
   },
   "plugins/nexus-desktop/scripts/launch_nexus_mcp.py": {
-    "bytes": 3311,
-    "sha256": "563db757cd8a8238de719f5b9890a88d9155f275cf5931f7dd3df62f9143f77e"
+    "bytes": 3860,
+    "sha256": "1ec590979b8ebe5f7f074c908868057dd7bed1f4aacb905cf1728084956e4148"
   },
   "plugins/nexus-desktop/skills/nexus/SKILL.md": {
     "bytes": 1356,
@@ -161,7 +161,7 @@
   },
   "release/VERSION": {
     "bytes": 11,
-    "sha256": "93f893b9b51cd2ee055332a64d4656e5bbbb652788acbaeaa7d1a6b32099d23f"
+    "sha256": "88dc6c9a8422a49fd83cb0490b89139d85bcc4e7429edba1fa57069d46f27c5b"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -180,12 +180,16 @@
     "sha256": "3800fef19549bf29f8aa4af51ab2ffff8e00bbd05282bbef0f73875f8651d4b0"
   },
   "scripts/build_release.py": {
-    "bytes": 14712,
-    "sha256": "6f765b2c92b73211661cb100e57bbae02ff6e499836dbb698e11d046efcb2fb7"
+    "bytes": 14750,
+    "sha256": "b2d2c6a7c33984962f5a142bc285d07aedfcda7891895995ca5161345ba1b968"
   },
   "scripts/check_updates.py": {
     "bytes": 2515,
     "sha256": "2debd7ddb271869a7dabcc48147f51bab4488dd23ff711958589b2eae1293588"
+  },
+  "scripts/desktop_marketplace.py": {
+    "bytes": 16551,
+    "sha256": "3521d05f78e99d6907ca3b866f42e9f9ec9aa821b88d085efb468661c5a4b65b"
   },
   "scripts/final_smoke.py": {
     "bytes": 4261,
@@ -196,8 +200,8 @@
     "sha256": "b2ff21cfca08a32a9de498732878c5c9fb1f871af76bb6c402113f63332e7213"
   },
   "scripts/Install-Nexus.ps1": {
-    "bytes": 4183,
-    "sha256": "7987624a22950ed3b978572fdbb6b5397d2eb7650e00da6d5e32f907d8db8e94"
+    "bytes": 4380,
+    "sha256": "eb8a3c4464a5b03ffa4800ee30dd7336e2915749b328b2d3a0b343136532b72f"
   },
   "scripts/nexus.py": {
     "bytes": 213,
@@ -220,8 +224,8 @@
     "sha256": "b5e48a6dbdf4f2c039fb72db8867055949e2bda36c53b733ef1ecd8cc0cc8b22"
   },
   "scripts/release_install.py": {
-    "bytes": 13733,
-    "sha256": "629cdf767164c92a23160a96accc3d975746e2addd2cb42329e67c2b4c03c8c6"
+    "bytes": 10900,
+    "sha256": "4abfdc1b1df2034eebfd5373a632bf7e8ea2c06a354b4e371afc5aa7eafd32a4"
   },
   "scripts/setup_nexus.py": {
     "bytes": 13328,
@@ -240,8 +244,8 @@
     "sha256": "1c668603ef0411b1d07a13f0770b0f9b545afdaaa4e2a48b83e127e2e8b8d136"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 25344,
-    "sha256": "0eb2fe6505232c2c6b03e49b4519f26236141bdcb6474f9303a55e1b560ce6ea"
+    "bytes": 29109,
+    "sha256": "89f7c6b3078275bd4e253186be2d4308562db16e6da6fe363c3b2f44d3251af6"
   },
   "tests/test_hub.py": {
     "bytes": 21706,
