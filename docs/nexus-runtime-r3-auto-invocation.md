@@ -12,12 +12,14 @@ completed explicit `nexus.health`, `nexus.discover_capabilities`, and
 `nexus.plan_task` requests. An explicit editable PowerPoint planning request
 selected `ppt-master`; the native editable PPTX routing correction is retained.
 
-A fresh, unqualified presentation-planning request received a useful native
-response with no observed Nexus tool call. This proves only that automatic
-selection was **not observed in that conversation**. It does not prove a
-Desktop defect or a deterministic cause. Tool choice is host/model policy; the
-R2 server can make its semantics clearer but cannot force ChatGPT Desktop to
-call a local tool.
+Four fresh Desktop conversations completed the automatic-selection evaluation.
+Neither eligible positive prompt (editable PowerPoint planning or backend
+debugging/regression testing) showed an observable Nexus tool call. Both
+ineligible prompts (`What is 2 + 2?` and a one-sentence inflation explanation)
+correctly bypassed Nexus. This proves only that automatic selection was **not
+observed for those positive conversations**. It does not prove a Desktop defect
+or a deterministic cause. Tool choice is host/model policy; R2 metadata can
+clarify semantics but cannot force ChatGPT Desktop to call a local tool.
 
 ## Tool responsibility and activation policy
 
@@ -93,8 +95,10 @@ still assesses the task only after a host elects to call it.
   whether a tool is relevant.
 - **Not guaranteed:** ChatGPT Desktop automatic invocation for any individual
   eligible prompt. No R2 description can require a call.
-- **Unknown:** account-, model-, and product-surface-specific automatic-tool
-  selection behavior until observed in a fresh Desktop conversation.
+- **Observed here:** automatic tool selection did not occur for the two tested
+  eligible Desktop prompts, while both tested ineligible prompts bypassed it.
+- **Variable:** account-, model-, and product-surface-specific automatic-tool
+  selection behavior may differ elsewhere and is not a product contract.
 
 Local Codex-host observation is a separate Level C signal. A natural positive
 prompt did not show an MCP call within the observable command window, so it is
@@ -103,20 +107,20 @@ recorded as inconclusive rather than a pass or a Desktop result.
 Official references: [OpenAI model guidance](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-5.2)
 and [Extending Codex with MCP](https://learn.chatgpt.com/docs/extend/mcp).
 
-## Manual Desktop acceptance packet
+## Completed Desktop acceptance packet
 
-Run each prompt in a **fresh ChatGPT Desktop conversation** with no mention of
-Nexus, MCP, or Skills:
+Each prompt was run in a **fresh ChatGPT Desktop conversation** with no mention
+of Nexus, MCP, or Skills:
 
 1. `I need to create an editable PowerPoint presentation. Plan the work first.`
 2. `Help me diagnose this backend API bug and add regression tests.`
 3. `What is 2 + 2?`
 4. `Explain inflation in one sentence.`
 
-Record whether a Nexus tool call is visible. Positive prompts may use
-`nexus.plan_task`; negative prompts should not. If a substantive task needs
-Nexus but auto-selection does not occur, the user can explicitly request Nexus
-or use the visible MCP/tool selector. Do not infer literal `@Nexus` support
+The first two prompts had no observable Nexus call. The final two bypassed
+Nexus, as intended. If a substantive task needs Nexus, the reliable R3 contract
+is an explicit request such as `Use Nexus to plan this task: ...`, or a visible
+MCP/tool selection where available. Do not infer literal `@Nexus` support
 unless that product surface is visible.
 
 ## Security and performance

@@ -84,16 +84,16 @@
     "sha256": "c322c9fa95cef310dad80339a9ec706613959c54f92350a6ff0de82a92dfeabc"
   },
   "docs/nexus-runtime-r3-auto-invocation.md": {
-    "bytes": 6156,
-    "sha256": "dcca0d505c18102d3b567ef33796bf04efdc9fde4e314939068a20838f691d32"
+    "bytes": 6546,
+    "sha256": "ab7a9013b59045d1c188dd05b39a747bd64c68b9c4d2a6c71c8cac7fc49ea7cc"
   },
   "docs/nexus-runtime-r3-chatgpt-architecture.md": {
-    "bytes": 32644,
-    "sha256": "328c856740184403695e34e423d9165329b19914bdaf4fbb3cbdbd3c7321827c"
+    "bytes": 34193,
+    "sha256": "7f1a41e4329c2d76f6233ba2429faac690182ddaacb1647d457ad848b5690a3e"
   },
   "docs/nexus-runtime-r3-desktop-pilot.md": {
-    "bytes": 6364,
-    "sha256": "2abb8490dac22c26e69c875d5b75f0f4acd65b60da87f83efb8f646f3fe85220"
+    "bytes": 7009,
+    "sha256": "d8d867d6f15a6f8a9d85927b112964486a623c036c7371354409dccd926c32c6"
   },
   "docs/test-prompts.md": {
     "bytes": 1242,

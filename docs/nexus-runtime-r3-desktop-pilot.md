@@ -1,4 +1,4 @@
-# Nexus Runtime R3 Desktop Integration Pilot
+# Nexus Runtime R3 Desktop Integration Pilot and Final Acceptance
 
 **Scope:** bounded local feasibility pilot for the existing Nexus Runtime R2 stdio
 MCP server. This is not Remote MCP, a tunnel, OAuth, Skill Scout, or Core V1.3.
@@ -12,10 +12,12 @@ visible and enabled, and that explicit Desktop calls to `nexus.health`,
 editable PowerPoint planning request selected `ppt-master`, preserving native
 editable PPTX routing.
 
-The remaining R3 gap is **automatic** selection: a fresh, unqualified
-presentation-planning conversation received a useful native response without
-observed `nexus.plan_task` use. That observation is not evidence that Desktop
-lacks local stdio MCP support. Current OpenAI documentation states that Codex
+Fresh automatic-selection evaluation showed no observable Nexus call for either
+eligible positive prompt (editable PowerPoint planning or backend
+debugging/regression testing). Both ineligible prompts correctly received
+native responses without Nexus. This is not evidence that Desktop lacks local
+stdio MCP support: automatic selection is host/model policy rather than a
+server guarantee. Current OpenAI documentation states that Codex
 Desktop shares `~/.codex/config.toml`, that Desktop servers can be added in
 **Settings -> MCP servers**, and that `/mcp` displays connected servers after
 restart. See [Extending Codex with MCP](https://learn.chatgpt.com/docs/extend/mcp).
@@ -57,18 +59,20 @@ not substituted for ChatGPT Desktop evidence.
 | `nexus.health` from Desktop | PASS | Explicit Desktop request completed successfully. |
 | `nexus.discover_capabilities` from Desktop | PASS | Explicit Desktop request completed successfully. |
 | `nexus.plan_task` from Desktop | PASS | Explicit Desktop request completed successfully; editable PowerPoint selected `ppt-master`. |
+| Safe discovery projection | PASS | 148 capabilities were available; 97 safe records were returned and duplicate-conflict information was surfaced. |
 | Natural explicit selection | PASS | An explicit request can use Nexus. |
-| Automatic positive/negative selection | NOT YET ACCEPTED | One unqualified presentation-planning prompt did not show a Nexus call. |
+| Automatic positive selection | NOT OBSERVED | Neither fresh eligible prompt showed an observable Nexus call; this is a host/model heuristic, not a failure of explicit integration. |
+| Automatic negative bypass | PASS | `2 + 2` and a one-sentence inflation request both bypassed Nexus. |
 | Literal `@Nexus` | NOT EXPOSED | Do not claim support unless the UI visibly offers custom App/tool references. |
 | Local D: file execution after planning | NOT GRANTED | A plan does not authorize file access. Do not broaden MCP to make this work. |
 
-## Remaining Desktop acceptance
+## Reliable Desktop usage contract
 
-Automatic selection remains a host/model heuristic, not a server guarantee.
-Use the four fresh-chat prompts in
-[`nexus-runtime-r3-auto-invocation.md`](nexus-runtime-r3-auto-invocation.md)
-to record the post-optimization Desktop result. Do not infer literal `@Nexus`
-support unless that UI surface is visible.
+For a substantive task, users should explicitly ask: `Use Nexus to plan this
+task: ...`. Nexus selects capabilities and returns bounded evidence; ChatGPT
+then performs only separately supported execution. Automatic selection may
+occur depending on host/model behavior, but users must not rely on it. Do not
+infer literal `@Nexus` support unless that UI surface is visible.
 
 ## Privacy, authorization, and fallback contract
 
@@ -98,14 +102,15 @@ surface if it is shown there. Neither operation changes Nexus source code.
 
 ## Regression evidence
 
-- Nexus: `python -m unittest discover -s tests -v` — **86 passed, 1 skipped**
-  (Windows symlink fixture lacks the required privilege).
-- Nexus V1.1 smoke: `python scripts/final_smoke.py` — **10/10 passed**.
-- AI Coordinator R1 integration: `pytest tests/test_nexus_r1_integration.py -q`
-  — **10 passed** (one pre-existing non-fatal pytest cache permission warning).
+The final release gate reruns the full Nexus suite, R3 metadata and routing
+coverage, R2 MCP protocol/security coverage, R1 handoff coverage, smoke,
+manifest repeatability/integrity, and the AI Coordinator R1 integration
+regression. Its exact command output and counts are recorded in the release
+acceptance report rather than being replaced by an older pilot snapshot.
 
 ## Pilot decision
 
-Nexus is available for explicit ChatGPT Desktop use. Automatic invocation is
-not yet accepted and must be judged only from the fresh-conversation retest
-packet after the metadata optimization.
+R3-E is accepted for explicit ChatGPT Desktop use. Automatic invocation is
+not guaranteed: the two positive fresh-chat observations did not invoke Nexus,
+while the two negative bypass checks passed. The completed fresh-chat record is
+in [`nexus-runtime-r3-auto-invocation.md`](nexus-runtime-r3-auto-invocation.md).

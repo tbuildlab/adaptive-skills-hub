@@ -1,11 +1,35 @@
 # Nexus Runtime R3 — ChatGPT Integration Architecture and Feasibility
 
-**Status:** design-only; this document implements nothing.
+**Status:** R3-E local ChatGPT Desktop explicit integration is accepted and
+frozen by the R3 release gate. The original architecture and its deferred R3-B
+remote design remain here as historical design context; this document does not
+authorize R3-B or any other follow-on implementation.
 
 **Design branch:** `nexus-runtime-r3-design`
 **Frozen baseline:** Nexus V1.2 + Runtime R2, `5825eb5f241e7276a5894c0af860953e38636b6e`.
 
 ## Executive summary
+
+## R3-E final acceptance update
+
+Real ChatGPT Desktop acceptance verified that the enabled local
+`nexus-r2-local` connection can explicitly invoke `nexus.health`,
+`nexus.discover_capabilities`, and `nexus.plan_task`. Health reported a ready,
+local-stdio, read/plan-only service with no listener or persistent state.
+Discovery reported 148 available capabilities, safely returned 97 bounded
+records, and surfaced duplicate-conflict information. An explicit editable
+native PowerPoint planning request selected `ppt-master`, returned a bounded
+multi-step execution/validation plan, and created no artifact during planning.
+
+Four fresh conversations also evaluated automatic tool selection. Neither of
+two eligible prompts (editable PowerPoint planning and backend bug/regression
+testing) showed an observable Nexus call. Both ineligible prompts (`2 + 2` and
+a one-sentence inflation explanation) correctly bypassed Nexus. Therefore,
+explicit Nexus use is the reliable R3 user experience; automatic selection is
+heuristic and not a release guarantee. Literal `@Nexus` remains unverified.
+
+These are user-observed product-acceptance results, distinct from the local
+repository regressions documented in the pilot record.
 
 R3 should begin with **R3-E: reuse the existing local, read/plan-only Nexus R2
 stdio server from ChatGPT Desktop on the same Codex host**. This is the smallest
@@ -105,7 +129,8 @@ REQUIRED**; the documented plugin/MCP path is the reference.
 ### Recommended experience
 
 1. In Desktop, enable `nexus-r2-local` in **Settings → MCP servers**.
-2. In the composer, type `/mcp`, select Nexus, and request a task plan.
+2. Explicitly ask: `Use Nexus to plan this task: create an editable PowerPoint presentation.`
+   A visible MCP/tool selector such as `/mcp` may also be used where available.
 3. ChatGPT makes an applicable read-only R2 call; Nexus returns a bounded plan.
 4. ChatGPT states whether Nexus was used and performs only separately supported,
    user-authorized follow-on work.
