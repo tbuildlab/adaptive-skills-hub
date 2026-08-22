@@ -39,6 +39,10 @@
     "bytes": 4512,
     "sha256": "f2b563baae87606041576a124e373dd55e75492e1cd5507fdf0fca864cb9865a"
   },
+  "docs/nexus-runtime-r2-mcp-architecture.md": {
+    "bytes": 29033,
+    "sha256": "ddff11d967e6f4bf9c5cc33a2dbb1ca0e7c4fc6cef92fad110efa7ddcbcb38f2"
+  },
   "docs/test-prompts.md": {
     "bytes": 1242,
     "sha256": "ad9f84a64fa25b1ad43349f1e250187bf9fa927834d0147ad466b1a98cab13f8"
@@ -64,8 +68,8 @@
     "sha256": "5073f02ad8f9133b838216e32645d06aaf62c38601d97bfb69b472def0b4a031"
   },
   "scripts/build_manifest.py": {
-    "bytes": 1356,
-    "sha256": "553df5b3a62d9130ef476162e22d3a07a130548c549158570f08dadcfbeffd98"
+    "bytes": 1712,
+    "sha256": "3800fef19549bf29f8aa4af51ab2ffff8e00bbd05282bbef0f73875f8651d4b0"
   },
   "scripts/check_updates.py": {
     "bytes": 2515,
