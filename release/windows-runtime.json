@@ -1,0 +1,12 @@
+{
+  "schema_version": "nexus.windows.embedded-runtime.v1",
+  "provider": "Python Software Foundation",
+  "python_version": "3.13.15",
+  "platform": "win-amd64",
+  "filename": "python-3.13.15-embed-amd64.zip",
+  "sha256": "d1f04d990aee1253d8569e8e5104e30fa9f5fa830899f14843448872d936a2cf",
+  "source_url": "https://www.python.org/ftp/python/3.13.15/python-3.13.15-embed-amd64.zip",
+  "license": "PSF-2.0",
+  "license_notice": "runtime/python/LICENSE.txt",
+  "python_pth": "python313._pth"
+}

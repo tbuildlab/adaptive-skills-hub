@@ -13,17 +13,24 @@ import email
 from email.parser import BytesParser
 import hashlib
 import json
+import os
 from pathlib import Path
+from pathlib import PurePosixPath
 import re
 import shutil
+import subprocess
 import tempfile
 import zipfile
 
-from release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
+if __package__:
+    from .release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
+else:
+    from release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
 
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION_FILE = ROOT / "release" / "VERSION"
+RUNTIME_SPEC_FILE = ROOT / "release" / "windows-runtime.json"
 ROOT_FILES = {"requirements-r2-mcp.txt"}
 DIRECTORIES = {"ash", "config", "plugins/nexus-desktop"}
 EXTRA_FILES = {
@@ -37,6 +44,7 @@ EXTRA_FILES = {
     "docs/github-distribution-architecture.md",
     "docs/license-inventory.md",
     "release/VERSION",
+    "release/windows-runtime.json",
 }
 SENSITIVE_PARTS = ("credential", "token", "oauth", "session", "cookie", "private_key")
 VERSION_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")
@@ -89,13 +97,11 @@ def wheel_metadata(path: Path) -> tuple[str, str]:
     return re.sub(r"[-_.]+", "-", name).lower(), version
 
 
-def copy_wheelhouse(stage: Path, wheelhouse: Path) -> None:
+def write_wheel_lock(stage: Path, wheelhouse: Path) -> None:
     wheels = sorted(wheelhouse.glob("*.whl"))
     if not wheels:
         raise ReleaseError("a reviewed wheelhouse with at least one wheel is required")
     entries: dict[str, tuple[str, list[str]]] = {}
-    target = stage / "wheelhouse"
-    target.mkdir()
     for wheel in wheels:
         if wheel.is_symlink() or not wheel.is_file():
             raise ReleaseError("wheelhouse must contain only real wheel files")
@@ -105,12 +111,114 @@ def copy_wheelhouse(stage: Path, wheelhouse: Path) -> None:
         if name not in entries:
             entries[name] = (version, [])
         entries[name][1].append(sha256_file(wheel))
-        shutil.copy2(wheel, target / wheel.name)
     lock = "\n".join(
         f"{name}=={version}" + "".join(f" --hash=sha256:{digest}" for digest in sorted(set(digests)))
         for name, (version, digests) in sorted(entries.items())
     ) + "\n"
     (stage / "requirements-release.lock").write_text(lock, encoding="ascii", newline="\n")
+
+
+def runtime_spec() -> dict[str, str]:
+    """Load the reviewed, pinned official Windows runtime identity."""
+    try:
+        payload = json.loads(RUNTIME_SPEC_FILE.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ReleaseError("embedded runtime specification is unavailable") from exc
+    expected = {
+        "schema_version", "provider", "python_version", "platform", "filename", "sha256",
+        "source_url", "license", "license_notice", "python_pth",
+    }
+    if not isinstance(payload, dict) or set(payload) != expected:
+        raise ReleaseError("embedded runtime specification is invalid")
+    if payload.get("schema_version") != "nexus.windows.embedded-runtime.v1" or payload.get("platform") != "win-amd64":
+        raise ReleaseError("embedded runtime specification is invalid")
+    for key in expected - {"schema_version"}:
+        if not isinstance(payload.get(key), str) or not payload[key]:
+            raise ReleaseError("embedded runtime specification is invalid")
+    if not re.fullmatch(r"[0-9a-f]{64}", payload["sha256"]):
+        raise ReleaseError("embedded runtime specification is invalid")
+    return payload
+
+
+def safe_zip_extract(source: Path, destination: Path) -> None:
+    """Extract a reviewed ZIP without trusting traversal or symlink metadata."""
+    try:
+        with zipfile.ZipFile(source) as archive:
+            for info in archive.infolist():
+                if info.is_dir():
+                    continue
+                name = safe_member_name(info.filename)
+                if (info.external_attr >> 16) & 0o170000 == 0o120000:
+                    raise ReleaseError("embedded runtime archive contains a symlink")
+                target = destination.joinpath(*PurePosixPath(name).parts)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                with archive.open(info) as input_handle, target.open("xb") as output_handle:
+                    shutil.copyfileobj(input_handle, output_handle)
+    except (OSError, zipfile.BadZipFile) as exc:
+        raise ReleaseError("embedded runtime archive is invalid") from exc
+
+
+def vendor_wheels(wheelhouse: Path, destination: Path) -> None:
+    """Vendor reviewed wheels; embeddable Python deliberately does not ship pip."""
+    destination.mkdir(parents=True, exist_ok=True)
+    for wheel in sorted(wheelhouse.glob("*.whl")):
+        safe_zip_extract(wheel, destination)
+
+
+def configure_embedded_paths(runtime: Path, spec: dict[str, str]) -> None:
+    path_file = runtime / spec["python_pth"]
+    if not path_file.is_file() or path_file.is_symlink():
+        raise ReleaseError("embedded runtime is missing its path configuration")
+    # The PyWin32 wheel uses a .pth file.  The embeddable distribution's ._pth
+    # mode does not process it reliably, so these paths must be explicit.
+    path_file.write_text(
+        "python313.zip\n.\nsite-packages\nsite-packages/win32\nsite-packages/win32/lib\n"
+        "site-packages/pythonwin\nsite-packages/pywin32_system32\nimport site\n",
+        encoding="ascii",
+        newline="\n",
+    )
+
+
+def embedded_runtime_self_check(executable: Path) -> None:
+    result = subprocess.run(
+        [str(executable), "-I", "-B", "-c", "import mcp, sys; assert sys.version_info[:2] == (3, 13)"],
+        cwd=executable.parent,
+        capture_output=True,
+        text=True,
+        timeout=20,
+        env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+    )
+    if result.returncode:
+        raise ReleaseError("embedded runtime dependency self-check failed")
+
+
+def prepare_embedded_runtime(stage: Path, wheelhouse: Path, python_embed: Path) -> None:
+    spec = runtime_spec()
+    try:
+        archive = python_embed.resolve(strict=True)
+    except OSError as exc:
+        raise ReleaseError("a reviewed embedded Python runtime is required") from exc
+    if archive.is_symlink() or archive.name != spec["filename"] or sha256_file(archive) != spec["sha256"]:
+        raise ReleaseError("embedded Python runtime does not match the pinned official checksum")
+    runtime = stage / "runtime" / "python"
+    runtime.mkdir(parents=True)
+    safe_zip_extract(archive, runtime)
+    executable = runtime / "python.exe"
+    if not executable.is_file() or executable.is_symlink() or not (runtime / "LICENSE.txt").is_file():
+        raise ReleaseError("embedded runtime payload is incomplete")
+    configure_embedded_paths(runtime, spec)
+    vendor_wheels(wheelhouse, runtime / "site-packages")
+    metadata = {
+        "schema_version": "nexus.embedded-runtime.metadata.v1",
+        "provider": spec["provider"],
+        "python_version": spec["python_version"],
+        "platform": spec["platform"],
+        "source_url": spec["source_url"],
+        "archive_sha256": spec["sha256"],
+        "license": spec["license"],
+    }
+    atomic_json_write(runtime.parent / "runtime-metadata.json", metadata)
+    embedded_runtime_self_check(executable)
 
 
 def write_manifest(stage: Path, version: str) -> None:
@@ -130,7 +238,7 @@ def write_manifest(stage: Path, version: str) -> None:
     })
 
 
-def build(output: Path, version: str, wheelhouse: Path) -> tuple[Path, Path]:
+def build(output: Path, version: str, wheelhouse: Path, python_embed: Path) -> tuple[Path, Path]:
     output = output.resolve()
     if ROOT == output or ROOT in output.parents:
         raise ReleaseError("release output must be outside the repository")
@@ -151,13 +259,23 @@ def build(output: Path, version: str, wheelhouse: Path) -> tuple[Path, Path]:
         manifest_payload["version"] = version
         manifest_payload["description"] = "Local Nexus task-planning workflow for ChatGPT Desktop and Codex."
         plugin_manifest.write_text(json.dumps(manifest_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        plugin_mcp = stage / "plugins" / "nexus-desktop" / ".mcp.json"
+        mcp_payload = json.loads(plugin_mcp.read_text(encoding="utf-8"))
+        server = mcp_payload.get("mcpServers", {}).get("nexus_desktop_local")
+        if not isinstance(server, dict):
+            raise ReleaseError("plugin MCP manifest is invalid")
+        # The plugin is rooted at plugins/nexus-desktop.  This release-local
+        # executable avoids PATH, py.exe and Windows App Execution Aliases.
+        server["command"] = "../../runtime/python/python.exe"
+        plugin_mcp.write_text(json.dumps(mcp_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
         try:
             resolved_wheelhouse = wheelhouse.resolve(strict=True)
         except OSError as exc:
             raise ReleaseError("a reviewed wheelhouse is required") from exc
         if not resolved_wheelhouse.is_dir() or resolved_wheelhouse.is_symlink():
             raise ReleaseError("a reviewed wheelhouse is required")
-        copy_wheelhouse(stage, resolved_wheelhouse)
+        write_wheel_lock(stage, resolved_wheelhouse)
+        prepare_embedded_runtime(stage, resolved_wheelhouse, python_embed)
         write_manifest(stage, version)
         verify_release_tree(stage)
         with zipfile.ZipFile(archive, "x", compression=zipfile.ZIP_DEFLATED, strict_timestamps=False) as bundle:
@@ -176,10 +294,11 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Build a verified Nexus GitHub Release candidate")
     parser.add_argument("--output-dir", required=True)
     parser.add_argument("--wheelhouse", required=True, help="reviewed offline wheels for the target Windows/Python runtime")
+    parser.add_argument("--python-embed", required=True, help="official Windows x64 embeddable Python ZIP matching release/windows-runtime.json")
     parser.add_argument("--version", help="override release/VERSION for CI release candidates")
     args = parser.parse_args()
     try:
-        archive, receipt = build(Path(args.output_dir).expanduser(), release_version(args.version), Path(args.wheelhouse).expanduser())
+        archive, receipt = build(Path(args.output_dir).expanduser(), release_version(args.version), Path(args.wheelhouse).expanduser(), Path(args.python_embed).expanduser())
         print(f"Artifact: {archive}")
         print(f"Checksum: {receipt}")
         return 0

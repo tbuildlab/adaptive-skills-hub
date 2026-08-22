@@ -3,10 +3,12 @@
 ## Prerequisites
 
 This path needs no repository clone, `D:` drive, administrator rights, API key,
-OAuth, or remote MCP. You need Windows, Python 3.10+, one real non-root
-workspace directory, and (for Plugin mode) a compatible Codex/ChatGPT Desktop
-host. Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap
-receipt from the same trusted GitHub Release.
+OAuth, remote MCP, Microsoft Store, `py.exe`, or preinstalled Python. RC2
+contains a pinned, Nexus-owned CPython 3.13.15 x64 runtime and the reviewed R2
+dependencies. You need supported 64-bit Windows, one real non-root workspace
+directory, and (for Plugin mode) a compatible Codex/ChatGPT Desktop host.
+Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap receipt from
+the same trusted GitHub Release.
 
 The release stays restricted/private until the owner separately chooses a
 license and repository visibility. Do not install files from a mirror.
@@ -35,6 +37,12 @@ license and repository visibility. Do not install files from a mirror.
    elevation. Restart ChatGPT Desktop and open a new conversation for the final
    human `@Nexus` visibility check.
 
+The bootstrap uses the verified release-local runtime. It does not alter
+`PATH`, install a system Python, use `py.exe`, rely on a Windows App Execution
+Alias, modify another Python, or download packages. If `python` resolves to a
+WindowsApps alias or another system interpreter, it is reported only as ignored
+diagnostics; a missing or incompatible system interpreter is not a blocker.
+
 ## Existing standalone MCP
 
 If `nexus-r2-local` already exists, Plugin installation defaults to refusal to
@@ -47,13 +55,15 @@ official CLI stdio configuration and restores it if activation fails.
 After extraction, use the printed release root:
 
 ```powershell
-python <release-root>\scripts\release_install.py verify
-python <release-root>\scripts\release_install.py upgrade --workspace-root C:\Work\MyProject --mode plugin
-python <release-root>\scripts\release_install.py rollback
-python <release-root>\scripts\release_install.py uninstall --remove-runtime
+<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py verify
+<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py upgrade --workspace-root C:\Work\MyProject --mode plugin
+<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py rollback
+<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py uninstall
 ```
 
 Nexus never auto-downloads, auto-installs, or silently downgrades. Uninstall
-retains Nexus-local backups and never removes a workspace, another MCP server,
-or downloaded release files. Close active Plugin sessions before uninstalling
-because the host may hold plugin files open.
+retains Nexus-local backups and verified release files for rollback; it never
+removes a workspace, another MCP server, or an unrelated system runtime. Close
+active Plugin sessions before uninstalling because the host may hold plugin
+files open. After uninstall and any required rollback have completed, a user
+may remove the exact Nexus-owned release directory under `%LOCALAPPDATA%\Nexus\releases`.

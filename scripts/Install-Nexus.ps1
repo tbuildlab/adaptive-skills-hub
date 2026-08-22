@@ -5,7 +5,6 @@ param(
     [Parameter(Mandatory = $true)][string]$WorkspaceRoot,
     [ValidateSet('plugin', 'standalone')][string]$Mode = 'plugin',
     [switch]$MigrateStandalone,
-    [string]$RuntimePython,
     [string]$DataRoot,
     [string]$CodexCommand = 'codex'
 )
@@ -47,12 +46,21 @@ try {
     }
 } finally { $archive.Dispose() }
 
-$python = if ($RuntimePython) { $RuntimePython } elseif (Get-Command py -ErrorAction SilentlyContinue) { 'py' } elseif (Get-Command python -ErrorAction SilentlyContinue) { 'python' } else { Fail 'Python 3.10+ is required' }
+$python = Join-Path $target 'runtime\python\python.exe'
+if (-not (Test-Path -LiteralPath $python -PathType Leaf)) { Fail 'release-owned embedded Python runtime is unavailable' }
+$runtimeProbe = & $python -I -B -c "import mcp, sys; raise SystemExit(0 if sys.version_info[:2] == (3, 13) else 1)"
+if ($LASTEXITCODE -ne 0) { Fail 'release-owned embedded Python runtime is incompatible' }
+$pythonCommand = Get-Command python -ErrorAction SilentlyContinue
+if ($pythonCommand -and $pythonCommand.Source -match 'WindowsApps') {
+    Write-Host 'Detected a Windows App Execution Alias placeholder; it is ignored.'
+} elseif ($pythonCommand) {
+    Write-Host 'Detected a system Python command; it is ignored in favor of the Nexus-owned runtime.'
+} else {
+    Write-Host 'No usable system Python command detected; using the Nexus-owned runtime.'
+}
 $arguments = @((Join-Path $target 'scripts\release_install.py'))
-if ($python -eq 'py') { $arguments = @('-3') + $arguments }
 if ($DataRoot) { $arguments += @('--data-root', $DataRoot) }
 $arguments += @('--codex-command', $CodexCommand, 'install', '--workspace-root', $WorkspaceRoot, '--mode', $Mode)
-if ($RuntimePython) { $arguments += @('--runtime-python', $RuntimePython) }
 if ($MigrateStandalone) { $arguments += '--migrate-standalone' }
 & $python @arguments
 if ($LASTEXITCODE -ne 0) { Fail 'release configuration failed; extracted files remain verified for inspection' }

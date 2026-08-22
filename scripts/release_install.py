@@ -14,12 +14,17 @@ import base64
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 from typing import Any
 
 sys.dont_write_bytecode = True
+# The official embeddable Python's ._pth isolation intentionally omits the
+# script directory. Add only this verified release-local directory so sibling
+# lifecycle modules remain importable; do not consult PATH or user site paths.
+SCRIPT_DIRECTORY = Path(__file__).resolve().parent
+if str(SCRIPT_DIRECTORY) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIRECTORY))
 
 if __package__:
     from . import setup_nexus as setup
@@ -119,14 +124,33 @@ def enable_plugin(codex: str) -> None:
 
 
 def configure(args: argparse.Namespace, root: Path) -> None:
+    runtime = bundled_runtime(root)
     setup.install(argparse.Namespace(
         data_root=str(data_root(args.data_root)),
         workspace_root=args.workspace_root,
         workspace_id=args.workspace_id,
-        runtime_python=args.runtime_python,
+        runtime_python=str(runtime),
         with_plugin=False,
         codex_command=args.codex_command,
     ))
+
+
+def bundled_runtime(root: Path) -> Path:
+    """Return the release-owned interpreter, never a system PATH executable."""
+    runtime = root / "runtime" / "python" / "python.exe"
+    try:
+        resolved = runtime.resolve(strict=True)
+    except OSError as exc:
+        raise ReleaseError("release-owned embedded Python runtime is unavailable") from exc
+    if not resolved.is_file() or resolved.is_symlink():
+        raise ReleaseError("release-owned embedded Python runtime is unavailable")
+    result = subprocess.run(
+        [str(resolved), "-I", "-B", "-c", "import mcp, sys; raise SystemExit(0 if sys.version_info[:2] == (3, 13) else 1)"],
+        cwd=str(resolved.parent), capture_output=True, text=True, timeout=20, shell=False,
+    )
+    if result.returncode:
+        raise ReleaseError("release-owned embedded Python runtime is incompatible")
+    return resolved
 
 
 def current_install(root: Path) -> dict[str, Any] | None:
@@ -159,8 +183,9 @@ def install(args: argparse.Namespace) -> int:
     config = local / setup.CONFIG_FILENAME
     workspaces = local / "workspaces.json"
     previous_files = {"config": snapshot_file(config), "workspaces": snapshot_file(workspaces)}
-    if args.mode == "plugin" and shutil.which("python") is None:
-        raise ReleaseError("Plugin mode requires a `python` command on PATH for the local launcher")
+    # Plugin mode uses the release-local runtime declared in its staged MCP
+    # manifest.  Do not consult python.exe, py.exe, aliases, or PATH.
+    bundled_runtime(ROOT)
     standalone = standalone_snapshot(args.codex_command) if args.mode == "plugin" else None
     if args.mode == "plugin" and standalone and not args.migrate_standalone:
         raise ReleaseError("standalone nexus-r2-local exists; use --migrate-standalone or choose standalone mode")
@@ -248,7 +273,6 @@ def parser() -> argparse.ArgumentParser:
         command = commands.add_parser(name, help=description)
         command.add_argument("--workspace-root", required=True)
         command.add_argument("--workspace-id", default="nexus-default")
-        command.add_argument("--runtime-python")
         command.add_argument("--mode", choices=("standalone", "plugin"), default="plugin")
         command.add_argument("--migrate-standalone", action="store_true")
         command.set_defaults(handler=handler)
