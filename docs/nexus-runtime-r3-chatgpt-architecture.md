@@ -1,7 +1,8 @@
 # Nexus Runtime R3 — ChatGPT Integration Architecture and Feasibility
 
-**Status:** design-only; this document implements nothing.  
-**Design branch:** `nexus-runtime-r3-design`  
+**Status:** design-only; this document implements nothing.
+
+**Design branch:** `nexus-runtime-r3-design`
 **Frozen baseline:** Nexus V1.2 + Runtime R2, `5825eb5f241e7276a5894c0af860953e38636b6e`.
 
 ## Executive summary
