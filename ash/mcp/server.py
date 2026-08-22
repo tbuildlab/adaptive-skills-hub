@@ -16,6 +16,14 @@ from .schemas import DISCOVER_INPUT_SCHEMA, HEALTH_INPUT_SCHEMA, PLAN_INPUT_SCHE
 from .telemetry import emit
 
 
+READ_ONLY_TOOL_ANNOTATIONS = types.ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    idempotentHint=True,
+    openWorldHint=False,
+)
+
+
 def _text_for(payload: dict[str, Any]) -> str:
     # TextContent is the baseline MCP result representation supported by current
     # Codex hosts.  Keep the same redacted, versioned envelope as compact JSON
@@ -30,9 +38,9 @@ def _result(payload: dict[str, Any], error: bool = False) -> types.CallToolResul
 def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
     async def list_tools(_ctx: Any, _params: Any) -> types.ListToolsResult:
         return types.ListToolsResult(tools=[
-            types.Tool(name="nexus.health", description="Read Nexus R2 local MCP health and safe capability flags.", inputSchema=HEALTH_INPUT_SCHEMA),
-            types.Tool(name="nexus.discover_capabilities", description="Read bounded Nexus Skill capability metadata only; no instructions or paths.", inputSchema=DISCOVER_INPUT_SCHEMA),
-            types.Tool(name="nexus.plan_task", description="Create a read/plan-only Nexus plan. This never executes the task.", inputSchema=PLAN_INPUT_SCHEMA),
+            types.Tool(name="nexus.health", description="Read Nexus R2 local MCP health and safe capability flags.", inputSchema=HEALTH_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.discover_capabilities", description="Read bounded Nexus Skill capability metadata only; no instructions or paths.", inputSchema=DISCOVER_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.plan_task", description="Create a read/plan-only Nexus plan. This never executes the task.", inputSchema=PLAN_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
         ])
 
     async def call_tool(_ctx: Any, params: types.CallToolRequestParams) -> types.CallToolResult:

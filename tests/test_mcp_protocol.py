@@ -45,6 +45,12 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
                     self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task"])
+                    for tool in tools.tools:
+                        self.assertIsNotNone(tool.annotations)
+                        self.assertTrue(tool.annotations.read_only_hint)
+                        self.assertFalse(tool.annotations.destructive_hint)
+                        self.assertTrue(tool.annotations.idempotent_hint)
+                        self.assertFalse(tool.annotations.open_world_hint)
                     health = await session.call_tool("nexus.health", {})
                     self.assertFalse(health.is_error)
                     self.assertEqual(self._payload(health)["transport"], "stdio")

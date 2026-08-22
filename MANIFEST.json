@@ -44,8 +44,8 @@
     "sha256": "53953f3d3b186afccc766a8eab1f001455db564defdfef5d4c3c1091c9a62b73"
   },
   "ash/mcp/server.py": {
-    "bytes": 3537,
-    "sha256": "601f6e181180b8fcccfa0ee1d099382e199f3c296689b59f9551393d09f10bdd"
+    "bytes": 3813,
+    "sha256": "f0cf917d53abddc8b4bcc7af32363bd9e4eba18942443a00ecc72345b5a70596"
   },
   "ash/mcp/telemetry.py": {
     "bytes": 549,
@@ -76,8 +76,8 @@
     "sha256": "f2b563baae87606041576a124e373dd55e75492e1cd5507fdf0fca864cb9865a"
   },
   "docs/nexus-runtime-r2-local-mcp.md": {
-    "bytes": 4885,
-    "sha256": "75aec7b3301cd58f2a662d3955724fe361a26cc359a1e82f20c7b7a562f6c6b6"
+    "bytes": 5454,
+    "sha256": "57a63f8791d9d95d2e127a32fa537c963028965c56a57a15fc9cc881d25e7ef2"
   },
   "docs/nexus-runtime-r2-mcp-architecture.md": {
     "bytes": 29464,
@@ -168,8 +168,8 @@
     "sha256": "ce9696518ea600a46635883daeb6a08e0c5d9441301af2164c8e4c488798163b"
   },
   "tests/test_mcp_protocol.py": {
-    "bytes": 3439,
-    "sha256": "af6561f6af11d8a763b66cbd2eb64f60eff3054f1198b1a22266cb2d53740d1a"
+    "bytes": 3845,
+    "sha256": "4708dd266238ca5a4ba1e49303cc4b311fd6b9dad39baef1ff4db9fd4c07caf7"
   },
   "tests/test_mcp_redaction.py": {
     "bytes": 3656,

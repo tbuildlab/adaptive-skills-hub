@@ -79,6 +79,21 @@ codex mcp add nexus-r2-local -- D:\DevTools\NexusR2Python\Scripts\python.exe `
 codex mcp get nexus-r2-local
 ```
 
+For a non-interactive Codex host, set the following **on the same
+`[mcp_servers.nexus-r2-local]` table** in `~/.codex/config.toml` (or an
+equivalent trusted project configuration):
+
+```toml
+startup_timeout_sec = 15
+tool_timeout_sec = 60
+default_tools_approval_mode = "writes"
+```
+
+R2 advertises all three tools as read-only, non-destructive, idempotent, and
+closed-world. The `writes` policy therefore permits these bounded calls while
+continuing to require approval for any future tool that is not explicitly
+read-only. Do not replace it with an unrestricted policy.
+
 Remove it without touching Nexus source, branches, or tags:
 
 ```powershell
