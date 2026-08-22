@@ -28,8 +28,8 @@
     "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
   },
   "ash/mcp/adapter.py": {
-    "bytes": 3675,
-    "sha256": "dbc023788833e7d927fe1153c13c7ed6b87478dd4e057ba5719a1f6cffef90c6"
+    "bytes": 3968,
+    "sha256": "bbbacb2bffb0f87639f459b044f52ec1993ab6fd484373b8435a7e584e66b184"
   },
   "ash/mcp/authorization.py": {
     "bytes": 6154,
@@ -224,8 +224,8 @@
     "sha256": "ce9696518ea600a46635883daeb6a08e0c5d9441301af2164c8e4c488798163b"
   },
   "tests/test_mcp_protocol.py": {
-    "bytes": 5028,
-    "sha256": "b53cc382528009775d6b548bbd0de0e37312e7a88f0ad1072b82308344511235"
+    "bytes": 6103,
+    "sha256": "30d23c568a73c13d6a3d3148eb276221cf7240d18163190d7f52369d0d133c28"
   },
   "tests/test_mcp_redaction.py": {
     "bytes": 3656,

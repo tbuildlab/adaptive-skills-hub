@@ -6,17 +6,37 @@ from pathlib import Path
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 import mcp_types as types
 from mcp.shared.message import SessionMessage
+import ash.mcp.adapter as adapter
 
 
 class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
     @staticmethod
     def _payload(result):
         return json.loads(result.content[0].text)
+
+    def test_catalog_builder_scans_workspace_only_once(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            workspace = Path(temporary) / "workspace"
+            skill = workspace / "backend" / "SKILL.md"
+            skill.parent.mkdir(parents=True)
+            skill.write_text(
+                "---\nname: evidence-driven-backend-debugging\n"
+                "description: Diagnose reproducible backend API failures.\n---\n",
+                encoding="utf-8",
+            )
+            fake_home = Path(temporary) / "home"
+            fake_root = workspace / "hub"
+            with patch.object(adapter, "ROOT", fake_root), patch.object(adapter.Path, "home", return_value=fake_home):
+                catalog = adapter.NexusMcpRuntime._build_catalog()
+            records = [item for item in catalog["skills"] if item["name"] == "evidence-driven-backend-debugging"]
+            self.assertEqual(len(records), 1)
+            self.assertEqual(records[0]["status"], "available")
 
     async def test_tools_are_gated_before_initialization(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
