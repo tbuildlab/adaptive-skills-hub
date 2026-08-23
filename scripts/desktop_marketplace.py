@@ -2,12 +2,11 @@
 
 The adapter deliberately manages only the documented personal marketplace at
 ``~/.agents/plugins/marketplace.json``, its own state directory beside that
-manifest, and its own plugin copy at ``~/plugins/nexus-desktop``.  The latter
-is important: ChatGPT Desktop discovers marketplace entries and loads their
-bundled skills through different host paths.  The documented personal-marketplace
-layout uses ``./plugins/<plugin>`` (relative to the user profile), not a plugin
-copy nested below ``.agents``.  It does *not* write ``~/.codex/config.toml``,
-invoke Codex, alter PATH, or automate Desktop UI.
+manifest, and its own plugin source at ``~/.codex/plugins/nexus-desktop``.
+Desktop owns the later installation cache and enablement state.  The documented
+personal-marketplace layout uses ``./.codex/plugins/<plugin>`` (relative to the
+user profile).  It does *not* write ``~/.codex/plugins/cache``,
+``~/.codex/config.toml``, invoke Codex, alter PATH, or automate Desktop UI.
 """
 from __future__ import annotations
 
@@ -92,13 +91,25 @@ def paths(profile_home: Path | None = None) -> tuple[Path, Path, Path]:
 
 
 def plugin_root(profile_home: Path | None = None) -> Path:
-    """Return the documented, host-indexed personal plugin location."""
+    """Return the documented personal marketplace source location.
+
+    This is intentionally not Desktop's host-managed installed-plugin cache.
+    """
     profile = _profile_root(profile_home)
-    root = _real_directory(profile / "plugins")
+    root = _real_directory(profile / ".codex" / "plugins")
     target = root / PLUGIN_NAME
-    if root not in target.parents:
-        raise ReleaseError("Nexus plugin root is outside the user plugin directory")
+    if root not in target.parents or "cache" in target.parts:
+        raise ReleaseError("Nexus plugin source is outside the user plugin directory")
     return target
+
+
+def _rc5_plugin_root(profile_home: Path | None = None) -> Path:
+    """Return RC5's obsolete source path without creating it.
+
+    This exists solely to make an RC5 -> RC6 upgrade and rollback lossless.
+    It is never a destination for new installations.
+    """
+    return _profile_root(profile_home) / "plugins" / PLUGIN_NAME
 
 
 def _uncreated_marketplace_path(profile_home: Path | None = None) -> Path:
@@ -131,11 +142,11 @@ def _load_marketplace(path: Path) -> tuple[dict[str, Any], bytes | None]:
 def _relative_plugin_path(_version: str) -> str:
     """Return the canonical source path for ``~/.agents/plugins``.
 
-    Personal marketplaces resolve ``./plugins/<name>`` from the user profile.
-    Keeping this path stable also allows Desktop to refresh the installed
-    plugin's skills instead of leaving them in a marketplace-only staging tree.
+    Personal marketplaces resolve ``./.codex/plugins/<name>`` from the user
+    profile.  This is a source only; Desktop creates and owns any installed
+    cache after a user selects ``+ Install`` in the Plugins UI.
     """
-    candidate = f"./plugins/{PLUGIN_NAME}"
+    candidate = f"./.codex/plugins/{PLUGIN_NAME}"
     pure = PurePosixPath(candidate)
     if not candidate.startswith("./") or ".." in pure.parts or pure.is_absolute():
         raise ReleaseError("Nexus marketplace plugin path is invalid")
@@ -146,10 +157,9 @@ def _entry(version: str) -> dict[str, Any]:
     return {
         "name": PLUGIN_NAME,
         "source": {"source": "local", "path": _relative_plugin_path(version)},
-        # This is a documented personal-marketplace policy request.  Whether a
-        # particular Desktop build consumes it automatically is intentionally
-        # a human acceptance question, never an installer assumption.
-        "policy": {"installation": "INSTALLED_BY_DEFAULT", "authentication": "ON_INSTALL"},
+        # Installation is host-managed.  The release installer prepares a
+        # source card only; ChatGPT Desktop must perform ``+ Install`` itself.
+        "policy": {"installation": "AVAILABLE", "authentication": "ON_INSTALL"},
         "category": "Developer tools",
     }
 
@@ -296,6 +306,23 @@ def _owned_plugin(path: Path, managed_root: Path) -> Path:
     return resolved
 
 
+def _owned_known_plugin(path: Path, profile_home: Path | None, managed_root: Path) -> Path:
+    """Verify a Nexus source in a current or explicitly supported legacy root.
+
+    No caller-controlled root is accepted here.  RC4 stored sources under the
+    Nexus-managed tree; RC5 stored them under ``~/plugins``.  RC6 uses only the
+    documented ``~/.codex/plugins`` source root, while retaining the two older
+    locations solely for safe upgrade, uninstall, and rollback.
+    """
+    canonical = plugin_root(profile_home)
+    if _same_path(path, canonical):
+        return _owned_plugin(path, canonical.parent)
+    rc5 = _rc5_plugin_root(profile_home)
+    if _same_path(path, rc5):
+        return _owned_plugin(path, rc5.parent)
+    return _owned_plugin(path, managed_root)
+
+
 def _remove_owned_plugin(path: Path, owner_root: Path) -> None:
     resolved = _owned_plugin(path, owner_root)
     shutil.rmtree(resolved)
@@ -327,21 +354,21 @@ def install(release_root: Path, version: str, runtime: Path, nexus_data_root: Pa
     if matches:
         if existing_state and len(matches) == 1 and matches[0] == existing_state["entry"]:
             if existing_state["version"] == version and matches[0] == desired:
-                # RC5+ entries use the host-indexed profile plugin root.  A
-                # legacy RC4 entry may be Nexus-owned too, but it must never
-                # be treated as a successful RC5 installation merely because
-                # Plugin Management can see its marketplace card.
+                # RC6 uses the official profile-level source root.  Legacy RC4
+                # and RC5 entries must remain ownership-verified during their
+                # one-time migration; marketplace visibility is never treated
+                # as host installation evidence.
                 current_plugin = Path(existing_state["plugin_root"])
                 expected_plugin = plugin_root(profile_home)
                 if _same_path(current_plugin, expected_plugin):
-                    verified = _owned_plugin(current_plugin, current_plugin.parent)
+                    verified = _owned_known_plugin(current_plugin, profile_home, managed_root)
                     if verified.is_dir():
                         return existing_state
                 else:
-                    # Preserve a verified RC4 copy as the previous state for
-                    # rollback.  The new marketplace entry will point only to
-                    # the documented profile-level source path.
-                    _owned_plugin(current_plugin, managed_root)
+                    # Preserve a verified legacy copy as the previous state
+                    # for rollback.  The new entry points only to the current
+                    # documented source path.
+                    _owned_known_plugin(current_plugin, profile_home, managed_root)
             payload["plugins"] = [item for item in payload["plugins"] if item.get("name") != PLUGIN_NAME]
         else:
             raise ReleaseError("an unmanaged Nexus marketplace entry already exists; refusing to overwrite it")
@@ -410,7 +437,7 @@ def uninstall(profile_home: Path | None = None, rollback: bool = False) -> dict[
     # Verify every controlled deletion target before changing the user's
     # Marketplace manifest. A forged state file must be entirely fail-closed.
     plugin_location = Path(state["plugin_root"])
-    current_plugin_root = _owned_plugin(plugin_location, plugin_location.parent)
+    current_plugin_root = _owned_known_plugin(plugin_location, profile_home, managed_root)
     previous = state["previous_state"] if rollback else None
     previous_location: Path | None = None
     retired_previous: Path | None = None
@@ -425,10 +452,10 @@ def uninstall(profile_home: Path | None = None, rollback: bool = False) -> dict[
                 retired_previous = _owned_plugin(candidate, candidate.parent)
             elif not previous_location.exists():
                 raise ReleaseError("Nexus rollback source is unavailable; refusing to remove current plugin")
+            else:
+                _owned_known_plugin(previous_location, profile_home, managed_root)
         else:
-            # An RC4 source was already in the managed tree and was retained
-            # in place during migration to the host-indexed layout.
-            _owned_plugin(previous_location, managed_root)
+            _owned_known_plugin(previous_location, profile_home, managed_root)
     if rollback and _sha256_bytes(raw) == state["marketplace_after_sha256"]:
         _restore_backup(state, marketplace)
     else:
@@ -445,14 +472,13 @@ def uninstall(profile_home: Path | None = None, rollback: bool = False) -> dict[
     if not rollback:
         _remove_retired_plugins(managed_root)
     if not rollback and isinstance(state["previous_state"], dict):
-        # RC4 stored its copied source below our managed marketplace tree.
-        # RC5 preserves that verified copy only long enough to make rollback
-        # lossless.  A normal uninstall must clean it up too; otherwise an
-        # obsolete Nexus-owned source could survive after its marketplace
-        # entry has been removed.
+        # Legacy source copies are retained only long enough to make rollback
+        # lossless. A normal uninstall must remove only the exact verified
+        # legacy Nexus source, never a host-managed cache or configuration.
         legacy_location = Path(state["previous_state"].get("plugin_root", ""))
         if legacy_location.exists():
-            _remove_owned_plugin(legacy_location, managed_root)
+            legacy_root = _owned_known_plugin(legacy_location, profile_home, managed_root)
+            _remove_owned_plugin(legacy_root, legacy_root.parent)
     if previous is not None:
         _atomic_bytes(state_path, _json_bytes(previous))
     else:

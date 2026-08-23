@@ -47,6 +47,11 @@ The skill's description is intentionally broad enough that Codex can also select
 For the Windows GitHub Release candidate and a no-clone installation path, see
 [GitHub Release installation](docs/github-release-installation.md). It is
 separate from the frozen Core tags and does not package local runtime state.
+For the private RC6 Desktop flow, the release installer prepares a Personal
+marketplace **source** only. The required final host action is
+`ChatGPT Desktop → Plugins → Personal → Nexus → + Install`; start a new chat
+before expecting `@Nexus`. Nexus never writes Desktop's plugin cache,
+enablement state, or `~/.codex/config.toml`.
 
 `route` uses metadata only. `run` then fully reads each selected Skill's `SKILL.md`.
 For normal natural-language Skills, Codex follows those loaded instructions to do the

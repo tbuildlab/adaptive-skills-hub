@@ -66,63 +66,38 @@ UI but no supported local Codex CLI therefore receives a precise prerequisite
 error rather than a partial installation. Standalone mode remains available
 for local MCP use, but it deliberately cannot claim `@Nexus` Plugin visibility.
 
-## RC4 Desktop Marketplace Adapter
+## RC6 host-managed Desktop installation
 
 RC3 established that a fresh ChatGPT Desktop user cannot be assumed to have
-Codex CLI. RC4 therefore removes the CLI from the distribution path. It uses
-the officially documented per-user personal marketplace file:
+Codex CLI. RC6 keeps the CLI out of the distribution path and uses the current
+documented Personal marketplace contract. The installer writes one source card
+to `~/.agents/plugins/marketplace.json`, and places the owned Plugin source at
+`~/.codex/plugins/nexus-desktop`. The registered local source is exactly
+`./.codex/plugins/nexus-desktop` with policy `AVAILABLE`.
 
-`~/.agents/plugins/marketplace.json`
+This is deliberately a source-preparation boundary, not an attempt to emulate
+Desktop installation. ChatGPT Desktop alone creates its installed-plugin cache
+under `~/.codex/plugins/cache/...` and records enablement state in
+`~/.codex/config.toml`. Nexus never reads or writes either host-managed path.
+The required user action is:
 
-The adapter validates the manifest's minimum host schema, preserves unrelated
-entries, and adds only the standard `nexus-desktop` entry. Its source path is
-the documented personal-plugin value `./plugins/nexus-desktop`, which resolves
-to the Nexus-owned copy at `~/plugins/nexus-desktop`. Marketplace state and
-rollback receipts remain under `~/.agents/plugins/nexus-marketplace`, but the
-host-indexed Plugin bridge is not staged beneath `.agents`. The copied Plugin
-bridge is versioned, contains an ownership marker, and its generated `.mcp.json`
-uses an absolute path to the verified embedded runtime inside the Nexus release.
-No development path, system Python, PATH lookup, or host CLI is used.
+```text
+ChatGPT Desktop → Plugins → Personal → Nexus → + Install
+```
 
-Before its atomic write, the adapter records an exact base64 Marketplace backup
-and a SHA-256 receipt in Nexus-owned state. Rollback restores that exact prior
-manifest only when Nexus was the last writer; otherwise it fails closed rather
-than overwrite a newer user change. Uninstall removes only the exact recorded
-Nexus entry and ownership-verified Nexus source.
+Only after that action and a new conversation may `@Nexus` be expected. The
+installer copies the real `skills/nexus/SKILL.md`, generates a bridge whose
+`.mcp.json` uses the verified embedded runtime, and preserves no development
+path, system Python, PATH lookup, host CLI, remote endpoint, or UI automation.
 
-`INSTALLED_BY_DEFAULT` is a documented Marketplace policy requested by the
-entry. Desktop behavior after restart is intentionally not claimed by automated
-tests: if the current Desktop build does not install it automatically, the
-supported fallback is **Plugins > Personal > Nexus > Install**. No unsupported
-UI automation is attempted.
-
-The adapter never reads or writes `~/.codex/config.toml`. Consequently, once a
-Desktop host has materialized its own installed-plugin cache, its documented
-Plugin browser remains the supported way to remove that host-side installation.
-The release uninstaller cleans all Nexus-owned release and Marketplace source
-state, but refuses to delete host-managed state or unrelated configuration.
-
-## RC5 Desktop `@` exposure correction
-
-Clean-machine RC4 acceptance established an important host distinction:
-ChatGPT Desktop's Plugin Management can discover and report a Personal
-marketplace Plugin as installed while the chat composer still does not index it
-for `@` invocation. RC4 staged the copied Plugin below
-`~/.agents/plugins/nexus-marketplace/...`; that layout was sufficient for the
-marketplace card but differs from the official personal-plugin layout.
-
-RC5 keeps the marketplace manifest and Nexus-only state under
-`~/.agents/plugins`, but copies the loadable Plugin—including its real
-`skills/nexus/SKILL.md`—to `~/plugins/nexus-desktop` and registers exactly
-`./plugins/nexus-desktop`. This is the smallest source-layout correction. It
-does not add Codex CLI, alter `config.toml`, add a remote endpoint, or automate
-the Desktop UI. A verified RC4 installation can migrate to the new layout; a
-rollback restores its exact marketplace entry and retained Plugin source.
-
-Automated checks can verify the source path, ownership, bridge health, and
-rollback, but the actual `@Nexus` menu remains a required human Desktop
-acceptance check. Marketplace discovery and `@` exposure are reported as
-separate acceptance states.
+Before its atomic marketplace write, the adapter records an exact base64 backup
+and SHA-256 receipt in Nexus-owned state. Rollback restores the exact prior
+manifest only when Nexus was the last writer; otherwise it fails closed. It
+supports lossless migration from the earlier RC4 managed tree and RC5
+`~/plugins` source only. Uninstall removes exact ownership-verified Nexus
+sources and marketplace state, but never a host cache, enablement state, or
+unrelated Desktop configuration. If Desktop has installed the Plugin, its
+documented **Uninstall plugin** control must be used before source removal.
 
 ## Artifact contract
 
@@ -140,7 +115,7 @@ so installation never resolves packages from PyPI. It never
 packages a developer checkout, workspace, credentials, cache, runtime state,
 or absolute development path.
 
-RC5 was reproducibly rebased from the immutable, receipt-verified RC4 release
+RC6 is reproducibly rebased from the immutable, receipt-verified RC4 release
 archive because the original reviewed wheelhouse and CPython build inputs are
 not retained in this checkout. `scripts/rebase_release.py` pins and verifies
 that exact RC4 archive before replacing only the reviewed Nexus source files;
@@ -193,7 +168,7 @@ neither claim.
 ## Versioning and future compatibility
 
 Frozen Core tags stay unchanged. Distribution has a separate SemVer stream in
-`release/VERSION`; `0.1.0-rc.5` is a release candidate, not a Core tag. A
+`release/VERSION`; `0.1.0-rc.6` is a release candidate, not a Core tag. A
 future GitHub Skill Scout must remain separately approved, preserve provenance,
 license/reputation/pinned-hash review, and never turn this installer into an
 automatic Skill installation channel.

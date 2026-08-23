@@ -18,6 +18,24 @@ import sys
 from typing import Any
 
 sys.dont_write_bytecode = True
+
+
+def _configure_utf8_stdout() -> None:
+    """Keep the documented Desktop action readable in legacy Windows consoles.
+
+    The RC6 action uses the Unicode ``→`` separator.  A fresh embedded Python
+    process can otherwise inherit a legacy code page and turn a successful
+    source preparation into a late ``UnicodeEncodeError``.  This changes only
+    this process's output encoding; it does not alter a user's console, PATH,
+    or system locale.
+    """
+    reconfigure = getattr(sys.stdout, "reconfigure", None)
+    if callable(reconfigure):
+        reconfigure(encoding="utf-8", errors="backslashreplace")
+
+
+_configure_utf8_stdout()
+
 # The official embeddable Python's ._pth isolation intentionally omits the
 # script directory. Add only this verified release-local directory so sibling
 # lifecycle modules remain importable; do not consult PATH or user site paths.
@@ -128,7 +146,24 @@ def install(args: argparse.Namespace) -> int:
     prior = current_install(local)
     config = local / setup.CONFIG_FILENAME
     workspaces = local / "workspaces.json"
-    previous_files = {"config": snapshot_file(config), "workspaces": snapshot_file(workspaces)}
+    # Re-applying the exact same release is an idempotent repair/refresh, not
+    # a new upgrade layer.  Retain its original rollback boundary so rollback
+    # cannot restore a state record after removing the corresponding source.
+    same_release = bool(
+        prior
+        and prior.get("version") == manifest["version"]
+        and prior.get("mode") == args.mode
+        and prior.get("release_root") == str(ROOT.resolve())
+    )
+    if same_release:
+        retained_files = prior.get("previous_files")
+        if not isinstance(retained_files, dict) or set(retained_files) != {"config", "workspaces"}:
+            raise ReleaseError("existing Nexus release state is invalid")
+        previous_files = retained_files
+        previous_install = prior.get("previous_install")
+    else:
+        previous_files = {"config": snapshot_file(config), "workspaces": snapshot_file(workspaces)}
+        previous_install = prior
     # Plugin mode uses the release-local runtime declared in its staged MCP
     # manifest.  Do not consult python.exe, py.exe, aliases, or PATH.
     runtime = bundled_runtime(ROOT)
@@ -154,7 +189,7 @@ def install(args: argparse.Namespace) -> int:
             "release_root": str(ROOT.resolve()),
             "mode": args.mode,
             "marketplace": marketplace_state,
-            "previous_install": prior,
+            "previous_install": previous_install,
             "previous_files": previous_files,
         }
         atomic_json_write(state_path(local), new_state)
@@ -170,8 +205,10 @@ def install(args: argparse.Namespace) -> int:
             atomic_json_write(journal, {"schema_version": STATE_SCHEMA, "status": "manual_recovery_required", "release_root": str(ROOT), "error": str(rollback_error)})
         raise
     if args.mode == "plugin":
-        print("Nexus personal marketplace and host-indexed Plugin source are ready. Restart ChatGPT Desktop and verify @Nexus in a fresh conversation.")
-    print(f"Nexus {manifest['version']} installed in {args.mode} mode")
+        print("Nexus personal marketplace source is ready. Required action: ChatGPT Desktop → Plugins → Personal → Nexus → + Install")
+        print(f"Nexus {manifest['version']} source preparation completed. Start a new chat after ChatGPT Desktop installs the Plugin.")
+    else:
+        print(f"Nexus {manifest['version']} installed in standalone mode")
     return 0
 
 

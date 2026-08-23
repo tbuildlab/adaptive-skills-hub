@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import base64
+import contextlib
 import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -169,7 +171,7 @@ class GitHubDistributionTests(unittest.TestCase):
             self.assertEqual((extracted / "release" / "VERSION").read_text(encoding="utf-8").strip(), "0.1.0-rc.5")
             plugin = json.loads((extracted / "plugins" / "nexus-desktop" / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8"))
             self.assertEqual(plugin["version"], "0.1.0-rc.5")
-            self.assertIn('candidate = f"./plugins/{PLUGIN_NAME}"', (extracted / "scripts" / "desktop_marketplace.py").read_text(encoding="utf-8"))
+            self.assertIn('candidate = f"./.codex/plugins/{PLUGIN_NAME}"', (extracted / "scripts" / "desktop_marketplace.py").read_text(encoding="utf-8"))
 
     def test_clean_install_reinstall_rollback_and_uninstall_need_no_repository(self) -> None:
         runtime = Path(sys.executable).resolve()
@@ -201,10 +203,88 @@ class GitHubDistributionTests(unittest.TestCase):
                 "data_root": str(data), "workspace_root": str(project), "workspace_id": "nexus-default",
                 "mode": "plugin", "migrate_standalone": False, "remove_runtime": False,
             })()
-            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.4"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(release_install.desktop_marketplace, "install", return_value={"owner": "Nexus"}) as marketplace, patch.object(release_install, "configure"):
+            stdout = io.StringIO()
+            with contextlib.redirect_stdout(stdout), patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.4"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(release_install.desktop_marketplace, "install", return_value={"owner": "Nexus"}) as marketplace, patch.object(release_install, "configure"):
                 self.assertEqual(release_install.install(args), 0)
             marketplace.assert_called_once()
             self.assertTrue((data / "github-release-state.json").is_file())
+            self.assertIn("ChatGPT Desktop → Plugins → Personal → Nexus → + Install", stdout.getvalue())
+            self.assertNotIn("verify @Nexus", stdout.getvalue())
+
+    def test_release_lifecycle_uses_utf8_for_the_host_managed_action(self) -> None:
+        class ReconfigurableStream:
+            def __init__(self) -> None:
+                self.calls: list[dict[str, str]] = []
+
+            def reconfigure(self, **kwargs: str) -> None:
+                self.calls.append(kwargs)
+
+        stream = ReconfigurableStream()
+        with patch.object(release_install.sys, "stdout", stream):
+            release_install._configure_utf8_stdout()
+        self.assertEqual(stream.calls, [{"encoding": "utf-8", "errors": "backslashreplace"}])
+
+    def test_same_plugin_release_upgrade_retains_the_original_rollback_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            data = root / "local data"
+            project = root / "project"
+            project.mkdir()
+            args = type("Args", (), {
+                "data_root": str(data), "workspace_root": str(project), "workspace_id": "nexus-default",
+                "mode": "plugin", "migrate_standalone": False, "remove_runtime": False,
+            })()
+            initial = {
+                "schema_version": release_install.STATE_SCHEMA,
+                "version": "0.1.0-rc.6",
+                "release_root": str(release_install.ROOT.resolve()),
+                "mode": "plugin",
+                "marketplace": {"owner": "Nexus"},
+                "previous_install": None,
+                "previous_files": {"config": None, "workspaces": None},
+            }
+            release_install.atomic_json_write(release_install.state_path(data), initial)
+            with patch.object(release_install, "verify_release_tree", return_value={"version": "0.1.0-rc.6"}), patch.object(release_install, "bundled_runtime", return_value=Path(sys.executable).resolve()), patch.object(release_install.desktop_marketplace, "install", return_value={"owner": "Nexus"}), patch.object(release_install, "configure"):
+                self.assertEqual(release_install.install(args), 0)
+            refreshed = release_install.current_install(data)
+            self.assertIsNotNone(refreshed)
+            self.assertIsNone(refreshed["previous_install"])
+            self.assertEqual(refreshed["previous_files"], {"config": None, "workspaces": None})
+
+    def test_marketplace_adapter_stops_before_host_managed_install_state(self) -> None:
+        """The installer may create a source, never Desktop cache/config state."""
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            profile = root / "fresh standard user"
+            profile.mkdir()
+            release = root / "release"
+            plugin = release / "plugins" / "nexus-desktop"
+            (plugin / "scripts").mkdir(parents=True)
+            (plugin / "skills" / "nexus").mkdir(parents=True)
+            (plugin / ".mcp.json").write_text(json.dumps({"mcpServers": {"nexus_desktop_local": {}}}), encoding="utf-8")
+            (plugin / "scripts" / "launch_nexus_mcp.py").write_text("# bridge\n", encoding="utf-8")
+            (plugin / "skills" / "nexus" / "SKILL.md").write_text("---\nname: nexus\ndescription: test\n---\n", encoding="utf-8")
+            runtime = release / "runtime" / "python" / "python.exe"
+            runtime.parent.mkdir(parents=True)
+            shutil.copy2(sys.executable, runtime)
+            config = profile / ".codex" / "config.toml"
+            cache = profile / ".codex" / "plugins" / "cache" / "host-owned" / "nexus-desktop"
+            config.parent.mkdir(parents=True)
+            config_before = b"[host]\nenabled = true\n"
+            config.write_bytes(config_before)
+            cache.mkdir(parents=True)
+            cache_marker = cache / "host-state.txt"
+            cache_marker.write_text("host-owned", encoding="utf-8")
+
+            desktop_marketplace.install(release, "0.1.0-rc.6", runtime, release, profile)
+            source = profile / ".codex" / "plugins" / "nexus-desktop"
+            self.assertTrue(source.is_dir())
+            self.assertEqual(config.read_bytes(), config_before)
+            self.assertEqual(cache_marker.read_text(encoding="utf-8"), "host-owned")
+            desktop_marketplace.uninstall(profile)
+            self.assertFalse(source.exists())
+            self.assertEqual(config.read_bytes(), config_before)
+            self.assertEqual(cache_marker.read_text(encoding="utf-8"), "host-owned")
 
     def test_marketplace_adapter_preserves_unrelated_entries_and_rolls_back_exactly(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -229,16 +309,16 @@ class GitHubDistributionTests(unittest.TestCase):
             state = desktop_marketplace.install(release, "0.1.0-rc.4", runtime, release, profile)
             payload = json.loads(manifest.read_text(encoding="utf-8"))
             self.assertEqual([item["name"] for item in payload["plugins"]], ["other", "nexus-desktop"])
-            self.assertEqual(payload["plugins"][-1]["policy"]["installation"], "INSTALLED_BY_DEFAULT")
-            # ChatGPT Desktop indexes installed skills from the documented
-            # personal plugin location, not from a marketplace staging tree.
-            self.assertEqual(payload["plugins"][-1]["source"]["path"], "./plugins/nexus-desktop")
-            source = profile / "plugins" / "nexus-desktop"
+            self.assertEqual(payload["plugins"][-1]["policy"]["installation"], "AVAILABLE")
+            # The installer prepares the official source only. Desktop's
+            # cache/config and enabled state remain host-managed.
+            self.assertEqual(payload["plugins"][-1]["source"]["path"], "./.codex/plugins/nexus-desktop")
+            source = profile / ".codex" / "plugins" / "nexus-desktop"
             staged = json.loads((source / ".mcp.json").read_text(encoding="utf-8"))
             self.assertEqual(staged["mcpServers"]["nexus_desktop_local"]["command"], str(runtime.resolve()))
             self.assertEqual(staged["mcpServers"]["nexus_desktop_local"]["env"], {"NEXUS_DATA_ROOT": str(release.resolve())})
             self.assertTrue((source / "skills" / "nexus" / "SKILL.md").is_file())
-            self.assertNotIn("codex", manifest.read_text(encoding="utf-8").lower())
+            self.assertNotIn('"command": "codex"', manifest.read_text(encoding="utf-8").lower())
             self.assertEqual(desktop_marketplace.install(release, "0.1.0-rc.4", runtime, release, profile)["version"], state["version"])
             desktop_marketplace.uninstall(profile, rollback=True)
             self.assertEqual(manifest.read_bytes(), before)
@@ -258,8 +338,8 @@ class GitHubDistributionTests(unittest.TestCase):
             with self.assertRaisesRegex(ReleaseError, "unmanaged Nexus marketplace entry"):
                 desktop_marketplace.install(profile, "0.1.0-rc.4", Path(sys.executable), profile, profile)
 
-    def test_rc4_marketplace_layout_migrates_to_host_indexed_plugin_root_and_rolls_back(self) -> None:
-        """RC4 discovery state must not be mistaken for @-loadable plugin state."""
+    def test_rc5_marketplace_layout_migrates_to_official_source_root_and_rolls_back(self) -> None:
+        """The obsolete RC5 source migrates without touching host state."""
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             profile = root / "fresh profile"
@@ -275,11 +355,11 @@ class GitHubDistributionTests(unittest.TestCase):
             runtime.parent.mkdir(parents=True)
             shutil.copy2(sys.executable, runtime)
             marketplace, managed, state_path = desktop_marketplace.paths(profile)
-            legacy = managed / "versions" / "0.1.0-rc.4" / "plugins" / "nexus-desktop"
+            legacy = profile / "plugins" / "nexus-desktop"
             shutil.copytree(source, legacy)
             legacy_entry = {
                 "name": "nexus-desktop",
-                "source": {"source": "local", "path": "./nexus-marketplace/versions/0.1.0-rc.4/plugins/nexus-desktop"},
+                "source": {"source": "local", "path": "./plugins/nexus-desktop"},
                 "policy": {"installation": "INSTALLED_BY_DEFAULT", "authentication": "ON_INSTALL"},
                 "category": "Developer tools",
             }
@@ -288,19 +368,19 @@ class GitHubDistributionTests(unittest.TestCase):
             before.parent.mkdir(parents=True)
             before.write_bytes(base64.b64encode(marketplace.read_bytes()) + b"\n")
             (legacy / ".nexus-marketplace-owner.json").write_text(json.dumps({
-                "schema_version": desktop_marketplace.STATE_SCHEMA, "owner": "Nexus", "version": "0.1.0-rc.4",
+                "schema_version": desktop_marketplace.STATE_SCHEMA, "owner": "Nexus", "version": "0.1.0-rc.5",
             }), encoding="utf-8")
             state_path.write_text(json.dumps({
-                "schema_version": desktop_marketplace.STATE_SCHEMA, "owner": "Nexus", "version": "0.1.0-rc.4",
+                "schema_version": desktop_marketplace.STATE_SCHEMA, "owner": "Nexus", "version": "0.1.0-rc.5",
                 "marketplace_path": str(marketplace), "plugin_root": str(legacy), "marketplace_before": str(before),
                 "marketplace_after_sha256": hashlib.sha256(marketplace.read_bytes()).hexdigest(), "entry": legacy_entry,
                 "previous_state": None,
             }), encoding="utf-8")
 
-            state = desktop_marketplace.install(release, "0.1.0-rc.5", runtime, release, profile)
+            state = desktop_marketplace.install(release, "0.1.0-rc.6", runtime, release, profile)
             entry = json.loads(marketplace.read_text(encoding="utf-8"))["plugins"][0]
-            canonical = profile / "plugins" / "nexus-desktop"
-            self.assertEqual(entry["source"]["path"], "./plugins/nexus-desktop")
+            canonical = profile / ".codex" / "plugins" / "nexus-desktop"
+            self.assertEqual(entry["source"]["path"], "./.codex/plugins/nexus-desktop")
             self.assertTrue(desktop_marketplace._same_path(Path(state["plugin_root"]), canonical))
             self.assertTrue((canonical / "skills" / "nexus" / "SKILL.md").is_file())
             self.assertTrue(legacy.is_dir())
@@ -312,12 +392,12 @@ class GitHubDistributionTests(unittest.TestCase):
 
             # A non-rollback uninstall has no reason to retain the temporary
             # RC4 source.  It must not leave a stale Nexus plugin tree behind.
-            desktop_marketplace.install(release, "0.1.0-rc.5", runtime, release, profile)
+            desktop_marketplace.install(release, "0.1.0-rc.6", runtime, release, profile)
             desktop_marketplace.uninstall(profile)
             self.assertFalse(canonical.exists())
             self.assertFalse(legacy.exists())
 
-    def test_host_indexed_plugin_upgrade_rollback_restores_the_retained_source(self) -> None:
+    def test_official_source_upgrade_rollback_restores_the_retained_source(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             profile = root / "profile"
@@ -333,17 +413,17 @@ class GitHubDistributionTests(unittest.TestCase):
             runtime.parent.mkdir(parents=True)
             shutil.copy2(sys.executable, runtime)
 
-            desktop_marketplace.install(release, "0.1.0-rc.5", runtime, release, profile)
-            canonical = profile / "plugins" / "nexus-desktop"
-            marker = json.loads((canonical / ".nexus-marketplace-owner.json").read_text(encoding="utf-8"))
-            self.assertEqual(marker["version"], "0.1.0-rc.5")
             desktop_marketplace.install(release, "0.1.0-rc.6", runtime, release, profile)
+            canonical = profile / ".codex" / "plugins" / "nexus-desktop"
             marker = json.loads((canonical / ".nexus-marketplace-owner.json").read_text(encoding="utf-8"))
             self.assertEqual(marker["version"], "0.1.0-rc.6")
+            desktop_marketplace.install(release, "0.1.0-rc.7", runtime, release, profile)
+            marker = json.loads((canonical / ".nexus-marketplace-owner.json").read_text(encoding="utf-8"))
+            self.assertEqual(marker["version"], "0.1.0-rc.7")
 
             desktop_marketplace.uninstall(profile, rollback=True)
             marker = json.loads((canonical / ".nexus-marketplace-owner.json").read_text(encoding="utf-8"))
-            self.assertEqual(marker["version"], "0.1.0-rc.5")
+            self.assertEqual(marker["version"], "0.1.0-rc.6")
             self.assertFalse((profile / ".agents" / "plugins" / "nexus-marketplace" / "retired").exists())
 
     def test_marketplace_uninstall_preserves_new_unrelated_entry_and_rejects_escaped_state(self) -> None:
@@ -473,14 +553,14 @@ asyncio.run(main())
             self.assertEqual(mcp_result.returncode, 0, mcp_result.stderr + mcp_result.stdout)
 
     @unittest.skipUnless(os.environ.get("NEXUS_RELEASE_TEST_EMBED") and os.environ.get("NEXUS_RELEASE_TEST_WHEELHOUSE"), "real embedded runtime inputs are not configured")
-    def test_real_plugin_bootstrap_without_codex_uses_personal_marketplace(self) -> None:
-        """RC4's release-only path has neither host CLI nor system Python."""
+    def test_real_plugin_bootstrap_without_codex_prepares_host_managed_source(self) -> None:
+        """RC6 has neither host CLI nor system Python nor host-state writes."""
         embed = Path(os.environ["NEXUS_RELEASE_TEST_EMBED"])
         wheelhouse = Path(os.environ["NEXUS_RELEASE_TEST_WHEELHOUSE"])
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             output = root / "release output"
-            archive, _ = release_build.build(output, "0.1.0-rc.4", wheelhouse, embed)
+            archive, _ = release_build.build(output, "0.1.0-rc.6", wheelhouse, embed)
             project = root / "workspace"
             project.mkdir()
             data = root / "Nexus local data"
@@ -497,24 +577,27 @@ asyncio.run(main())
                 if key.upper().startswith("PYTHON"):
                     environment.pop(key)
             result = subprocess.run([
-                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.4.ps1"),
+                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.6.ps1"),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "plugin",
             ], capture_output=True, text=True, env=environment, timeout=60)
             output_text = result.stdout + result.stderr
             self.assertEqual(result.returncode, 0, output_text)
             self.assertNotIn("[WinError 2]", output_text)
+            self.assertIn("ChatGPT Desktop → Plugins → Personal → Nexus → + Install", output_text)
             self.assertTrue((data / "github-release-state.json").exists())
             marketplace = Path(environment["USERPROFILE"]) / ".agents" / "plugins" / "marketplace.json"
             payload = json.loads(marketplace.read_text(encoding="utf-8"))
             entry = next(item for item in payload["plugins"] if item["name"] == "nexus-desktop")
-            self.assertEqual(entry["policy"]["installation"], "INSTALLED_BY_DEFAULT")
-            self.assertEqual(entry["source"]["path"], "./plugins/nexus-desktop")
+            self.assertEqual(entry["policy"]["installation"], "AVAILABLE")
+            self.assertEqual(entry["source"]["path"], "./.codex/plugins/nexus-desktop")
             release = next((data / "releases").iterdir())
-            staged = Path(environment["USERPROFILE"]) / "plugins" / "nexus-desktop" / ".mcp.json"
+            staged = Path(environment["USERPROFILE"]) / ".codex" / "plugins" / "nexus-desktop" / ".mcp.json"
             staged_server = json.loads(staged.read_text(encoding="utf-8"))["mcpServers"]["nexus_desktop_local"]
             self.assertEqual(staged_server["command"], str((release / "runtime" / "python" / "python.exe").resolve()))
             self.assertEqual(staged_server["env"], {"NEXUS_DATA_ROOT": str(data.resolve())})
+            self.assertFalse((Path(environment["USERPROFILE"]) / ".codex" / "plugins" / "cache").exists())
+            self.assertFalse((Path(environment["USERPROFILE"]) / ".codex" / "config.toml").exists())
 
     @unittest.skipUnless(
         os.environ.get("NEXUS_RELEASE_TEST_EMBED")
@@ -528,7 +611,7 @@ asyncio.run(main())
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             output = root / "release output"
-            archive, _ = release_build.build(output, "0.1.0-rc.4", wheelhouse, embed)
+            archive, _ = release_build.build(output, "0.1.0-rc.6", wheelhouse, embed)
             project = root / "workspace"
             project.mkdir()
             data = root / "Nexus local data"
@@ -547,7 +630,7 @@ asyncio.run(main())
                 if key.upper().startswith("PYTHON"):
                     environment.pop(key)
             result = subprocess.run([
-                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.4.ps1"),
+                powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.6.ps1"),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "plugin",
             ], capture_output=True, text=True, env=environment, timeout=90)
@@ -573,7 +656,7 @@ async def main():
             assert not (await session.call_tool('nexus.plan_task', {'workspace_id': 'nexus-default', 'task': 'Plan a safe release check', 'constraints': []})).is_error
 
 asyncio.run(main())
-""".replace("PLUGIN", "Path(" + repr(str(Path(environment["USERPROFILE"]) / "plugins" / "nexus-desktop")) + ")")
+""".replace("PLUGIN", "Path(" + repr(str(Path(environment["USERPROFILE"]) / ".codex" / "plugins" / "nexus-desktop")) + ")")
             mcp_result = subprocess.run([str(runtime), "-I", "-B", "-c", probe], capture_output=True, text=True, env=environment, timeout=45)
             self.assertEqual(mcp_result.returncode, 0, mcp_result.stderr + mcp_result.stdout)
             cleanup = subprocess.run([str(runtime), "-I", "-B", str(release / "scripts" / "release_install.py"), "--data-root", str(data), "uninstall"], capture_output=True, text=True, env=environment, timeout=45)

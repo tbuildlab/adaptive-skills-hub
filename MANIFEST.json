@@ -1,7 +1,7 @@
 {
   ".agents/plugins/marketplace.json": {
-    "bytes": 393,
-    "sha256": "278d8a4317335a4025f71d5ec46dd02a4f2897e5c14ee93ecceaf0dd13eac874"
+    "bytes": 400,
+    "sha256": "a655879739182775e0f18e31831d26b481cc2980514e72adeccc4666b7c4e403"
   },
   ".gitignore": {
     "bytes": 518,
@@ -72,16 +72,16 @@
     "sha256": "e76900d66ff4b9ca0b505e16d6bcf164ebc31fd14fa5e6b5a6d9f54b2d505962"
   },
   "docs/github-distribution-architecture.md": {
-    "bytes": 11540,
-    "sha256": "a12cd4f491689e0e38fd52e38cb0d47e3793c140c99cbe75329efdd6069f74e3"
+    "bytes": 10025,
+    "sha256": "dd085121546cd44f39c47d5d2478618e75e4a948668ed7738d1da7261a8af2e2"
   },
   "docs/github-release-installation.md": {
-    "bytes": 4347,
-    "sha256": "b36cbef8b684af6d2934394018301bf60a56f73b78fb32f6df02a7c08ebccc51"
+    "bytes": 4502,
+    "sha256": "c3213ebb2276eb206033f9cd17bc3f8ecc0f96bc7ef5a46d25d0721886ebbae0"
   },
   "docs/license-inventory.md": {
-    "bytes": 1729,
-    "sha256": "5f0b9647b19580a7b4b721d4510f01a97e2060f93f7721037057f33d2a4a6597"
+    "bytes": 1741,
+    "sha256": "909adc9a0f7dede20da2befb2201aaf0066fc59d7522e70b1ca27032a4c7b828"
   },
   "docs/nexus-desktop-plugin-pilot.md": {
     "bytes": 5179,
@@ -139,6 +139,10 @@
     "bytes": 3749,
     "sha256": "cb88147be7fe6507ec51cdd5fd052d1ab7061f540d568dea039f17b159e2d7f2"
   },
+  "Microsoft/Windows/PowerShell/ModuleAnalysisCache": {
+    "bytes": 67477,
+    "sha256": "fc0f85d5a3950cfd1d27e6316eb7fdd12f2a2ff1d8709f719d618f5f8d085c09"
+  },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
     "bytes": 1008,
     "sha256": "d36704bedc6cf194c813a64b12ae59484b6bbd0a43e872259cb05c095d2fcfc7"
@@ -156,12 +160,12 @@
     "sha256": "58722735cdf8f95efbaeda53144fac4b093c96541b1055f2e3b02101b40bbb58"
   },
   "README.md": {
-    "bytes": 5704,
-    "sha256": "9785513e28c2b8f31f881949a7f644ea0f312618ef4049135d17d2da2dd83254"
+    "bytes": 6043,
+    "sha256": "391b1c16307facc8a7a98577fc10985be74ea9d0b69dd2456b1e0b0dfd4a9542"
   },
   "release/VERSION": {
     "bytes": 11,
-    "sha256": "44c34b7b3886975856dcd8810743e6f467ee399ecc3d42b02dca509905287b16"
+    "sha256": "11923af84d69a31cc3fce3596cde030a55c88e9ff3da059e9a19b28880f1b8fd"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -188,8 +192,8 @@
     "sha256": "2debd7ddb271869a7dabcc48147f51bab4488dd23ff711958589b2eae1293588"
   },
   "scripts/desktop_marketplace.py": {
-    "bytes": 22133,
-    "sha256": "ee3e6f627dd6cd8cbd30fa36fd2f4d9464acfecb38510523f30a42e017194d68"
+    "bytes": 23172,
+    "sha256": "47594bd09a05879959c3ceb0e5495c12f5090ae95da10d6b840d8f9515722532"
   },
   "scripts/final_smoke.py": {
     "bytes": 4261,
@@ -200,8 +204,8 @@
     "sha256": "b2ff21cfca08a32a9de498732878c5c9fb1f871af76bb6c402113f63332e7213"
   },
   "scripts/Install-Nexus.ps1": {
-    "bytes": 4380,
-    "sha256": "eb8a3c4464a5b03ffa4800ee30dd7336e2915749b328b2d3a0b343136532b72f"
+    "bytes": 4623,
+    "sha256": "70f30b6eb1c2b49cd97120afb0a9f19ee56547f0af0b7e75dbedb2f220759612"
   },
   "scripts/nexus.py": {
     "bytes": 213,
@@ -228,8 +232,8 @@
     "sha256": "b5e48a6dbdf4f2c039fb72db8867055949e2bda36c53b733ef1ecd8cc0cc8b22"
   },
   "scripts/release_install.py": {
-    "bytes": 10899,
-    "sha256": "88a6c8dd6e69a9f2f87e8ba207ba5c1bc4062fa3fdfeca0dcd1f85ece9492999"
+    "bytes": 12522,
+    "sha256": "bfe7c43fe6bd191697463f484fc286327fe151d2013007d00467f7833dfdf3fe"
   },
   "scripts/setup_nexus.py": {
     "bytes": 13328,
@@ -244,12 +248,12 @@
     "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
   },
   "tests/test_desktop_plugin_pilot.py": {
-    "bytes": 10130,
-    "sha256": "1c668603ef0411b1d07a13f0770b0f9b545afdaaa4e2a48b83e127e2e8b8d136"
+    "bytes": 10228,
+    "sha256": "6dc17a7dd6cc3517b78c2eea441557d687d9cc12913584038981e03aed6b1c7b"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 37051,
-    "sha256": "3c791cb43b8cda402a00f1af8be0d316305f2a90e3dd60ea73257acb763a3c9c"
+    "bytes": 42045,
+    "sha256": "ff496a1de6a44be812ddc33c195b4a9b4eea118ea1a4d54dd28dfce22412c570"
   },
   "tests/test_hub.py": {
     "bytes": 21706,

@@ -69,4 +69,9 @@ $arguments += @('install', '--workspace-root', $WorkspaceRoot, '--mode', $Mode)
 if ($MigrateStandalone) { $arguments += '--migrate-standalone' }
 & $python @arguments
 if ($LASTEXITCODE -ne 0) { Fail 'release configuration failed; extracted files remain verified for inspection' }
-Write-Host 'Nexus installation completed. Restart ChatGPT Desktop before using @Nexus.'
+if ($Mode -eq 'plugin') {
+    Write-Host 'Nexus personal marketplace source is ready. Required action: ChatGPT Desktop → Plugins → Personal → Nexus → + Install'
+    Write-Host 'After ChatGPT Desktop installs the Plugin, start a new chat and use @Nexus.'
+} else {
+    Write-Host 'Nexus standalone installation completed.'
+}
