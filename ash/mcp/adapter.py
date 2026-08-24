@@ -11,8 +11,14 @@ from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
 from .context import SafeContextReader
-from .redaction import safe_catalog, safe_health, safe_host_handoff, safe_plan
-from .schemas import NexusMcpError, parse_discover_request, parse_plan_request, parse_prepare_host_handoff_request
+from .redaction import safe_catalog, safe_enhancement_handoff, safe_health, safe_host_handoff, safe_plan
+from .schemas import (
+    NexusMcpError,
+    parse_discover_request,
+    parse_plan_request,
+    parse_prepare_enhancement_handoff_request,
+    parse_prepare_host_handoff_request,
+)
 
 ROOT = Path(__file__).resolve().parents[2]
 MAX_SELECTED_SKILL_BYTES = 128 * 1024
@@ -141,3 +147,13 @@ class NexusMcpRuntime:
             raise NexusMcpError("SKILL_INTEGRITY_FAILED", "selected Skill changed before host handoff")
         validation = validate_plan(plan, verified_loads)
         return safe_host_handoff(plan, verified_loads, validation)
+
+    def prepare_enhancement_handoff(self, arguments: Any) -> dict[str, Any]:
+        """Issue a read-only R5 intent from a fixed redacted Host state.
+
+        This path intentionally does not re-run the planner or load a Skill.
+        It has no artifact, workspace, subprocess, network, or execution
+        authority. The Desktop Host must independently bind the result to its
+        current validated R4 receipt before it can attempt an enhancement.
+        """
+        return safe_enhancement_handoff(parse_prepare_enhancement_handoff_request(arguments))

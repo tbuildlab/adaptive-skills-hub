@@ -69,7 +69,7 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     initialized = await session.initialize()
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
-                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff"])
+                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
                     metadata = {item.name: item for item in tools.tools}
                     self.assertEqual(metadata["nexus.health"].title, "Nexus status")
                     self.assertIn("diagnostics", metadata["nexus.health"].description)
@@ -84,6 +84,8 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn("or execution", metadata["nexus.plan_task"].description)
                     self.assertEqual(metadata["nexus.prepare_host_handoff"].title, "Nexus Presentations host handoff")
                     self.assertIn("single verified Presentations", metadata["nexus.prepare_host_handoff"].description)
+                    self.assertEqual(metadata["nexus.prepare_enhancement_handoff"].title, "Nexus Presentations enhancement handoff")
+                    self.assertIn("cannot read or modify the artifact", metadata["nexus.prepare_enhancement_handoff"].description)
                     for tool in tools.tools:
                         self.assertIsNotNone(tool.annotations)
                         self.assertTrue(tool.annotations.read_only_hint)
@@ -99,6 +101,18 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     handoff = await session.call_tool("nexus.prepare_host_handoff", {"task": "Create an editable PowerPoint presentation.", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertTrue(handoff.is_error)
                     self.assertEqual(self._payload(handoff)["error"]["code"], "HANDOFF_NOT_ELIGIBLE")
+                    enhancement = await session.call_tool("nexus.prepare_enhancement_handoff", {
+                        "schema_version": "nexus.host-artifact-state.v1",
+                        "artifact_kind": "pptx",
+                        "base_mapping_id": "nexus.host-map.presentations.v1",
+                        "base_execution_state": "execution_succeeded",
+                        "base_validation_state": "validation_passed",
+                        "checks": {"artifact_created": "passed", "artifact_editable": "passed", "presentation_open_render": "passed"},
+                        "observations": ["layout_density_high"],
+                        "enhancement_pass": 0,
+                    })
+                    self.assertFalse(enhancement.is_error)
+                    self.assertEqual(self._payload(enhancement)["security_result"]["code"], "HOST_ENHANCEMENT_HANDOFF_READY")
                     invalid = await session.call_tool("nexus.plan_task", {"task": "x", "workspace_id": "unknown"})
                     self.assertTrue(invalid.is_error)
                     self.assertEqual(self._payload(invalid)["error"]["code"], "UNAUTHORIZED_WORKSPACE")

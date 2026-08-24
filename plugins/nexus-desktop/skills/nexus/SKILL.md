@@ -1,6 +1,6 @@
 ---
 name: nexus
-description: Use the local Nexus planner for a substantive multi-step task when capability selection, bounded Skill evidence, or a validation plan would materially improve reliability. For a single verified Presentations Skill, prepare a host-owned execution handoff. Do not use for casual chat, simple facts, arithmetic, or short rewrites.
+description: Use the local Nexus planner for a substantive multi-step task when capability selection, bounded Skill evidence, or a validation plan would materially improve reliability. For a single verified Presentations Skill, prepare a host-owned execution handoff and one bounded post-validation enhancement pass when it is clearly useful. Do not use for casual chat, simple facts, arithmetic, or short rewrites.
 ---
 
 # Nexus local planning workflow
@@ -71,6 +71,58 @@ writes, artifacts, validation, approvals, and the final response.
    state that it did not run and use the host's native reasoning. Do not retry
    with a filesystem path or expose local configuration, raw instructions, or
    project context.
+
+## R5 bounded post-execution enhancement
+
+Run this section only after the current R4 handoff has produced a real editable
+`.pptx`, the Host has completed the primary validation requirements, and the
+Host holds the current R4 handoff plus its own successful receipt. Nexus must
+not receive the artifact reference, a path, the R4 receipt, raw render output,
+task text, a selected Skill name, or a hash.
+
+1. Inspect/render the actual Host-owned artifact. If it is already suitable,
+   do not enhance it. If a clearly observable, low-risk issue fits exactly one
+   supported code, derive a content-free artifact state with only:
+   `schema_version: nexus.host-artifact-state.v1`, `artifact_kind: pptx`,
+   `base_mapping_id: nexus.host-map.presentations.v1`, successful base
+   execution/validation states, the three passed R4 checks, up to three of
+   `layout_density_high`, `visual_hierarchy_weak`, `text_legibility_low`, or
+   `contrast_needs_review`, and `enhancement_pass: 0`.
+2. Call `nexus.prepare_enhancement_handoff` only with that exact bounded
+   artifact-state object from the current Host observation. Never send it a
+   user-supplied state, an artifact, an artifact URL, a path, an earlier
+   handoff, a receipt, a candidate ID, a Skill, an Agent, or any project data.
+3. If it returns `NO_ENHANCEMENT_NEEDED`, retain and report the already
+   validated primary artifact. If it returns a current
+   `nexus.host-enhancement-handoff.v1` with
+   `HOST_ENHANCEMENT_HANDOFF_READY`, use only its allowlisted
+   `chatgpt.presentations` mapping. It is not authority to invoke another
+   Skill, Canva, a shell, an Agent, or an arbitrary tool.
+4. Before an enhancement, create the required Host-owned
+   `host_copy_on_write` checkpoint. If the Host cannot checkpoint, return
+   `HOST_ROLLBACK_UNAVAILABLE` and preserve the
+   known-good artifact. Then verify the Host still has Presentations. If not,
+   return `HOST_CAPABILITY_UNAVAILABLE`; do not substitute a capability.
+5. If eligible, use the Host-native Presentations workflow to apply only the
+   allowlisted layout or legibility polish. Do not ask routine style/audience
+   clarification questions when the safe R4 defaults already suffice. Make no
+   more than one R5 enhancement pass and never rediscover, rerank, reload, or
+   substitute a Skill during this flow.
+6. Re-open/render and revalidate the edited candidate. Keep it only when it is
+   still editable, `presentation_open_render` passes, and the observed issue
+   is actually improved. If it is valid but not improved, restore the
+   checkpoint and report `NO_IMPROVEMENT_ROLLBACK_RESTORED`. On execution or
+   validation failure, restore the checkpoint and report the failure plus
+   rollback outcome. Do not claim an enhancement, an artifact, or validation
+   merely from a Nexus intent.
+7. A truthful enhancement receipt distinguishes:
+   `base_execution_verified`, `artifact_state_verified`,
+   `enhancement_requested`, `checkpoint_created`, `enhancement_started`,
+   `enhancement_succeeded` or `enhancement_failed`,
+   `revalidation_passed` or `revalidation_failed`, and the explicit rollback
+   result. A successful receipt requires a new real artifact reference and
+   passed revalidation. Keep R4 selected/loaded/executed/validated evidence
+   separate from R5 enhancement evidence.
 
 For simple tasks, bypass Nexus. All execution remains subject to the host's
 separately supported tools and approval flow.

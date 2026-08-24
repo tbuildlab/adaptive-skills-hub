@@ -3,7 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 import unittest
 
-from ash.mcp.schemas import NexusMcpError, parse_plan_request
+from ash.mcp.schemas import NexusMcpError, parse_plan_request, parse_prepare_enhancement_handoff_request
 
 
 class McpBoundaryTests(unittest.TestCase):
@@ -18,6 +18,21 @@ class McpBoundaryTests(unittest.TestCase):
         self.assertEqual(task.exception.code, "REQUEST_LIMIT")
         with self.assertRaises(NexusMcpError):
             parse_plan_request({"task": "x", "workspace_id": "project", "constraints": ["x"] * 17})
+
+    def test_r5_enhancement_schema_accepts_no_artifact_or_execution_inputs(self) -> None:
+        base = {
+            "schema_version": "nexus.host-artifact-state.v1",
+            "artifact_kind": "pptx",
+            "base_mapping_id": "nexus.host-map.presentations.v1",
+            "base_execution_state": "execution_succeeded",
+            "base_validation_state": "validation_passed",
+            "checks": {"artifact_created": "passed", "artifact_editable": "passed", "presentation_open_render": "passed"},
+            "observations": [],
+            "enhancement_pass": 0,
+        }
+        for forbidden in ("path", "artifact_ref", "task", "workspace_id", "command", "skill", "agent", "handoff_id", "receipt", "content_sha256"):
+            with self.assertRaises(NexusMcpError):
+                parse_prepare_enhancement_handoff_request({**base, forbidden: "attacker-controlled"})
 
     def test_r2_server_modules_have_no_execution_or_network_client_imports(self) -> None:
         root = Path(__file__).resolve().parents[1] / "ash" / "mcp"

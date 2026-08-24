@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
-  "version": "0.1.0-r4.pilot.4",
-  "description": "Local Nexus capability routing and host-owned execution handoff for ChatGPT Desktop and Codex.",
+  "version": "0.1.0-r5.pilot.1",
+  "description": "Local Nexus capability routing with host-owned execution handoff and bounded post-validation enhancement handoff for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
   },
@@ -11,14 +11,15 @@
     "capability-routing",
     "local-mcp",
     "planning",
-    "host-handoff"
+    "host-handoff",
+    "adaptive-enhancement"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Nexus",
     "shortDescription": "Route substantive work with verified local capability evidence.",
-    "longDescription": "Nexus is a local routing and host-handoff plugin. It uses a read/plan-and-handoff-only local MCP server, exposes no remote endpoint, and never performs execution itself; ChatGPT Host retains artifact and tool authority.",
+    "longDescription": "Nexus is a local routing and Host-handoff plugin. It uses a read/plan-and-handoff-only local MCP server, exposes no remote endpoint, and never performs execution, artifact mutation, or validation itself; ChatGPT Host retains artifact and tool authority.",
     "developerName": "Nexus Project",
     "category": "Developer tools",
     "capabilities": [

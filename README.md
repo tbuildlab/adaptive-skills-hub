@@ -142,6 +142,22 @@ See [docs/v1.2-usage.md](docs/v1.2-usage.md) for context budgets, evidence
 packets, validation, re-planning, safety boundaries, and optional project-level
 Codex integration.
 
+## Runtime R4/R5 development layers
+
+R4 and R5 are separate, unmerged development layers over the frozen Core.
+R4 supplies a redacted Host-owned Presentations execution handoff; R5 adds at
+most one Host-owned, copy-on-write post-validation presentation refinement.
+Neither layer lets Nexus execute a Host tool, read/write an artifact, select an
+arbitrary replacement Skill, spawn an Agent, or claim Host execution without a
+real artifact and validation receipt. See [R4 Host handoff](docs/nexus-runtime-r4-host-handoff.md)
+and [R5 adaptive enhancement](docs/nexus-runtime-r5-adaptive-enhancement.md).
+
+Reviewed third-party provenance is kept in
+[`config/upstream-source-registry.json`](config/upstream-source-registry.json).
+It records pinned sources as locally usable, advisory-only, reference-only,
+license-gated, or rejected; it does not auto-install or auto-execute upstream
+content. See [Upstream source registry](docs/upstream-source-registry.md).
+
 ## Runtime R2 local MCP
 
 Runtime R2 is a separately configured, local stdio-only MCP adapter. Its three

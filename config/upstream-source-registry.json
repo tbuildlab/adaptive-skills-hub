@@ -1,0 +1,257 @@
+{
+  "schema_version": "nexus.upstream-source-registry.v1",
+  "registry_policy": "metadata-only; no automatic clone, installation, execution, update, dependency import, or Agent delegation",
+  "sources": [
+    {
+      "source_id": "agency-agents-canonical",
+      "repository": "msitarzewski/agency-agents",
+      "commit": "ebe9c99acb5c96f9468de368d8bead775387d1a7",
+      "category": "agent-definition-catalog",
+      "license": "MIT",
+      "trust_tier": "trusted_seed_canonical",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "approved_advisory_only",
+      "risk_status": "prompt-personas; no independent tool, shell, file-write, approval, or Host-execution authority",
+      "accepted_components": [
+        {
+          "component_id": "engineering-software-architect",
+          "component_type": "agent",
+          "upstream_path": "engineering/engineering-software-architect.md",
+          "content_sha256": null,
+          "state": "advisory_only"
+        },
+        {
+          "component_id": "engineering-code-reviewer",
+          "component_type": "agent",
+          "upstream_path": "engineering/engineering-code-reviewer.md",
+          "content_sha256": null,
+          "state": "advisory_only"
+        },
+        {
+          "component_id": "testing-reality-checker",
+          "component_type": "agent",
+          "upstream_path": "testing/testing-reality-checker.md",
+          "content_sha256": null,
+          "state": "advisory_only"
+        }
+      ],
+      "rejected_components": [
+        {
+          "component_id": "upstream-install-and-conversion-scripts",
+          "component_type": "script",
+          "upstream_path": "scripts",
+          "content_sha256": null,
+          "state": "rejected_incompatible"
+        }
+      ]
+    },
+    {
+      "source_id": "agency-agents-zh-overlay",
+      "repository": "jnMetaCode/agency-agents-zh",
+      "commit": "83248ab15a78f9ddad897369c8d0be873653574a",
+      "category": "localized-agent-definition-overlay",
+      "license": "MIT",
+      "trust_tier": "trusted_seed_localized_overlay",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "approved_advisory_only",
+      "risk_status": "canonical English equivalents deduplicated semantically; localized roles stay advisory-only",
+      "accepted_components": [
+        {
+          "component_id": "china-specific-specialist-roles",
+          "component_type": "agent-catalog-subset",
+          "upstream_path": "agents",
+          "content_sha256": null,
+          "state": "advisory_only"
+        }
+      ],
+      "rejected_components": [
+        {
+          "component_id": "canonical-role-duplicates",
+          "component_type": "agent-catalog-subset",
+          "upstream_path": "agents",
+          "content_sha256": null,
+          "state": "rejected_incompatible"
+        }
+      ]
+    },
+    {
+      "source_id": "emilkowalski-skills",
+      "repository": "emilkowalski/skills",
+      "commit": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+      "category": "skill-catalog",
+      "license": "MIT",
+      "trust_tier": "trusted_seed_pinned_component",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "approved_local_skill_verified",
+      "risk_status": "only verified local bundles are directly usable; write/dependency guidance remains Host approval-gated",
+      "accepted_components": [
+        {
+          "component_id": "emil-design-eng",
+          "component_type": "skill",
+          "upstream_path": "skills/emil-design-eng/SKILL.md",
+          "content_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+          "state": "locally_usable_verified"
+        },
+        {
+          "component_id": "animation-and-ui-skill-bundles",
+          "component_type": "skill-catalog-subset",
+          "upstream_path": "skills",
+          "content_sha256": null,
+          "state": "reference_only"
+        }
+      ],
+      "rejected_components": [
+        {
+          "component_id": "npx-skills-installer-path",
+          "component_type": "installer",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "rejected_incompatible"
+        }
+      ]
+    },
+    {
+      "source_id": "awesome-llm-apps",
+      "repository": "Shubhamsaboo/awesome-llm-apps",
+      "commit": "11a4bc330e4b0b1509577db4581c5cfbcf6ea6a0",
+      "category": "llm-application-reference-library",
+      "license": "Apache-2.0",
+      "trust_tier": "trusted_seed_component_review_required",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "reference_only",
+      "risk_status": "examples may require external models, keys, shell, or broad permissions; no whole-repository import",
+      "accepted_components": [
+        {
+          "component_id": "architecture-patterns",
+          "component_type": "reference",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "reference_only"
+        }
+      ],
+      "rejected_components": [
+        {
+          "component_id": "advisor-orchestrator-worker-runtime",
+          "component_type": "agent-runtime-example",
+          "upstream_path": "advanced_ai_agents/multi_agent_apps/advisor_orchestrator_worker",
+          "content_sha256": null,
+          "state": "rejected_incompatible"
+        },
+        {
+          "component_id": "deprecated-mcp-builder",
+          "component_type": "example",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "rejected_deprecated"
+        }
+      ]
+    },
+    {
+      "source_id": "liquid-glass-react",
+      "repository": "rdev/liquid-glass-react",
+      "commit": "ac48eab18d1f7f444ae30002d240cae29c863a21",
+      "category": "react-ui-library",
+      "license": "MIT",
+      "trust_tier": "trusted_seed_reference",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "reference_only",
+      "risk_status": "frontend-only; no Nexus runtime, Host handoff, or Skill-routing authority",
+      "accepted_components": [
+        {
+          "component_id": "liquid-glass-react-patterns",
+          "component_type": "library-reference",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "reference_only"
+        }
+      ],
+      "rejected_components": []
+    },
+    {
+      "source_id": "deer-flow",
+      "repository": "bytedance/deer-flow",
+      "commit": "cc6a2657e7badb4dfeac0338533c9193b12bd9e6",
+      "category": "multi-agent-framework-and-skill-corpus",
+      "license": "MIT",
+      "trust_tier": "trusted_vendor_reference",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "reference_only",
+      "risk_status": "runtime requires subagents, sandbox/tool state, and install/update workflows outside R4/R5 boundary",
+      "accepted_components": [
+        {
+          "component_id": "skill-reviewer-pattern",
+          "component_type": "security-reference",
+          "upstream_path": "skills/skill-reviewer",
+          "content_sha256": null,
+          "state": "reference_only"
+        }
+      ],
+      "rejected_components": [
+        {
+          "component_id": "deer-flow-runtime",
+          "component_type": "framework-runtime",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "rejected_incompatible"
+        },
+        {
+          "component_id": "find-skills-auto-install-flow",
+          "component_type": "installer",
+          "upstream_path": "skills/find-skills",
+          "content_sha256": null,
+          "state": "rejected_incompatible"
+        }
+      ]
+    },
+    {
+      "source_id": "greensock-gsap",
+      "repository": "greensock/GSAP",
+      "commit": "13e2b790546426a1a2e0e9b409f3f8dc6d6611f2",
+      "category": "javascript-animation-library",
+      "license": "GreenSock Standard License; non-OSI SPDX classification",
+      "trust_tier": "trusted_seed_license_gate",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-24",
+      "state": "license_decision_required",
+      "risk_status": "not a Skill; no bundling, redistribution, or runtime import without owner license review",
+      "accepted_components": [],
+      "rejected_components": [
+        {
+          "component_id": "gsap-runtime-in-r4-r5",
+          "component_type": "library-runtime",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "license_decision_required"
+        }
+      ]
+    },
+    {
+      "source_id": "green-github-org-unresolved",
+      "repository": null,
+      "commit": null,
+      "category": "unresolved-github-organization-target",
+      "license": "not-applicable",
+      "trust_tier": "unresolved",
+      "discovered_from": "user-provided https://github.com/green organization URL",
+      "last_reviewed": "2026-08-24",
+      "state": "rejected_unresolved",
+      "risk_status": "an organization URL is not a repository or auditable component; no source accepted",
+      "accepted_components": [],
+      "rejected_components": [
+        {
+          "component_id": "green-organization-url",
+          "component_type": "unresolved-target",
+          "upstream_path": null,
+          "content_sha256": null,
+          "state": "unresolved"
+        }
+      ]
+    }
+  ]
+}

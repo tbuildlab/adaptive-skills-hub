@@ -11,6 +11,12 @@ from .handoff import (
     PLAN_VERSION,
     issue_window,
 )
+from .enhancement import (
+    ENHANCEMENT_HANDOFF_SCHEMA_VERSION,
+    HOST_ARTIFACT_STATE_SCHEMA_VERSION,
+    enhancement_issue_window,
+    select_enhancement,
+)
 from .host_mapping import presentation_profile
 from .schemas import SCHEMA_VERSION, NexusMcpError, ensure_response_limit
 
@@ -25,7 +31,7 @@ def safe_health() -> dict[str, Any]:
     return ensure_response_limit({
         "schema_version": SCHEMA_VERSION, "product": PRODUCT, "status": "ready",
         "transport": "stdio", "capabilities": {"read_only": True, "plan_only": True, "host_handoff_only": True, "network_listener": False, "persistent_state": False},
-        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff"],
+        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
         "core_baseline": "Nexus V1.2 plus Runtime R1",
     })
 
@@ -137,4 +143,57 @@ def safe_host_handoff(plan: Any, loads: list[Mapping[str, Any]], validation: Map
         "validation_requirements": ["artifact_created", "artifact_editable", "presentation_open_render"],
         "fallback": {"kind": plan.fallback.get("kind"), "status": plan.fallback.get("status")},
         "security_result": {"code": "HOST_HANDOFF_READY", "mcp_execution_authority": "none"},
+    })
+
+
+def safe_enhancement_handoff(state: Any) -> dict[str, Any]:
+    """Return a content-free R5 Host enhancement intent or a no-op result.
+
+    ``state`` is already parsed against a closed enum schema. Even then, this
+    result is only an analysis request: the Host must prove current primary
+    execution provenance, retain the actual artifact privately, create a
+    checkpoint, and validate any modification before it can report success.
+    """
+    decision = select_enhancement(state)
+    base = {
+        "schema_version": ENHANCEMENT_HANDOFF_SCHEMA_VERSION,
+        "artifact_state_schema_version": HOST_ARTIFACT_STATE_SCHEMA_VERSION,
+        "artifact_kind": state.artifact_kind,
+        "base_mapping_id": state.base_mapping_id,
+        "enhancement_pass": state.enhancement_pass,
+        "max_enhancement_passes": 1,
+        "host_provenance_required": "current_validated_r4_receipt",
+        "security_result": {"mcp_execution_authority": "none", "artifact_access": "none"},
+    }
+    if decision.status != "enhancement_requested" or decision.profile is None:
+        return ensure_response_limit({
+            **base,
+            "status": "no_enhancement_needed",
+            "reason_codes": list(decision.reason_codes),
+            "security_result": {**base["security_result"], "code": "NO_ENHANCEMENT_NEEDED"},
+        })
+    profile = decision.profile
+    issued_at, expires_at = enhancement_issue_window()
+    return ensure_response_limit({
+        **base,
+        "handoff_id": str(uuid4()),
+        "issued_at": issued_at,
+        "expires_at": expires_at,
+        "status": "enhancement_requested",
+        "selected_candidate": {
+            "candidate_id": profile["candidate_id"],
+            "reason_codes": list(decision.reason_codes),
+        },
+        "logical_host_capability": profile["logical_host_capability"],
+        "requested_execution_mode": profile["requested_execution_mode"],
+        "required_checkpoint": "host_copy_on_write",
+        "host_execution_profile": {
+            "mapping_id": profile["mapping_id"],
+            "operation_scope": list(profile["operation_scope"]),
+            "continuation_policy": "apply_only_if_host_can_validate_improvement",
+            "artifact_mutation_policy": "host_copy_on_write",
+            "improvement_requirement": "host_observed_quality_improvement",
+        },
+        "validation_requirements": list(profile["validation_requirements"]),
+        "security_result": {**base["security_result"], "code": "HOST_ENHANCEMENT_HANDOFF_READY"},
     })
