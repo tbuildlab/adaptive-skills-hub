@@ -52,6 +52,12 @@ class McpAuthorizationTests(unittest.TestCase):
         with self.assertRaises(NexusMcpError):
             guard_regular_file(self.root, [self.root])
 
+    def test_missing_optional_skill_root_does_not_disable_an_existing_trusted_root(self) -> None:
+        skill = self.root / "SKILL.md"
+        skill.write_text("safe", encoding="utf-8")
+        guarded, _ = guard_regular_file(skill, [self.root / "missing-optional-root", self.root])
+        self.assertEqual(guarded, skill.resolve())
+
     def test_race_like_replacement_fails_closed(self) -> None:
         target = self.root / "SKILL.md"
         target.write_text("one", encoding="utf-8")

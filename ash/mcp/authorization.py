@@ -108,7 +108,21 @@ def guard_regular_file(path: Path, allowed_roots: Iterable[Path]) -> tuple[Path,
     raw = str(path)
     if _is_windows_special(raw) or not path.is_absolute():
         raise NexusMcpError("SKILL_LOAD_FAILED", "selected Skill path is not permitted")
-    roots = [_canonical_root(root) for root in allowed_roots]
+    roots: list[Path] = []
+    for root in allowed_roots:
+        # ``~/.codex/skills`` and ``~/.codex/plugins/cache`` are independent
+        # optional roots on a clean host.  A missing one must not disable a
+        # guarded Skill from the other.  Existing roots still use the complete
+        # canonical/reparse validation below.
+        try:
+            os.lstat(root)
+        except FileNotFoundError:
+            continue
+        except OSError as exc:
+            raise NexusMcpError("SKILL_LOAD_FAILED", "trusted Skill source cannot be inspected") from exc
+        roots.append(_canonical_root(root))
+    if not roots:
+        raise NexusMcpError("SKILL_LOAD_FAILED", "no trusted Skill source is available")
     absolute = Path(os.path.abspath(raw))
     _assert_no_reparse_chain(absolute)
     try:
