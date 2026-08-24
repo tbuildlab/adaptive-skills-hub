@@ -4,8 +4,8 @@
     "sha256": "a655879739182775e0f18e31831d26b481cc2980514e72adeccc4666b7c4e403"
   },
   ".gitignore": {
-    "bytes": 518,
-    "sha256": "220762ff9b7173e50dbe21865428555526d484a87a9b6c24b0738e055ccdb5b2"
+    "bytes": 568,
+    "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "ash/__init__.py": {
     "bytes": 64,
@@ -28,8 +28,8 @@
     "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
   },
   "ash/mcp/adapter.py": {
-    "bytes": 3968,
-    "sha256": "bbbacb2bffb0f87639f459b044f52ec1993ab6fd484373b8435a7e584e66b184"
+    "bytes": 5907,
+    "sha256": "4214d5695fd1ec0ca03432bfc3ab014e76f7562ec88be5e9fc558b57286951f7"
   },
   "ash/mcp/authorization.py": {
     "bytes": 6154,
@@ -39,17 +39,21 @@
     "bytes": 3887,
     "sha256": "130cc028931bc54e982bde2d505dd083fb3ad39dd0a5922cc7c044497f33b628"
   },
+  "ash/mcp/handoff.py": {
+    "bytes": 4882,
+    "sha256": "2e88636fb7be8dd3b41ee437274a9a19e7a7b6f1ee354e3d82e71f11b2f9d3d4"
+  },
   "ash/mcp/redaction.py": {
-    "bytes": 5250,
-    "sha256": "3ae842bfb240d72d4b8bf2913c1ca38af4a31134905e1702e08dd0ea4c44c056"
+    "bytes": 8057,
+    "sha256": "72370ceebbde5becfce7d5ab00d907ba31a35fd299c1958af1e5598c338f8f3b"
   },
   "ash/mcp/schemas.py": {
-    "bytes": 4387,
-    "sha256": "53953f3d3b186afccc766a8eab1f001455db564defdfef5d4c3c1091c9a62b73"
+    "bytes": 5390,
+    "sha256": "8a2c053d08a7278cac29d83a25f7cf91f6f6e11e1ce3b10516a700e4e0437590"
   },
   "ash/mcp/server.py": {
-    "bytes": 5012,
-    "sha256": "5c73dfeff3fe48493021048589f235ecb4dc1fcc7d826800aaa207d61936c9ab"
+    "bytes": 6176,
+    "sha256": "a32b2f763d2eccc62f8ff98f7ae64a8c789c0c1c366a6a264ab1192be51dce2d"
   },
   "ash/mcp/telemetry.py": {
     "bytes": 549,
@@ -115,6 +119,10 @@
     "bytes": 7009,
     "sha256": "d8d867d6f15a6f8a9d85927b112964486a623c036c7371354409dccd926c32c6"
   },
+  "docs/nexus-runtime-r4-host-handoff.md": {
+    "bytes": 6268,
+    "sha256": "ff648509ae396c6357ec45c455117aa45d732f0bf0de1e2b822bae033fcbb512"
+  },
   "docs/portable-installation.md": {
     "bytes": 2133,
     "sha256": "ae6131e86045c0db6813307c744031d92d3dcecd94c94fc0157f6507c8a2bd11"
@@ -139,10 +147,6 @@
     "bytes": 3749,
     "sha256": "cb88147be7fe6507ec51cdd5fd052d1ab7061f540d568dea039f17b159e2d7f2"
   },
-  "Microsoft/Windows/PowerShell/ModuleAnalysisCache": {
-    "bytes": 67477,
-    "sha256": "fc0f85d5a3950cfd1d27e6316eb7fdd12f2a2ff1d8709f719d618f5f8d085c09"
-  },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
     "bytes": 1008,
     "sha256": "d36704bedc6cf194c813a64b12ae59484b6bbd0a43e872259cb05c095d2fcfc7"
@@ -156,8 +160,8 @@
     "sha256": "1ec590979b8ebe5f7f074c908868057dd7bed1f4aacb905cf1728084956e4148"
   },
   "plugins/nexus-desktop/skills/nexus/SKILL.md": {
-    "bytes": 1356,
-    "sha256": "58722735cdf8f95efbaeda53144fac4b093c96541b1055f2e3b02101b40bbb58"
+    "bytes": 3419,
+    "sha256": "333278949e0becc878c03f3a52d612ea63604c1c7ead98579b16bd2928dd4d38"
   },
   "README.md": {
     "bytes": 6043,
@@ -180,8 +184,8 @@
     "sha256": "886eb229741aff4a96f88bef1ef667eaf2f635d9d33c12ff64b9ab4666bc2ca1"
   },
   "scripts/build_manifest.py": {
-    "bytes": 1712,
-    "sha256": "3800fef19549bf29f8aa4af51ab2ffff8e00bbd05282bbef0f73875f8651d4b0"
+    "bytes": 1930,
+    "sha256": "e5cdf19bdcb3d8050717ca26ba743a7564fbb2f349e63d9b18974a07e643aaee"
   },
   "scripts/build_release.py": {
     "bytes": 15388,
@@ -248,8 +252,8 @@
     "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
   },
   "tests/test_desktop_plugin_pilot.py": {
-    "bytes": 10228,
-    "sha256": "6dc17a7dd6cc3517b78c2eea441557d687d9cc12913584038981e03aed6b1c7b"
+    "bytes": 10395,
+    "sha256": "58cb2a76690bf8ae3f34056110fba332f0b1d30ffaedfa7ae4f9a87a6dce17f5"
   },
   "tests/test_github_distribution.py": {
     "bytes": 42045,
@@ -272,12 +276,16 @@
     "sha256": "ce9696518ea600a46635883daeb6a08e0c5d9441301af2164c8e4c488798163b"
   },
   "tests/test_mcp_protocol.py": {
-    "bytes": 6103,
-    "sha256": "30d23c568a73c13d6a3d3148eb276221cf7240d18163190d7f52369d0d133c28"
+    "bytes": 7039,
+    "sha256": "cb4d414a6e4d2aef4ad4faf5cfaa6bf3e5989c359c644acb68e4b30ecbf09d9e"
   },
   "tests/test_mcp_redaction.py": {
     "bytes": 3656,
     "sha256": "2a3acde0aa437060ca334e654f162764ea712130f175c1d5e57fae4b72413210"
+  },
+  "tests/test_r4_host_handoff.py": {
+    "bytes": 8935,
+    "sha256": "4b5db30b3e8366446ccfb491de7f50a27364a4b85280488dd08d7cd5f0f40b62"
   },
   "tests/test_v2.py": {
     "bytes": 34763,

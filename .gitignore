@@ -29,6 +29,7 @@ node_modules/
 *.bak
 Thumbs.db
 Desktop.ini
+/Microsoft/Windows/PowerShell/ModuleAnalysisCache
 
 # Generated local indexes and live-test evidence
 state/

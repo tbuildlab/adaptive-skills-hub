@@ -12,7 +12,7 @@ from mcp.server.stdio import stdio_server
 
 from .adapter import NexusMcpRuntime
 from .redaction import safe_error
-from .schemas import DISCOVER_INPUT_SCHEMA, HEALTH_INPUT_SCHEMA, PLAN_INPUT_SCHEMA, NexusMcpError
+from .schemas import DISCOVER_INPUT_SCHEMA, HEALTH_INPUT_SCHEMA, PLAN_INPUT_SCHEMA, PREPARE_HOST_HANDOFF_INPUT_SCHEMA, NexusMcpError
 from .telemetry import emit
 
 
@@ -43,6 +43,12 @@ PLAN_TOOL_DESCRIPTION = (
     "coursework, or work where choosing capabilities improves reliability. Do not use for "
     "greetings, simple calculations or facts, simple translation, short rewrites, or execution."
 )
+PREPARE_HOST_HANDOFF_DESCRIPTION = (
+    "Create a short-lived, read-only host execution handoff only after planning a "
+    "single verified Presentations Skill. The ChatGPT host, not Nexus, decides "
+    "eligibility and performs any artifact action. Never use this tool to execute, "
+    "write files, invoke commands, or substitute a Skill."
+)
 
 
 def _text_for(payload: dict[str, Any]) -> str:
@@ -56,12 +62,22 @@ def _result(payload: dict[str, Any], error: bool = False) -> types.CallToolResul
     return types.CallToolResult(content=[types.TextContent(type="text", text=_text_for(payload))], is_error=error)
 
 
+def _safe_selected_ids(payload: dict[str, Any]) -> list[str]:
+    """Extract only safe selected IDs from either plan or R4 handoff output."""
+    ids = [str(item.get("resource_id", "")) for item in payload.get("selected_skills", []) if isinstance(item, dict)]
+    selected = payload.get("selected_skill")
+    if not ids and isinstance(selected, dict):
+        ids = [str(selected.get("resource_id", ""))]
+    return [item for item in ids if item]
+
+
 def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
     async def list_tools(_ctx: Any, _params: Any) -> types.ListToolsResult:
         return types.ListToolsResult(tools=[
             types.Tool(name="nexus.health", title="Nexus status", description=HEALTH_TOOL_DESCRIPTION, inputSchema=HEALTH_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.discover_capabilities", title="Nexus capability catalog", description=DISCOVER_TOOL_DESCRIPTION, inputSchema=DISCOVER_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.plan_task", title="Nexus substantive-task planner", description=PLAN_TOOL_DESCRIPTION, inputSchema=PLAN_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.prepare_host_handoff", title="Nexus Presentations host handoff", description=PREPARE_HOST_HANDOFF_DESCRIPTION, inputSchema=PREPARE_HOST_HANDOFF_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
         ])
 
     async def call_tool(_ctx: Any, params: types.CallToolRequestParams) -> types.CallToolResult:
@@ -74,9 +90,11 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
                 payload = runtime.discover_capabilities(params.arguments)
             elif params.name == "nexus.plan_task":
                 payload = runtime.plan(params.arguments)
+            elif params.name == "nexus.prepare_host_handoff":
+                payload = runtime.prepare_host_handoff(params.arguments)
             else:
                 raise NexusMcpError("INVALID_REQUEST", "tool is not supported")
-            emit(request_id, params.name, str(payload.get("status", "ready")), int((time.monotonic() - started) * 1000), [item.get("resource_id", "") for item in payload.get("selected_skills", [])])
+            emit(request_id, params.name, str(payload.get("status", "ready")), int((time.monotonic() - started) * 1000), _safe_selected_ids(payload))
             return _result(payload)
         except NexusMcpError as exc:
             payload = safe_error(request_id, exc)
@@ -87,7 +105,7 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
             emit(request_id, params.name, "INTERNAL_ERROR", int((time.monotonic() - started) * 1000))
             return _result(payload, error=True)
 
-    return Server("nexus-local-r2", version="2.0-r2", title="Nexus", description="Adaptive AI Capability Hub local read/plan-only MCP server", on_list_tools=list_tools, on_call_tool=call_tool)
+    return Server("nexus-local-r4", version="2.0-r4", title="Nexus", description="Adaptive AI Capability Hub local read/plan-and-handoff-only MCP server", on_list_tools=list_tools, on_call_tool=call_tool)
 
 
 async def run_stdio(runtime: NexusMcpRuntime) -> None:

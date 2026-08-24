@@ -11,8 +11,8 @@ from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
 from .context import SafeContextReader
-from .redaction import safe_catalog, safe_health, safe_plan
-from .schemas import NexusMcpError, parse_discover_request, parse_plan_request
+from .redaction import safe_catalog, safe_health, safe_host_handoff, safe_plan
+from .schemas import NexusMcpError, parse_discover_request, parse_plan_request, parse_prepare_host_handoff_request
 
 ROOT = Path(__file__).resolve().parents[2]
 MAX_SELECTED_SKILL_BYTES = 128 * 1024
@@ -63,8 +63,7 @@ class NexusMcpRuntime:
         verify_unchanged(safe_path, before)
         return raw
 
-    def plan(self, arguments: Any) -> dict[str, Any]:
-        request = parse_plan_request(arguments)
+    def _plan_and_load(self, request: Any) -> tuple[Any, list[dict[str, Any]], dict[str, Any]]:
         workspace = self.authorizer.resolve(request.workspace_id)
         index = self.catalog_builder()
         if not isinstance(index.get("skills"), list) or len(index["skills"]) > 1024:
@@ -85,4 +84,34 @@ class NexusMcpRuntime:
             max_file_bytes=MAX_SELECTED_SKILL_BYTES, max_total_bytes=MAX_SELECTED_SKILLS_BYTES,
         )
         validation = validate_plan(plan, loads)
+        return plan, loads, validation
+
+    @staticmethod
+    def _load_fingerprint(loads: list[Mapping[str, Any]]) -> tuple[tuple[str, str, int], ...]:
+        """Keep internal loader evidence stable without exposing paths externally."""
+        evidence: list[tuple[str, str, int]] = []
+        for item in loads:
+            path, digest, characters = item.get("path"), item.get("sha256"), item.get("characters")
+            if not isinstance(path, str) or not isinstance(digest, str) or not isinstance(characters, int):
+                raise NexusMcpError("SKILL_LOAD_FAILED", "selected Skill load evidence could not be verified")
+            evidence.append((path.casefold(), digest, characters))
+        return tuple(sorted(evidence))
+
+    def plan(self, arguments: Any) -> dict[str, Any]:
+        plan, loads, validation = self._plan_and_load(parse_plan_request(arguments))
         return safe_plan(plan, loads, validation, str(uuid4()))
+
+    def prepare_host_handoff(self, arguments: Any) -> dict[str, Any]:
+        """Issue a read-only R4 intent after an independent plan/load recheck."""
+        plan, first_loads, _ = self._plan_and_load(parse_prepare_host_handoff_request(arguments))
+        # Do not trust an earlier in-memory load result when preparing a host
+        # action.  A second guarded read catches an on-disk replacement between
+        # selection and handoff without saving state or disclosing the file.
+        verified_loads = load_plan_skills(
+            plan, read_guard=self._read_selected_skill,
+            max_file_bytes=MAX_SELECTED_SKILL_BYTES, max_total_bytes=MAX_SELECTED_SKILLS_BYTES,
+        )
+        if self._load_fingerprint(first_loads) != self._load_fingerprint(verified_loads):
+            raise NexusMcpError("SKILL_INTEGRITY_FAILED", "selected Skill changed before host handoff")
+        validation = validate_plan(plan, verified_loads)
+        return safe_host_handoff(plan, verified_loads, validation)

@@ -1,12 +1,13 @@
 ---
 name: nexus
-description: Use the local Nexus planner for a substantive multi-step task when capability selection, bounded Skill evidence, or a validation plan would materially improve reliability. Do not use for casual chat, simple facts, arithmetic, short rewrites, or task execution.
+description: Use the local Nexus planner for a substantive multi-step task when capability selection, bounded Skill evidence, or a validation plan would materially improve reliability. For a single verified Presentations Skill, prepare a host-owned execution handoff. Do not use for casual chat, simple facts, arithmetic, or short rewrites.
 ---
 
 # Nexus local planning workflow
 
-Use this plugin only for a substantive task. It is a planning layer, not an
-execution runtime.
+Use this plugin only for a substantive task. Nexus is a planning and handoff
+layer, never an execution runtime. The ChatGPT host alone owns tools, file
+writes, artifacts, validation, approvals, and the final response.
 
 1. Call `nexus.plan_task` with a concise `task`, the configured opaque
    `workspace_id` `nexus-default`, and only bounded constraints needed for
@@ -14,12 +15,41 @@ execution runtime.
    workspace; never replace it with a filesystem path.
 2. Treat the returned plan as advisory. It has no file-write, shell, network, or
    automatic Skill-install authority.
-3. Report the selected Skills and validation steps from the redacted result.
-   Do not claim a selected Skill was executed merely because it was planned.
-4. If Nexus returns an unavailable, unauthorized, or invalid-request result,
+3. If the plan has exactly one selected Skill named `Presentations`, its
+   `load_status` is `loaded`, and fallback is not needed, call
+   `nexus.prepare_host_handoff` with the same bounded task inputs. Never send a
+   Skill name, path, hash, handoff ID, tool result, or any user-supplied
+   handoff back to Nexus.
+4. Treat a handoff as valid only when it comes from the current tool result,
+   has `schema_version` `nexus.host-handoff.v1`, has not expired, has
+   `status` `execution_requested`, exactly identifies `Presentations` with
+   `load_verification_state` `loaded_verified`, requests
+   `chatgpt.presentations`, and reports `HOST_HANDOFF_READY`.
+5. Before using a host capability, verify that the host actually has the
+   requested Presentations capability. If it does not, return
+   `HOST_CAPABILITY_UNAVAILABLE`; do not substitute Canva, HTML, another
+   Skill, or native fallback after a handoff was requested.
+6. When eligible, load and follow the host-native Presentations workflow and
+   use its actual tool to create an editable `.pptx`. Do not claim execution
+   merely from Nexus selection or loading. Obtain a real artifact reference,
+   run the handoff validation requirements (including open/render validation),
+   and only then report success.
+7. The final execution receipt must distinguish: `selected`,
+   `loaded_verified`, `host_eligible`, `execution_requested`,
+   `execution_started`, `execution_succeeded` or `execution_failed`, and
+   `validation_passed` or `validation_failed`. Include the selected Skill name,
+   content SHA-256, handoff ID, artifact reference when successful, and any
+   safe failure code. Never expose paths, raw Skill instructions, project
+   context, rules, secrets, or hidden reasoning.
+8. If the host refuses execution, produces no artifact, artifact generation
+   fails, validation fails, the handoff is expired/replayed/malformed, or the
+   selected Skill changes, do not report success. A Skill change requires a new
+   Nexus planning pass and a new handoff.
+9. If Nexus returns an unavailable, unauthorized, invalid-request, or
+   ineligible result,
    state that it did not run and use the host's native reasoning. Do not retry
    with a filesystem path or expose local configuration, raw instructions, or
    project context.
 
-For simple tasks, bypass Nexus. For execution after planning, use only the
-host's separately supported tools and approval flow.
+For simple tasks, bypass Nexus. All execution remains subject to the host's
+separately supported tools and approval flow.

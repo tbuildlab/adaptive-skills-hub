@@ -13,6 +13,7 @@ from mcp.client.stdio import StdioServerParameters, stdio_client
 import mcp_types as types
 from mcp.shared.message import SessionMessage
 import ash.mcp.adapter as adapter
+from ash.mcp.server import _safe_selected_ids
 
 
 class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
@@ -37,6 +38,10 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
             records = [item for item in catalog["skills"] if item["name"] == "evidence-driven-backend-debugging"]
             self.assertEqual(len(records), 1)
             self.assertEqual(records[0]["status"], "available")
+
+    def test_r4_handoff_audit_uses_only_the_safe_selected_identity(self) -> None:
+        payload = {"selected_skill": {"resource_id": "skill:presentations", "path": "C:/must-not-log"}}
+        self.assertEqual(_safe_selected_ids(payload), ["skill:presentations"])
 
     async def test_tools_are_gated_before_initialization(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -64,7 +69,7 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     initialized = await session.initialize()
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
-                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task"])
+                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff"])
                     metadata = {item.name: item for item in tools.tools}
                     self.assertEqual(metadata["nexus.health"].title, "Nexus status")
                     self.assertIn("diagnostics", metadata["nexus.health"].description)
@@ -77,6 +82,8 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn("presentations", metadata["nexus.plan_task"].description)
                     self.assertIn("Do not use for greetings", metadata["nexus.plan_task"].description)
                     self.assertIn("or execution", metadata["nexus.plan_task"].description)
+                    self.assertEqual(metadata["nexus.prepare_host_handoff"].title, "Nexus Presentations host handoff")
+                    self.assertIn("single verified Presentations", metadata["nexus.prepare_host_handoff"].description)
                     for tool in tools.tools:
                         self.assertIsNotNone(tool.annotations)
                         self.assertTrue(tool.annotations.read_only_hint)
@@ -89,6 +96,9 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     planned = await session.call_tool("nexus.plan_task", {"task": "Translate this text into Klingon", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertFalse(planned.is_error)
                     self.assertEqual(self._payload(planned)["fallback"]["kind"], "native_codex_fallback")
+                    handoff = await session.call_tool("nexus.prepare_host_handoff", {"task": "Create an editable PowerPoint presentation.", "workspace_id": "project", "project_context_mode": "none"})
+                    self.assertTrue(handoff.is_error)
+                    self.assertEqual(self._payload(handoff)["error"]["code"], "HANDOFF_NOT_ELIGIBLE")
                     invalid = await session.call_tool("nexus.plan_task", {"task": "x", "workspace_id": "unknown"})
                     self.assertTrue(invalid.is_error)
                     self.assertEqual(self._payload(invalid)["error"]["code"], "UNAUTHORIZED_WORKSPACE")

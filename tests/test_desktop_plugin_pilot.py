@@ -39,9 +39,12 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(marketplace["plugins"][0]["source"]["path"], "./.codex/plugins/nexus-desktop")
         self.assertEqual(marketplace["plugins"][0]["policy"]["installation"], "AVAILABLE")
         self.assertIn("nexus.plan_task", skill)
+        self.assertIn("nexus.prepare_host_handoff", skill)
+        self.assertIn("HOST_CAPABILITY_UNAVAILABLE", skill)
+        self.assertIn("loaded_verified", skill)
         self.assertIn("nexus-default", skill)
         self.assertIn("substantive", skill)
-        self.assertNotIn("execute a plan", skill.casefold())
+        self.assertNotIn("nexus executes", skill.casefold())
         source = "\n".join(path.read_text(encoding="utf-8") for path in PLUGIN_ROOT.rglob("*.py"))
         developer_root = "D:" + chr(92) + "chatgpt"
         developer_profile = "C:" + chr(92) + "Users" + chr(92) + "De Yong"

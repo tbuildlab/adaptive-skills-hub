@@ -14,7 +14,12 @@ EXCLUDED_PARTS = {"state", "output", "__pycache__", ".git"}
 # This is intentionally an ignored, machine-local setup record.  Keeping it out
 # of the static package manifest preserves the manifest's version-controlled
 # package boundary while allowing local environment documentation to exist.
-LOCAL_ONLY_PATHS = {Path("docs/local-development-environment.md")}
+LOCAL_ONLY_PATHS = {
+    Path("docs/local-development-environment.md"),
+    # PowerShell may create this relative to the active repository.  It is a
+    # machine-generated cache, never a distributable Nexus source file.
+    Path("Microsoft/Windows/PowerShell/ModuleAnalysisCache"),
+}
 entries: dict[str, dict[str, int | str]] = {}
 
 

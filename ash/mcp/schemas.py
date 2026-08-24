@@ -91,6 +91,25 @@ PLAN_INPUT_SCHEMA: dict[str, Any] = {
     },
 }
 
+# R4 intentionally takes the same bounded planning inputs as ``plan_task``.
+# It never accepts a path, selected Skill, hash, existing handoff, or host
+# result.  The server independently replans and re-verifies before issuing an
+# execution intent.
+PREPARE_HOST_HANDOFF_INPUT_SCHEMA: dict[str, Any] = {
+    "type": "object", "additionalProperties": False, "required": ["task", "workspace_id"],
+    "properties": {
+        "task": {"type": "string", "minLength": 1, "maxLength": MAX_TASK_BYTES},
+        "workspace_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"},
+        "project_context_mode": {"type": "string", "enum": ["none", "governance"], "default": "governance"},
+        "constraints": {"type": "array", "maxItems": MAX_CONSTRAINTS, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
+    },
+}
+
+
+def parse_prepare_host_handoff_request(value: Any) -> PlanRequest:
+    """Parse R4 inputs with the frozen R2 planning boundary."""
+    return parse_plan_request(value)
+
 def ensure_response_limit(value: Mapping[str, Any]) -> dict[str, Any]:
     result = dict(value)
     if len(json.dumps(result, ensure_ascii=False, separators=(",", ":")).encode("utf-8")) > MAX_SAFE_ENVELOPE_BYTES:
