@@ -18,6 +18,14 @@ logical host capability `chatgpt.presentations`.  Documents, Spreadsheets,
 Agents, Skill Scout, shell execution, remote MCP, OAuth, and V1.3 Core are out
 of scope.
 
+Normal V1.2 planning and ranking are unchanged.  The R4 Desktop Skill uses the
+explicit bounded constraint `r4_host_capability:presentations` for the
+host-execution path only.  That constraint narrows candidates to the one
+supported host capability; it cannot name or select an arbitrary Skill and an
+unknown R4 host constraint is rejected.  This prevents a higher-ranked local
+presentation workflow from being silently substituted for the host-native
+Presentations workflow.
+
 ## Authority model
 
 ```text

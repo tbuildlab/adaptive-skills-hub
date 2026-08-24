@@ -8,7 +8,7 @@ import unittest
 from unittest.mock import patch
 
 import ash.mcp.adapter as adapter
-from ash.mcp.adapter import NexusMcpRuntime
+from ash.mcp.adapter import NexusMcpRuntime, R4_PRESENTATIONS_CONSTRAINT
 from ash.mcp.authorization import WorkspaceAuthorizer
 from ash.mcp.handoff import HANDOFF_SCHEMA_VERSION, is_current_handoff, validate_host_receipt
 from ash.mcp.redaction import safe_host_handoff
@@ -83,6 +83,33 @@ class R4HostHandoffTests(unittest.TestCase):
         with self.assertRaisesRegex(NexusMcpError, "selected Skill load evidence") as raised:
             self._handoff()
         self.assertEqual(raised.exception.code, "SKILL_LOAD_FAILED")
+
+    def test_r4_constraint_selects_only_presentations_without_changing_default_ranking(self) -> None:
+        ppt_root = Path(self.temp.name) / "ppt-master"
+        ppt_path = ppt_root / "SKILL.md"
+        ppt_root.mkdir()
+        ppt_path.write_text(
+            "---\nname: ppt-master\ndescription: Create editable PowerPoint PPTX presentation decks.\n---\n",
+            encoding="utf-8",
+        )
+        ppt = {
+            **self.skill, "id": "skill:ppt-master", "name": "ppt-master", "description": "Create editable PowerPoint PPTX presentation decks.",
+            "path": str(ppt_root), "skill_md_path": str(ppt_path),
+        }
+        self.runtime.catalog_builder = lambda: {"skills": [ppt, self.skill], "agents": []}
+        self.runtime.skill_roots = [self.skills, ppt_root]
+        unconstrained = self.runtime.plan(self.arguments)
+        self.assertEqual(unconstrained["selected_skills"][0]["name"], "ppt-master")
+        constrained_args = {**self.arguments, "constraints": [R4_PRESENTATIONS_CONSTRAINT]}
+        constrained = self.runtime.plan(constrained_args)
+        self.assertEqual([item["name"] for item in constrained["selected_skills"]], ["Presentations"])
+        handoff = self.runtime.prepare_host_handoff(constrained_args)
+        self.assertEqual(handoff["security_result"]["code"], "HOST_HANDOFF_READY")
+
+    def test_unsupported_r4_host_constraint_is_rejected(self) -> None:
+        with self.assertRaisesRegex(NexusMcpError, "host capability constraint") as raised:
+            self.runtime.prepare_host_handoff({**self.arguments, "constraints": ["r4_host_capability:documents"]})
+        self.assertEqual(raised.exception.code, "INVALID_REQUEST")
 
     def test_ambiguous_skill_selection_is_ineligible(self) -> None:
         plan, loads, validation = self.runtime._plan_and_load(parse_prepare_host_handoff_request(self.arguments))

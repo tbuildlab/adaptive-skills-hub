@@ -9,17 +9,21 @@ Use this plugin only for a substantive task. Nexus is a planning and handoff
 layer, never an execution runtime. The ChatGPT host alone owns tools, file
 writes, artifacts, validation, approvals, and the final response.
 
-1. Call `nexus.plan_task` with a concise `task`, the configured opaque
-   `workspace_id` `nexus-default`, and only bounded constraints needed for
-   planning. The installer maps that alias to exactly one locally approved
-   workspace; never replace it with a filesystem path.
+1. For the supported R4 Presentations execution path, call `nexus.plan_task`
+   with a concise `task`, the configured opaque `workspace_id`
+   `nexus-default`, and the exact bounded constraint
+   `r4_host_capability:presentations`. This is a narrow host-execution
+   allowlist, not a user-selected Skill name: it can only make the R4
+   Presentations handoff eligible and cannot select an arbitrary Skill. The
+   installer maps the alias to exactly one locally approved workspace; never
+   replace it with a filesystem path.
 2. Treat the returned plan as advisory. It has no file-write, shell, network, or
    automatic Skill-install authority.
-3. If the plan has exactly one selected Skill named `Presentations`, its
+3. If the R4-constrained plan has exactly one selected Skill named `Presentations`, its
    `load_status` is `loaded`, and fallback is not needed, call
-   `nexus.prepare_host_handoff` with the same bounded task inputs. Never send a
-   Skill name, path, hash, handoff ID, tool result, or any user-supplied
-   handoff back to Nexus.
+   `nexus.prepare_host_handoff` with the same bounded task inputs and exact
+   R4 constraint. Never send a Skill name, path, hash, handoff ID, tool
+   result, or any user-supplied handoff back to Nexus.
 4. Treat a handoff as valid only when it comes from the current tool result,
    has `schema_version` `nexus.host-handoff.v1`, has not expired, has
    `status` `execution_requested`, exactly identifies `Presentations` with

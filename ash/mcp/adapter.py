@@ -18,6 +18,8 @@ ROOT = Path(__file__).resolve().parents[2]
 MAX_SELECTED_SKILL_BYTES = 128 * 1024
 MAX_SELECTED_SKILLS_BYTES = 256 * 1024
 SOFT_PLANNING_SECONDS = 15.0
+R4_HOST_CAPABILITY_PREFIX = "r4_host_capability:"
+R4_PRESENTATIONS_CONSTRAINT = "r4_host_capability:presentations"
 
 
 class NexusMcpRuntime:
@@ -63,11 +65,35 @@ class NexusMcpRuntime:
         verify_unchanged(safe_path, before)
         return raw
 
+    @staticmethod
+    def _catalog_for_request(index: Mapping[str, Any], request: Any) -> Mapping[str, Any]:
+        """Apply the narrow R4 host capability allowlist, if explicitly requested.
+
+        This does not alter V1.2 ranking for ordinary plans.  The R4 Desktop
+        Skill adds the constraint only when it is asking for a host-owned
+        Presentations execution handoff.  No caller can use this mechanism to
+        select an arbitrary Skill: the sole supported value is Presentations.
+        """
+        host_constraints = [
+            item.casefold() for item in request.constraints
+            if item.casefold().startswith(R4_HOST_CAPABILITY_PREFIX)
+        ]
+        if not host_constraints:
+            return index
+        if host_constraints != [R4_PRESENTATIONS_CONSTRAINT]:
+            raise NexusMcpError("INVALID_REQUEST", "R4 host capability constraint is unsupported")
+        skills = index.get("skills")
+        if not isinstance(skills, list):
+            raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
+        restricted = [item for item in skills if str(item.get("name", "")).casefold() == "presentations"]
+        return {**index, "skills": restricted}
+
     def _plan_and_load(self, request: Any) -> tuple[Any, list[dict[str, Any]], dict[str, Any]]:
         workspace = self.authorizer.resolve(request.workspace_id)
         index = self.catalog_builder()
         if not isinstance(index.get("skills"), list) or len(index["skills"]) > 1024:
             raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
+        index = self._catalog_for_request(index, request)
         started = time.monotonic()
         plan = plan_task(
             request.task, index, workspace.root,

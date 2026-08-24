@@ -28,8 +28,8 @@
     "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
   },
   "ash/mcp/adapter.py": {
-    "bytes": 5907,
-    "sha256": "4214d5695fd1ec0ca03432bfc3ab014e76f7562ec88be5e9fc558b57286951f7"
+    "bytes": 7301,
+    "sha256": "bf3e44a58d72a32539d8a5044bbff4e709cc15fc83ebb9d7612599a2002c458f"
   },
   "ash/mcp/authorization.py": {
     "bytes": 6811,
@@ -120,8 +120,8 @@
     "sha256": "d8d867d6f15a6f8a9d85927b112964486a623c036c7371354409dccd926c32c6"
   },
   "docs/nexus-runtime-r4-host-handoff.md": {
-    "bytes": 6268,
-    "sha256": "ff648509ae396c6357ec45c455117aa45d732f0bf0de1e2b822bae033fcbb512"
+    "bytes": 6745,
+    "sha256": "1e72f48a8c388354eba0fe8dcf7a90c8207d2036f5499bfac1b8015f520c9a23"
   },
   "docs/portable-installation.md": {
     "bytes": 2133,
@@ -160,8 +160,8 @@
     "sha256": "1ec590979b8ebe5f7f074c908868057dd7bed1f4aacb905cf1728084956e4148"
   },
   "plugins/nexus-desktop/skills/nexus/SKILL.md": {
-    "bytes": 3419,
-    "sha256": "333278949e0becc878c03f3a52d612ea63604c1c7ead98579b16bd2928dd4d38"
+    "bytes": 3707,
+    "sha256": "e776798fc831e1ef83dcaa613b8365aeecdee5fdeecbda248bc2fe7c44ba3c25"
   },
   "README.md": {
     "bytes": 6043,
@@ -252,8 +252,8 @@
     "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
   },
   "tests/test_desktop_plugin_pilot.py": {
-    "bytes": 10395,
-    "sha256": "58cb2a76690bf8ae3f34056110fba332f0b1d30ffaedfa7ae4f9a87a6dce17f5"
+    "bytes": 10460,
+    "sha256": "7840493a9b03f8a5e82720a2fad2990b361146018abc981a26b371cb888ec73e"
   },
   "tests/test_github_distribution.py": {
     "bytes": 42045,
@@ -284,8 +284,8 @@
     "sha256": "2a3acde0aa437060ca334e654f162764ea712130f175c1d5e57fae4b72413210"
   },
   "tests/test_r4_host_handoff.py": {
-    "bytes": 8935,
-    "sha256": "4b5db30b3e8366446ccfb491de7f50a27364a4b85280488dd08d7cd5f0f40b62"
+    "bytes": 10648,
+    "sha256": "3a5ca140930895e3e6d2856761035ad525b201394514c3d2f05ae5d4030e1662"
   },
   "tests/test_v2.py": {
     "bytes": 34763,

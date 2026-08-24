@@ -40,6 +40,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(marketplace["plugins"][0]["policy"]["installation"], "AVAILABLE")
         self.assertIn("nexus.plan_task", skill)
         self.assertIn("nexus.prepare_host_handoff", skill)
+        self.assertIn("r4_host_capability:presentations", skill)
         self.assertIn("HOST_CAPABILITY_UNAVAILABLE", skill)
         self.assertIn("loaded_verified", skill)
         self.assertIn("nexus-default", skill)
