@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
-  "version": "0.1.0+codex.20260822110714",
-  "description": "Local Nexus task-planning workflow for ChatGPT Desktop and Codex.",
+  "version": "0.1.0-r4.pilot.4",
+  "description": "Local Nexus capability routing and host-owned execution handoff for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
   },
@@ -10,21 +10,22 @@
     "nexus",
     "capability-routing",
     "local-mcp",
-    "planning"
+    "planning",
+    "host-handoff"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Nexus",
-    "shortDescription": "Plan substantive work with local capability evidence.",
-    "longDescription": "Nexus is a local planning plugin. It uses the existing read/plan-only Nexus Runtime R2 MCP server, exposes no remote endpoint, and never grants execution authority.",
+    "shortDescription": "Route substantive work with verified local capability evidence.",
+    "longDescription": "Nexus is a local routing and host-handoff plugin. It uses a read/plan-and-handoff-only local MCP server, exposes no remote endpoint, and never performs execution itself; ChatGPT Host retains artifact and tool authority.",
     "developerName": "Nexus Project",
     "category": "Developer tools",
     "capabilities": [
       "Read"
     ],
     "defaultPrompt": [
-      "Use Nexus to plan an editable PowerPoint presentation.",
+      "Use Nexus to create an editable PowerPoint presentation.",
       "Use Nexus to plan a backend bug fix with regression tests."
     ],
     "brandColor": "#2563EB"

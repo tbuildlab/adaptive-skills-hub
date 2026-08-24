@@ -33,6 +33,8 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         skill = (PLUGIN_ROOT / "skills" / "nexus" / "SKILL.md").read_text(encoding="utf-8")
         self.assertEqual(manifest["name"], "nexus-desktop")
         self.assertEqual(manifest["interface"]["displayName"], "Nexus")
+        self.assertIn("host-owned execution handoff", manifest["description"])
+        self.assertIn("ChatGPT Host retains artifact and tool authority", manifest["interface"]["longDescription"])
         self.assertEqual(manifest["mcpServers"], "./.mcp.json")
         self.assertEqual(mapping["mcpServers"]["nexus_desktop_local"]["cwd"], ".")
         self.assertEqual(mapping["mcpServers"]["nexus_desktop_local"]["args"], ["./scripts/launch_nexus_mcp.py"])

@@ -152,8 +152,8 @@
     "sha256": "cb88147be7fe6507ec51cdd5fd052d1ab7061f540d568dea039f17b159e2d7f2"
   },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
-    "bytes": 1008,
-    "sha256": "d36704bedc6cf194c813a64b12ae59484b6bbd0a43e872259cb05c095d2fcfc7"
+    "bytes": 1114,
+    "sha256": "682cea02596824f83aedc800915dfac4f983bc001bfeb835ddaba8fce07b0eb4"
   },
   "plugins/nexus-desktop/.mcp.json": {
     "bytes": 454,
@@ -256,8 +256,8 @@
     "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
   },
   "tests/test_desktop_plugin_pilot.py": {
-    "bytes": 10673,
-    "sha256": "9653b16085a80df9dae95eec5049ded4939d320979a3ec1815b7fbd359345917"
+    "bytes": 10868,
+    "sha256": "81813aedb04d3dab914a199ed00e63a344a9a8cef6bdb2eaba6b307d53477e3c"
   },
   "tests/test_github_distribution.py": {
     "bytes": 42045,
