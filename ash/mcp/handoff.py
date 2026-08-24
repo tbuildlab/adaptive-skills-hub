@@ -8,9 +8,12 @@ user-supplied copies before it asks the host to act.
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+import hashlib
+import json
 from typing import Any, Mapping, MutableSet
+from uuid import UUID
 
-from .host_mapping import PRESENTATIONS_MAPPING_ID
+from .host_mapping import PRESENTATIONS_MAPPING_ID, presentation_profile
 
 
 HANDOFF_SCHEMA_VERSION = "nexus.host-handoff.v1"
@@ -18,6 +21,15 @@ PLAN_VERSION = "nexus.v2.plan.v1"
 HOST_PRESENTATIONS_CAPABILITY = "chatgpt.presentations"
 HOST_NATIVE_PRESENTATIONS_MODE = "host_native_presentations"
 HANDOFF_TTL_SECONDS = 300
+HANDOFF_VALIDATION_REQUIREMENTS = [
+    "artifact_created", "artifact_editable", "presentation_open_render",
+]
+HANDOFF_FIELDS = {
+    "schema_version", "handoff_id", "issued_at", "expires_at", "plan_version",
+    "status", "task_category", "selected_skill", "logical_host_capability",
+    "requested_execution_mode", "host_execution_profile",
+    "validation_requirements", "fallback", "security_result",
+}
 
 
 def issue_window(now: datetime | None = None) -> tuple[str, str]:
@@ -48,6 +60,75 @@ def is_current_handoff(handoff: Mapping[str, Any], now: datetime | None = None) 
         return False
     current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
     return current < expiry.astimezone(timezone.utc)
+
+
+def strict_handoff_digest_for_execution_start(
+    handoff: Mapping[str, Any], now: datetime | None = None,
+) -> str | None:
+    """Validate and bind the complete allowlisted R4 intent before execution.
+
+    Unlike :func:`is_current_handoff`, this checks every execution-critical
+    field.  The digest is Host-local audit data, not an authorization token.
+    """
+    if not isinstance(handoff, Mapping) or set(handoff) != HANDOFF_FIELDS:
+        return None
+    if handoff.get("schema_version") != HANDOFF_SCHEMA_VERSION:
+        return None
+    handoff_id = handoff.get("handoff_id")
+    issued_at = handoff.get("issued_at")
+    expires_at = handoff.get("expires_at")
+    if not all(isinstance(value, str) for value in (handoff_id, issued_at, expires_at)):
+        return None
+    try:
+        UUID(handoff_id)
+        issued = datetime.fromisoformat(issued_at.replace("Z", "+00:00"))
+        expires = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
+    except (ValueError, AttributeError):
+        return None
+    if issued.tzinfo is None or expires.tzinfo is None:
+        return None
+    issued = issued.astimezone(timezone.utc)
+    expires = expires.astimezone(timezone.utc)
+    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    if not (
+        issued <= current + timedelta(seconds=30)
+        and issued < expires <= issued + timedelta(seconds=HANDOFF_TTL_SECONDS)
+        and current < expires
+    ):
+        return None
+    selected = handoff.get("selected_skill")
+    if not isinstance(selected, Mapping) or set(selected) != {
+        "resource_id", "name", "content_sha256", "load_verification_state",
+    }:
+        return None
+    resource_id = selected.get("resource_id")
+    content_sha256 = selected.get("content_sha256")
+    if (
+        not isinstance(resource_id, str) or not resource_id or len(resource_id) > 256
+        or selected.get("name") != "Presentations"
+        or selected.get("load_verification_state") != "loaded_verified"
+        or not isinstance(content_sha256, str) or len(content_sha256) != 64
+        or any(character not in "0123456789abcdef" for character in content_sha256.casefold())
+    ):
+        return None
+    fallback = handoff.get("fallback")
+    security = handoff.get("security_result")
+    if (
+        handoff.get("plan_version") != PLAN_VERSION
+        or handoff.get("status") != "execution_requested"
+        or handoff.get("task_category") != "artifact"
+        or handoff.get("logical_host_capability") != HOST_PRESENTATIONS_CAPABILITY
+        or handoff.get("requested_execution_mode") != HOST_NATIVE_PRESENTATIONS_MODE
+        or handoff.get("host_execution_profile") != presentation_profile()
+        or handoff.get("validation_requirements") != HANDOFF_VALIDATION_REQUIREMENTS
+        or not isinstance(fallback, Mapping) or set(fallback) != {"kind", "status"}
+        or fallback.get("kind") != "native_codex_fallback"
+        or fallback.get("status") != "not_needed"
+        or security != {"code": "HOST_HANDOFF_READY", "mcp_execution_authority": "none"}
+    ):
+        return None
+    canonical = json.dumps(handoff, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def validate_host_receipt(

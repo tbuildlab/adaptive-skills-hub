@@ -14,6 +14,7 @@ from .adapter import NexusMcpRuntime
 from .redaction import safe_error
 from .schemas import (
     ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA,
+    BEGIN_HOST_CAPABILITY_ASSESSMENT_INPUT_SCHEMA,
     DISCOVER_INPUT_SCHEMA,
     HEALTH_INPUT_SCHEMA,
     PLAN_INPUT_SCHEMA,
@@ -51,11 +52,23 @@ PLAN_TOOL_DESCRIPTION = (
     "coursework, or work where choosing capabilities improves reliability. Do not use for "
     "greetings, simple calculations or facts, simple translation, short rewrites, or execution."
 )
+ONE_USE_READ_ONLY_TOOL_ANNOTATIONS = types.ToolAnnotations(
+    readOnlyHint=True,
+    destructiveHint=False,
+    idempotentHint=False,
+    openWorldHint=False,
+)
 ASSESS_HOST_CAPABILITIES_DESCRIPTION = (
     "Classify a bounded, current-turn subset of capability metadata already "
     "surfaced by the ChatGPT Desktop host. This tool cannot enumerate installed "
     "plugins, inspect private host state, load or execute a Skill, or grant an "
     "execution mapping. Use only before the approved host handoff workflow."
+)
+BEGIN_HOST_CAPABILITY_ASSESSMENT_DESCRIPTION = (
+    "Issue a short-lived, single-use ticket for one bounded current-turn Host "
+    "capability metadata submission. The ticket is scoped to this local stdio "
+    "runtime and grants no execution or private Host-state access. Call this "
+    "immediately before nexus.assess_host_capabilities."
 )
 PREPARE_HOST_HANDOFF_DESCRIPTION = (
     "Create a short-lived, read-only host execution handoff only after planning a "
@@ -98,7 +111,8 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
             types.Tool(name="nexus.health", title="Nexus status", description=HEALTH_TOOL_DESCRIPTION, inputSchema=HEALTH_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.discover_capabilities", title="Nexus capability catalog", description=DISCOVER_TOOL_DESCRIPTION, inputSchema=DISCOVER_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.plan_task", title="Nexus substantive-task planner", description=PLAN_TOOL_DESCRIPTION, inputSchema=PLAN_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
-            types.Tool(name="nexus.assess_host_capabilities", title="Nexus Host capability assessment", description=ASSESS_HOST_CAPABILITIES_DESCRIPTION, inputSchema=ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.begin_host_capability_assessment", title="Nexus Host inventory ticket", description=BEGIN_HOST_CAPABILITY_ASSESSMENT_DESCRIPTION, inputSchema=BEGIN_HOST_CAPABILITY_ASSESSMENT_INPUT_SCHEMA, annotations=ONE_USE_READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.assess_host_capabilities", title="Nexus Host capability assessment", description=ASSESS_HOST_CAPABILITIES_DESCRIPTION, inputSchema=ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA, annotations=ONE_USE_READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.prepare_host_handoff", title="Nexus Presentations host handoff", description=PREPARE_HOST_HANDOFF_DESCRIPTION, inputSchema=PREPARE_HOST_HANDOFF_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.prepare_enhancement_handoff", title="Nexus Presentations enhancement handoff", description=PREPARE_ENHANCEMENT_HANDOFF_DESCRIPTION, inputSchema=PREPARE_ENHANCEMENT_HANDOFF_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
         ])
@@ -113,6 +127,8 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
                 payload = runtime.discover_capabilities(params.arguments)
             elif params.name == "nexus.plan_task":
                 payload = runtime.plan(params.arguments)
+            elif params.name == "nexus.begin_host_capability_assessment":
+                payload = runtime.begin_host_capability_assessment(params.arguments)
             elif params.name == "nexus.assess_host_capabilities":
                 payload = runtime.assess_host_capabilities(params.arguments)
             elif params.name == "nexus.prepare_host_handoff":
@@ -132,7 +148,7 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
             emit(request_id, params.name, "INTERNAL_ERROR", int((time.monotonic() - started) * 1000))
             return _result(payload, error=True)
 
-    return Server("nexus-local-r5", version="2.0-r5", title="Nexus", description="Adaptive AI Capability Hub local read/plan-and-handoff-only MCP server", on_list_tools=list_tools, on_call_tool=call_tool)
+    return Server("nexus-local-r5", version="2.0-r5.1", title="Nexus", description="Adaptive AI Capability Hub local read/plan-and-handoff-only MCP server", on_list_tools=list_tools, on_call_tool=call_tool)
 
 
 async def run_stdio(runtime: NexusMcpRuntime) -> None:

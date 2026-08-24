@@ -13,20 +13,24 @@ from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from typing import Any, Mapping, MutableSet
-from uuid import UUID
+from uuid import UUID, uuid4
 
 from .handoff import (
     HOST_NATIVE_PRESENTATIONS_MODE,
     HOST_PRESENTATIONS_CAPABILITY,
+    strict_handoff_digest_for_execution_start,
     validate_host_receipt,
 )
 from .host_mapping import PRESENTATIONS_MAPPING_ID
 
 
-HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION = "nexus.host-capability-snapshot.v1"
-HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION = "nexus.host-capability-assessment.v1"
-HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION = "nexus.host-capability-receipt.v1"
+HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION = "nexus.host-capability-ticket-request.v1"
+HOST_CAPABILITY_TICKET_SCHEMA_VERSION = "nexus.host-capability-ticket.v1"
+HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION = "nexus.host-capability-snapshot.v2"
+HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION = "nexus.host-capability-assessment.v2"
+HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION = "nexus.host-capability-receipt.v2"
 HOST_INVENTORY_TTL_SECONDS = 120
+MAX_OUTSTANDING_HOST_INVENTORY_TICKETS = 16
 
 PRESENTATION_INTERFACES = frozenset({
     "editable_pptx_create",
@@ -69,8 +73,54 @@ class HostCapability:
 
 
 @dataclass(frozen=True)
+class HostCapabilityTicketRequest:
+    host_surface: str
+    inventory_scope: str
+    inventory_completeness: str
+    task_category: str
+    required_interfaces: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class HostCapabilityTicket:
+    ticket_id: str
+    issued_at: datetime
+    expires_at: datetime
+    monotonic_issued_at: float
+    monotonic_deadline: float
+    host_surface: str
+    inventory_scope: str
+    inventory_completeness: str
+    task_category: str
+    required_interfaces: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class HostInventoryExecutionStartClaim:
+    """Host-local proof that freshness was checked before execution started.
+
+    This object is never an MCP payload and grants no execution authority.  It
+    only lets a later artifact receipt remain bound to an assessment/handoff
+    that were current when the Host actually started work.
+    """
+
+    claim_id: str
+    claimed_at: datetime
+    ticket_id: str
+    assessment_id: str
+    snapshot_sha256: str
+    handoff_id: str
+    handoff_sha256: str
+    capability_id: str
+    provider_id: str
+    logical_capability: str
+    mapping_id: str
+    requested_execution_mode: str
+
+
+@dataclass(frozen=True)
 class HostCapabilitySnapshot:
-    captured_at: datetime
+    ticket_id: str
     snapshot_id: str
     host_surface: str
     inventory_scope: str
@@ -142,7 +192,7 @@ def snapshot_digest(snapshot: HostCapabilitySnapshot) -> str:
     """Return a deterministic integrity binding, never an authenticity claim."""
     value = {
         "schema_version": HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION,
-        "captured_at": snapshot.captured_at.astimezone(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "ticket_id": snapshot.ticket_id,
         "snapshot_id": snapshot.snapshot_id,
         "host_surface": snapshot.host_surface,
         "inventory_scope": snapshot.inventory_scope,
@@ -334,17 +384,11 @@ def assess_host_capabilities(snapshot: HostCapabilitySnapshot) -> HostCapability
 
 
 def assessment_issue_window(
-    captured_at: datetime, now: datetime | None = None,
+    ticket: HostCapabilityTicket, now: datetime | None = None,
 ) -> tuple[str, str]:
-    """Issue an assessment without extending the source snapshot lifetime."""
+    """Issue an assessment without extending the server ticket lifetime."""
     issued = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    snapshot_expiry = captured_at.astimezone(timezone.utc) + timedelta(
-        seconds=HOST_INVENTORY_TTL_SECONDS,
-    )
-    expires = min(
-        issued + timedelta(seconds=HOST_INVENTORY_TTL_SECONDS),
-        snapshot_expiry,
-    )
+    expires = min(issued + timedelta(seconds=HOST_INVENTORY_TTL_SECONDS), ticket.expires_at)
     return (
         issued.isoformat().replace("+00:00", "Z"),
         expires.isoformat().replace("+00:00", "Z"),
@@ -357,32 +401,135 @@ def _current_assessment(
     if assessment.get("schema_version") != HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION:
         return False
     assessment_id = assessment.get("assessment_id")
+    ticket_id = assessment.get("ticket_id")
     digest = assessment.get("snapshot_sha256")
+    ticket_issued_at = assessment.get("ticket_issued_at")
     issued_at = assessment.get("issued_at")
     expires_at = assessment.get("expires_at")
-    if not all(isinstance(value, str) for value in (assessment_id, digest, issued_at, expires_at)):
+    if not all(
+        isinstance(value, str)
+        for value in (
+            assessment_id, ticket_id, digest, ticket_issued_at, issued_at, expires_at,
+        )
+    ):
         return False
     try:
         UUID(assessment_id)
+        UUID(ticket_id)
     except (ValueError, AttributeError):
         return False
     if len(digest) != 64 or any(char not in "0123456789abcdef" for char in digest.casefold()):
         return False
     try:
+        ticket_issued = datetime.fromisoformat(ticket_issued_at.replace("Z", "+00:00"))
         issued = datetime.fromisoformat(issued_at.replace("Z", "+00:00"))
         expires = datetime.fromisoformat(expires_at.replace("Z", "+00:00"))
     except ValueError:
         return False
-    if issued.tzinfo is None or expires.tzinfo is None:
+    if ticket_issued.tzinfo is None or issued.tzinfo is None or expires.tzinfo is None:
         return False
     current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    ticket_issued = ticket_issued.astimezone(timezone.utc)
     issued = issued.astimezone(timezone.utc)
     expires = expires.astimezone(timezone.utc)
     return (
         issued <= current + timedelta(seconds=30)
-        and issued <= expires
+        and ticket_issued <= issued <= expires
         and current < expires
-        and expires <= issued + timedelta(seconds=HOST_INVENTORY_TTL_SECONDS)
+        and expires <= ticket_issued + timedelta(seconds=HOST_INVENTORY_TTL_SECONDS)
+    )
+
+
+def _assessment_security_ready(assessment: Mapping[str, Any]) -> bool:
+    security = assessment.get("security_result")
+    return (
+        assessment.get("status") == "selection_ready"
+        and assessment.get("host_surface") == "chatgpt_desktop"
+        and assessment.get("inventory_scope") == "current_turn_host_visible_subset"
+        and assessment.get("inventory_completeness") == "not_globally_enumerated"
+        and assessment.get("task_category") == "presentation"
+        and isinstance(security, Mapping)
+        and security.get("code") == "HOST_CAPABILITY_SELECTION_READY"
+        and security.get("inventory_authority") == "host_asserted_non_authoritative"
+        and security.get("mcp_execution_authority") == "none"
+        and security.get("private_host_state_access") == "none"
+    )
+
+
+def _selected_assessment_item(assessment: Mapping[str, Any]) -> Mapping[str, Any] | None:
+    selected = assessment.get("selected_capabilities")
+    if not isinstance(selected, list) or len(selected) != 1:
+        return None
+    selected_item = selected[0]
+    selected_required = {
+        "capability_id", "provider_id", "logical_capability", "mapping_id",
+        "requested_execution_mode",
+    }
+    if not isinstance(selected_item, Mapping) or set(selected_item) != selected_required:
+        return None
+    return selected_item
+
+
+def claim_inventory_bound_execution_start(
+    assessment: Mapping[str, Any],
+    handoff: Mapping[str, Any],
+    *,
+    seen_assessment_ids: MutableSet[str] | None = None,
+    seen_handoff_ids: MutableSet[str] | None = None,
+    now: datetime | None = None,
+) -> tuple[str, HostInventoryExecutionStartClaim | None]:
+    """Claim a fresh assessment/handoff pair before Host execution begins.
+
+    The caller owns and serializes the optional replay ledgers.  The returned
+    frozen object stays Host-local; it is not a token and must never be accepted
+    from user or MCP input.
+    """
+    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    if not isinstance(assessment, Mapping) or not _current_assessment(assessment, current):
+        return "HOST_INVENTORY_ASSESSMENT_EXPIRED", None
+    if not _assessment_security_ready(assessment):
+        return "HOST_INVENTORY_ASSESSMENT_INVALID", None
+    if not isinstance(handoff, Mapping):
+        return "HANDOFF_NOT_ELIGIBLE", None
+    handoff_sha256 = strict_handoff_digest_for_execution_start(handoff, current)
+    if handoff_sha256 is None:
+        return "HANDOFF_NOT_ELIGIBLE", None
+    selected_item = _selected_assessment_item(assessment)
+    if selected_item is None:
+        return "HOST_INVENTORY_SELECTION_INVALID", None
+    profile = handoff.get("host_execution_profile")
+    if (
+        not isinstance(profile, Mapping)
+        or selected_item.get("mapping_id") != profile.get("mapping_id")
+        or selected_item.get("logical_capability") != handoff.get("logical_host_capability")
+        or selected_item.get("requested_execution_mode") != handoff.get("requested_execution_mode")
+    ):
+        return "HOST_INVENTORY_HANDOFF_MISMATCH", None
+    assessment_id = assessment.get("assessment_id")
+    handoff_id = handoff.get("handoff_id")
+    if not isinstance(assessment_id, str) or not isinstance(handoff_id, str):
+        return "HOST_INVENTORY_ASSESSMENT_INVALID", None
+    if seen_assessment_ids is not None and assessment_id in seen_assessment_ids:
+        return "HOST_INVENTORY_ASSESSMENT_REPLAYED", None
+    if seen_handoff_ids is not None and handoff_id in seen_handoff_ids:
+        return "HANDOFF_REPLAYED", None
+    if seen_assessment_ids is not None:
+        seen_assessment_ids.add(assessment_id)
+    if seen_handoff_ids is not None:
+        seen_handoff_ids.add(handoff_id)
+    return "EXECUTION_START_CLAIMED", HostInventoryExecutionStartClaim(
+        claim_id=str(uuid4()),
+        claimed_at=current,
+        ticket_id=str(assessment.get("ticket_id")),
+        assessment_id=assessment_id,
+        snapshot_sha256=str(assessment.get("snapshot_sha256")),
+        handoff_id=handoff_id,
+        handoff_sha256=handoff_sha256,
+        capability_id=str(selected_item.get("capability_id")),
+        provider_id=str(selected_item.get("provider_id")),
+        logical_capability=str(selected_item.get("logical_capability")),
+        mapping_id=str(selected_item.get("mapping_id")),
+        requested_execution_mode=str(selected_item.get("requested_execution_mode")),
     )
 
 
@@ -391,8 +538,10 @@ def validate_inventory_bound_host_receipt(
     handoff: Mapping[str, Any],
     receipt: Mapping[str, Any],
     *,
+    execution_start_claim: HostInventoryExecutionStartClaim | None = None,
     seen_assessment_ids: MutableSet[str] | None = None,
     seen_handoff_ids: MutableSet[str] | None = None,
+    seen_execution_claim_ids: MutableSet[str] | None = None,
     now: datetime | None = None,
 ) -> str:
     """Validate a Host-held inventory/R4 receipt binding.
@@ -402,24 +551,19 @@ def validate_inventory_bound_host_receipt(
     its own execution context. Nexus only provides a deterministic validator
     for integration tests and future supported Host adapters.
     """
-    if not isinstance(assessment, Mapping) or not _current_assessment(assessment, now):
+    if not isinstance(assessment, Mapping):
         return "HOST_INVENTORY_ASSESSMENT_EXPIRED"
-    security = assessment.get("security_result")
-    if (
-        assessment.get("status") != "selection_ready"
-        or assessment.get("host_surface") != "chatgpt_desktop"
-        or assessment.get("inventory_scope") != "current_turn_host_visible_subset"
-        or assessment.get("inventory_completeness") != "not_globally_enumerated"
-        or assessment.get("task_category") != "presentation"
-        or not isinstance(security, Mapping)
-        or security.get("code") != "HOST_CAPABILITY_SELECTION_READY"
-        or security.get("inventory_authority") != "host_asserted_non_authoritative"
-        or security.get("mcp_execution_authority") != "none"
-        or security.get("private_host_state_access") != "none"
-    ):
+    if execution_start_claim is None:
+        if not _current_assessment(assessment, now):
+            return "HOST_INVENTORY_ASSESSMENT_EXPIRED"
+    elif not isinstance(execution_start_claim, HostInventoryExecutionStartClaim):
+        return "HOST_EXECUTION_START_CLAIM_INVALID"
+    elif not _current_assessment(assessment, execution_start_claim.claimed_at):
+        return "HOST_EXECUTION_START_CLAIM_INVALID"
+    if not _assessment_security_ready(assessment):
         return "HOST_INVENTORY_ASSESSMENT_INVALID"
     required = {
-        "schema_version", "assessment_id", "snapshot_sha256",
+        "schema_version", "ticket_id", "assessment_id", "snapshot_sha256",
         "inventory_states", "selected_capabilities", "r4_receipt",
     }
     if not isinstance(receipt, Mapping) or set(receipt) != required:
@@ -427,6 +571,8 @@ def validate_inventory_bound_host_receipt(
     if receipt.get("schema_version") != HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION:
         return "HOST_INVENTORY_RECEIPT_MALFORMED"
     assessment_id = assessment.get("assessment_id")
+    if receipt.get("ticket_id") != assessment.get("ticket_id"):
+        return "HOST_INVENTORY_TICKET_MISMATCH"
     if receipt.get("assessment_id") != assessment_id:
         return "HOST_INVENTORY_ASSESSMENT_MISMATCH"
     if receipt.get("snapshot_sha256") != assessment.get("snapshot_sha256"):
@@ -434,15 +580,8 @@ def validate_inventory_bound_host_receipt(
     if receipt.get("inventory_states") != ["considered", "selected"]:
         return "HOST_INVENTORY_STATE_INVALID"
 
-    selected = assessment.get("selected_capabilities")
-    if not isinstance(selected, list) or len(selected) != 1:
-        return "HOST_INVENTORY_SELECTION_INVALID"
-    selected_item = selected[0]
-    selected_required = {
-        "capability_id", "provider_id", "logical_capability", "mapping_id",
-        "requested_execution_mode",
-    }
-    if not isinstance(selected_item, Mapping) or set(selected_item) != selected_required:
+    selected_item = _selected_assessment_item(assessment)
+    if selected_item is None:
         return "HOST_INVENTORY_SELECTION_INVALID"
     if receipt.get("selected_capabilities") != [dict(selected_item)]:
         return "HOST_INVENTORY_SELECTION_MISMATCH"
@@ -456,22 +595,52 @@ def validate_inventory_bound_host_receipt(
     ):
         return "HOST_INVENTORY_HANDOFF_MISMATCH"
 
+    receipt_validation_time = now
+    if execution_start_claim is not None:
+        claim = execution_start_claim
+        current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+        if claim.claimed_at.tzinfo is None or claim.claimed_at.astimezone(timezone.utc) > current + timedelta(seconds=30):
+            return "HOST_EXECUTION_START_CLAIM_INVALID"
+        expected_claim = (
+            assessment.get("ticket_id"), assessment_id,
+            assessment.get("snapshot_sha256"), handoff.get("handoff_id"),
+            strict_handoff_digest_for_execution_start(handoff, claim.claimed_at),
+            selected_item.get("capability_id"), selected_item.get("provider_id"),
+            selected_item.get("logical_capability"), selected_item.get("mapping_id"),
+            selected_item.get("requested_execution_mode"),
+        )
+        observed_claim = (
+            claim.ticket_id, claim.assessment_id, claim.snapshot_sha256,
+            claim.handoff_id, claim.handoff_sha256,
+            claim.capability_id, claim.provider_id,
+            claim.logical_capability, claim.mapping_id,
+            claim.requested_execution_mode,
+        )
+        if observed_claim != expected_claim:
+            return "HOST_EXECUTION_START_CLAIM_MISMATCH"
+        if seen_execution_claim_ids is not None and claim.claim_id in seen_execution_claim_ids:
+            return "HOST_EXECUTION_START_CLAIM_REPLAYED"
+        receipt_validation_time = claim.claimed_at
+
     r4_receipt = receipt.get("r4_receipt")
     if not isinstance(r4_receipt, Mapping):
         return "HOST_INVENTORY_RECEIPT_MALFORMED"
-    result = validate_host_receipt(handoff, r4_receipt, now=now)
+    result = validate_host_receipt(handoff, r4_receipt, now=receipt_validation_time)
     if result != "EXECUTION_SUCCEEDED":
         return result
 
     handoff_id = handoff.get("handoff_id")
-    if seen_assessment_ids is not None and isinstance(assessment_id, str):
-        if assessment_id in seen_assessment_ids:
-            return "HOST_INVENTORY_ASSESSMENT_REPLAYED"
-    if seen_handoff_ids is not None and isinstance(handoff_id, str):
-        if handoff_id in seen_handoff_ids:
-            return "HANDOFF_REPLAYED"
-    if seen_assessment_ids is not None and isinstance(assessment_id, str):
-        seen_assessment_ids.add(assessment_id)
-    if seen_handoff_ids is not None and isinstance(handoff_id, str):
-        seen_handoff_ids.add(handoff_id)
+    if execution_start_claim is None:
+        if seen_assessment_ids is not None and isinstance(assessment_id, str):
+            if assessment_id in seen_assessment_ids:
+                return "HOST_INVENTORY_ASSESSMENT_REPLAYED"
+        if seen_handoff_ids is not None and isinstance(handoff_id, str):
+            if handoff_id in seen_handoff_ids:
+                return "HANDOFF_REPLAYED"
+        if seen_assessment_ids is not None and isinstance(assessment_id, str):
+            seen_assessment_ids.add(assessment_id)
+        if seen_handoff_ids is not None and isinstance(handoff_id, str):
+            seen_handoff_ids.add(handoff_id)
+    elif seen_execution_claim_ids is not None:
+        seen_execution_claim_ids.add(execution_start_claim.claim_id)
     return "EXECUTION_SUCCEEDED"

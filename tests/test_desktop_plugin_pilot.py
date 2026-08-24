@@ -8,6 +8,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from uuid import uuid4
 import zipfile
 
 from mcp import ClientSession
@@ -32,9 +33,9 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         marketplace = json.loads((ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
         skill = (PLUGIN_ROOT / "skills" / "nexus" / "SKILL.md").read_text(encoding="utf-8")
         self.assertEqual(manifest["name"], "nexus-desktop")
-        self.assertEqual(manifest["version"], "0.1.0-r5.pilot.2")
+        self.assertEqual(manifest["version"], "0.1.0-r5.pilot.3")
         self.assertEqual(manifest["interface"]["displayName"], "Nexus")
-        self.assertIn("host-owned execution handoff", manifest["description"])
+        self.assertIn("server-issued short-lived Host inventory tickets", manifest["description"])
         self.assertIn("ChatGPT Host retains artifact and tool authority", manifest["interface"]["longDescription"])
         self.assertEqual(manifest["mcpServers"], "./.mcp.json")
         self.assertEqual(mapping["mcpServers"]["nexus_desktop_local"]["cwd"], ".")
@@ -42,6 +43,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(marketplace["plugins"][0]["source"]["path"], "./.codex/plugins/nexus-desktop")
         self.assertEqual(marketplace["plugins"][0]["policy"]["installation"], "AVAILABLE")
         self.assertIn("nexus.plan_task", skill)
+        self.assertIn("nexus.begin_host_capability_assessment", skill)
         self.assertIn("nexus.assess_host_capabilities", skill)
         self.assertIn("nexus.prepare_host_handoff", skill)
         self.assertIn("nexus.prepare_enhancement_handoff", skill)
@@ -51,6 +53,24 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("not_globally_enumerated", skill)
         self.assertIn("Installed, enabled, selected, and loaded are", skill)
         self.assertIn("mcp_execution_authority: none", skill)
+        self.assertIn("nexus.host-capability-snapshot.v2", skill)
+        self.assertIn("nexus.host-capability-assessment.v2", skill)
+        self.assertIn("nexus.host-capability-receipt.v2", skill)
+        self.assertIn("generate or send a timestamp", skill)
+        self.assertIn("Do not compare its", skill)
+        self.assertIn("runtime-local monotonic clock", skill)
+        self.assertIn("Host-local execution-start claim", skill)
+        self.assertIn("canonical SHA-256", skill)
+        self.assertIn("selected Skill identity/content hash/load state", skill)
+        self.assertIn("Freshness is a", skill)
+        self.assertIn("pre-execution gate", skill)
+        self.assertIn("adaptive_path.status: failed", skill)
+        self.assertIn("fallback.kind: native_host_fallback", skill)
+        self.assertIn("When no valid assessment", skill)
+        self.assertIn("preserve its considered/rejected evidence exactly", skill)
+        self.assertIn("stop the Nexus adaptive", skill)
+        self.assertIn("Never call", skill)
+        self.assertIn("R5 adaptive success", skill)
         self.assertIn("loaded_verified", skill)
         self.assertIn("continue_with_safe_defaults", skill)
         self.assertIn("Do **not** ask the normal presentation", skill)
@@ -138,9 +158,39 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
                     health = await session.call_tool("nexus.health", {})
                     discover = await session.call_tool("nexus.discover_capabilities", {})
                     planned = await session.call_tool("nexus.plan_task", {"task": "Create an editable PowerPoint presentation.", "workspace_id": "portable-project", "project_context_mode": "none"})
+                    ticket_result = await session.call_tool("nexus.begin_host_capability_assessment", {
+                        "schema_version": "nexus.host-capability-ticket-request.v1",
+                        "host_surface": "chatgpt_desktop",
+                        "inventory_scope": "current_turn_host_visible_subset",
+                        "inventory_completeness": "not_globally_enumerated",
+                        "task_category": "presentation",
+                        "required_interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
+                    })
+                    ticket = json.loads(ticket_result.content[0].text)
+                    inventory = {
+                        "schema_version": "nexus.host-capability-snapshot.v2",
+                        "ticket_id": ticket["ticket_id"],
+                        "snapshot_id": str(uuid4()),
+                        "capabilities": [{
+                            "capability_id": "host-presentations",
+                            "provider_id": "openai-host",
+                            "display_name": "Presentations",
+                            "resource_kind": "tool",
+                            "availability": "tool_callable_current_turn",
+                            "evidence": ["current_turn_tool_catalog"],
+                            "interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
+                            "logical_capability": "chatgpt.presentations",
+                        }],
+                    }
+                    assessment = await session.call_tool("nexus.assess_host_capabilities", inventory)
+                    replay = await session.call_tool("nexus.assess_host_capabilities", inventory)
                     self.assertFalse(health.is_error)
                     self.assertFalse(discover.is_error)
                     self.assertFalse(planned.is_error)
+                    self.assertFalse(ticket_result.is_error)
+                    self.assertFalse(assessment.is_error)
+                    self.assertTrue(replay.is_error)
+                    self.assertEqual(json.loads(replay.content[0].text)["error"]["code"], "HOST_INVENTORY_TICKET_REPLAYED")
                     payload = json.loads(planned.content[0].text)
                     self.assertNotIn("path", json.dumps(payload).casefold())
             launcher = release / "plugins" / "nexus-desktop" / "scripts" / "launch_nexus_mcp.py"

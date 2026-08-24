@@ -1,7 +1,9 @@
 """Thin R2 adapter over the existing Nexus discovery/planning/loader interfaces."""
 from __future__ import annotations
 
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from threading import Lock
 import time
 from typing import Any, Callable, Mapping
 from uuid import uuid4
@@ -11,11 +13,17 @@ from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
 from .context import SafeContextReader
+from .host_inventory import (
+    HOST_INVENTORY_TTL_SECONDS,
+    MAX_OUTSTANDING_HOST_INVENTORY_TICKETS,
+    HostCapabilityTicket,
+)
 from .redaction import (
     safe_catalog,
     safe_enhancement_handoff,
     safe_health,
     safe_host_capability_assessment,
+    safe_host_inventory_ticket,
     safe_host_handoff,
     safe_plan,
 )
@@ -23,6 +31,8 @@ from .schemas import (
     NexusMcpError,
     parse_discover_request,
     parse_host_capability_snapshot,
+    parse_host_capability_ticket_request,
+    parse_host_inventory_ticket_id,
     parse_plan_request,
     parse_prepare_enhancement_handoff_request,
     parse_prepare_host_handoff_request,
@@ -43,11 +53,17 @@ class NexusMcpRuntime:
         *,
         catalog_builder: Callable[[], Mapping[str, Any]] | None = None,
         skill_roots: list[Path] | None = None,
+        clock: Callable[[], datetime] | None = None,
+        monotonic_clock: Callable[[], float] | None = None,
     ) -> None:
         self.authorizer = authorizer
         self.catalog_builder = catalog_builder or self._build_catalog
         codex_home = Path.home() / ".codex"
         self.skill_roots = skill_roots or [ROOT.parent, codex_home / "skills", codex_home / "plugins" / "cache"]
+        self._clock = clock or (lambda: datetime.now(timezone.utc))
+        self._monotonic_clock = monotonic_clock or time.monotonic
+        self._host_inventory_ticket_lock = Lock()
+        self._host_inventory_tickets: dict[str, tuple[HostCapabilityTicket, bool]] = {}
 
     @staticmethod
     def _build_catalog() -> Mapping[str, Any]:
@@ -70,13 +86,68 @@ class NexusMcpRuntime:
             raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
         return safe_catalog(records, tags)
 
+    def _purge_expired_host_inventory_tickets(
+        self, monotonic_now: float, *, except_id: str | None = None,
+    ) -> None:
+        for ticket_id, (ticket, _consumed) in list(self._host_inventory_tickets.items()):
+            if ticket_id != except_id and monotonic_now >= ticket.monotonic_deadline:
+                del self._host_inventory_tickets[ticket_id]
+
+    def begin_host_capability_assessment(self, arguments: Any) -> dict[str, Any]:
+        """Issue a bounded one-use ticket from this stdio runtime instance."""
+        request = parse_host_capability_ticket_request(arguments)
+        with self._host_inventory_ticket_lock:
+            monotonic_now = self._monotonic_clock()
+            self._purge_expired_host_inventory_tickets(monotonic_now)
+            if len(self._host_inventory_tickets) >= MAX_OUTSTANDING_HOST_INVENTORY_TICKETS:
+                raise NexusMcpError("HOST_INVENTORY_BUSY", "Host inventory ticket capacity is temporarily exhausted")
+            issued_at = self._clock().astimezone(timezone.utc)
+            ticket = HostCapabilityTicket(
+                ticket_id=str(uuid4()),
+                issued_at=issued_at,
+                expires_at=issued_at + timedelta(seconds=HOST_INVENTORY_TTL_SECONDS),
+                monotonic_issued_at=monotonic_now,
+                monotonic_deadline=monotonic_now + HOST_INVENTORY_TTL_SECONDS,
+                host_surface=request.host_surface,
+                inventory_scope=request.inventory_scope,
+                inventory_completeness=request.inventory_completeness,
+                task_category=request.task_category,
+                required_interfaces=request.required_interfaces,
+            )
+            self._host_inventory_tickets[ticket.ticket_id] = (ticket, False)
+        return safe_host_inventory_ticket(ticket)
+
+    def _claim_host_inventory_ticket(self, ticket_id: str) -> tuple[HostCapabilityTicket, datetime]:
+        with self._host_inventory_ticket_lock:
+            monotonic_now = self._monotonic_clock()
+            record = self._host_inventory_tickets.get(ticket_id)
+            self._purge_expired_host_inventory_tickets(monotonic_now, except_id=ticket_id)
+            if record is None:
+                raise NexusMcpError("HOST_INVENTORY_TICKET_INVALID", "Host inventory ticket is invalid for this runtime")
+            ticket, consumed = record
+            if monotonic_now >= ticket.monotonic_deadline:
+                del self._host_inventory_tickets[ticket_id]
+                raise NexusMcpError("HOST_INVENTORY_TICKET_EXPIRED", "Host inventory ticket has expired")
+            if consumed:
+                raise NexusMcpError("HOST_INVENTORY_TICKET_REPLAYED", "Host inventory ticket was already used")
+            # Claim before parsing the remaining snapshot. Malformed submissions
+            # therefore cannot retry or probe against the same freshness token.
+            self._host_inventory_tickets[ticket_id] = (ticket, True)
+            effective_now = ticket.issued_at + timedelta(
+                seconds=max(0.0, monotonic_now - ticket.monotonic_issued_at),
+            )
+            return ticket, effective_now
+
     def assess_host_capabilities(self, arguments: Any) -> dict[str, Any]:
         """Assess only a bounded current-turn Host metadata assertion.
 
         This method never enumerates Host state or turns the assertion into
         execution authority.  It is separate from the local Skill catalog.
         """
-        return safe_host_capability_assessment(parse_host_capability_snapshot(arguments))
+        ticket_id = parse_host_inventory_ticket_id(arguments)
+        ticket, effective_now = self._claim_host_inventory_ticket(ticket_id)
+        snapshot = parse_host_capability_snapshot(arguments, ticket=ticket)
+        return safe_host_capability_assessment(snapshot, ticket, now=effective_now)
 
     def _read_selected_skill(self, path: Path) -> bytes:
         safe_path, before = guard_regular_file(path, self.skill_roots)

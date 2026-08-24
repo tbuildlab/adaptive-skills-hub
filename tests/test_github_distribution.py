@@ -92,6 +92,7 @@ class GitHubDistributionTests(unittest.TestCase):
                 self.assertFalse(any("__pycache__" in name or name.endswith(".pyc") for name in names))
                 payload = json.loads(bundle.read("Nexus-0.1.0-rc.2/plugins/nexus-desktop/.codex-plugin/plugin.json"))
                 self.assertEqual(payload["version"], "0.1.0-rc.2")
+                self.assertEqual(bundle.read("Nexus-0.1.0-rc.2/release/VERSION").decode("utf-8"), "0.1.0-rc.2\n")
                 mcp = json.loads(bundle.read("Nexus-0.1.0-rc.2/plugins/nexus-desktop/.mcp.json"))
                 self.assertEqual(mcp["mcpServers"]["nexus_desktop_local"]["command"], "../../runtime/python/python.exe")
             extracted = safe_extract(archive, output / "clean machine path with spaces")
@@ -534,10 +535,12 @@ class GitHubDistributionTests(unittest.TestCase):
             self.assertEqual(subprocess.run([str(runtime), "-I", "-B", str(release / "scripts" / "release_install.py"), "--data-root", str(data), "verify"], capture_output=True, text=True).returncode, 0)
             # Exercise the real R2 local MCP server through the embedded client
             # and embedded server. PATH still contains no usable Python, so this
-            # proves health/discover/plan do not silently fall back to a host
+            # proves health/discover/plan/inventory do not silently fall back to a host
             # interpreter after installation.
             probe = f"""
 import asyncio
+import json
+from uuid import uuid4
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
 
@@ -557,9 +560,39 @@ async def main():
                 'task': 'Plan a safe release check',
                 'constraints': [],
             }})
+            ticket_result = await session.call_tool('nexus.begin_host_capability_assessment', {{
+                'schema_version': 'nexus.host-capability-ticket-request.v1',
+                'host_surface': 'chatgpt_desktop',
+                'inventory_scope': 'current_turn_host_visible_subset',
+                'inventory_completeness': 'not_globally_enumerated',
+                'task_category': 'presentation',
+                'required_interfaces': ['editable_pptx_create', 'pptx_open_render_validate'],
+            }})
+            ticket = json.loads(ticket_result.content[0].text)
+            inventory = {{
+                'schema_version': 'nexus.host-capability-snapshot.v2',
+                'ticket_id': ticket['ticket_id'],
+                'snapshot_id': str(uuid4()),
+                'capabilities': [{{
+                    'capability_id': 'host-presentations',
+                    'provider_id': 'openai-host',
+                    'display_name': 'Presentations',
+                    'resource_kind': 'tool',
+                    'availability': 'tool_callable_current_turn',
+                    'evidence': ['current_turn_tool_catalog'],
+                    'interfaces': ['editable_pptx_create', 'pptx_open_render_validate'],
+                    'logical_capability': 'chatgpt.presentations',
+                }}],
+            }}
+            assessment = await session.call_tool('nexus.assess_host_capabilities', inventory)
+            replay = await session.call_tool('nexus.assess_host_capabilities', inventory)
             assert not health.is_error, health.content
             assert not discover.is_error, discover.content
             assert not plan.is_error, plan.content
+            assert not ticket_result.is_error, ticket_result.content
+            assert not assessment.is_error, assessment.content
+            assert replay.is_error, replay.content
+            assert json.loads(replay.content[0].text)['error']['code'] == 'HOST_INVENTORY_TICKET_REPLAYED'
 
 asyncio.run(main())
 """
@@ -674,6 +707,38 @@ async def main():
             assert not (await session.call_tool('nexus.health', {})).is_error
             assert not (await session.call_tool('nexus.discover_capabilities', {})).is_error
             assert not (await session.call_tool('nexus.plan_task', {'workspace_id': 'nexus-default', 'task': 'Plan a safe release check', 'constraints': []})).is_error
+            begun = await session.call_tool('nexus.begin_host_capability_assessment', {
+                'schema_version': 'nexus.host-capability-ticket-request.v1',
+                'host_surface': 'chatgpt_desktop',
+                'inventory_scope': 'current_turn_host_visible_subset',
+                'inventory_completeness': 'not_globally_enumerated',
+                'task_category': 'presentation',
+                'required_interfaces': ['editable_pptx_create', 'pptx_open_render_validate'],
+            })
+            assert not begun.is_error
+            ticket = json.loads(begun.content[0].text)
+            inventory = {
+                'schema_version': 'nexus.host-capability-snapshot.v2',
+                'ticket_id': ticket['ticket_id'],
+                'snapshot_id': '6f6bb973-bb39-4ad4-a48d-76290c827f93',
+                'capabilities': [{
+                    'capability_id': 'host-presentations',
+                    'provider_id': 'openai-host',
+                    'display_name': 'Presentations',
+                    'resource_kind': 'tool',
+                    'availability': 'tool_callable_current_turn',
+                    'evidence': ['current_turn_tool_catalog'],
+                    'interfaces': ['editable_pptx_create', 'pptx_open_render_validate'],
+                    'logical_capability': 'chatgpt.presentations',
+                }],
+            }
+            assessed = await session.call_tool('nexus.assess_host_capabilities', inventory)
+            assert not assessed.is_error
+            assessment = json.loads(assessed.content[0].text)
+            assert assessment['security_result']['code'] == 'HOST_CAPABILITY_SELECTION_READY'
+            replay = await session.call_tool('nexus.assess_host_capabilities', inventory)
+            assert replay.is_error
+            assert 'HOST_INVENTORY_TICKET_REPLAYED' in replay.content[0].text
 
 asyncio.run(main())
 """.replace("PLUGIN", "Path(" + repr(str(Path(environment["USERPROFILE"]) / ".codex" / "plugins" / "nexus-desktop")) + ")")

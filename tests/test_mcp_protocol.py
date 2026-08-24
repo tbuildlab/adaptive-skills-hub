@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-from datetime import datetime, timezone
 import json
 from pathlib import Path
 import sys
@@ -71,7 +70,7 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     initialized = await session.initialize()
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
-                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
+                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
                     metadata = {item.name: item for item in tools.tools}
                     self.assertEqual(metadata["nexus.health"].title, "Nexus status")
                     self.assertIn("diagnostics", metadata["nexus.health"].description)
@@ -84,6 +83,8 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn("presentations", metadata["nexus.plan_task"].description)
                     self.assertIn("Do not use for greetings", metadata["nexus.plan_task"].description)
                     self.assertIn("or execution", metadata["nexus.plan_task"].description)
+                    self.assertEqual(metadata["nexus.begin_host_capability_assessment"].title, "Nexus Host inventory ticket")
+                    self.assertIn("single-use ticket", metadata["nexus.begin_host_capability_assessment"].description)
                     self.assertEqual(metadata["nexus.assess_host_capabilities"].title, "Nexus Host capability assessment")
                     self.assertIn("cannot enumerate installed plugins", metadata["nexus.assess_host_capabilities"].description)
                     self.assertEqual(metadata["nexus.prepare_host_handoff"].title, "Nexus Presentations host handoff")
@@ -94,23 +95,42 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                         self.assertIsNotNone(tool.annotations)
                         self.assertTrue(tool.annotations.read_only_hint)
                         self.assertFalse(tool.annotations.destructive_hint)
-                        self.assertTrue(tool.annotations.idempotent_hint)
+                        self.assertEqual(
+                            tool.annotations.idempotent_hint,
+                            tool.name not in {
+                                "nexus.begin_host_capability_assessment",
+                                "nexus.assess_host_capabilities",
+                            },
+                        )
                         self.assertFalse(tool.annotations.open_world_hint)
                     health = await session.call_tool("nexus.health", {})
                     self.assertFalse(health.is_error)
-                    self.assertEqual(self._payload(health)["transport"], "stdio")
+                    health_payload = self._payload(health)
+                    self.assertEqual(health_payload["transport"], "stdio")
+                    self.assertIn("nexus.begin_host_capability_assessment", health_payload["supported_tools"])
+                    self.assertFalse(health_payload["capabilities"]["persistent_state"])
+                    self.assertEqual(
+                        health_payload["capabilities"]["ephemeral_security_state"],
+                        "bounded_runtime_local",
+                    )
                     planned = await session.call_tool("nexus.plan_task", {"task": "Translate this text into Klingon", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertFalse(planned.is_error)
                     self.assertEqual(self._payload(planned)["fallback"]["kind"], "native_codex_fallback")
-                    assessment = await session.call_tool("nexus.assess_host_capabilities", {
-                        "schema_version": "nexus.host-capability-snapshot.v1",
-                        "captured_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
-                        "snapshot_id": str(uuid4()),
+                    ticket_result = await session.call_tool("nexus.begin_host_capability_assessment", {
+                        "schema_version": "nexus.host-capability-ticket-request.v1",
                         "host_surface": "chatgpt_desktop",
                         "inventory_scope": "current_turn_host_visible_subset",
                         "inventory_completeness": "not_globally_enumerated",
                         "task_category": "presentation",
                         "required_interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
+                    })
+                    self.assertFalse(ticket_result.is_error)
+                    ticket = self._payload(ticket_result)
+                    self.assertEqual(ticket["security_result"]["code"], "HOST_INVENTORY_TICKET_READY")
+                    snapshot = {
+                        "schema_version": "nexus.host-capability-snapshot.v2",
+                        "ticket_id": ticket["ticket_id"],
+                        "snapshot_id": str(uuid4()),
                         "capabilities": [{
                             "capability_id": "host-presentations",
                             "provider_id": "openai-host",
@@ -121,9 +141,13 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                             "interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
                             "logical_capability": "chatgpt.presentations",
                         }],
-                    })
+                    }
+                    assessment = await session.call_tool("nexus.assess_host_capabilities", snapshot)
                     self.assertFalse(assessment.is_error)
                     self.assertEqual(self._payload(assessment)["security_result"]["code"], "HOST_CAPABILITY_SELECTION_READY")
+                    replay = await session.call_tool("nexus.assess_host_capabilities", snapshot)
+                    self.assertTrue(replay.is_error)
+                    self.assertEqual(self._payload(replay)["error"]["code"], "HOST_INVENTORY_TICKET_REPLAYED")
                     handoff = await session.call_tool("nexus.prepare_host_handoff", {"task": "Create an editable PowerPoint presentation.", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertTrue(handoff.is_error)
                     self.assertEqual(self._payload(handoff)["error"]["code"], "HANDOFF_NOT_ELIGIBLE")

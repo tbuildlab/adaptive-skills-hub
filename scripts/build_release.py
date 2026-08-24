@@ -275,6 +275,10 @@ def build(output: Path, version: str, wheelhouse: Path, python_embed: Path) -> t
         manifest_payload["version"] = version
         manifest_payload["description"] = "Local Nexus task-planning workflow for ChatGPT Desktop and Codex."
         plugin_manifest.write_text(json.dumps(manifest_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+        # The staged artifact is a self-contained release.  Its canonical
+        # version marker must describe this build rather than the source
+        # repository's historical release baseline.
+        (stage / "release" / "VERSION").write_text(version + "\n", encoding="utf-8", newline="\n")
         plugin_mcp = stage / "plugins" / "nexus-desktop" / ".mcp.json"
         mcp_payload = json.loads(plugin_mcp.read_text(encoding="utf-8"))
         server = mcp_payload.get("mcpServers", {}).get("nexus_desktop_local")

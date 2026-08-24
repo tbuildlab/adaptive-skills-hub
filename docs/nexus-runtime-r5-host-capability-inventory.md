@@ -47,8 +47,10 @@ References:
 
 ```text
 Current ChatGPT Desktop conversation
+  -> nexus.begin_host_capability_assessment
+  -> server-issued, 120-second, single-use runtime ticket
   -> Host-visible Skill/Plugin/tool metadata subset
-  -> closed, content-free snapshot
+  -> closed, content-free ticket-bound snapshot
   -> nexus.assess_host_capabilities (read-only advisory assessment)
   -> minimum mapped Host capability set
   -> existing R4 plan/load/hash verification and Host handoff
@@ -56,17 +58,20 @@ Current ChatGPT Desktop conversation
   -> artifact validation and truthful receipt
 ```
 
-The Host supplies only metadata that the platform already surfaced in the
-current conversation. Nexus cannot request or claim a global list. Every
-snapshot states:
+The Host first requests a ticket whose purpose fixes the surface, scope,
+completeness, task category, and required interfaces. Nexus stamps that ticket
+with server time and stores only bounded replay state in the current stdio
+runtime process. The Host then supplies only metadata that the platform already
+surfaced in the current conversation. Nexus cannot request or claim a global
+list. The snapshot contains no caller-generated timestamp and cannot repeat or
+alter the ticket purpose:
 
 ```json
 {
-  "schema_version": "nexus.host-capability-snapshot.v1",
-  "host_surface": "chatgpt_desktop",
-  "inventory_scope": "current_turn_host_visible_subset",
-  "inventory_completeness": "not_globally_enumerated",
-  "task_category": "presentation"
+  "schema_version": "nexus.host-capability-snapshot.v2",
+  "ticket_id": "server-issued UUID",
+  "snapshot_id": "new UUID",
+  "capabilities": []
 }
 ```
 
@@ -125,10 +130,14 @@ implementation.
 
 - The snapshot is a Host assertion, not authenticated Host state.
 - Its SHA-256 is an integrity binding, not an authorization credential.
-- Snapshot timestamps and assessments are short-lived. The `current_turn`
-  scope is a caller assertion, not a cryptographic chat binding; the Host must
-  retain the actual current tool result and a per-chat replay set.
-- The MCP tool is read-only, stateless, and has no filesystem, artifact,
+- The ticket uses Nexus server time, a monotonic 120-second deadline, atomic
+  single-use consumption, and a bounded in-process tombstone. It removes the
+  unreliable caller-clock dependency without extending the freshness window.
+- Ticket binding proves only freshness and one use in the same Nexus stdio
+  runtime process. The `current_turn` scope remains a Host assertion, not a
+  cryptographic ChatGPT turn identity; the Host must retain the actual current
+  tool result and a per-chat replay set.
+- The MCP tool is read-only and has no persistent state, filesystem, artifact,
   subprocess, network, installation, Agent, or Host execution authority.
 - Unknown or unmapped capabilities can be classified but cannot be executed.
 - The Host must independently verify current availability immediately before
@@ -138,17 +147,33 @@ implementation.
 
 ## Host-local receipt binding
 
-The MCP remains stateless. After a successful R4 execution, the Host keeps a
-local `nexus.host-capability-receipt.v1` wrapper containing the assessment ID,
-snapshot digest, exact selected identity/mapping, inventory states
+The MCP retains only bounded, short-lived security state for tickets; it writes
+nothing to disk. Immediately before execution, the Host claims the still-fresh
+assessment/handoff pair into a one-use Host-local execution-start binding. The
+claim includes a canonical SHA-256 of the complete allowlisted R4 handoff after
+strict schema, selected Skill/hash/load, profile, validation, fallback, and
+security checks, plus the selected provider/capability identity from the bound
+assessment. It is not an MCP payload or authorization token. It prevents stale work from
+starting, while allowing a real artifact build and validation to complete after
+the original ticket/handoff TTL without extending either TTL. After a successful
+R4 execution, the Host keeps a local
+`nexus.host-capability-receipt.v2` wrapper containing the ticket ID, assessment
+ID, snapshot digest, exact selected identity/mapping, inventory states
 `considered` and `selected`, and the existing R4 execution receipt. The local
 validator requires that the inventory mapping equals the R4 handoff mapping,
-rejects expiry/mismatch/replay, and accepts protocol success only when the
+rejects stale starts, mismatch, or replay, and accepts protocol success only when the
 nested R4 receipt asserts an opaque `.pptx` artifact reference and passed
 validation states. It cannot open or render the Host-owned artifact; real
 artifact evidence and validation remain a Host/Desktop human-acceptance
 boundary. The receipt is never sent to Nexus MCP and grants no execution
 authority.
+
+If ticket issuance or assessment fails, the adaptive path stops before Nexus
+planning or handoff. A separately safe native Host fallback is allowed only as
+an explicitly separate result: `adaptive_path.status: failed`, the exact
+assessment-stage reason code, `fallback.kind: native_host_fallback`, and no
+Nexus selected/loaded/executed/enhanced capability states. A native artifact
+may be valid, but it is not R5 adaptive success.
 
 ## Human acceptance boundary
 

@@ -2,18 +2,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timedelta, timezone
 import json
 import re
 from typing import Any, Mapping
 from uuid import UUID
 
 from .host_inventory import (
+    HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION,
     HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION,
-    HOST_INVENTORY_TTL_SECONDS,
     PRESENTATION_INTERFACES,
     HostCapability,
     HostCapabilitySnapshot,
+    HostCapabilityTicket,
+    HostCapabilityTicketRequest,
 )
 
 SCHEMA_VERSION = "nexus.mcp.v1"
@@ -105,21 +106,6 @@ def _safe_display_name(value: Any) -> str:
     return name
 
 
-def _utc_timestamp(value: Any, now: datetime) -> datetime:
-    if not isinstance(value, str) or len(value) > 40:
-        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory timestamp is invalid")
-    try:
-        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
-    except ValueError as exc:
-        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory timestamp is invalid") from exc
-    if parsed.tzinfo is None:
-        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory timestamp must be UTC")
-    parsed = parsed.astimezone(timezone.utc)
-    if parsed < now - timedelta(seconds=HOST_INVENTORY_TTL_SECONDS) or parsed > now + timedelta(seconds=30):
-        raise NexusMcpError("HOST_INVENTORY_STALE", "Host inventory is not current")
-    return parsed
-
-
 def _bytes(value: str) -> int:
     return len(value.encode("utf-8"))
 
@@ -164,29 +150,20 @@ def parse_discover_request(value: Any) -> tuple[str, ...]:
     return tuple(sorted(set(tags)))
 
 
-def parse_host_capability_snapshot(
-    value: Any, *, now: datetime | None = None,
-) -> HostCapabilitySnapshot:
-    """Parse a non-authoritative current-turn Host metadata snapshot.
-
-    The schema deliberately excludes descriptions, instructions, paths, URLs,
-    invocation handles, permissions, and environment data.  The accepted
-    enums can support bounded classification, but never authorize execution.
-    """
+def parse_host_capability_ticket_request(value: Any) -> HostCapabilityTicketRequest:
+    """Parse the fixed purpose of a server-issued inventory ticket."""
     data = _object(value, {
-        "schema_version", "captured_at", "snapshot_id", "host_surface",
-        "inventory_scope", "inventory_completeness", "task_category",
-        "required_interfaces", "capabilities",
+        "schema_version", "host_surface", "inventory_scope",
+        "inventory_completeness", "task_category", "required_interfaces",
     })
     required = {
-        "schema_version", "captured_at", "snapshot_id", "host_surface",
-        "inventory_scope", "inventory_completeness", "task_category",
-        "required_interfaces", "capabilities",
+        "schema_version", "host_surface", "inventory_scope",
+        "inventory_completeness", "task_category", "required_interfaces",
     }
     if set(data) != required:
-        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability snapshot is incomplete")
-    if data.get("schema_version") != HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION:
-        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability snapshot schema is invalid")
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory ticket request is incomplete")
+    if data.get("schema_version") != HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory ticket request schema is invalid")
     if data.get("host_surface") != "chatgpt_desktop":
         raise NexusMcpError("HOST_INVENTORY_INVALID", "Host surface is unsupported")
     if data.get("inventory_scope") != "current_turn_host_visible_subset":
@@ -195,6 +172,63 @@ def parse_host_capability_snapshot(
         raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory must not claim global completeness")
     if data.get("task_category") != "presentation":
         raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory task category is unsupported")
+    required_interfaces = _required_host_interfaces(data.get("required_interfaces"))
+    return HostCapabilityTicketRequest(
+        host_surface="chatgpt_desktop",
+        inventory_scope="current_turn_host_visible_subset",
+        inventory_completeness="not_globally_enumerated",
+        task_category="presentation",
+        required_interfaces=required_interfaces,
+    )
+
+
+def parse_host_inventory_ticket_id(value: Any) -> str:
+    if not isinstance(value, Mapping):
+        raise NexusMcpError("INVALID_REQUEST", "arguments must be an object")
+    ticket_id = value.get("ticket_id")
+    if not isinstance(ticket_id, str):
+        if value.get("schema_version") != HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION:
+            raise NexusMcpError(
+                "HOST_INVENTORY_PROTOCOL_MISMATCH",
+                "Host inventory snapshot protocol is unsupported",
+            )
+        raise NexusMcpError("HOST_INVENTORY_TICKET_INVALID", "Host inventory ticket is invalid")
+    try:
+        UUID(ticket_id)
+    except (ValueError, AttributeError) as exc:
+        raise NexusMcpError("HOST_INVENTORY_TICKET_INVALID", "Host inventory ticket is invalid") from exc
+    return ticket_id
+
+
+def _required_host_interfaces(value: Any) -> tuple[str, ...]:
+    if (
+        not isinstance(value, list)
+        or not value
+        or len(value) > MAX_HOST_INTERFACES
+        or not all(isinstance(item, str) and item in PRESENTATION_INTERFACES for item in value)
+        or len(set(value)) != len(value)
+    ):
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host required interfaces are invalid")
+    return tuple(sorted(value))
+
+
+def parse_host_capability_snapshot(
+    value: Any, *, ticket: HostCapabilityTicket,
+) -> HostCapabilitySnapshot:
+    """Parse a non-authoritative current-turn Host metadata snapshot.
+
+    The schema deliberately excludes descriptions, instructions, paths, URLs,
+    invocation handles, permissions, and environment data.  The accepted
+    enums can support bounded classification, but never authorize execution.
+    """
+    data = _object(value, {"schema_version", "ticket_id", "snapshot_id", "capabilities"})
+    required = {"schema_version", "ticket_id", "snapshot_id", "capabilities"}
+    if set(data) != required:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability snapshot is incomplete")
+    if data.get("schema_version") != HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability snapshot schema is invalid")
+    if data.get("ticket_id") != ticket.ticket_id:
+        raise NexusMcpError("HOST_INVENTORY_TICKET_MISMATCH", "Host inventory ticket does not match")
     snapshot_id = data.get("snapshot_id")
     if not isinstance(snapshot_id, str):
         raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory snapshot ID is invalid")
@@ -202,19 +236,6 @@ def parse_host_capability_snapshot(
         UUID(snapshot_id)
     except (ValueError, AttributeError) as exc:
         raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory snapshot ID is invalid") from exc
-    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    captured_at = _utc_timestamp(data.get("captured_at"), current)
-
-    required_interfaces = data.get("required_interfaces")
-    if (
-        not isinstance(required_interfaces, list)
-        or not required_interfaces
-        or len(required_interfaces) > MAX_HOST_INTERFACES
-        or not all(isinstance(item, str) and item in PRESENTATION_INTERFACES for item in required_interfaces)
-        or len(set(required_interfaces)) != len(required_interfaces)
-    ):
-        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host required interfaces are invalid")
-
     raw_capabilities = data.get("capabilities")
     if not isinstance(raw_capabilities, list) or len(raw_capabilities) > MAX_HOST_CAPABILITIES:
         raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability count is invalid")
@@ -288,13 +309,13 @@ def parse_host_capability_snapshot(
         ))
     capabilities.sort(key=lambda entry: (entry.provider_id.casefold(), entry.capability_id.casefold()))
     return HostCapabilitySnapshot(
-        captured_at=captured_at,
+        ticket_id=ticket.ticket_id,
         snapshot_id=snapshot_id,
-        host_surface="chatgpt_desktop",
-        inventory_scope="current_turn_host_visible_subset",
-        inventory_completeness="not_globally_enumerated",
-        task_category="presentation",
-        required_interfaces=tuple(sorted(required_interfaces)),
+        host_surface=ticket.host_surface,
+        inventory_scope=ticket.inventory_scope,
+        inventory_completeness=ticket.inventory_completeness,
+        task_category=ticket.task_category,
+        required_interfaces=ticket.required_interfaces,
         capabilities=tuple(capabilities),
     )
 
@@ -313,17 +334,14 @@ PLAN_INPUT_SCHEMA: dict[str, Any] = {
         "constraints": {"type": "array", "maxItems": MAX_CONSTRAINTS, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
     },
 }
-ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA: dict[str, Any] = {
+BEGIN_HOST_CAPABILITY_ASSESSMENT_INPUT_SCHEMA: dict[str, Any] = {
     "type": "object", "additionalProperties": False,
     "required": [
-        "schema_version", "captured_at", "snapshot_id", "host_surface",
-        "inventory_scope", "inventory_completeness", "task_category",
-        "required_interfaces", "capabilities",
+        "schema_version", "host_surface", "inventory_scope",
+        "inventory_completeness", "task_category", "required_interfaces",
     ],
     "properties": {
-        "schema_version": {"const": HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION},
-        "captured_at": {"type": "string", "minLength": 20, "maxLength": 40},
-        "snapshot_id": {"type": "string", "minLength": 36, "maxLength": 36},
+        "schema_version": {"const": HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION},
         "host_surface": {"const": "chatgpt_desktop"},
         "inventory_scope": {"const": "current_turn_host_visible_subset"},
         "inventory_completeness": {"const": "not_globally_enumerated"},
@@ -333,6 +351,15 @@ ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA: dict[str, Any] = {
             "uniqueItems": True,
             "items": {"type": "string", "enum": sorted(PRESENTATION_INTERFACES)},
         },
+    },
+}
+ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA: dict[str, Any] = {
+    "type": "object", "additionalProperties": False,
+    "required": ["schema_version", "ticket_id", "snapshot_id", "capabilities"],
+    "properties": {
+        "schema_version": {"const": HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION},
+        "ticket_id": {"type": "string", "minLength": 36, "maxLength": 36},
+        "snapshot_id": {"type": "string", "minLength": 36, "maxLength": 36},
         "capabilities": {
             "type": "array", "maxItems": MAX_HOST_CAPABILITIES,
             "items": {

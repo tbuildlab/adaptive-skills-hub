@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import unittest
 from uuid import uuid4
@@ -8,9 +8,11 @@ from uuid import uuid4
 from ash.mcp.schemas import (
     NexusMcpError,
     parse_host_capability_snapshot,
+    parse_host_capability_ticket_request,
     parse_plan_request,
     parse_prepare_enhancement_handoff_request,
 )
+from ash.mcp.host_inventory import HostCapabilityTicket
 
 
 class McpBoundaryTests(unittest.TestCase):
@@ -42,23 +44,51 @@ class McpBoundaryTests(unittest.TestCase):
                 parse_prepare_enhancement_handoff_request({**base, forbidden: "attacker-controlled"})
 
     def test_host_inventory_accepts_no_private_state_or_execution_inputs(self) -> None:
+        now = datetime.now(timezone.utc)
+        ticket = HostCapabilityTicket(
+            ticket_id=str(uuid4()),
+            issued_at=now,
+            expires_at=now + timedelta(seconds=120),
+            monotonic_issued_at=1.0,
+            monotonic_deadline=121.0,
+            host_surface="chatgpt_desktop",
+            inventory_scope="current_turn_host_visible_subset",
+            inventory_completeness="not_globally_enumerated",
+            task_category="presentation",
+            required_interfaces=("editable_pptx_create",),
+        )
         base = {
-            "schema_version": "nexus.host-capability-snapshot.v1",
-            "captured_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "schema_version": "nexus.host-capability-snapshot.v2",
+            "ticket_id": ticket.ticket_id,
             "snapshot_id": str(uuid4()),
+            "capabilities": [],
+        }
+        for forbidden in (
+            "path", "config", "cache", "command", "environment", "instructions",
+            "tool_handle", "permissions", "agent", "project_context", "workspace_id",
+            "captured_at", "host_surface", "inventory_scope", "required_interfaces",
+        ):
+            with self.assertRaises(NexusMcpError):
+                parse_host_capability_snapshot(
+                    {**base, forbidden: "attacker-controlled"}, ticket=ticket,
+                )
+
+        ticket_request = {
+            "schema_version": "nexus.host-capability-ticket-request.v1",
             "host_surface": "chatgpt_desktop",
             "inventory_scope": "current_turn_host_visible_subset",
             "inventory_completeness": "not_globally_enumerated",
             "task_category": "presentation",
             "required_interfaces": ["editable_pptx_create"],
-            "capabilities": [],
         }
         for forbidden in (
             "path", "config", "cache", "command", "environment", "instructions",
             "tool_handle", "permissions", "agent", "project_context", "workspace_id",
         ):
             with self.assertRaises(NexusMcpError):
-                parse_host_capability_snapshot({**base, forbidden: "attacker-controlled"})
+                parse_host_capability_ticket_request(
+                    {**ticket_request, forbidden: "attacker-controlled"},
+                )
 
     def test_r2_server_modules_have_no_execution_or_network_client_imports(self) -> None:
         root = Path(__file__).resolve().parents[1] / "ash" / "mcp"

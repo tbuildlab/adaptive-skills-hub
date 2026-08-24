@@ -44,6 +44,8 @@ Expected behavior:
 
 - Nexus distinguishes its local Skill catalog from the current Host-visible
   capability subset;
+- `nexus.begin_host_capability_assessment` returns a server-timed, single-use
+  `HOST_INVENTORY_TICKET_READY` result in the current stdio runtime;
 - `nexus.assess_host_capabilities` is called before the R4 handoff;
 - every genuinely Host-visible relevant presentation capability is considered,
   without assuming a memorized name is installed or executable;
@@ -62,3 +64,8 @@ Expected behavior:
   exact R4 mapping and execution receipt; a mismatch or replay fails closed;
 - capabilities absent from the current Host-visible subset are reported as
   `not observed`, not `unavailable`.
+- the snapshot contains no Host-generated timestamp, and the assessment binds
+  the same ticket ID through the Host-local v2 receipt;
+- if assessment fails, no Nexus plan/handoff/enhancement follows; any safe
+  native run is labelled `adaptive_path.status: failed` and
+  `fallback.kind: native_host_fallback`, never adaptive success.

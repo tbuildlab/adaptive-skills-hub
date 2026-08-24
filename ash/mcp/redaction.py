@@ -1,6 +1,7 @@
 """One allowlist-oriented outbound representation for the R2 MCP boundary."""
 from __future__ import annotations
 
+from datetime import datetime
 from typing import Any, Mapping
 from uuid import uuid4
 
@@ -20,6 +21,8 @@ from .enhancement import (
 from .host_mapping import presentation_profile
 from .host_inventory import (
     HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION,
+    HOST_CAPABILITY_TICKET_SCHEMA_VERSION,
+    HostCapabilityTicket,
     assessment_issue_window,
     assess_host_capabilities,
 )
@@ -35,8 +38,15 @@ def safe_error(request_id: str, error: NexusMcpError) -> dict[str, Any]:
 def safe_health() -> dict[str, Any]:
     return ensure_response_limit({
         "schema_version": SCHEMA_VERSION, "product": PRODUCT, "status": "ready",
-        "transport": "stdio", "capabilities": {"read_only": True, "plan_only": True, "host_handoff_only": True, "network_listener": False, "persistent_state": False},
-        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
+        "transport": "stdio", "capabilities": {
+            "read_only": True,
+            "plan_only": True,
+            "host_handoff_only": True,
+            "network_listener": False,
+            "persistent_state": False,
+            "ephemeral_security_state": "bounded_runtime_local",
+        },
+        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
         "core_baseline": "Nexus V1.2 plus Runtime R1",
     })
 
@@ -121,14 +131,42 @@ def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str
     })
 
 
-def safe_host_capability_assessment(snapshot: Any) -> dict[str, Any]:
+def safe_host_inventory_ticket(ticket: HostCapabilityTicket) -> dict[str, Any]:
+    """Return the fixed, redacted purpose of a one-use runtime-local ticket."""
+    return ensure_response_limit({
+        "schema_version": HOST_CAPABILITY_TICKET_SCHEMA_VERSION,
+        "ticket_id": ticket.ticket_id,
+        "issued_at": ticket.issued_at.isoformat().replace("+00:00", "Z"),
+        "expires_at": ticket.expires_at.isoformat().replace("+00:00", "Z"),
+        "status": "inventory_submission_requested",
+        "host_surface": ticket.host_surface,
+        "inventory_scope": ticket.inventory_scope,
+        "inventory_completeness": ticket.inventory_completeness,
+        "task_category": ticket.task_category,
+        "required_interfaces": list(ticket.required_interfaces),
+        "security_result": {
+            "code": "HOST_INVENTORY_TICKET_READY",
+            "lifecycle": "server_issued_single_use",
+            "session_binding": "nexus_stdio_runtime_process",
+            "turn_authentication": "not_provided_by_host",
+            "inventory_authority": "host_asserted_non_authoritative",
+            "mcp_execution_authority": "none",
+            "private_host_state_access": "none",
+            "persistent_state": "none",
+        },
+    })
+
+
+def safe_host_capability_assessment(
+    snapshot: Any, ticket: HostCapabilityTicket, *, now: datetime | None = None,
+) -> dict[str, Any]:
     """Return an advisory classification of current-turn Host metadata.
 
     The snapshot is a caller assertion, not authenticated Host state.  This
     response stops at considered/selected and cannot load or execute anything.
     """
     decision = assess_host_capabilities(snapshot)
-    issued_at, expires_at = assessment_issue_window(snapshot.captured_at)
+    issued_at, expires_at = assessment_issue_window(ticket, now=now)
 
     def safe_item(item: Any) -> dict[str, Any]:
         capability = item.capability
@@ -177,6 +215,8 @@ def safe_host_capability_assessment(snapshot: Any) -> dict[str, Any]:
     ]
     return ensure_response_limit({
         "schema_version": HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION,
+        "ticket_id": ticket.ticket_id,
+        "ticket_issued_at": ticket.issued_at.isoformat().replace("+00:00", "Z"),
         "assessment_id": str(uuid4()),
         "snapshot_id": snapshot.snapshot_id,
         "snapshot_sha256": decision.snapshot_digest,
