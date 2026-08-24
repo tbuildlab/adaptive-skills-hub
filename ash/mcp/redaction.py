@@ -11,6 +11,7 @@ from .handoff import (
     PLAN_VERSION,
     issue_window,
 )
+from .host_mapping import presentation_profile
 from .schemas import SCHEMA_VERSION, NexusMcpError, ensure_response_limit
 
 PRODUCT = {"name": "Nexus", "subtitle": "Adaptive AI Capability Hub"}
@@ -128,6 +129,11 @@ def safe_host_handoff(plan: Any, loads: list[Mapping[str, Any]], validation: Map
         },
         "logical_host_capability": HOST_PRESENTATIONS_CAPABILITY,
         "requested_execution_mode": HOST_NATIVE_PRESENTATIONS_MODE,
+        # This is an allowlisted, content-free mapping profile.  It resolves
+        # normal authoring defaults so the Host need not turn an otherwise
+        # executable request into a clarification loop.  It is never an MCP
+        # command or a replacement for the Host's approval/tool policy.
+        "host_execution_profile": presentation_profile(),
         "validation_requirements": ["artifact_created", "artifact_editable", "presentation_open_render"],
         "fallback": {"kind": plan.fallback.get("kind"), "status": plan.fallback.get("status")},
         "security_result": {"code": "HOST_HANDOFF_READY", "mcp_execution_authority": "none"},

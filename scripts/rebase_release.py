@@ -15,8 +15,15 @@ import argparse
 import json
 from pathlib import Path
 import shutil
+import sys
 import tempfile
 import zipfile
+
+if not __package__:
+    # Match build_release.py: the Nexus-owned embeddable runtime is isolated.
+    _SCRIPT_DIRECTORY = Path(__file__).resolve().parent
+    if str(_SCRIPT_DIRECTORY) not in sys.path:
+        sys.path.insert(0, str(_SCRIPT_DIRECTORY))
 
 if __package__:
     from .build_release import ROOT, source_members, write_manifest

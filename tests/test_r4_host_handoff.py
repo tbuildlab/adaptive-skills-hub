@@ -11,6 +11,7 @@ import ash.mcp.adapter as adapter
 from ash.mcp.adapter import NexusMcpRuntime, R4_PRESENTATIONS_CONSTRAINT
 from ash.mcp.authorization import WorkspaceAuthorizer
 from ash.mcp.handoff import HANDOFF_SCHEMA_VERSION, is_current_handoff, validate_host_receipt
+from ash.mcp.host_mapping import PRESENTATIONS_MAPPING_ID
 from ash.mcp.redaction import safe_host_handoff
 from ash.mcp.schemas import NexusMcpError, parse_prepare_host_handoff_request
 
@@ -61,6 +62,8 @@ class R4HostHandoffTests(unittest.TestCase):
             "handoff_id": handoff["handoff_id"], "selected_skill": "Presentations",
             "content_sha256": handoff["selected_skill"]["content_sha256"],
             "host_capability": "chatgpt.presentations",
+            "host_execution_mapping_id": PRESENTATIONS_MAPPING_ID,
+            "input_resolution": "safe_defaults_applied",
             "states": ["selected", "loaded_verified", "host_eligible", "execution_requested", "execution_started", "execution_succeeded", "validation_passed"],
             "result_code": "EXECUTION_SUCCEEDED", "artifact_ref": "host-artifact:opaque-presentation", "artifact_kind": "pptx",
         }
@@ -73,10 +76,25 @@ class R4HostHandoffTests(unittest.TestCase):
         self.assertEqual(handoff["selected_skill"]["load_verification_state"], "loaded_verified")
         self.assertEqual(handoff["logical_host_capability"], "chatgpt.presentations")
         self.assertEqual(handoff["requested_execution_mode"], "host_native_presentations")
+        self.assertEqual(handoff["host_execution_profile"]["mapping_id"], PRESENTATIONS_MAPPING_ID)
+        self.assertEqual(handoff["host_execution_profile"]["continuation_policy"], "continue_with_safe_defaults")
+        self.assertEqual(handoff["host_execution_profile"]["clarification_policy"], "ask_only_for_required_noninferable_input")
         self.assertTrue(is_current_handoff(handoff))
         encoded = json.dumps(handoff)
         for forbidden in ("RAW_SKILL_SENTINEL", "SECRET_VALUE_SENTINEL", str(self.root), str(self.skills), "instructions", "path", "project_context", "rules"):
             self.assertNotIn(forbidden, encoded)
+
+    def test_default_profile_is_allowlisted_and_receipt_must_record_it(self) -> None:
+        handoff = self._handoff()
+        profile = handoff["host_execution_profile"]
+        self.assertEqual(profile["resolved_defaults"]["artifact_format"], "editable_pptx")
+        self.assertNotIn(self.arguments["task"], json.dumps(profile))
+        omitted = self._success_receipt(handoff)
+        omitted.pop("input_resolution")
+        self.assertEqual(validate_host_receipt(handoff, omitted), "INPUT_RESOLUTION_UNVERIFIED")
+        mismatch = self._success_receipt(handoff)
+        mismatch["host_execution_mapping_id"] = "nexus.host-map.unknown.v1"
+        self.assertEqual(validate_host_receipt(handoff, mismatch), "HOST_MAPPING_MISMATCH")
 
     def test_selected_but_not_loaded_fails_closed(self) -> None:
         self.skill["skill_md_path"] = str(self.skills / "missing" / "SKILL.md")

@@ -19,8 +19,17 @@ from pathlib import PurePosixPath
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import zipfile
+
+if not __package__:
+    # The official embeddable Python used by Nexus deliberately omits the
+    # script directory from sys.path.  Keep the release builder runnable with
+    # that owned runtime without consulting PATH or user site packages.
+    _SCRIPT_DIRECTORY = Path(__file__).resolve().parent
+    if str(_SCRIPT_DIRECTORY) not in sys.path:
+        sys.path.insert(0, str(_SCRIPT_DIRECTORY))
 
 if __package__:
     from .release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, atomic_json_write, safe_member_name, sha256_file, verify_release_tree

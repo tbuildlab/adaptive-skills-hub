@@ -10,6 +10,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from typing import Any, Mapping, MutableSet
 
+from .host_mapping import PRESENTATIONS_MAPPING_ID
+
 
 HANDOFF_SCHEMA_VERSION = "nexus.host-handoff.v1"
 PLAN_VERSION = "nexus.v2.plan.v1"
@@ -64,7 +66,8 @@ def validate_host_receipt(
     """
     allowed = {
         "handoff_id", "selected_skill", "content_sha256", "host_capability",
-        "states", "result_code", "artifact_ref", "artifact_kind",
+        "host_execution_mapping_id", "input_resolution", "states", "result_code",
+        "artifact_ref", "artifact_kind",
     }
     if not is_current_handoff(handoff, now) or not isinstance(receipt, Mapping) or set(receipt) - allowed:
         return "HANDOFF_MALFORMED" if is_current_handoff(handoff, now) else "HANDOFF_EXPIRED"
@@ -80,6 +83,11 @@ def validate_host_receipt(
         return "SKILL_SUBSTITUTION_REJECTED"
     if receipt.get("host_capability") != handoff.get("logical_host_capability"):
         return "HOST_CAPABILITY_UNAVAILABLE"
+    profile = handoff.get("host_execution_profile")
+    if not isinstance(profile, Mapping) or profile.get("mapping_id") != PRESENTATIONS_MAPPING_ID:
+        return "HANDOFF_MALFORMED"
+    if receipt.get("host_execution_mapping_id") != profile.get("mapping_id"):
+        return "HOST_MAPPING_MISMATCH"
     states = receipt.get("states")
     if not isinstance(states, list) or not all(isinstance(item, str) for item in states):
         return "HANDOFF_MALFORMED"
@@ -99,6 +107,8 @@ def validate_host_receipt(
         return "VALIDATION_FAILED"
     if result_code != "EXECUTION_SUCCEEDED":
         return "HANDOFF_MALFORMED"
+    if receipt.get("input_resolution") != "safe_defaults_applied":
+        return "INPUT_RESOLUTION_UNVERIFIED"
     if not isinstance(receipt.get("artifact_ref"), str) or not receipt["artifact_ref"] or receipt.get("artifact_kind") != "pptx":
         return "ARTIFACT_MISSING"
     if states[-2:] != ["execution_succeeded", "validation_passed"]:

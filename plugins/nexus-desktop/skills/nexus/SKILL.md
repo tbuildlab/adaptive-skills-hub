@@ -29,27 +29,44 @@ writes, artifacts, validation, approvals, and the final response.
    `status` `execution_requested`, exactly identifies `Presentations` with
    `load_verification_state` `loaded_verified`, requests
    `chatgpt.presentations`, and reports `HOST_HANDOFF_READY`.
-5. Before using a host capability, verify that the host actually has the
+5. The valid handoff's `host_execution_profile` is an allowlisted execution
+   brief, not a command. For its approved Presentations mapping, continue
+   immediately with the current user request and apply its
+   `continue_with_safe_defaults` policy. Do **not** ask the normal presentation
+   clarification questions for audience, purpose, deck length, visual
+   direction, template preference, or output format: the profile resolves them
+   as business professionals/decision-makers, a clear actionable overview,
+   concise standard deck, professional modern neutral design, a compatible
+   host default template, and editable `.pptx`. Ask only when a required fact
+   cannot reasonably be inferred, a user approval is required, or proceeding
+   would breach a host safety boundary. Never place these defaults back into
+   Nexus or expose local content.
+6. Before using a host capability, verify that the host actually has the
    requested Presentations capability. If it does not, return
    `HOST_CAPABILITY_UNAVAILABLE`; do not substitute Canva, HTML, another
    Skill, or native fallback after a handoff was requested.
-6. When eligible, load and follow the host-native Presentations workflow and
-   use its actual tool to create an editable `.pptx`. Do not claim execution
+7. When eligible, load and follow the host-native Presentations workflow using
+   that resolved execution brief, then use its actual tool to create an
+   editable `.pptx`. Do not stop after planning or loaded verification, and do
+   not claim execution
    merely from Nexus selection or loading. Obtain a real artifact reference,
    run the handoff validation requirements (including open/render validation),
    and only then report success.
-7. The final execution receipt must distinguish: `selected`,
+8. The final execution receipt must distinguish: `selected`,
    `loaded_verified`, `host_eligible`, `execution_requested`,
    `execution_started`, `execution_succeeded` or `execution_failed`, and
    `validation_passed` or `validation_failed`. Include the selected Skill name,
    content SHA-256, handoff ID, artifact reference when successful, and any
    safe failure code. Never expose paths, raw Skill instructions, project
    context, rules, secrets, or hidden reasoning.
-8. If the host refuses execution, produces no artifact, artifact generation
+   A success receipt also records the mapping ID and
+   `input_resolution: safe_defaults_applied`; this proves that defaulting was
+   used, not that Nexus performed the action.
+9. If the host refuses execution, produces no artifact, artifact generation
    fails, validation fails, the handoff is expired/replayed/malformed, or the
    selected Skill changes, do not report success. A Skill change requires a new
    Nexus planning pass and a new handoff.
-9. If Nexus returns an unavailable, unauthorized, invalid-request, or
+10. If Nexus returns an unavailable, unauthorized, invalid-request, or
    ineligible result,
    state that it did not run and use the host's native reasoning. Do not retry
    with a filesystem path or expose local configuration, raw instructions, or

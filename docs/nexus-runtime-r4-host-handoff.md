@@ -77,6 +77,12 @@ fails closed.  The result is a short-lived redacted envelope:
   },
   "logical_host_capability": "chatgpt.presentations",
   "requested_execution_mode": "host_native_presentations",
+  "host_execution_profile": {
+    "mapping_id": "nexus.host-map.presentations.v1",
+    "continuation_policy": "continue_with_safe_defaults",
+    "clarification_policy": "ask_only_for_required_noninferable_input",
+    "default_profile": "business_presentation.v1"
+  },
   "validation_requirements": [
     "artifact_created",
     "artifact_editable",
@@ -91,12 +97,32 @@ The envelope never contains raw `SKILL.md` text, absolute paths, project
 context/rules, candidates, scores, environment values, secrets, artifact paths,
 or hidden reasoning.
 
+`host_execution_profile` is a registry-based, content-free mapping designed to
+extend safely: each future host-native capability needs its own reviewed
+mapping and tests; it cannot be selected through an arbitrary user Skill name.
+For the R4 Presentations mapping only, ordinary authoring defaults are resolved
+before Host execution: business professional audience, actionable overview,
+concise standard deck, professional neutral design, host-compatible default
+template, and editable `.pptx`. The Host must continue without asking about
+those defaultable values. It may still stop for an approval boundary, a truly
+non-inferable required value, integrity failure, unavailable capability, or a
+safety conflict.
+
 ## Host contract
 
 The bundled Nexus Skill instructs the host to call the handoff tool only after
 an eligible plan, then accept only its current tool result.  It must reject a
 copied, expired, malformed, replayed, or substituted handoff.  A fresh planning
 pass and fresh handoff are required after every Skill change.
+
+The current documented plugin model does not expose an MCP operation that can
+force ChatGPT Desktop to invoke a second Host Skill/tool or accept a receipt
+callback. Skills are model-loaded workflow instructions and MCP provides its
+own controlled actions; Nexus therefore supplies an explicit continuation
+instruction and the Host retains tool selection and artifact authority.
+[Skills](https://developers.openai.com/plugins/concepts/skills) This is the
+sole platform-controlled limitation: successful R4 execution remains subject
+to real Desktop Host evidence, never an MCP claim.
 
 The host must record the following states without collapsing them:
 
@@ -134,6 +160,9 @@ validation failure, substitution, replay, expiry, and malformed input.
 
 The validator is not an MCP tool and is not evidence of a real ChatGPT Desktop
 artifact.  Real execution remains a manual Desktop acceptance requirement.
+It also requires the approved mapping ID and `input_resolution:
+safe_defaults_applied` for a success receipt, so the trace cannot silently
+convert selection/loading into a claimed artifact result.
 
 ## Automated acceptance
 
