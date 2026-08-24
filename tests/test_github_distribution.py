@@ -100,6 +100,26 @@ class GitHubDistributionTests(unittest.TestCase):
             check = subprocess.run([sys.executable, str(extracted / "scripts" / "release_install.py"), "verify"], capture_output=True, text=True)
             self.assertEqual(check.returncode, 0, check.stderr)
 
+    def test_release_manifest_excludes_host_generated_embedded_python_bytecode(self) -> None:
+        """A restarted/pilot runtime must remain verifiable after bytecode exists."""
+        with tempfile.TemporaryDirectory() as temporary:
+            stage = Path(temporary) / "Nexus-pilot"
+            cache = stage / "runtime" / "python" / "site-packages" / "example" / "__pycache__"
+            cache.mkdir(parents=True)
+            source = stage / "scripts" / "release_install.py"
+            source.parent.mkdir(parents=True)
+            source.write_text("# verified source\n", encoding="utf-8")
+            (cache / "example.cpython-313.pyc").write_bytes(b"host-generated-bytecode")
+
+            release_build.write_manifest(stage, "0.1.0-r5.pilot.1")
+            manifest = json.loads((stage / "release-manifest.json").read_text(encoding="utf-8"))
+
+            self.assertNotIn(
+                "runtime/python/site-packages/example/__pycache__/example.cpython-313.pyc",
+                manifest["files"],
+            )
+            self.assertEqual(verify_release_tree(stage)["version"], "0.1.0-r5.pilot.1")
+
     def test_corrupted_artifact_and_traversal_are_rejected_before_install(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

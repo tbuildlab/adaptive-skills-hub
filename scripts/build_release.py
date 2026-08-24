@@ -236,6 +236,12 @@ def write_manifest(stage: Path, version: str) -> None:
     for path in sorted(stage.rglob("*")):
         if not path.is_file() or path.name == MANIFEST_NAME:
             continue
+        # A release may be staged from an already-started embedded runtime.
+        # Its ``__pycache__`` bytecode is host-generated state, not a signed
+        # payload member; release_common.verify_release_tree intentionally
+        # ignores exactly these files after extraction as well.
+        if "__pycache__" in path.parts and path.suffix == ".pyc":
+            continue
         name = path.relative_to(stage).as_posix()
         safe_member_name(name)
         files[name] = {"sha256": sha256_file(path), "size": path.stat().st_size}

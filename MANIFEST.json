@@ -212,8 +212,8 @@
     "sha256": "e5cdf19bdcb3d8050717ca26ba743a7564fbb2f349e63d9b18974a07e643aaee"
   },
   "scripts/build_release.py": {
-    "bytes": 15798,
-    "sha256": "79989e6e35fc0e75350533ae3626c624998eba30c432e4d7792cffee60da0f45"
+    "bytes": 16177,
+    "sha256": "a2ad1b36ecef1c013c540d53acd56fd0185227b75d29ec69e9107c19dce2d0fc"
   },
   "scripts/check_updates.py": {
     "bytes": 2515,
@@ -280,8 +280,8 @@
     "sha256": "8ff514396f13f2ec2a2f54694607154babedcc54ae92064bdc70f431654babb6"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 42045,
-    "sha256": "ff496a1de6a44be812ddc33c195b4a9b4eea118ea1a4d54dd28dfce22412c570"
+    "bytes": 43161,
+    "sha256": "791b713d57d705b036b8265cf97ddca85ac53dcb3e844a90641b3defd3f24a41"
   },
   "tests/test_hub.py": {
     "bytes": 21706,
