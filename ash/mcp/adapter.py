@@ -11,10 +11,18 @@ from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
 from .context import SafeContextReader
-from .redaction import safe_catalog, safe_enhancement_handoff, safe_health, safe_host_handoff, safe_plan
+from .redaction import (
+    safe_catalog,
+    safe_enhancement_handoff,
+    safe_health,
+    safe_host_capability_assessment,
+    safe_host_handoff,
+    safe_plan,
+)
 from .schemas import (
     NexusMcpError,
     parse_discover_request,
+    parse_host_capability_snapshot,
     parse_plan_request,
     parse_prepare_enhancement_handoff_request,
     parse_prepare_host_handoff_request,
@@ -61,6 +69,14 @@ class NexusMcpRuntime:
         if not isinstance(records, list) or len(records) > 1024:
             raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
         return safe_catalog(records, tags)
+
+    def assess_host_capabilities(self, arguments: Any) -> dict[str, Any]:
+        """Assess only a bounded current-turn Host metadata assertion.
+
+        This method never enumerates Host state or turns the assertion into
+        execution authority.  It is separate from the local Skill catalog.
+        """
+        return safe_host_capability_assessment(parse_host_capability_snapshot(arguments))
 
     def _read_selected_skill(self, path: Path) -> bytes:
         safe_path, before = guard_regular_file(path, self.skill_roots)

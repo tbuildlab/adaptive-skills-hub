@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import asyncio
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from uuid import uuid4
 
 from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
@@ -69,7 +71,7 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     initialized = await session.initialize()
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
-                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
+                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
                     metadata = {item.name: item for item in tools.tools}
                     self.assertEqual(metadata["nexus.health"].title, "Nexus status")
                     self.assertIn("diagnostics", metadata["nexus.health"].description)
@@ -82,6 +84,8 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn("presentations", metadata["nexus.plan_task"].description)
                     self.assertIn("Do not use for greetings", metadata["nexus.plan_task"].description)
                     self.assertIn("or execution", metadata["nexus.plan_task"].description)
+                    self.assertEqual(metadata["nexus.assess_host_capabilities"].title, "Nexus Host capability assessment")
+                    self.assertIn("cannot enumerate installed plugins", metadata["nexus.assess_host_capabilities"].description)
                     self.assertEqual(metadata["nexus.prepare_host_handoff"].title, "Nexus Presentations host handoff")
                     self.assertIn("single verified Presentations", metadata["nexus.prepare_host_handoff"].description)
                     self.assertEqual(metadata["nexus.prepare_enhancement_handoff"].title, "Nexus Presentations enhancement handoff")
@@ -98,6 +102,28 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     planned = await session.call_tool("nexus.plan_task", {"task": "Translate this text into Klingon", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertFalse(planned.is_error)
                     self.assertEqual(self._payload(planned)["fallback"]["kind"], "native_codex_fallback")
+                    assessment = await session.call_tool("nexus.assess_host_capabilities", {
+                        "schema_version": "nexus.host-capability-snapshot.v1",
+                        "captured_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+                        "snapshot_id": str(uuid4()),
+                        "host_surface": "chatgpt_desktop",
+                        "inventory_scope": "current_turn_host_visible_subset",
+                        "inventory_completeness": "not_globally_enumerated",
+                        "task_category": "presentation",
+                        "required_interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
+                        "capabilities": [{
+                            "capability_id": "host-presentations",
+                            "provider_id": "openai-host",
+                            "display_name": "Presentations",
+                            "resource_kind": "tool",
+                            "availability": "tool_callable_current_turn",
+                            "evidence": ["current_turn_tool_catalog"],
+                            "interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
+                            "logical_capability": "chatgpt.presentations",
+                        }],
+                    })
+                    self.assertFalse(assessment.is_error)
+                    self.assertEqual(self._payload(assessment)["security_result"]["code"], "HOST_CAPABILITY_SELECTION_READY")
                     handoff = await session.call_tool("nexus.prepare_host_handoff", {"task": "Create an editable PowerPoint presentation.", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertTrue(handoff.is_error)
                     self.assertEqual(self._payload(handoff)["error"]["code"], "HANDOFF_NOT_ELIGIBLE")

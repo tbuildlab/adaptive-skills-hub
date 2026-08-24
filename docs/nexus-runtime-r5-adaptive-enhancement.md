@@ -25,6 +25,13 @@ shell runner, artifact store, remote MCP, OAuth flow, Skill Scout, or V1.3.
 It does not route a new Skill after R4 and does not make Nexus read, receive,
 write, copy, validate, or retain an artifact.
 
+The R5 pilot also has an additive, pre-handoff Host capability assessment.
+It classifies only a bounded current-turn subset of metadata already surfaced
+by ChatGPT Desktop; it does not enumerate installed Plugins or grant execution
+authority. This explains why locally discoverable Skills and actual Host
+capabilities must remain separate. See
+[R5 Host capability inventory](nexus-runtime-r5-host-capability-inventory.md).
+
 ## Authority and state model
 
 ```text

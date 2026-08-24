@@ -20,6 +20,7 @@ ALLOWED_DIRECTORIES = {"ash", "config", "plugins", "scripts", "tests", ".agents"
 ALLOWED_DOCS = {
     "docs/nexus-desktop-plugin-pilot.md",
     "docs/nexus-runtime-r5-adaptive-enhancement.md",
+    "docs/nexus-runtime-r5-host-capability-inventory.md",
     "docs/portable-installation.md",
     "docs/license-inventory.md",
     "docs/upstream-source-registry.md",

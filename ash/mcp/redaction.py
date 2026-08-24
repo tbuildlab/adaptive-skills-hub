@@ -18,6 +18,11 @@ from .enhancement import (
     select_enhancement,
 )
 from .host_mapping import presentation_profile
+from .host_inventory import (
+    HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION,
+    assessment_issue_window,
+    assess_host_capabilities,
+)
 from .schemas import SCHEMA_VERSION, NexusMcpError, ensure_response_limit
 
 PRODUCT = {"name": "Nexus", "subtitle": "Adaptive AI Capability Hub"}
@@ -31,7 +36,7 @@ def safe_health() -> dict[str, Any]:
     return ensure_response_limit({
         "schema_version": SCHEMA_VERSION, "product": PRODUCT, "status": "ready",
         "transport": "stdio", "capabilities": {"read_only": True, "plan_only": True, "host_handoff_only": True, "network_listener": False, "persistent_state": False},
-        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
+        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
         "core_baseline": "Nexus V1.2 plus Runtime R1",
     })
 
@@ -53,12 +58,32 @@ def safe_catalog(records: list[Mapping[str, Any]], tags: tuple[str, ...]) -> dic
     # The catalog is metadata-only, but it can still be large. Return the largest
     # prefix that fits the fixed MCP boundary and report that truncation honestly.
     while filtered:
-        payload = {"schema_version": SCHEMA_VERSION, "product": PRODUCT, "status": "ready", "capability_count": len(filtered), "available_capability_count": available, "truncated": len(filtered) < available, "capabilities": filtered}
+        payload = {
+            "schema_version": SCHEMA_VERSION,
+            "product": PRODUCT,
+            "status": "ready",
+            "catalog_scope": "nexus_local_skill_metadata",
+            "host_inventory_authority": "none",
+            "capability_count": len(filtered),
+            "available_capability_count": available,
+            "truncated": len(filtered) < available,
+            "capabilities": filtered,
+        }
         try:
             return ensure_response_limit(payload)
         except NexusMcpError:
             filtered.pop()
-    return ensure_response_limit({"schema_version": SCHEMA_VERSION, "product": PRODUCT, "status": "ready", "capability_count": 0, "available_capability_count": available, "truncated": bool(available), "capabilities": []})
+    return ensure_response_limit({
+        "schema_version": SCHEMA_VERSION,
+        "product": PRODUCT,
+        "status": "ready",
+        "catalog_scope": "nexus_local_skill_metadata",
+        "host_inventory_authority": "none",
+        "capability_count": 0,
+        "available_capability_count": available,
+        "truncated": bool(available),
+        "capabilities": [],
+    })
 
 
 def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str, Any], request_id: str) -> dict[str, Any]:
@@ -93,6 +118,89 @@ def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str
         "fallback": {"kind": plan.fallback.get("kind"), "status": plan.fallback.get("status"), "reason_code": "CAPABILITY_NOT_COVERED" if plan.fallback.get("status") == "needed" else "NOT_NEEDED"},
         "applied_rules": [{"rule_id": item.rule_id, "effect": item.enforcement, "target": item.target} for item in plan.rules if item.source in {"system", "current_user"} or item.scope == "project"],
         "warnings": ["project_context_items_excluded" for _ in plan.project_context.skipped[:1]],
+    })
+
+
+def safe_host_capability_assessment(snapshot: Any) -> dict[str, Any]:
+    """Return an advisory classification of current-turn Host metadata.
+
+    The snapshot is a caller assertion, not authenticated Host state.  This
+    response stops at considered/selected and cannot load or execute anything.
+    """
+    decision = assess_host_capabilities(snapshot)
+    issued_at, expires_at = assessment_issue_window(snapshot.captured_at)
+
+    def safe_item(item: Any) -> dict[str, Any]:
+        capability = item.capability
+        value = {
+            "capability_id": capability.capability_id,
+            "provider_id": capability.provider_id,
+            "resource_kind": capability.resource_kind,
+            "availability": capability.availability,
+            "evidence": list(capability.evidence),
+            "interfaces": list(capability.interfaces),
+            "logical_capability": capability.logical_capability,
+            "functional_role": item.functional_role,
+            "classification": item.classification,
+            "decision_state": item.decision_state,
+            "reason_codes": list(item.reason_codes),
+            "covered_interfaces": list(item.covered_interfaces),
+            "execution_eligibility": "mapped_current_turn" if item.mapping_id else "not_execution_eligible",
+        }
+        if item.decision_state == "selected" and item.mapping_id:
+            value["mapping_id"] = item.mapping_id
+            value["requested_execution_mode"] = item.requested_execution_mode
+        return value
+
+    considered = [safe_item(item) for item in decision.assessments]
+    selected = [
+        {
+            "capability_id": item["capability_id"],
+            "provider_id": item["provider_id"],
+            "logical_capability": item["logical_capability"],
+            "mapping_id": item["mapping_id"],
+            "requested_execution_mode": item["requested_execution_mode"],
+        }
+        for item in considered
+        if item["decision_state"] == "selected"
+    ]
+    rejected = [
+        {
+            "capability_id": item["capability_id"],
+            "provider_id": item["provider_id"],
+            "classification": item["classification"],
+            "decision_state": "rejected",
+            "reason_codes": item["reason_codes"],
+        }
+        for item in considered
+        if item["decision_state"] == "rejected"
+    ]
+    return ensure_response_limit({
+        "schema_version": HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION,
+        "assessment_id": str(uuid4()),
+        "snapshot_id": snapshot.snapshot_id,
+        "snapshot_sha256": decision.snapshot_digest,
+        "issued_at": issued_at,
+        "expires_at": expires_at,
+        "status": decision.status,
+        "host_surface": snapshot.host_surface,
+        "inventory_scope": snapshot.inventory_scope,
+        "inventory_completeness": snapshot.inventory_completeness,
+        "task_category": snapshot.task_category,
+        "required_interfaces": list(snapshot.required_interfaces),
+        "considered_capabilities": considered,
+        "selected_capabilities": selected,
+        "rejected_capabilities": rejected,
+        "fallback": {
+            "status": "not_needed" if selected else "needed",
+            "reason_code": "NOT_NEEDED" if selected else "HOST_CAPABILITY_UNAVAILABLE",
+        },
+        "security_result": {
+            "code": decision.result_code,
+            "inventory_authority": "host_asserted_non_authoritative",
+            "mcp_execution_authority": "none",
+            "private_host_state_access": "none",
+        },
     })
 
 

@@ -30,3 +30,35 @@ Use Nexus (Adaptive AI Capability Hub) and fix this backend bug. Select the smal
 Expected behavior:
 - unrelated UI/reference sources are skipped
 - no "load everything" behavior
+
+## R5 Desktop pilot — Host capability inventory and presentation execution
+
+Start a new ChatGPT Desktop conversation after installing/updating the R5
+pilot, then use:
+
+```text
+@Nexus Create an editable PowerPoint presentation about digital transformation in business.
+```
+
+Expected behavior:
+
+- Nexus distinguishes its local Skill catalog from the current Host-visible
+  capability subset;
+- `nexus.assess_host_capabilities` is called before the R4 handoff;
+- every genuinely Host-visible relevant presentation capability is considered,
+  without assuming a memorized name is installed or executable;
+- installed/visible/loadable candidates without a reviewed callable Host
+  mapping are rejected truthfully;
+- the smallest complete mapped set is selected;
+- the existing R4 plan/load/hash handoff and Host-owned execution remain
+  unchanged;
+- a real editable `.pptx` is created and open/render validated before success;
+- the final receipt separates considered, selected, loaded, executed, rejected,
+  and validated states and reports the inventory as
+  `current_turn_host_visible_subset`, `not_globally_enumerated`;
+- Host-visible labels are reported from the Host's own trace, while the Nexus
+  assessment uses opaque identities and never reflects an untrusted label;
+- the Host-local inventory receipt binds the fresh assessment selection to the
+  exact R4 mapping and execution receipt; a mismatch or replay fails closed;
+- capabilities absent from the current Host-visible subset are reported as
+  `not observed`, not `unavailable`.

@@ -46,6 +46,8 @@ class McpRedactionTests(unittest.TestCase):
     def test_discover_is_metadata_only_and_bounded(self) -> None:
         payload = self.runtime.discover_capabilities({"capability_tags": ["presentation"]})
         self.assertEqual(payload["capability_count"], 1)
+        self.assertEqual(payload["catalog_scope"], "nexus_local_skill_metadata")
+        self.assertEqual(payload["host_inventory_authority"], "none")
         encoded = json.dumps(payload)
         self.assertNotIn("skill_md_path", encoded)
         self.assertNotIn(str(self.skills), encoded)

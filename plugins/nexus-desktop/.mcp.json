@@ -2,7 +2,7 @@
   "mcpServers": {
     "nexus_desktop_local": {
       "title": "Nexus local planner",
-      "description": "Private local read/plan-only Nexus capability routing. Never executes a plan or accesses caller-selected paths.",
+      "description": "Private local read/plan-and-handoff-only Nexus routing with bounded current-turn Host capability assessment. Never enumerates private Host state, executes a plan, or accesses caller-selected paths.",
       "command": "python",
       "args": [
         "./scripts/launch_nexus_mcp.py"

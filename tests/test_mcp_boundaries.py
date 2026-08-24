@@ -1,9 +1,16 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 import unittest
+from uuid import uuid4
 
-from ash.mcp.schemas import NexusMcpError, parse_plan_request, parse_prepare_enhancement_handoff_request
+from ash.mcp.schemas import (
+    NexusMcpError,
+    parse_host_capability_snapshot,
+    parse_plan_request,
+    parse_prepare_enhancement_handoff_request,
+)
 
 
 class McpBoundaryTests(unittest.TestCase):
@@ -33,6 +40,25 @@ class McpBoundaryTests(unittest.TestCase):
         for forbidden in ("path", "artifact_ref", "task", "workspace_id", "command", "skill", "agent", "handoff_id", "receipt", "content_sha256"):
             with self.assertRaises(NexusMcpError):
                 parse_prepare_enhancement_handoff_request({**base, forbidden: "attacker-controlled"})
+
+    def test_host_inventory_accepts_no_private_state_or_execution_inputs(self) -> None:
+        base = {
+            "schema_version": "nexus.host-capability-snapshot.v1",
+            "captured_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+            "snapshot_id": str(uuid4()),
+            "host_surface": "chatgpt_desktop",
+            "inventory_scope": "current_turn_host_visible_subset",
+            "inventory_completeness": "not_globally_enumerated",
+            "task_category": "presentation",
+            "required_interfaces": ["editable_pptx_create"],
+            "capabilities": [],
+        }
+        for forbidden in (
+            "path", "config", "cache", "command", "environment", "instructions",
+            "tool_handle", "permissions", "agent", "project_context", "workspace_id",
+        ):
+            with self.assertRaises(NexusMcpError):
+                parse_host_capability_snapshot({**base, forbidden: "attacker-controlled"})
 
     def test_r2_server_modules_have_no_execution_or_network_client_imports(self) -> None:
         root = Path(__file__).resolve().parents[1] / "ash" / "mcp"

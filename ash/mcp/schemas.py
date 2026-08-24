@@ -2,9 +2,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timedelta, timezone
 import json
 import re
 from typing import Any, Mapping
+from uuid import UUID
+
+from .host_inventory import (
+    HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION,
+    HOST_INVENTORY_TTL_SECONDS,
+    PRESENTATION_INTERFACES,
+    HostCapability,
+    HostCapabilitySnapshot,
+)
 
 SCHEMA_VERSION = "nexus.mcp.v1"
 MAX_TASK_BYTES = 8 * 1024
@@ -27,6 +37,25 @@ REQUIRED_PRESENTATION_CHECKS = frozenset({
     "artifact_editable",
     "presentation_open_render",
 })
+MAX_HOST_CAPABILITIES = 16
+MAX_HOST_INTERFACES = 8
+HOST_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
+HOST_CAPABILITY_KINDS = frozenset({"skill", "plugin", "tool"})
+HOST_CAPABILITY_AVAILABILITY = frozenset({
+    "tool_callable_current_turn",
+    "skill_loadable_current_turn",
+    "metadata_visible",
+    "enabled_unverified",
+    "installed_unverified",
+    "disabled",
+    "unavailable",
+})
+HOST_CAPABILITY_EVIDENCE = frozenset({
+    "current_turn_tool_catalog",
+    "current_turn_skill_metadata",
+    "current_turn_plugin_metadata",
+})
+HOST_LOGICAL_CAPABILITIES = frozenset({"chatgpt.presentations", "unmapped"})
 
 
 class NexusMcpError(ValueError):
@@ -60,6 +89,35 @@ class HostArtifactState:
     checks: tuple[tuple[str, str], ...]
     observations: tuple[str, ...]
     enhancement_pass: int
+
+
+def _safe_display_name(value: Any) -> str:
+    if (
+        not isinstance(value, str)
+        or not value.strip()
+        or len(value) > 96
+        or _bytes(value.strip()) > 128
+    ):
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability display name is invalid")
+    name = value.strip()
+    if any(ord(char) < 32 or char in "\\/" for char in name) or re.search(r"(?:^|\s)[a-zA-Z]:", name):
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability display name contains unsafe content")
+    return name
+
+
+def _utc_timestamp(value: Any, now: datetime) -> datetime:
+    if not isinstance(value, str) or len(value) > 40:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory timestamp is invalid")
+    try:
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError as exc:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory timestamp is invalid") from exc
+    if parsed.tzinfo is None:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory timestamp must be UTC")
+    parsed = parsed.astimezone(timezone.utc)
+    if parsed < now - timedelta(seconds=HOST_INVENTORY_TTL_SECONDS) or parsed > now + timedelta(seconds=30):
+        raise NexusMcpError("HOST_INVENTORY_STALE", "Host inventory is not current")
+    return parsed
 
 
 def _bytes(value: str) -> int:
@@ -106,6 +164,141 @@ def parse_discover_request(value: Any) -> tuple[str, ...]:
     return tuple(sorted(set(tags)))
 
 
+def parse_host_capability_snapshot(
+    value: Any, *, now: datetime | None = None,
+) -> HostCapabilitySnapshot:
+    """Parse a non-authoritative current-turn Host metadata snapshot.
+
+    The schema deliberately excludes descriptions, instructions, paths, URLs,
+    invocation handles, permissions, and environment data.  The accepted
+    enums can support bounded classification, but never authorize execution.
+    """
+    data = _object(value, {
+        "schema_version", "captured_at", "snapshot_id", "host_surface",
+        "inventory_scope", "inventory_completeness", "task_category",
+        "required_interfaces", "capabilities",
+    })
+    required = {
+        "schema_version", "captured_at", "snapshot_id", "host_surface",
+        "inventory_scope", "inventory_completeness", "task_category",
+        "required_interfaces", "capabilities",
+    }
+    if set(data) != required:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability snapshot is incomplete")
+    if data.get("schema_version") != HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability snapshot schema is invalid")
+    if data.get("host_surface") != "chatgpt_desktop":
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host surface is unsupported")
+    if data.get("inventory_scope") != "current_turn_host_visible_subset":
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory scope is invalid")
+    if data.get("inventory_completeness") != "not_globally_enumerated":
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory must not claim global completeness")
+    if data.get("task_category") != "presentation":
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory task category is unsupported")
+    snapshot_id = data.get("snapshot_id")
+    if not isinstance(snapshot_id, str):
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory snapshot ID is invalid")
+    try:
+        UUID(snapshot_id)
+    except (ValueError, AttributeError) as exc:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host inventory snapshot ID is invalid") from exc
+    current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
+    captured_at = _utc_timestamp(data.get("captured_at"), current)
+
+    required_interfaces = data.get("required_interfaces")
+    if (
+        not isinstance(required_interfaces, list)
+        or not required_interfaces
+        or len(required_interfaces) > MAX_HOST_INTERFACES
+        or not all(isinstance(item, str) and item in PRESENTATION_INTERFACES for item in required_interfaces)
+        or len(set(required_interfaces)) != len(required_interfaces)
+    ):
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host required interfaces are invalid")
+
+    raw_capabilities = data.get("capabilities")
+    if not isinstance(raw_capabilities, list) or len(raw_capabilities) > MAX_HOST_CAPABILITIES:
+        raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability count is invalid")
+    capabilities: list[HostCapability] = []
+    identities: set[tuple[str, str]] = set()
+    mapped_logical_capabilities: set[str] = set()
+    for raw in raw_capabilities:
+        item = _object(raw, {
+            "capability_id", "provider_id", "display_name", "resource_kind",
+            "availability", "evidence", "interfaces", "logical_capability",
+        })
+        if len(item) != 8:
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability descriptor is incomplete")
+        capability_id = item.get("capability_id")
+        provider_id = item.get("provider_id")
+        if not isinstance(capability_id, str) or not HOST_ID_RE.fullmatch(capability_id):
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability ID is invalid")
+        if not isinstance(provider_id, str) or not HOST_ID_RE.fullmatch(provider_id):
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability provider ID is invalid")
+        identity = (provider_id.casefold(), capability_id.casefold())
+        if identity in identities:
+            raise NexusMcpError("HOST_CAPABILITY_DUPLICATE_CONFLICT", "Host capability identity is duplicated")
+        identities.add(identity)
+        resource_kind = item.get("resource_kind")
+        availability = item.get("availability")
+        evidence = item.get("evidence")
+        interfaces = item.get("interfaces")
+        logical_capability = item.get("logical_capability")
+        if resource_kind not in HOST_CAPABILITY_KINDS:
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability kind is invalid")
+        if availability not in HOST_CAPABILITY_AVAILABILITY:
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability availability is invalid")
+        if (
+            not isinstance(evidence, list)
+            or not evidence
+            or len(evidence) > 4
+            or not all(isinstance(entry, str) and entry in HOST_CAPABILITY_EVIDENCE for entry in evidence)
+            or len(set(evidence)) != len(evidence)
+        ):
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability evidence is invalid")
+        if (
+            not isinstance(interfaces, list)
+            or len(interfaces) > MAX_HOST_INTERFACES
+            or not all(isinstance(entry, str) and entry in PRESENTATION_INTERFACES for entry in interfaces)
+            or len(set(interfaces)) != len(interfaces)
+        ):
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability interfaces are invalid")
+        if logical_capability not in HOST_LOGICAL_CAPABILITIES:
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host logical capability is invalid")
+        if logical_capability != "unmapped":
+            if logical_capability in mapped_logical_capabilities:
+                raise NexusMcpError("HOST_CAPABILITY_DUPLICATE_CONFLICT", "Host execution mapping is duplicated")
+            mapped_logical_capabilities.add(str(logical_capability))
+        if availability == "tool_callable_current_turn" and "current_turn_tool_catalog" not in evidence:
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Callable Host capability lacks current tool evidence")
+        if availability == "skill_loadable_current_turn" and "current_turn_skill_metadata" not in evidence:
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Loadable Host Skill lacks current metadata evidence")
+        if logical_capability != "unmapped" and (
+            availability != "tool_callable_current_turn" or "current_turn_tool_catalog" not in evidence
+        ):
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Mapped Host capability is not currently callable")
+        capabilities.append(HostCapability(
+            capability_id=capability_id,
+            provider_id=provider_id,
+            display_name=_safe_display_name(item.get("display_name")),
+            resource_kind=str(resource_kind),
+            availability=str(availability),
+            evidence=tuple(sorted(evidence)),
+            interfaces=tuple(sorted(interfaces)),
+            logical_capability=str(logical_capability),
+        ))
+    capabilities.sort(key=lambda entry: (entry.provider_id.casefold(), entry.capability_id.casefold()))
+    return HostCapabilitySnapshot(
+        captured_at=captured_at,
+        snapshot_id=snapshot_id,
+        host_surface="chatgpt_desktop",
+        inventory_scope="current_turn_host_visible_subset",
+        inventory_completeness="not_globally_enumerated",
+        task_category="presentation",
+        required_interfaces=tuple(sorted(required_interfaces)),
+        capabilities=tuple(capabilities),
+    )
+
+
 HEALTH_INPUT_SCHEMA: dict[str, Any] = {"type": "object", "additionalProperties": False, "properties": {}}
 DISCOVER_INPUT_SCHEMA: dict[str, Any] = {
     "type": "object", "additionalProperties": False,
@@ -118,6 +311,54 @@ PLAN_INPUT_SCHEMA: dict[str, Any] = {
         "workspace_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"},
         "project_context_mode": {"type": "string", "enum": ["none", "governance"], "default": "governance"},
         "constraints": {"type": "array", "maxItems": MAX_CONSTRAINTS, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
+    },
+}
+ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA: dict[str, Any] = {
+    "type": "object", "additionalProperties": False,
+    "required": [
+        "schema_version", "captured_at", "snapshot_id", "host_surface",
+        "inventory_scope", "inventory_completeness", "task_category",
+        "required_interfaces", "capabilities",
+    ],
+    "properties": {
+        "schema_version": {"const": HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION},
+        "captured_at": {"type": "string", "minLength": 20, "maxLength": 40},
+        "snapshot_id": {"type": "string", "minLength": 36, "maxLength": 36},
+        "host_surface": {"const": "chatgpt_desktop"},
+        "inventory_scope": {"const": "current_turn_host_visible_subset"},
+        "inventory_completeness": {"const": "not_globally_enumerated"},
+        "task_category": {"const": "presentation"},
+        "required_interfaces": {
+            "type": "array", "minItems": 1, "maxItems": MAX_HOST_INTERFACES,
+            "uniqueItems": True,
+            "items": {"type": "string", "enum": sorted(PRESENTATION_INTERFACES)},
+        },
+        "capabilities": {
+            "type": "array", "maxItems": MAX_HOST_CAPABILITIES,
+            "items": {
+                "type": "object", "additionalProperties": False,
+                "required": [
+                    "capability_id", "provider_id", "display_name", "resource_kind",
+                    "availability", "evidence", "interfaces", "logical_capability",
+                ],
+                "properties": {
+                    "capability_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"},
+                    "provider_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"},
+                    "display_name": {"type": "string", "minLength": 1, "maxLength": 96},
+                    "resource_kind": {"type": "string", "enum": sorted(HOST_CAPABILITY_KINDS)},
+                    "availability": {"type": "string", "enum": sorted(HOST_CAPABILITY_AVAILABILITY)},
+                    "evidence": {
+                        "type": "array", "minItems": 1, "maxItems": 4, "uniqueItems": True,
+                        "items": {"type": "string", "enum": sorted(HOST_CAPABILITY_EVIDENCE)},
+                    },
+                    "interfaces": {
+                        "type": "array", "maxItems": MAX_HOST_INTERFACES, "uniqueItems": True,
+                        "items": {"type": "string", "enum": sorted(PRESENTATION_INTERFACES)},
+                    },
+                    "logical_capability": {"type": "string", "enum": sorted(HOST_LOGICAL_CAPABILITIES)},
+                },
+            },
+        },
     },
 }
 

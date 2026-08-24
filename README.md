@@ -146,11 +146,17 @@ Codex integration.
 
 R4 and R5 are separate, unmerged development layers over the frozen Core.
 R4 supplies a redacted Host-owned Presentations execution handoff; R5 adds at
-most one Host-owned, copy-on-write post-validation presentation refinement.
+most one Host-owned, copy-on-write post-validation presentation refinement and
+a bounded assessment of the capability metadata already surfaced by the Host
+in the current conversation. This assessment is explicitly incomplete and is
+not a ChatGPT Desktop plugin-enumeration API. Host labels are untrusted and are
+not reflected by the MCP result; opaque identities preserve correlation.
 Neither layer lets Nexus execute a Host tool, read/write an artifact, select an
 arbitrary replacement Skill, spawn an Agent, or claim Host execution without a
-real artifact and validation receipt. See [R4 Host handoff](docs/nexus-runtime-r4-host-handoff.md)
-and [R5 adaptive enhancement](docs/nexus-runtime-r5-adaptive-enhancement.md).
+real artifact and validation receipt. A Host-local receipt binds the inventory
+selection to the R4 mapping without giving Nexus execution authority. See [R4 Host handoff](docs/nexus-runtime-r4-host-handoff.md)
+and [R5 adaptive enhancement](docs/nexus-runtime-r5-adaptive-enhancement.md),
+plus [R5 Host capability inventory](docs/nexus-runtime-r5-host-capability-inventory.md).
 
 Reviewed third-party provenance is kept in
 [`config/upstream-source-registry.json`](config/upstream-source-registry.json).
@@ -160,9 +166,10 @@ content. See [Upstream source registry](docs/upstream-source-registry.md).
 
 ## Runtime R2 local MCP
 
-Runtime R2 is a separately configured, local stdio-only MCP adapter. Its three
-read/plan-only tools are `nexus.health`, `nexus.discover_capabilities`, and
-`nexus.plan_task`. It accepts a configured opaque workspace ID rather than a caller
+Runtime R2 is a separately configured, local stdio-only MCP adapter. Later
+development layers add read-only Host handoff and inventory-assessment tools;
+none execute a Host capability. The stable planning tools are `nexus.health`,
+`nexus.discover_capabilities`, and `nexus.plan_task`. It accepts a configured opaque workspace ID rather than a caller
 path, uses bounded safe context, returns redacted plan/load evidence, and never
 executes a plan. See [docs/nexus-runtime-r2-local-mcp.md](docs/nexus-runtime-r2-local-mcp.md)
 for installation, local configuration, security boundaries, and removal.
