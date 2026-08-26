@@ -24,6 +24,8 @@ ALLOWED_DOCS = {
     "docs/portable-installation.md",
     "docs/license-inventory.md",
     "docs/upstream-source-registry.md",
+    "docs/nexus-capability-foundation.md",
+    "docs/nexus-agent-runtime-contract.md",
 }
 
 

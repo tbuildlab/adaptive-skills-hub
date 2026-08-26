@@ -1,0 +1,498 @@
+{
+  "schema_version": "nexus.capability-foundation.v1",
+  "catalog_policy": "Data-only reviewed metadata; no automatic execution, installation, update, dependency import, Agent delegation, Host enumeration, or authority inheritance.",
+  "capabilities": [
+    {
+      "capability_id": "agent/agency-agents/software-architect",
+      "display_name": "Agency Agents Software Architect",
+      "capability_type": "agent",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "trusted_seed",
+        "risk_status": "Advisory persona only; no independent tool, file, shell, or delegation authority."
+      },
+      "compatibility": "compatible",
+      "execution": {
+        "mechanism": "advisory_only",
+        "directly_executable": false,
+        "permissions": ["read_metadata"]
+      },
+      "availability": {
+        "state": "available",
+        "reason": "Installed advisory definition is locally discoverable; activation remains a separate explicit decision."
+      },
+      "host_visibility": {
+        "scope": "local_registry",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "agency-agents-canonical",
+        "source_scope": "external_upstream",
+        "repository": "msitarzewski/agency-agents",
+        "commit": "9572c66428bbc8ef475d339b2386eacd8bf540c5",
+        "content_sha256": null,
+        "relative_path": "engineering/engineering-software-architect.md",
+        "import_mode": "referenced"
+      },
+      "dependencies": [],
+      "inputs": ["architecture_question_reference"],
+      "outputs": ["advisory_architecture_review"],
+      "domains": ["software_architecture"],
+      "validation_requirements": ["human_or_primary_agent_review"],
+      "roles_supported": ["advisory"],
+      "update_strategy": "Review a new pinned commit as a new revision; never auto-update."
+    },
+    {
+      "capability_id": "agent/agency-agents-zh/china-specialists",
+      "display_name": "Agency Agents Chinese Specialist Overlay",
+      "capability_type": "agent",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "trusted_seed",
+        "risk_status": "Localized advisory definitions; canonical duplicates are deduplicated and never receive execution authority."
+      },
+      "compatibility": "compatible",
+      "execution": {
+        "mechanism": "advisory_only",
+        "directly_executable": false,
+        "permissions": ["read_metadata"]
+      },
+      "availability": {
+        "state": "available",
+        "reason": "China-specific installed advisory definitions are locally discoverable."
+      },
+      "host_visibility": {
+        "scope": "local_registry",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "agency-agents-zh-overlay",
+        "source_scope": "external_upstream",
+        "repository": "jnMetaCode/agency-agents-zh",
+        "commit": "972452cdedef8d04fed4a8dd1dc10623e33ed412",
+        "content_sha256": null,
+        "relative_path": "agents",
+        "import_mode": "referenced"
+      },
+      "dependencies": [],
+      "inputs": ["localized_advisory_question_reference"],
+      "outputs": ["localized_advisory_review"],
+      "domains": ["china_localization"],
+      "validation_requirements": ["canonical_duplicate_review"],
+      "roles_supported": ["advisory"],
+      "update_strategy": "Review localized changes against the canonical source at a new pinned commit."
+    },
+    {
+      "capability_id": "reference/awesome-llm-apps/evaluation-patterns",
+      "display_name": "Awesome LLM Apps Evaluation Patterns",
+      "capability_type": "example_collection",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "trusted_seed",
+        "risk_status": "Only reviewed offline evaluation and static-analysis patterns are referenced; examples requiring keys, shell, external models, or unsafe flags are rejected."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "Patterns are design evidence, not imported application runtimes."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "awesome-llm-apps",
+        "source_scope": "external_upstream",
+        "repository": "Shubhamsaboo/awesome-llm-apps",
+        "commit": "11a4bc330e4b0b1509577db4581c5cfbcf6ea6a0",
+        "content_sha256": null,
+        "relative_path": "agent_skills",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["trigger_examples", "static_skill_metadata"],
+      "outputs": ["evaluation_pattern"],
+      "domains": ["capability_evaluation", "security_review"],
+      "validation_requirements": ["positive_negative_boundary_tests"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Review selected examples at an exact commit; never import the repository wholesale."
+    },
+    {
+      "capability_id": "skill/emil-design-eng",
+      "display_name": "Emil Design Engineering",
+      "capability_type": "skill",
+      "lifecycle_state": "available",
+      "trust": {
+        "tier": "local_maintained",
+        "risk_status": "Locally installed instructions match the reviewed upstream content digest; writes remain Host-controlled."
+      },
+      "compatibility": "compatible",
+      "execution": {
+        "mechanism": "host_mediated_skill",
+        "directly_executable": true,
+        "permissions": ["read_skill_instructions", "write_artifact"]
+      },
+      "availability": {
+        "state": "available",
+        "reason": "Verified local Skill is available to Codex; it is relevant only to UI and interaction work."
+      },
+      "host_visibility": {
+        "scope": "local_registry",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "emilkowalski-skills",
+        "source_scope": "local_library",
+        "repository": "emilkowalski/skills",
+        "commit": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+        "content_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+        "relative_path": "emil-design-eng/SKILL.md",
+        "import_mode": "local_in_place"
+      },
+      "dependencies": ["host_file_editing"],
+      "inputs": ["frontend_source", "design_requirements"],
+      "outputs": ["frontend_implementation"],
+      "domains": ["frontend", "interaction_design"],
+      "validation_requirements": ["visual_review", "accessibility_review"],
+      "roles_supported": ["primary_creator", "enhancer", "reviewer"],
+      "update_strategy": "Quarantine any changed upstream commit or local content digest pending a fresh review."
+    },
+    {
+      "capability_id": "library/liquid-glass-react",
+      "display_name": "Liquid Glass React",
+      "capability_type": "design_resource",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "trusted_seed",
+        "risk_status": "Frontend library only; no Skill, Agent, Nexus routing, or Host execution authority."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "May be evaluated as a React dependency for relevant UI work only."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "liquid-glass-react",
+        "source_scope": "external_upstream",
+        "repository": "rdev/liquid-glass-react",
+        "commit": "ac48eab18d1f7f444ae30002d240cae29c863a21",
+        "content_sha256": null,
+        "relative_path": "src",
+        "import_mode": "no_import"
+      },
+      "dependencies": ["react_18_or_newer"],
+      "inputs": ["react_ui_requirement"],
+      "outputs": ["liquid_glass_ui_reference"],
+      "domains": ["frontend", "visual_design"],
+      "validation_requirements": ["browser_compatibility_review"],
+      "roles_supported": ["alternative"],
+      "update_strategy": "Evaluate a pinned dependency revision only when a project explicitly needs the effect."
+    },
+    {
+      "capability_id": "framework/deer-flow",
+      "display_name": "DeerFlow",
+      "capability_type": "harness",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "official_vendor",
+        "risk_status": "Reference patterns only; the runtime, subagents, sandbox, installers, and auto-skill flows remain outside this phase."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "Permission, validation, status, and static-scan patterns were adapted without importing runtime code."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "deer-flow",
+        "source_scope": "external_upstream",
+        "repository": "bytedance/deer-flow",
+        "commit": "788a890bd022689ef293e6bbfa2c12988173db6c",
+        "content_sha256": null,
+        "relative_path": "backend/src",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["orchestration_design_question"],
+      "outputs": ["bounded_orchestration_pattern"],
+      "domains": ["orchestration", "security_review"],
+      "validation_requirements": ["permission_policy_review"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Review only directly relevant files at a new exact commit; never auto-import."
+    },
+    {
+      "capability_id": "library/gsap",
+      "display_name": "GSAP",
+      "capability_type": "library",
+      "lifecycle_state": "quarantined",
+      "trust": {
+        "tier": "trusted_seed",
+        "risk_status": "Technically compatible library, but redistribution and competitive-builder restrictions require a project-specific license decision."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "No bundling or runtime import is approved by this registry."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "greensock-gsap",
+        "source_scope": "external_upstream",
+        "repository": "greensock/GSAP",
+        "commit": "13e2b790546426a1a2e0e9b409f3f8dc6d6611f2",
+        "content_sha256": null,
+        "relative_path": "src",
+        "import_mode": "no_import"
+      },
+      "dependencies": ["javascript_runtime"],
+      "inputs": ["animation_requirement"],
+      "outputs": ["animation_library_reference"],
+      "domains": ["frontend_animation"],
+      "validation_requirements": ["license_review", "performance_review"],
+      "roles_supported": ["alternative"],
+      "update_strategy": "Keep the exact reviewed pin; require owner/license review before dependency or distribution use."
+    },
+    {
+      "capability_id": "runtime/openai-codex",
+      "display_name": "OpenAI Codex",
+      "capability_type": "runtime",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "official_vendor",
+        "risk_status": "Official runtime and protocol reference; no vendoring or runtime dependency was added."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "Scope, dependency, plugin availability, source, and sandbox models inform the data contract."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "openai-codex",
+        "source_scope": "external_upstream",
+        "repository": "openai/codex",
+        "commit": "10d5a603aecbd73a38f3a6576cce69a78f8d6f1d",
+        "content_sha256": null,
+        "relative_path": "codex-rs/protocol",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["capability_protocol_design"],
+      "outputs": ["scope_and_sandbox_pattern"],
+      "domains": ["capability_governance", "runtime_security"],
+      "validation_requirements": ["official_protocol_consistency"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Review official protocol changes at a new exact commit before adapting."
+    },
+    {
+      "capability_id": "harness/deepseek-harness",
+      "display_name": "DeepSeek Harness",
+      "capability_type": "harness",
+      "lifecycle_state": "security_reviewed",
+      "trust": {
+        "tier": "official_vendor",
+        "risk_status": "Developer preview with compatibility churn; only monotonic guard and lifecycle patterns are referenced."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "No plugin runtime or dependency was imported."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "deepseek-harness",
+        "source_scope": "external_upstream",
+        "repository": "deepseek-ai/deepseek-harness",
+        "commit": "b150a551b8d465e31e418e1b2eaf5e79bbb7d28e",
+        "content_sha256": null,
+        "relative_path": "docs",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["runtime_guard_design"],
+      "outputs": ["monotonic_guard_pattern"],
+      "domains": ["runtime_security", "lifecycle_governance"],
+      "validation_requirements": ["preview_compatibility_review"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Treat every preview revision as a new quarantined candidate until re-reviewed."
+    },
+    {
+      "capability_id": "factory/revfactory-harness",
+      "display_name": "RevFactory Harness",
+      "capability_type": "skill_factory",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "reviewed_community",
+        "risk_status": "Creator-reviewer and trigger-evaluation patterns only; Claude team tools, model assumptions, and generated .claude content are incompatible."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "No Skill factory execution or generated content is authorized."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "revfactory-harness",
+        "source_scope": "external_upstream",
+        "repository": "revfactory/harness",
+        "commit": "cceac68ea1d0ad198ef4b7b906cd238375836387",
+        "content_sha256": null,
+        "relative_path": "skills",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["skill_trigger_specification"],
+      "outputs": ["bounded_skill_evaluation_pattern"],
+      "domains": ["skill_factory", "capability_evaluation"],
+      "validation_requirements": ["positive_near_miss_trigger_tests"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Review factory instructions at a new exact commit; do not run them in this phase."
+    },
+    {
+      "capability_id": "harness/edict",
+      "display_name": "Edict",
+      "capability_type": "harness",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "reviewed_community",
+        "risk_status": "Mandatory reviewer, permission matrix, and audit-state patterns only; OpenClaw runtime and internal thought disclosure are excluded."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "No multi-Agent runtime is imported or activated."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "edict",
+        "source_scope": "external_upstream",
+        "repository": "cft0808/edict",
+        "commit": "14a207557719c046af0f993a7bff1cc5a5015b33",
+        "content_sha256": null,
+        "relative_path": "docs",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["agent_governance_design"],
+      "outputs": ["review_gate_and_audit_pattern"],
+      "domains": ["agent_governance", "auditability"],
+      "validation_requirements": ["permission_matrix_review"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Review governance documents at an exact commit; never activate the runtime automatically."
+    },
+    {
+      "capability_id": "factory/nuwa-skill",
+      "display_name": "Nuwa Skill Factory",
+      "capability_type": "skill_factory",
+      "lifecycle_state": "approved",
+      "trust": {
+        "tier": "reviewed_community",
+        "risk_status": "Confidence, contradiction, limitation, and checkpoint patterns only; six-Agent swarm, downloads, automatic writes, and questionable sources are rejected."
+      },
+      "compatibility": "reference_only",
+      "execution": {
+        "mechanism": "reference_only",
+        "directly_executable": false,
+        "permissions": []
+      },
+      "availability": {
+        "state": "reference_only",
+        "reason": "No factory runtime, generated Skill, Agent, or network workflow is authorized."
+      },
+      "host_visibility": {
+        "scope": "not_applicable",
+        "enumeration": "not_applicable",
+        "observed_current_turn": false
+      },
+      "provenance": {
+        "source_id": "nuwa-skill",
+        "source_scope": "external_upstream",
+        "repository": "alchaincyf/nuwa-skill",
+        "commit": "fe0374687037c4cc51a65c1e0c145afe2981dc69",
+        "content_sha256": null,
+        "relative_path": "SKILL.md",
+        "import_mode": "adapted"
+      },
+      "dependencies": [],
+      "inputs": ["capability_factory_design"],
+      "outputs": ["provenance_and_checkpoint_pattern"],
+      "domains": ["skill_factory", "provenance_governance"],
+      "validation_requirements": ["source_confidence_and_contradiction_review"],
+      "roles_supported": ["reviewer", "alternative"],
+      "update_strategy": "Review only documented governance patterns at an exact commit; do not execute the factory."
+    }
+  ]
+}

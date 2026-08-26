@@ -13,13 +13,16 @@ from pathlib import Path
 from typing import Any, Mapping
 
 
-REGISTRY_SCHEMA_VERSION = "nexus.upstream-source-registry.v1"
+REGISTRY_SCHEMA_VERSION_V1 = "nexus.upstream-source-registry.v1"
+REGISTRY_SCHEMA_VERSION = "nexus.upstream-source-registry.v2"
+SUPPORTED_REGISTRY_SCHEMAS = frozenset({REGISTRY_SCHEMA_VERSION_V1, REGISTRY_SCHEMA_VERSION})
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 REPOSITORY_RE = re.compile(r"^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$")
 SOURCE_STATES = frozenset({
     "approved_advisory_only",
     "approved_local_skill_verified",
+    "approved_adapted_patterns",
     "reference_only",
     "license_decision_required",
     "rejected_unresolved",
@@ -28,11 +31,18 @@ COMPONENT_STATES = frozenset({
     "advisory_only",
     "locally_usable_verified",
     "reference_only",
+    "adapted_pattern",
+    "dependency_only",
+    "excluded",
     "rejected_incompatible",
     "rejected_deprecated",
+    "rejected_security",
     "license_decision_required",
     "unresolved",
 })
+IMPORT_MODES = frozenset({"referenced", "adapted", "vendored", "local_in_place", "no_import"})
+EXECUTION_STATUSES = frozenset({"directly_usable_verified", "advisory_only", "reference_only", "unavailable"})
+MAINTENANCE_STATES = frozenset({"active", "stable", "preview", "inactive", "unresolved"})
 
 
 class UpstreamRegistryError(ValueError):
@@ -64,8 +74,9 @@ def _validate_component(component: Any) -> None:
 
 def validate_upstream_registry(payload: Any) -> dict[str, Any]:
     """Validate a closed, non-executable source registry and return a copy."""
-    if not isinstance(payload, Mapping) or payload.get("schema_version") != REGISTRY_SCHEMA_VERSION:
+    if not isinstance(payload, Mapping) or payload.get("schema_version") not in SUPPORTED_REGISTRY_SCHEMAS:
         raise UpstreamRegistryError("source registry schema is invalid")
+    schema_version = str(payload["schema_version"])
     sources = payload.get("sources")
     if not isinstance(sources, list) or not sources:
         raise UpstreamRegistryError("source registry sources are invalid")
@@ -87,11 +98,40 @@ def validate_upstream_registry(payload: Any) -> dict[str, Any]:
         _require_string(source, "discovered_from")
         _require_string(source, "last_reviewed")
         _require_string(source, "risk_status")
+        if schema_version == REGISTRY_SCHEMA_VERSION:
+            canonical_url = _require_string(source, "canonical_url")
+            if not canonical_url.startswith("https://github.com/"):
+                raise UpstreamRegistryError("source registry canonical URL is invalid")
+            classifications = source.get("classifications")
+            if not isinstance(classifications, list) or not classifications or any(
+                not isinstance(item, str) or not item for item in classifications
+            ):
+                raise UpstreamRegistryError("source registry classifications are invalid")
+            _require_string(source, "purpose")
+            _require_string(source, "compatibility")
+            _require_string(source, "integration_model")
+            execution_status = _require_string(source, "execution_status")
+            if execution_status not in EXECUTION_STATUSES:
+                raise UpstreamRegistryError("source registry execution status is invalid")
+            _require_string(source, "update_strategy")
+            import_mode = _require_string(source, "import_mode")
+            if import_mode not in IMPORT_MODES:
+                raise UpstreamRegistryError("source registry import mode is invalid")
+            maintenance = _require_string(source, "maintenance_state")
+            if maintenance not in MAINTENANCE_STATES:
+                raise UpstreamRegistryError("source registry maintenance state is invalid")
+            evidence = source.get("validation_evidence")
+            if not isinstance(evidence, list) or not evidence or any(
+                not isinstance(item, str) or not item for item in evidence
+            ):
+                raise UpstreamRegistryError("source registry validation evidence is invalid")
         repository = source.get("repository")
         commit = source.get("commit")
         if state == "rejected_unresolved":
             if repository is not None or commit is not None:
                 raise UpstreamRegistryError("unresolved source must not claim a repository or commit")
+            if schema_version == REGISTRY_SCHEMA_VERSION and source["canonical_url"] != "https://github.com/green":
+                raise UpstreamRegistryError("unresolved source URL is inconsistent")
         else:
             if not isinstance(repository, str) or not REPOSITORY_RE.fullmatch(repository):
                 raise UpstreamRegistryError("source registry repository is invalid")
@@ -100,6 +140,10 @@ def validate_upstream_registry(payload: Any) -> dict[str, Any]:
             seen_repositories.add(repository.casefold())
             if not isinstance(commit, str) or not COMMIT_RE.fullmatch(commit):
                 raise UpstreamRegistryError("source registry commit is invalid")
+            if schema_version == REGISTRY_SCHEMA_VERSION:
+                expected_url = f"https://github.com/{repository}"
+                if source["canonical_url"].rstrip("/").casefold() != expected_url.casefold():
+                    raise UpstreamRegistryError("source registry URL does not match repository")
         accepted = source.get("accepted_components")
         rejected = source.get("rejected_components")
         if not isinstance(accepted, list) or not isinstance(rejected, list):

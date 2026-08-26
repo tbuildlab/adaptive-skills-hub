@@ -169,6 +169,25 @@ It records pinned sources as locally usable, advisory-only, reference-only,
 license-gated, or rejected; it does not auto-install or auto-execute upstream
 content. See [Upstream source registry](docs/upstream-source-registry.md).
 
+## Post-R5 capability foundation (development)
+
+The additive development branch introduces a data-only heterogeneous
+capability model without changing the frozen R5 runtime. It keeps Skills,
+Agents, runtimes, harnesses, frameworks, libraries, reference architectures,
+example collections, Skill factories, registries, and design resources as
+different types with different trust and execution rules. A bounded exact
+selector can choose the minimum sufficient set only from already-approved,
+currently available, permission-compatible capabilities and classifies every
+considered item as creator, enhancer, reviewer, alternative, advisory,
+redundant, unavailable, incompatible, or rejected.
+
+The R5 Host limitation remains `current_turn_host_visible_subset` /
+`not_globally_enumerated`; this work does not scan private Desktop state or
+turn an installed bundle into a callable Host capability. Upstream commit or
+content-hash changes re-enter quarantine instead of inheriting approval. See
+[Capability foundation](docs/nexus-capability-foundation.md) and the
+[bounded Agent task contract](docs/nexus-agent-runtime-contract.md).
+
 ## Runtime R2 local MCP
 
 Runtime R2 is a separately configured, local stdio-only MCP adapter. Later

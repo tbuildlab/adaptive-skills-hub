@@ -1,140 +1,162 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "policy": "Approved upstream source metadata only. Registration grants no installation, execution, update, or Agent authority.",
   "sources": [
     {
       "id": "agency-agents",
       "kind": "agent",
+      "default_branch": "main",
+      "categories": ["agents", "specialists", "software", "review"],
+      "use_for": ["specialist role selection", "architecture and review guidance"],
+      "avoid_for": ["treating personas as executable skills", "delegating without a bounded contract"],
       "repo": "msitarzewski/agency-agents",
       "url": "https://github.com/msitarzewski/agency-agents",
-      "default_branch": "main",
-      "categories": [
-        "agents",
-        "specialists",
-        "software",
-        "marketing",
-        "design",
-        "operations"
-      ],
-      "use_for": [
-        "specialist role selection",
-        "agent process patterns",
-        "expert review roles"
-      ],
-      "avoid_for": [
-        "treating every persona as an executable skill",
-        "overriding project requirements"
-      ]
+      "commit": "9572c66428bbc8ef475d339b2386eacd8bf540c5",
+      "classifications": ["Agent", "Agent collection"],
+      "disposition": "advisory_only"
     },
     {
       "id": "agency-agents-zh",
       "kind": "agent",
+      "default_branch": "main",
+      "categories": ["agents", "chinese", "specialists", "localization"],
+      "use_for": ["Chinese-language advisory roles", "China-specific specialist guidance"],
+      "avoid_for": ["duplicating canonical roles", "granting execution authority"],
       "repo": "jnMetaCode/agency-agents-zh",
       "url": "https://github.com/jnMetaCode/agency-agents-zh",
-      "default_branch": "main",
-      "categories": [
-        "agents",
-        "chinese",
-        "specialists"
-      ],
-      "use_for": [
-        "Chinese-language agent references",
-        "agent role discovery"
-      ],
-      "avoid_for": [
-        "duplicating the English source unnecessarily"
-      ]
+      "commit": "972452cdedef8d04fed4a8dd1dc10623e33ed412",
+      "classifications": ["Agent", "Agent collection"],
+      "disposition": "advisory_only_localized_overlay"
     },
     {
       "id": "awesome-llm-apps",
       "kind": "reference",
+      "default_branch": "main",
+      "categories": ["llm", "agents", "research", "examples", "architecture", "evaluation"],
+      "use_for": ["offline evaluation patterns", "static skill security review", "architecture examples"],
+      "avoid_for": ["blind application copying", "unsafe flags or external credential workflows"],
       "repo": "Shubhamsaboo/awesome-llm-apps",
       "url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
-      "default_branch": "main",
-      "categories": [
-        "llm",
-        "agents",
-        "rag",
-        "ai-apps",
-        "examples",
-        "architecture"
-      ],
-      "use_for": [
-        "LLM application examples",
-        "architecture references",
-        "implementation pattern discovery"
-      ],
-      "avoid_for": [
-        "blind code copying",
-        "assuming examples are production requirements"
-      ]
+      "commit": "11a4bc330e4b0b1509577db4581c5cfbcf6ea6a0",
+      "classifications": ["Example/application collection", "Reference architecture", "Skill"],
+      "disposition": "selected_patterns_adapted_only"
     },
     {
       "id": "emilkowalski-skills",
       "kind": "skill",
+      "default_branch": "main",
+      "categories": ["design", "frontend", "engineering", "interaction", "ui"],
+      "use_for": ["verified UI design workflow", "frontend quality and interaction review"],
+      "avoid_for": ["unrelated backend or academic tasks", "automatic installation"],
       "repo": "emilkowalski/skills",
       "url": "https://github.com/emilkowalski/skills",
-      "default_branch": "main",
-      "categories": [
-        "design",
-        "frontend",
-        "engineering",
-        "interaction",
-        "ui"
-      ],
-      "use_for": [
-        "design workflows",
-        "frontend quality",
-        "interaction and engineering practices"
-      ],
-      "avoid_for": [
-        "unrelated backend or academic tasks"
-      ]
+      "commit": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+      "classifications": ["Skill", "Design/enhancement resource"],
+      "disposition": "verified_local_skill_available"
     },
     {
       "id": "liquid-glass-react",
-      "kind": "reference",
+      "kind": "library",
+      "default_branch": "master",
+      "categories": ["react", "frontend", "ui", "liquid-glass", "visual-effects"],
+      "use_for": ["relevant React Liquid Glass implementation reference"],
+      "avoid_for": ["forcing a visual style onto unrelated work", "treating a library as a Skill"],
       "repo": "rdev/liquid-glass-react",
       "url": "https://github.com/rdev/liquid-glass-react",
-      "default_branch": "master",
-      "categories": [
-        "react",
-        "frontend",
-        "ui",
-        "liquid-glass",
-        "visual-effects"
-      ],
-      "use_for": [
-        "Liquid Glass implementation reference",
-        "React glass visual patterns"
-      ],
-      "avoid_for": [
-        "forcing glass UI onto unrelated projects",
-        "overriding an existing design system"
-      ]
+      "commit": "ac48eab18d1f7f444ae30002d240cae29c863a21",
+      "classifications": ["Library", "Design/enhancement resource"],
+      "disposition": "reference_only"
     },
     {
       "id": "deer-flow",
       "kind": "framework",
+      "default_branch": "main",
+      "categories": ["agents", "workflow", "research", "orchestration", "security"],
+      "use_for": ["bounded orchestration and permission patterns", "skill validation references"],
+      "avoid_for": ["runtime import", "automatic skill installation", "simple tasks"],
       "repo": "bytedance/deer-flow",
       "url": "https://github.com/bytedance/deer-flow",
+      "commit": "788a890bd022689ef293e6bbfa2c12988173db6c",
+      "classifications": ["Runtime", "Harness", "Framework", "Skill", "Reference architecture"],
+      "disposition": "selected_patterns_adapted_only"
+    },
+    {
+      "id": "greensock-gsap",
+      "kind": "library",
+      "default_branch": "master",
+      "categories": ["javascript", "frontend", "animation", "performance", "ui"],
+      "use_for": ["animation API and performance reference after a license gate"],
+      "avoid_for": ["masquerading as a Skill", "bundling or redistribution without license review"],
+      "repo": "greensock/GSAP",
+      "url": "https://github.com/greensock/GSAP",
+      "commit": "13e2b790546426a1a2e0e9b409f3f8dc6d6611f2",
+      "classifications": ["Library", "Design/enhancement resource"],
+      "disposition": "reference_only_license_gate"
+    },
+    {
+      "id": "openai-codex",
+      "kind": "runtime",
       "default_branch": "main",
-      "categories": [
-        "agents",
-        "workflow",
-        "research",
-        "orchestration",
-        "multi-agent"
-      ],
-      "use_for": [
-        "complex agent workflows",
-        "research orchestration",
-        "multi-step agent systems"
-      ],
-      "avoid_for": [
-        "simple tasks",
-        "UI-only changes",
-        "adding framework complexity without need"
-      ]
+      "categories": ["codex", "skills", "plugins", "runtime", "sandbox", "architecture"],
+      "use_for": ["official capability metadata and sandbox reference"],
+      "avoid_for": ["runtime vendoring", "assuming local CLI availability"],
+      "repo": "openai/codex",
+      "url": "https://github.com/openai/codex",
+      "commit": "10d5a603aecbd73a38f3a6576cce69a78f8d6f1d",
+      "classifications": ["Runtime", "Harness", "Reference architecture"],
+      "disposition": "official_patterns_adapted_only"
+    },
+    {
+      "id": "deepseek-harness",
+      "kind": "harness",
+      "default_branch": "main",
+      "categories": ["agents", "harness", "runtime", "plugins", "security", "lifecycle"],
+      "use_for": ["monotonic guard and lifecycle reference"],
+      "avoid_for": ["preview runtime dependency", "automatic plugin execution"],
+      "repo": "deepseek-ai/deepseek-harness",
+      "url": "https://github.com/deepseek-ai/deepseek-harness",
+      "commit": "b150a551b8d465e31e418e1b2eaf5e79bbb7d28e",
+      "classifications": ["Runtime", "Harness", "Framework", "Reference architecture"],
+      "disposition": "preview_patterns_adapted_only"
+    },
+    {
+      "id": "revfactory-harness",
+      "kind": "factory",
+      "default_branch": "main",
+      "categories": ["skills", "factory", "testing", "review", "evaluation"],
+      "use_for": ["creator-reviewer and near-miss trigger patterns"],
+      "avoid_for": ["Claude-specific runtime execution", "automatic generated Skill acceptance"],
+      "repo": "revfactory/harness",
+      "url": "https://github.com/revfactory/harness",
+      "commit": "cceac68ea1d0ad198ef4b7b906cd238375836387",
+      "classifications": ["Skill Factory", "Harness", "Reference architecture"],
+      "disposition": "factory_patterns_adapted_only"
+    },
+    {
+      "id": "edict",
+      "kind": "harness",
+      "default_branch": "main",
+      "categories": ["agents", "orchestration", "review", "permissions", "audit"],
+      "use_for": ["review gates, permission matrices, and audit states"],
+      "avoid_for": ["OpenClaw runtime import", "unrestricted multi-agent execution"],
+      "repo": "cft0808/edict",
+      "url": "https://github.com/cft0808/edict",
+      "commit": "14a207557719c046af0f993a7bff1cc5a5015b33",
+      "classifications": ["Runtime", "Harness", "Agent collection", "Reference architecture"],
+      "disposition": "governance_patterns_adapted_only"
+    },
+    {
+      "id": "nuwa-skill",
+      "kind": "factory",
+      "default_branch": "main",
+      "categories": ["skills", "factory", "agents", "research", "provenance"],
+      "use_for": ["source confidence, contradiction, limitation, and checkpoint patterns"],
+      "avoid_for": ["swarm execution", "network downloads", "automatic writes"],
+      "repo": "alchaincyf/nuwa-skill",
+      "url": "https://github.com/alchaincyf/nuwa-skill",
+      "commit": "fe0374687037c4cc51a65c1e0c145afe2981dc69",
+      "classifications": ["Skill Factory", "Agent collection", "Reference architecture"],
+      "disposition": "provenance_patterns_adapted_only"
     }
   ]
 }

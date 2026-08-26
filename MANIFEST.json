@@ -11,6 +11,14 @@
     "bytes": 64,
     "sha256": "ef9d5dfba3ca09358973433bfb0e057a9c68b46e7313c2075c29c4cd21eeb524"
   },
+  "ash/agent_contract.py": {
+    "bytes": 6334,
+    "sha256": "dc7260da540f8921f3ad4756d80cc3192713f84549b74428bc9388eff8db072d"
+  },
+  "ash/capabilities.py": {
+    "bytes": 21595,
+    "sha256": "27d705cc4cbe4480ce9f787d8a2aeafdf16f2bbe500e6226c66773b140c8ca59"
+  },
   "ash/common.py": {
     "bytes": 5600,
     "sha256": "0faeb2eebd8f66f101303eea024f35914b1ff57eb591f7ae482476b01618375d"
@@ -71,25 +79,33 @@
     "bytes": 549,
     "sha256": "3c446a5003110a7e310f37c4c7cddbc8382fd9a6da0e2bec3e626578d56ca887"
   },
+  "ash/quality_loop.py": {
+    "bytes": 7705,
+    "sha256": "abb208704e30d2dcbe09e579d1f2bbf97fbf75807e7c8ca62e579d897de0741a"
+  },
   "ash/router.py": {
     "bytes": 23144,
     "sha256": "528a39bf267070aed3dd2100fe884a4eb5f5d656fd24c78a7d25e151b4411838"
   },
   "ash/upstream.py": {
-    "bytes": 6274,
-    "sha256": "ff92875ee2b38d74f6c501135133a442c7c7a43b366b3abca0beac53c486190a"
+    "bytes": 9199,
+    "sha256": "fd4636807a4358cdea958040a4be6507123cb8b77ceca881db6f9dfd59020ca5"
   },
   "ash/v2.py": {
     "bytes": 52140,
     "sha256": "be6db9edca9acb523f4b93b3c7afebaf104455326692c4fae1c93fef7c7a81bc"
+  },
+  "config/capability-foundation.json": {
+    "bytes": 19849,
+    "sha256": "a50261d6bd370b9cb91021d0f6d3390cf395f24a16ab48f8f2f694d30c18bdd0"
   },
   "config/nexus-mcp-workspaces.example.json": {
     "bytes": 146,
     "sha256": "bcb0ab2edbd8e230d3e007d7eb5c64223dd8e7d16d8b5b9d379e033bdf4ca3a8"
   },
   "config/upstream-source-registry.json": {
-    "bytes": 9497,
-    "sha256": "9c391f207fe0c88bb292658de5cd7fc735a8d593e8b8fdeca357d670833337c4"
+    "bytes": 26827,
+    "sha256": "79bf95c58db175cb811ffa0030487f78636b329c5b5af090e7981bde5e2cb0c6"
   },
   "docs/architecture.md": {
     "bytes": 6059,
@@ -104,8 +120,16 @@
     "sha256": "c3213ebb2276eb206033f9cd17bc3f8ecc0f96bc7ef5a46d25d0721886ebbae0"
   },
   "docs/license-inventory.md": {
-    "bytes": 1741,
-    "sha256": "909adc9a0f7dede20da2befb2201aaf0066fc59d7522e70b1ca27032a4c7b828"
+    "bytes": 2293,
+    "sha256": "10833239e3073a5c50b425edff3aac048f8dfa7303d418c36cf3e2b774a15b3a"
+  },
+  "docs/nexus-agent-runtime-contract.md": {
+    "bytes": 2410,
+    "sha256": "d72782671c2bd5e831373be98455e249a90948425ac8b0ec61079661024e1db7"
+  },
+  "docs/nexus-capability-foundation.md": {
+    "bytes": 5788,
+    "sha256": "d45a625ee765f7be02357edaeb078c2a3713c3112392a4cb9700cc60b54d7c4a"
   },
   "docs/nexus-desktop-plugin-pilot.md": {
     "bytes": 5179,
@@ -164,8 +188,8 @@
     "sha256": "0df5b3226e378e7c14a3c8c4da5b01e847bdd2a42ab9fb5a9c6e659e3b79a67d"
   },
   "docs/upstream-source-registry.md": {
-    "bytes": 3322,
-    "sha256": "24fcb85b1a5b6400057591557a164f7dd4db1fbba307ec0cd16db854e55cf726"
+    "bytes": 6248,
+    "sha256": "421b56eabfcdf1875ed0bc0f0957bf89f930caaae541745346460305dcff85d6"
   },
   "docs/v1.1-final-baseline.md": {
     "bytes": 4692,
@@ -196,8 +220,8 @@
     "sha256": "733e9dba48ca644446423036c6a814a2b7142ce1f609e3ee2bb6f1e926a68f69"
   },
   "README.md": {
-    "bytes": 7947,
-    "sha256": "af01a1e5fd8a3dd11cc7fad5a2d8eae0d24d2c8c72de5d38252882927224df06"
+    "bytes": 9075,
+    "sha256": "a530b9bb09a9c6a724f4a0c7103819b97791281f2b0175b863f55c37483bb466"
   },
   "release/VERSION": {
     "bytes": 11,
@@ -252,8 +276,8 @@
     "sha256": "28debb684067ddbf936df327a2d1c3a78dde5757e4867fd36fddd94e706647ec"
   },
   "scripts/package_nexus.py": {
-    "bytes": 2979,
-    "sha256": "e10941fe37eb510c73d673d1e17113a72ff5cd53267ba00a3465c3a0cac3e1df"
+    "bytes": 3066,
+    "sha256": "c60b44346a0eba3afc7ce3622153a34107aeb89ff0e3cb5c04460dbcc4928df5"
   },
   "scripts/rebase_release.py": {
     "bytes": 6407,
@@ -280,8 +304,16 @@
     "sha256": "b4bef894b550f8c7c0e50abd0d95eb2fde02d344653361b742295eaef976e45e"
   },
   "sources.json": {
-    "bytes": 3457,
-    "sha256": "7523916e984b1cbcdaf8e9ddc0c813f849333df50d8465c5763871d2ff1de722"
+    "bytes": 7870,
+    "sha256": "e9160e803dbb7fd6c445b4c443f4c46da5fc699574bdedd7fd192f8ea32b8e66"
+  },
+  "tests/test_agent_contract.py": {
+    "bytes": 3533,
+    "sha256": "6147cb58047919de7091866a0bdba0c349c48039e35d971819ecf840ed56d21f"
+  },
+  "tests/test_capability_foundation.py": {
+    "bytes": 9331,
+    "sha256": "cd6f2c4c410fe8d611d72233de832c67d9f4b8882f4844eb9055e29ec23112a0"
   },
   "tests/test_desktop_plugin_pilot.py": {
     "bytes": 19175,
@@ -315,6 +347,10 @@
     "bytes": 3807,
     "sha256": "a42def559f2625c0b56c61c2503ab211608932c349427dcba8eb7a203959f669"
   },
+  "tests/test_quality_loop.py": {
+    "bytes": 2944,
+    "sha256": "41f73278d88d7b0d173f68d3995ea9dbe1045d6bc4b600b5accd8ac324f2b3b6"
+  },
   "tests/test_r4_host_handoff.py": {
     "bytes": 15861,
     "sha256": "0b5fc9264227201a95ed811c5019558793ea88555933b7252ad37b0455a2c0f2"
@@ -328,8 +364,8 @@
     "sha256": "aed622f25f5e4946ed68bda43e60ac2c26e4186aba637a67209c58d7ae4feaff"
   },
   "tests/test_upstream_source_registry.py": {
-    "bytes": 4423,
-    "sha256": "6650858c61e2a8e9472be12c378bfe388444787affa15164433d619e88b38f2a"
+    "bytes": 6653,
+    "sha256": "1db3da818998a65619a70cb1d2525c7ea31415519c37185de10fccb0d25bfa0d"
   },
   "tests/test_v2.py": {
     "bytes": 34763,

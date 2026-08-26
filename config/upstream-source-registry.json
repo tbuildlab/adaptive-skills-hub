@@ -1,256 +1,392 @@
 {
-  "schema_version": "nexus.upstream-source-registry.v1",
-  "registry_policy": "metadata-only; no automatic clone, installation, execution, update, dependency import, or Agent delegation",
+  "schema_version": "nexus.upstream-source-registry.v2",
+  "registry_policy": "Metadata and reviewed-pattern evidence only; no automatic clone, installation, execution, update, dependency import, Agent delegation, or authority inheritance.",
   "sources": [
     {
       "source_id": "agency-agents-canonical",
       "repository": "msitarzewski/agency-agents",
-      "commit": "ebe9c99acb5c96f9468de368d8bead775387d1a7",
+      "canonical_url": "https://github.com/msitarzewski/agency-agents",
+      "commit": "9572c66428bbc8ef475d339b2386eacd8bf540c5",
       "category": "agent-definition-catalog",
+      "classifications": ["Agent", "Agent collection"],
       "license": "MIT",
+      "purpose": "Canonical specialist Agent personas and review workflows.",
+      "compatibility": "Advisory guidance is compatible; definitions are not executable Skills.",
+      "integration_model": "Reference pinned Agent instructions through the advisory contract only.",
+      "execution_status": "advisory_only",
       "trust_tier": "trusted_seed_canonical",
       "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "referenced",
+      "update_strategy": "Review a new exact commit and quarantine changed Agent content before approval.",
       "state": "approved_advisory_only",
-      "risk_status": "prompt-personas; no independent tool, shell, file-write, approval, or Host-execution authority",
+      "risk_status": "Prompt personas have no independent tool, shell, file-write, approval, or Host-execution authority.",
+      "validation_evidence": [
+        "Repository metadata, license, current commit, README, and engineering-software-architect instructions inspected.",
+        "Canonical/localized overlap policy reviewed."
+      ],
       "accepted_components": [
-        {
-          "component_id": "engineering-software-architect",
-          "component_type": "agent",
-          "upstream_path": "engineering/engineering-software-architect.md",
-          "content_sha256": null,
-          "state": "advisory_only"
-        },
-        {
-          "component_id": "engineering-code-reviewer",
-          "component_type": "agent",
-          "upstream_path": "engineering/engineering-code-reviewer.md",
-          "content_sha256": null,
-          "state": "advisory_only"
-        },
-        {
-          "component_id": "testing-reality-checker",
-          "component_type": "agent",
-          "upstream_path": "testing/testing-reality-checker.md",
-          "content_sha256": null,
-          "state": "advisory_only"
-        }
+        {"component_id": "engineering-software-architect", "component_type": "agent", "upstream_path": "engineering/engineering-software-architect.md", "content_sha256": null, "state": "advisory_only"},
+        {"component_id": "engineering-code-reviewer", "component_type": "agent", "upstream_path": "engineering/engineering-code-reviewer.md", "content_sha256": null, "state": "advisory_only"},
+        {"component_id": "testing-reality-checker", "component_type": "agent", "upstream_path": "testing/testing-reality-checker.md", "content_sha256": null, "state": "advisory_only"}
       ],
       "rejected_components": [
-        {
-          "component_id": "upstream-install-and-conversion-scripts",
-          "component_type": "script",
-          "upstream_path": "scripts",
-          "content_sha256": null,
-          "state": "rejected_incompatible"
-        }
+        {"component_id": "upstream-install-and-conversion-scripts", "component_type": "script", "upstream_path": "scripts", "content_sha256": null, "state": "rejected_incompatible"}
       ]
     },
     {
       "source_id": "agency-agents-zh-overlay",
       "repository": "jnMetaCode/agency-agents-zh",
-      "commit": "83248ab15a78f9ddad897369c8d0be873653574a",
+      "canonical_url": "https://github.com/jnMetaCode/agency-agents-zh",
+      "commit": "972452cdedef8d04fed4a8dd1dc10623e33ed412",
       "category": "localized-agent-definition-overlay",
+      "classifications": ["Agent", "Agent collection"],
       "license": "MIT",
+      "purpose": "Chinese localization and China-specific specialist Agent definitions.",
+      "compatibility": "Useful advisory localization; canonical duplicates must not create duplicate authority.",
+      "integration_model": "Prefer canonical definitions for equivalent roles and retain unique localized roles as advisory-only.",
+      "execution_status": "advisory_only",
       "trust_tier": "trusted_seed_localized_overlay",
       "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "referenced",
+      "update_strategy": "Review a new exact commit against the canonical Agent collection before updating.",
       "state": "approved_advisory_only",
-      "risk_status": "canonical English equivalents deduplicated semantically; localized roles stay advisory-only",
+      "risk_status": "Canonical English equivalents are deduplicated semantically; localized roles stay advisory-only.",
+      "validation_evidence": [
+        "Repository metadata, license, current commit, README, and UPSTREAM.md inspected.",
+        "Local Agent inventory overlap measured without executing Agent definitions."
+      ],
       "accepted_components": [
-        {
-          "component_id": "china-specific-specialist-roles",
-          "component_type": "agent-catalog-subset",
-          "upstream_path": "agents",
-          "content_sha256": null,
-          "state": "advisory_only"
-        }
+        {"component_id": "china-specific-specialist-roles", "component_type": "agent-catalog-subset", "upstream_path": "agents", "content_sha256": null, "state": "advisory_only"}
       ],
       "rejected_components": [
-        {
-          "component_id": "canonical-role-duplicates",
-          "component_type": "agent-catalog-subset",
-          "upstream_path": "agents",
-          "content_sha256": null,
-          "state": "rejected_incompatible"
-        }
-      ]
-    },
-    {
-      "source_id": "emilkowalski-skills",
-      "repository": "emilkowalski/skills",
-      "commit": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
-      "category": "skill-catalog",
-      "license": "MIT",
-      "trust_tier": "trusted_seed_pinned_component",
-      "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
-      "state": "approved_local_skill_verified",
-      "risk_status": "only verified local bundles are directly usable; write/dependency guidance remains Host approval-gated",
-      "accepted_components": [
-        {
-          "component_id": "emil-design-eng",
-          "component_type": "skill",
-          "upstream_path": "skills/emil-design-eng/SKILL.md",
-          "content_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
-          "state": "locally_usable_verified"
-        },
-        {
-          "component_id": "animation-and-ui-skill-bundles",
-          "component_type": "skill-catalog-subset",
-          "upstream_path": "skills",
-          "content_sha256": null,
-          "state": "reference_only"
-        }
-      ],
-      "rejected_components": [
-        {
-          "component_id": "npx-skills-installer-path",
-          "component_type": "installer",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "rejected_incompatible"
-        }
+        {"component_id": "canonical-role-duplicates", "component_type": "agent-catalog-subset", "upstream_path": "agents", "content_sha256": null, "state": "excluded"}
       ]
     },
     {
       "source_id": "awesome-llm-apps",
       "repository": "Shubhamsaboo/awesome-llm-apps",
+      "canonical_url": "https://github.com/Shubhamsaboo/awesome-llm-apps",
       "commit": "11a4bc330e4b0b1509577db4581c5cfbcf6ea6a0",
-      "category": "llm-application-reference-library",
+      "category": "llm-application-and-skill-example-collection",
+      "classifications": ["Example/application collection", "Reference architecture", "Skill"],
       "license": "Apache-2.0",
+      "purpose": "Implementation examples plus selected offline Skill evaluation and security patterns.",
+      "compatibility": "Reviewed static and offline patterns are adaptable; complete applications are not production-ready Nexus dependencies.",
+      "integration_model": "Adapt small data-only validation patterns; do not import or execute applications.",
+      "execution_status": "reference_only",
       "trust_tier": "trusted_seed_component_review_required",
       "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
-      "state": "reference_only",
-      "risk_status": "examples may require external models, keys, shell, or broad permissions; no whole-repository import",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "adapted",
+      "update_strategy": "Review selected files at an exact commit; reject unbounded runtime, keys, unsafe flags, and shell assumptions.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "Examples may require external models, keys, shell, broad permissions, or unsafe flags; no whole-repository import.",
+      "validation_evidence": [
+        "README, agent_skills tree, relevant Skills, static scanner, and trigger evaluation script inspected.",
+        "Unsafe advisor and self-improving runtime paths explicitly rejected."
+      ],
       "accepted_components": [
-        {
-          "component_id": "architecture-patterns",
-          "component_type": "reference",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "reference_only"
-        }
+        {"component_id": "offline-skill-static-scanner-pattern", "component_type": "security-reference", "upstream_path": "agent_skills", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "positive-negative-near-miss-trigger-evaluation", "component_type": "evaluation-reference", "upstream_path": "agent_skills", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "evidence-confidence-and-scope-review-patterns", "component_type": "skill-reference", "upstream_path": "agent_skills", "content_sha256": null, "state": "reference_only"}
       ],
       "rejected_components": [
-        {
-          "component_id": "advisor-orchestrator-worker-runtime",
-          "component_type": "agent-runtime-example",
-          "upstream_path": "advanced_ai_agents/multi_agent_apps/advisor_orchestrator_worker",
-          "content_sha256": null,
-          "state": "rejected_incompatible"
-        },
-        {
-          "component_id": "deprecated-mcp-builder",
-          "component_type": "example",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "rejected_deprecated"
-        }
+        {"component_id": "advisor-orchestrator-worker-runtime", "component_type": "agent-runtime-example", "upstream_path": "advanced_ai_agents/multi_agent_apps/advisor_orchestrator_worker", "content_sha256": null, "state": "rejected_security"},
+        {"component_id": "self-improving-agent-runtime", "component_type": "agent-runtime-example", "upstream_path": "advanced_ai_agents", "content_sha256": null, "state": "rejected_security"}
+      ]
+    },
+    {
+      "source_id": "emilkowalski-skills",
+      "repository": "emilkowalski/skills",
+      "canonical_url": "https://github.com/emilkowalski/skills",
+      "commit": "d23d7f88a2e21c9e4b1418c7abe420f5c1052ba7",
+      "category": "skill-catalog-and-design-resource",
+      "classifications": ["Skill", "Design/enhancement resource"],
+      "license": "MIT",
+      "purpose": "Focused design engineering, UI, interaction, and frontend quality workflows.",
+      "compatibility": "The verified local emil-design-eng Skill is directly usable by Codex for relevant UI work.",
+      "integration_model": "Reference the maintained local Skill in place after content-hash verification.",
+      "execution_status": "directly_usable_verified",
+      "trust_tier": "trusted_seed_pinned_component",
+      "discovered_from": "user-approved seed source",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "local_in_place",
+      "update_strategy": "Quarantine a changed upstream commit or local digest and repeat security/load tests.",
+      "state": "approved_local_skill_verified",
+      "risk_status": "Only verified local bundles are usable; writes and dependency actions remain Host approval-gated.",
+      "validation_evidence": [
+        "Upstream README and full emil-design-eng SKILL.md inspected.",
+        "Installed content SHA-256 matches the reviewed upstream Skill content."
+      ],
+      "accepted_components": [
+        {"component_id": "emil-design-eng", "component_type": "skill", "upstream_path": "skills/emil-design-eng/SKILL.md", "content_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7", "state": "locally_usable_verified"},
+        {"component_id": "animation-and-ui-skill-bundles", "component_type": "skill-catalog-subset", "upstream_path": "skills", "content_sha256": null, "state": "reference_only"}
+      ],
+      "rejected_components": [
+        {"component_id": "npx-skills-installer-path", "component_type": "installer", "upstream_path": null, "content_sha256": null, "state": "rejected_incompatible"}
       ]
     },
     {
       "source_id": "liquid-glass-react",
       "repository": "rdev/liquid-glass-react",
+      "canonical_url": "https://github.com/rdev/liquid-glass-react",
       "commit": "ac48eab18d1f7f444ae30002d240cae29c863a21",
       "category": "react-ui-library",
+      "classifications": ["Library", "Design/enhancement resource"],
       "license": "MIT",
+      "purpose": "Liquid Glass visual-effect implementation for React 18+ projects.",
+      "compatibility": "Technically usable as a project dependency, but irrelevant to the non-UI Nexus Core runtime.",
+      "integration_model": "Reference only unless a separately scoped React project chooses the dependency.",
+      "execution_status": "reference_only",
       "trust_tier": "trusted_seed_reference",
       "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "stable",
+      "import_mode": "no_import",
+      "update_strategy": "Review a pinned release only for an explicitly relevant React UI task.",
       "state": "reference_only",
-      "risk_status": "frontend-only; no Nexus runtime, Host handoff, or Skill-routing authority",
+      "risk_status": "Frontend-only library with no Nexus runtime, Host handoff, Skill-routing, or Agent authority.",
+      "validation_evidence": ["README, package metadata, peer dependency, license, and repository activity inspected."],
       "accepted_components": [
-        {
-          "component_id": "liquid-glass-react-patterns",
-          "component_type": "library-reference",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "reference_only"
-        }
+        {"component_id": "liquid-glass-react-patterns", "component_type": "library-reference", "upstream_path": "src", "content_sha256": null, "state": "reference_only"}
       ],
       "rejected_components": []
     },
     {
       "source_id": "deer-flow",
       "repository": "bytedance/deer-flow",
-      "commit": "cc6a2657e7badb4dfeac0338533c9193b12bd9e6",
-      "category": "multi-agent-framework-and-skill-corpus",
+      "canonical_url": "https://github.com/bytedance/deer-flow",
+      "commit": "788a890bd022689ef293e6bbfa2c12988173db6c",
+      "category": "multi-agent-harness-framework-and-skill-corpus",
+      "classifications": ["Runtime", "Harness", "Framework", "Skill", "Reference architecture"],
       "license": "MIT",
+      "purpose": "Super-agent orchestration, Skill governance, permissions, validation, and subagent lifecycle patterns.",
+      "compatibility": "Selected data-contract and security patterns are adaptable; its runtime is outside the R5 boundary.",
+      "integration_model": "Adapt pure validation, permission, scanner, status, and bounded-runtime patterns without importing code.",
+      "execution_status": "reference_only",
       "trust_tier": "trusted_vendor_reference",
       "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
-      "state": "reference_only",
-      "risk_status": "runtime requires subagents, sandbox/tool state, and install/update workflows outside R4/R5 boundary",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "adapted",
+      "update_strategy": "Review only relevant files at a new exact commit; never auto-install Skills or runtime dependencies.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "Runtime requires subagents, sandbox/tool state, and install/update workflows outside the approved boundary.",
+      "validation_evidence": ["README and source files for Skill types, permissions, tool policy, validation, scanning, and subagent contracts inspected."],
       "accepted_components": [
-        {
-          "component_id": "skill-reviewer-pattern",
-          "component_type": "security-reference",
-          "upstream_path": "skills/skill-reviewer",
-          "content_sha256": null,
-          "state": "reference_only"
-        }
+        {"component_id": "explicit-permission-and-secret-metadata-pattern", "component_type": "security-reference", "upstream_path": "backend/src", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "bounded-status-and-static-scan-pattern", "component_type": "harness-reference", "upstream_path": "backend/src", "content_sha256": null, "state": "adapted_pattern"}
       ],
       "rejected_components": [
-        {
-          "component_id": "deer-flow-runtime",
-          "component_type": "framework-runtime",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "rejected_incompatible"
-        },
-        {
-          "component_id": "find-skills-auto-install-flow",
-          "component_type": "installer",
-          "upstream_path": "skills/find-skills",
-          "content_sha256": null,
-          "state": "rejected_incompatible"
-        }
+        {"component_id": "deer-flow-runtime", "component_type": "framework-runtime", "upstream_path": null, "content_sha256": null, "state": "rejected_incompatible"},
+        {"component_id": "find-skills-auto-install-flow", "component_type": "installer", "upstream_path": "skills/find-skills", "content_sha256": null, "state": "rejected_security"}
       ]
     },
     {
       "source_id": "greensock-gsap",
       "repository": "greensock/GSAP",
+      "canonical_url": "https://github.com/greensock/GSAP",
       "commit": "13e2b790546426a1a2e0e9b409f3f8dc6d6611f2",
       "category": "javascript-animation-library",
+      "classifications": ["Library", "Design/enhancement resource"],
       "license": "GreenSock Standard License; non-OSI SPDX classification",
+      "purpose": "High-performance JavaScript animation library.",
+      "compatibility": "Technically compatible with frontend projects; it is not a Skill and distribution rights require project-specific review.",
+      "integration_model": "Reference or project dependency only after a license gate; never masquerade as a Nexus Skill.",
+      "execution_status": "reference_only",
       "trust_tier": "trusted_seed_license_gate",
       "discovered_from": "user-approved seed source",
-      "last_reviewed": "2026-08-24",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "no_import",
+      "update_strategy": "Keep an exact pin and repeat license/security review before dependency, bundling, or redistribution use.",
       "state": "license_decision_required",
-      "risk_status": "not a Skill; no bundling, redistribution, or runtime import without owner license review",
-      "accepted_components": [],
+      "risk_status": "No bundling, redistribution, or runtime import without owner-approved license review.",
+      "validation_evidence": ["Repository README, package metadata, security policy, and official GSAP Standard License page inspected."],
+      "accepted_components": [
+        {"component_id": "gsap-api-and-performance-reference", "component_type": "library-reference", "upstream_path": "src", "content_sha256": null, "state": "reference_only"}
+      ],
       "rejected_components": [
-        {
-          "component_id": "gsap-runtime-in-r4-r5",
-          "component_type": "library-runtime",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "license_decision_required"
-        }
+        {"component_id": "gsap-bundling-or-redistribution", "component_type": "library-runtime", "upstream_path": null, "content_sha256": null, "state": "license_decision_required"}
+      ]
+    },
+    {
+      "source_id": "openai-codex",
+      "repository": "openai/codex",
+      "canonical_url": "https://github.com/openai/codex",
+      "commit": "10d5a603aecbd73a38f3a6576cce69a78f8d6f1d",
+      "category": "official-agent-runtime-and-protocol-reference",
+      "classifications": ["Runtime", "Harness", "Reference architecture"],
+      "license": "Apache-2.0",
+      "purpose": "Official coding-agent runtime, protocol, sandbox, Skill, and plugin data models.",
+      "compatibility": "Official protocol concepts are highly relevant; Nexus does not vendor or depend on the Codex runtime.",
+      "integration_model": "Adapt scope, dependency, availability, source, and sandbox concepts into Nexus data-only contracts.",
+      "execution_status": "reference_only",
+      "trust_tier": "official_vendor",
+      "discovered_from": "user-approved upstream source",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "adapted",
+      "update_strategy": "Review official protocol changes at a new exact commit before adapting semantics.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "No runtime dependency, private host-state access, or sandbox bypass is introduced.",
+      "validation_evidence": ["Exact protocol sources for Skill metadata, dependencies, scope, plugin availability/source, and sandbox policy inspected."],
+      "accepted_components": [
+        {"component_id": "skill-scope-dependency-and-availability-pattern", "component_type": "protocol-reference", "upstream_path": "codex-rs/protocol", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "sandbox-policy-separation-pattern", "component_type": "security-reference", "upstream_path": "codex-rs/protocol", "content_sha256": null, "state": "adapted_pattern"}
+      ],
+      "rejected_components": [
+        {"component_id": "codex-runtime-dependency", "component_type": "runtime", "upstream_path": null, "content_sha256": null, "state": "excluded"}
+      ]
+    },
+    {
+      "source_id": "deepseek-harness",
+      "repository": "deepseek-ai/deepseek-harness",
+      "canonical_url": "https://github.com/deepseek-ai/deepseek-harness",
+      "commit": "b150a551b8d465e31e418e1b2eaf5e79bbb7d28e",
+      "category": "agent-runtime-harness-framework",
+      "classifications": ["Runtime", "Harness", "Framework", "Reference architecture"],
+      "license": "MIT",
+      "purpose": "Plugin-oriented agent harness with guarded execution and lifecycle seams.",
+      "compatibility": "Security and lifecycle patterns are adaptable; developer-preview runtime compatibility is unstable.",
+      "integration_model": "Adapt monotonic guards, orthogonal outcomes, lifecycle intervals, and sanitized execution context patterns.",
+      "execution_status": "reference_only",
+      "trust_tier": "official_vendor_preview",
+      "discovered_from": "user-approved upstream source",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "preview",
+      "import_mode": "adapted",
+      "update_strategy": "Treat every new preview pin as quarantined until compatibility and security review repeat.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "Developer preview may break compatibility; no runtime or plugin dependency is imported.",
+      "validation_evidence": ["README, package version, capability seams, guarded tool pipeline, lifecycle, and defensive-pattern docs inspected."],
+      "accepted_components": [
+        {"component_id": "monotonic-guard-and-frozen-outcome-pattern", "component_type": "harness-reference", "upstream_path": "docs", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "sanitized-context-and-private-temp-pattern", "component_type": "security-reference", "upstream_path": "docs", "content_sha256": null, "state": "adapted_pattern"}
+      ],
+      "rejected_components": [
+        {"component_id": "deepseek-harness-runtime", "component_type": "runtime", "upstream_path": null, "content_sha256": null, "state": "excluded"}
+      ]
+    },
+    {
+      "source_id": "revfactory-harness",
+      "repository": "revfactory/harness",
+      "canonical_url": "https://github.com/revfactory/harness",
+      "commit": "cceac68ea1d0ad198ef4b7b906cd238375836387",
+      "category": "claude-skill-factory",
+      "classifications": ["Skill Factory", "Harness", "Reference architecture"],
+      "license": "Apache-2.0",
+      "purpose": "Creator-reviewer Skill generation and bounded trigger/evaluation workflows.",
+      "compatibility": "Evaluation patterns are adaptable; the supplied Skill is Claude-specific and not directly usable by Nexus.",
+      "integration_model": "Adapt creator-reviewer, near-miss trigger, and bounded evaluation concepts only.",
+      "execution_status": "reference_only",
+      "trust_tier": "reviewed_community",
+      "discovered_from": "user-approved upstream source",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "adapted",
+      "update_strategy": "Review factory instructions at an exact commit; never execute them or accept generated Skills automatically.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "Claude team tools, hard-coded model assumptions, and automatic .claude writes are incompatible.",
+      "validation_evidence": ["README, full Skill instructions, testing guide, and team examples inspected."],
+      "accepted_components": [
+        {"component_id": "creator-reviewer-quality-loop-pattern", "component_type": "skill-factory-reference", "upstream_path": "skills", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "positive-and-near-miss-trigger-tests", "component_type": "evaluation-reference", "upstream_path": "skills", "content_sha256": null, "state": "adapted_pattern"}
+      ],
+      "rejected_components": [
+        {"component_id": "claude-specific-factory-runtime", "component_type": "skill", "upstream_path": "SKILL.md", "content_sha256": null, "state": "rejected_incompatible"}
+      ]
+    },
+    {
+      "source_id": "edict",
+      "repository": "cft0808/edict",
+      "canonical_url": "https://github.com/cft0808/edict",
+      "commit": "14a207557719c046af0f993a7bff1cc5a5015b33",
+      "category": "multi-agent-runtime-and-governance-harness",
+      "classifications": ["Runtime", "Harness", "Agent collection", "Reference architecture"],
+      "license": "MIT",
+      "purpose": "Multi-Agent task dispatch with reviewer gates, permission matrices, and auditable states.",
+      "compatibility": "Governance concepts are adaptable; OpenClaw runtime and internal-reasoning disclosure are incompatible.",
+      "integration_model": "Adapt mandatory review gates, explicit permission matrices, and audit transitions as data contracts.",
+      "execution_status": "reference_only",
+      "trust_tier": "reviewed_community",
+      "discovered_from": "user-approved upstream source",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "adapted",
+      "update_strategy": "Review governance documents at a new exact commit; never activate the Agent runtime automatically.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "No unrestricted swarm, OpenClaw runtime, thought leakage, or delegated authority is accepted.",
+      "validation_evidence": ["English README, architecture, task-dispatch architecture, SECURITY, and agents.json inspected."],
+      "accepted_components": [
+        {"component_id": "mandatory-reviewer-gate-pattern", "component_type": "agent-governance-reference", "upstream_path": "docs", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "permission-matrix-and-audit-state-pattern", "component_type": "security-reference", "upstream_path": "config/agents.json", "content_sha256": null, "state": "adapted_pattern"}
+      ],
+      "rejected_components": [
+        {"component_id": "edict-openclaw-runtime", "component_type": "runtime", "upstream_path": null, "content_sha256": null, "state": "rejected_incompatible"},
+        {"component_id": "internal-thought-disclosure", "component_type": "protocol", "upstream_path": null, "content_sha256": null, "state": "rejected_security"}
+      ]
+    },
+    {
+      "source_id": "nuwa-skill",
+      "repository": "alchaincyf/nuwa-skill",
+      "canonical_url": "https://github.com/alchaincyf/nuwa-skill",
+      "commit": "fe0374687037c4cc51a65c1e0c145afe2981dc69",
+      "category": "skill-and-persona-factory",
+      "classifications": ["Skill Factory", "Agent collection", "Reference architecture"],
+      "license": "MIT",
+      "purpose": "Research-heavy Skill/persona generation with provenance and checkpoints.",
+      "compatibility": "Confidence and provenance patterns are adaptable; its swarm, download, source, and automatic-write behavior is incompatible.",
+      "integration_model": "Adapt source-confidence, contradiction-preservation, limitation, and checkpoint concepts only.",
+      "execution_status": "reference_only",
+      "trust_tier": "reviewed_community",
+      "discovered_from": "user-approved upstream source",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "active",
+      "import_mode": "adapted",
+      "update_strategy": "Review governance patterns at an exact commit; never execute the factory or auto-accept output.",
+      "state": "approved_adapted_patterns",
+      "risk_status": "No six-Agent swarm, network/download workflow, questionable corpus source, or generated write is authorized.",
+      "validation_evidence": ["English README, full SKILL.md, scripts, and references inspected."],
+      "accepted_components": [
+        {"component_id": "source-confidence-and-contradiction-pattern", "component_type": "provenance-reference", "upstream_path": "SKILL.md", "content_sha256": null, "state": "adapted_pattern"},
+        {"component_id": "honest-limitations-and-checkpoints-pattern", "component_type": "quality-reference", "upstream_path": "SKILL.md", "content_sha256": null, "state": "adapted_pattern"}
+      ],
+      "rejected_components": [
+        {"component_id": "nuwa-six-agent-factory-runtime", "component_type": "agent-runtime", "upstream_path": "scripts", "content_sha256": null, "state": "rejected_security"},
+        {"component_id": "questionable-corpus-download-sources", "component_type": "data-source", "upstream_path": "references", "content_sha256": null, "state": "rejected_security"}
       ]
     },
     {
       "source_id": "green-github-org-unresolved",
       "repository": null,
+      "canonical_url": "https://github.com/green",
       "commit": null,
       "category": "unresolved-github-organization-target",
+      "classifications": ["rejected"],
       "license": "not-applicable",
+      "purpose": "Historical user-supplied organization URL retained as rejected evidence.",
+      "compatibility": "No repository or component could be identified.",
+      "integration_model": "None.",
+      "execution_status": "unavailable",
       "trust_tier": "unresolved",
       "discovered_from": "user-provided https://github.com/green organization URL",
-      "last_reviewed": "2026-08-24",
+      "last_reviewed": "2026-08-26",
+      "maintenance_state": "unresolved",
+      "import_mode": "no_import",
+      "update_strategy": "No action unless a concrete repository is separately approved later.",
       "state": "rejected_unresolved",
-      "risk_status": "an organization URL is not a repository or auditable component; no source accepted",
+      "risk_status": "An organization URL is not a repository or auditable component; no source accepted.",
+      "validation_evidence": ["Target resolved only to an organization URL and was excluded from the twelve-repository audit."],
       "accepted_components": [],
       "rejected_components": [
-        {
-          "component_id": "green-organization-url",
-          "component_type": "unresolved-target",
-          "upstream_path": null,
-          "content_sha256": null,
-          "state": "unresolved"
-        }
+        {"component_id": "green-organization-url", "component_type": "unresolved-target", "upstream_path": null, "content_sha256": null, "state": "unresolved"}
       ]
     }
   ]

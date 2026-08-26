@@ -8,6 +8,8 @@
 | Nexus Runtime R2 MCP dependency and resolved wheels | `mcp==2.0.0` plus reviewed wheelhouse | Third-party notices/license review required before public release | Vendored only in owner-authorized private RC artifacts; retain complete notices before public redistribution. |
 | Personal/local Skills and workspace data | User machine | Unknown or user-controlled | Never copied, packaged, or redistributed. |
 | ChatGPT/Codex runtime and plugin host | OpenAI product | Not redistributed | Required host only; no binaries or caches included. |
+| Reviewed upstream capability sources | Twelve pinned GitHub repositories listed in `config/upstream-source-registry.json` | MIT, Apache-2.0, or source-specific terms | Metadata and Nexus-owned adapted concepts only; no upstream runtime, dependency, Agent definition, Skill bundle, library, cache, or private workspace is added to the release payload. |
+| GSAP | `greensock/GSAP` at the reviewed commit | GreenSock Standard License; separate owner/license gate | Reference only. No bundling, redistribution, or Nexus runtime dependency is approved. |
 
 This release candidate does not claim public-release rights. A separate owner
 decision is required before a public repository, marketplace submission, or
