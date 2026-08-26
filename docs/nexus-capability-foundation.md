@@ -144,3 +144,12 @@ inventory and existing stable mapping rules; this foundation changes neither.
 
 See [Upstream source registry](upstream-source-registry.md) and
 [Agent task contract](nexus-agent-runtime-contract.md).
+
+## Slice 1 runtime integration
+
+The first additive runtime bridge is documented in [Post-R5 Runtime
+Integration — Slice 1](nexus-post-r5-runtime-integration-slice1.md). It adds a
+strict normalized requirements schema, runtime provenance/content rechecks,
+the read-only `nexus.route_capabilities` MCP tool, and an internal R5 Host
+selection cross-check. It does not add execution authority or change the
+accepted Host handoff, artifact, receipt, TTL, or replay contracts.

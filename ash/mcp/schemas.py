@@ -7,6 +7,17 @@ import re
 from typing import Any, Mapping
 from uuid import UUID
 
+from ash.runtime_decision import (
+    MAX_REQUIREMENT_ITEMS,
+    RUNTIME_REQUIREMENTS_SCHEMA_VERSION,
+    RUNTIME_REQUIREMENTS_VERSION,
+    RUNTIME_SAFE_MECHANISMS,
+    RUNTIME_SAFE_PERMISSIONS,
+    RuntimeDecisionError,
+    RuntimeRequirements,
+    parse_runtime_requirements,
+)
+
 from .host_inventory import (
     HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION,
     HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION,
@@ -162,6 +173,14 @@ def parse_discover_request(value: Any) -> tuple[str, ...]:
     if not isinstance(tags, list) or len(tags) > 8 or not all(isinstance(item, str) and re.fullmatch(r"[a-z0-9_-]{1,64}", item) for item in tags):
         raise NexusMcpError("INVALID_REQUEST", "capability_tags are invalid")
     return tuple(sorted(set(tags)))
+
+
+def parse_runtime_requirements_request(value: Any) -> RuntimeRequirements:
+    """Parse the additive Slice 1 decision input without accepting candidates."""
+    try:
+        return parse_runtime_requirements(value)
+    except RuntimeDecisionError as exc:
+        raise NexusMcpError("INVALID_REQUEST", str(exc)) from exc
 
 
 def parse_host_capability_ticket_request(value: Any) -> HostCapabilityTicketRequest:
@@ -379,6 +398,52 @@ PLAN_INPUT_SCHEMA: dict[str, Any] = {
         "workspace_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"},
         "project_context_mode": {"type": "string", "enum": ["none", "governance"], "default": "governance"},
         "constraints": {"type": "array", "maxItems": MAX_CONSTRAINTS, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
+    },
+}
+RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": [
+        "schema_version",
+        "requirements_id",
+        "requirements_version",
+        "task_category",
+        "domains",
+        "outputs",
+        "validation_requirements",
+        "allowed_permissions",
+        "allowed_execution_mechanisms",
+    ],
+    "properties": {
+        "schema_version": {"const": RUNTIME_REQUIREMENTS_SCHEMA_VERSION},
+        "requirements_id": {
+            "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$",
+        },
+        "requirements_version": {"const": RUNTIME_REQUIREMENTS_VERSION},
+        "task_category": {
+            "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,63}$",
+        },
+        "domains": {
+            "type": "array", "maxItems": MAX_REQUIREMENT_ITEMS, "uniqueItems": True,
+            "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,63}$"},
+        },
+        "outputs": {
+            "type": "array", "maxItems": MAX_REQUIREMENT_ITEMS, "uniqueItems": True,
+            "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,63}$"},
+        },
+        "validation_requirements": {
+            "type": "array", "maxItems": MAX_REQUIREMENT_ITEMS, "uniqueItems": True,
+            "items": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,63}$"},
+        },
+        "allowed_permissions": {
+            "type": "array", "maxItems": len(RUNTIME_SAFE_PERMISSIONS), "uniqueItems": True,
+            "items": {"type": "string", "enum": sorted(RUNTIME_SAFE_PERMISSIONS)},
+        },
+        "allowed_execution_mechanisms": {
+            "type": "array", "minItems": 1, "maxItems": len(RUNTIME_SAFE_MECHANISMS),
+            "uniqueItems": True,
+            "items": {"type": "string", "enum": sorted(RUNTIME_SAFE_MECHANISMS)},
+        },
     },
 }
 BEGIN_HOST_CAPABILITY_ASSESSMENT_INPUT_SCHEMA: dict[str, Any] = {

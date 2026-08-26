@@ -106,6 +106,14 @@ SELECTION_ROLES = frozenset(
 )
 EXECUTABLE_TYPES = frozenset({"skill"})
 MAX_EXACT_SELECTION_CANDIDATES = 18
+MAX_CONSIDERED_CAPABILITIES = 64
+
+# A reviewed capability can be described before it is trusted, but those
+# records must never become executable merely by claiming ``available``.
+# These are the only trust tiers that may reach a runtime eligibility gate.
+EXECUTABLE_TRUST_TIERS = frozenset(
+    {"official_vendor", "trusted_seed", "reviewed_community", "local_maintained"}
+)
 
 _FORBIDDEN_STATIC_PERMISSIONS = frozenset({"shell", "install", "update", "agent_delegation"})
 _REFERENCE_TYPES = CAPABILITY_TYPES - {"skill", "agent"}
@@ -244,6 +252,13 @@ def validate_capability(record: Any) -> dict[str, Any]:
             raise CapabilityCatalogError("capability execution authority is incompatible with its type")
         if lifecycle != "available" or compatibility != "compatible":
             raise CapabilityCatalogError("executable capability is not approved and available")
+        if trust["tier"] not in EXECUTABLE_TRUST_TIERS:
+            raise CapabilityCatalogError("executable capability trust is insufficient")
+        provenance = record.get("provenance")
+        if not isinstance(provenance, Mapping) or not isinstance(
+            provenance.get("content_sha256"), str
+        ):
+            raise CapabilityCatalogError("executable capability requires pinned content integrity")
     availability = record.get("availability")
     if not isinstance(availability, Mapping):
         raise CapabilityCatalogError("capability availability is invalid")
@@ -372,6 +387,8 @@ def select_minimum_sufficient_capabilities(
     This function only reasons over caller-supplied, current availability facts.
     It does not discover Host state, load instructions, or execute a component.
     """
+    if len(capabilities) > MAX_CONSIDERED_CAPABILITIES:
+        raise CapabilitySelectionError("too many capabilities for bounded consideration")
     required = _requirement_tokens(requirements)
     allowed_permissions = set(requirements.get("allowed_permissions", []))
     if not allowed_permissions <= PERMISSIONS:
@@ -382,20 +399,28 @@ def select_minimum_sufficient_capabilities(
 
     dispositions: dict[str, dict[str, Any]] = {}
     eligible: list[dict[str, Any]] = []
+    seen: set[str] = set()
     for raw in capabilities:
         record = validate_capability(raw)
         identifier = record["capability_id"]
+        if identifier in seen:
+            raise CapabilitySelectionError("capability ID is duplicated")
+        seen.add(identifier)
         coverage = _coverage(record) & required
         reason = ""
         role = ""
-        if record["lifecycle_state"] == "rejected":
-            role, reason = "rejected", "lifecycle_rejected"
+        if record["lifecycle_state"] in {"quarantined", "deprecated", "rejected"}:
+            role, reason = "rejected", f"lifecycle_{record['lifecycle_state']}"
+        elif record["trust"]["tier"] not in EXECUTABLE_TRUST_TIERS:
+            role, reason = "rejected", "insufficient_trust_state"
         elif record["capability_type"] == "agent" or record["execution"]["mechanism"] == "advisory_only":
             role, reason = "advisory", "agent_advisory_only"
-        elif record["availability"]["state"] != "available":
-            role, reason = "unavailable", record["availability"]["state"]
         elif record["compatibility"] != "compatible":
             role, reason = "incompatible", record["compatibility"]
+        elif record["lifecycle_state"] != "available":
+            role, reason = "unavailable", "lifecycle_not_available"
+        elif record["availability"]["state"] != "available":
+            role, reason = "unavailable", record["availability"]["state"]
         elif record["execution"]["mechanism"] not in allowed_mechanisms:
             role, reason = "incompatible", "execution_mechanism_not_allowed"
         elif not set(record["execution"]["permissions"]) <= allowed_permissions:

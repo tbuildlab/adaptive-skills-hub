@@ -5,6 +5,8 @@ from datetime import datetime
 from typing import Any, Mapping
 from uuid import uuid4
 
+from ash.runtime_decision import RuntimeDecisionError, host_runtime_decision
+
 from .handoff import (
     HANDOFF_SCHEMA_VERSION,
     HOST_NATIVE_PRESENTATIONS_MODE,
@@ -46,7 +48,7 @@ def safe_health() -> dict[str, Any]:
             "persistent_state": False,
             "ephemeral_security_state": "bounded_runtime_local",
         },
-        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
+        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.route_capabilities", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
         "core_baseline": "Nexus V1.2 plus Runtime R1",
     })
 
@@ -166,6 +168,18 @@ def safe_host_capability_assessment(
     response stops at considered/selected and cannot load or execute anything.
     """
     decision = assess_host_capabilities(snapshot)
+    # Slice 1 routes the already-validated current-turn Host facts through the
+    # Capability Foundation as a fail-closed compatibility cross-check.  The
+    # general runtime envelope is intentionally not duplicated into the frozen
+    # R5 assessment schema; the existing redacted R5 fields remain authoritative
+    # for Host handoff and execution-start validation.
+    try:
+        host_runtime_decision(snapshot, decision)
+    except RuntimeDecisionError as exc:
+        raise NexusMcpError(
+            "RUNTIME_CAPABILITY_DECISION_BLOCKED",
+            "Host capability decision failed the runtime eligibility gate",
+        ) from exc
     issued_at, expires_at = assessment_issue_window(ticket, now=now)
 
     def safe_item(item: Any) -> dict[str, Any]:

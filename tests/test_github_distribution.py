@@ -106,6 +106,43 @@ class GitHubDistributionTests(unittest.TestCase):
             check = subprocess.run([sys.executable, str(extracted / "scripts" / "release_install.py"), "verify"], capture_output=True, text=True)
             self.assertEqual(check.returncode, 0, check.stderr)
 
+            isolated = subprocess.run(
+                [
+                    sys.executable,
+                    "-I",
+                    "-c",
+                    (
+                        "import json,sys;from pathlib import Path;root=Path(sys.argv[1]);"
+                        "sys.path.insert(0,str(root));"
+                        "from ash.runtime_decision import RuntimeCapabilityAdapter,parse_runtime_requirements;"
+                        "adapter=RuntimeCapabilityAdapter(root/'config'/'capability-foundation.json',"
+                        "root/'config'/'upstream-source-registry.json',local_roots={});"
+                        "request=parse_runtime_requirements({'schema_version':'nexus.runtime-requirements.v1',"
+                        "'requirements_id':'req:isolated-release','requirements_version':'1',"
+                        "'task_category':'presentation','domains':['presentation'],"
+                        "'outputs':['editable_pptx_create'],"
+                        "'validation_requirements':['pptx_open_render_validate'],"
+                        "'allowed_permissions':['write_artifact'],"
+                        "'allowed_execution_mechanisms':['host_native']});"
+                        "result=adapter.decide(request);"
+                        "print(json.dumps({'result_code':result['result_code'],"
+                        "'selected':result['selected_capabilities'],"
+                        "'authority':result['security_result']['mcp_execution_authority']}))"
+                    ),
+                    str(extracted),
+                ],
+                cwd=output,
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(isolated.returncode, 0, isolated.stderr)
+            isolated_result = json.loads(isolated.stdout)
+            self.assertEqual(isolated_result, {
+                "result_code": "HOST_EVIDENCE_REQUIRED",
+                "selected": [],
+                "authority": "none",
+            })
+
     def test_release_manifest_excludes_host_generated_embedded_python_bytecode(self) -> None:
         """A restarted/pilot runtime must remain verifiable after bytecode exists."""
         with tempfile.TemporaryDirectory() as temporary:

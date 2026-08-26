@@ -9,6 +9,7 @@ from typing import Any, Callable, Mapping
 from uuid import uuid4
 
 from ash.discovery import build_index
+from ash.runtime_decision import RuntimeCapabilityAdapter, RuntimeDecisionError
 from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
@@ -29,6 +30,7 @@ from .redaction import (
 )
 from .schemas import (
     NexusMcpError,
+    ensure_response_limit,
     parse_discover_request,
     parse_host_capability_snapshot,
     parse_host_capability_ticket_request,
@@ -36,6 +38,7 @@ from .schemas import (
     parse_plan_request,
     parse_prepare_enhancement_handoff_request,
     parse_prepare_host_handoff_request,
+    parse_runtime_requirements_request,
 )
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -55,6 +58,7 @@ class NexusMcpRuntime:
         skill_roots: list[Path] | None = None,
         clock: Callable[[], datetime] | None = None,
         monotonic_clock: Callable[[], float] | None = None,
+        capability_adapter: RuntimeCapabilityAdapter | None = None,
     ) -> None:
         self.authorizer = authorizer
         self.catalog_builder = catalog_builder or self._build_catalog
@@ -64,6 +68,17 @@ class NexusMcpRuntime:
         self._monotonic_clock = monotonic_clock or time.monotonic
         self._host_inventory_ticket_lock = Lock()
         self._host_inventory_tickets: dict[str, tuple[HostCapabilityTicket, bool]] = {}
+        self.capability_adapter = capability_adapter or RuntimeCapabilityAdapter(
+            ROOT / "config" / "capability-foundation.json",
+            ROOT / "config" / "upstream-source-registry.json",
+            local_roots={
+                # This is a machine-independent source-root convention. The
+                # exact Skill path remains relative metadata and is re-hashed
+                # before it can be selected. A packaged install normally lacks
+                # this sibling library and therefore reports it unavailable.
+                "emilkowalski-skills": ROOT.parent / "adaptive-skills-library",
+            },
+        )
 
     @staticmethod
     def _build_catalog() -> Mapping[str, Any]:
@@ -85,6 +100,17 @@ class NexusMcpRuntime:
         if not isinstance(records, list) or len(records) > 1024:
             raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
         return safe_catalog(records, tags)
+
+    def route_capabilities(self, arguments: Any) -> dict[str, Any]:
+        """Run the additive Capability Foundation selector without execution."""
+        requirements = parse_runtime_requirements_request(arguments)
+        try:
+            return ensure_response_limit(self.capability_adapter.decide(requirements))
+        except RuntimeDecisionError as exc:
+            raise NexusMcpError(
+                "RUNTIME_CAPABILITY_DECISION_BLOCKED",
+                "runtime capability decision failed closed",
+            ) from exc
 
     def _purge_expired_host_inventory_tickets(
         self, monotonic_now: float, *, except_id: str | None = None,

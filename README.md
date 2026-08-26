@@ -169,7 +169,7 @@ It records pinned sources as locally usable, advisory-only, reference-only,
 license-gated, or rejected; it does not auto-install or auto-execute upstream
 content. See [Upstream source registry](docs/upstream-source-registry.md).
 
-## Post-R5 capability foundation (development)
+## Post-R5 capability foundation and runtime bridge (development)
 
 The additive development branch introduces a data-only heterogeneous
 capability model without changing the frozen R5 runtime. It keeps Skills,
@@ -184,16 +184,26 @@ redundant, unavailable, incompatible, or rejected.
 The R5 Host limitation remains `current_turn_host_visible_subset` /
 `not_globally_enumerated`; this work does not scan private Desktop state or
 turn an installed bundle into a callable Host capability. Upstream commit or
-content-hash changes re-enter quarantine instead of inheriting approval. See
-[Capability foundation](docs/nexus-capability-foundation.md) and the
-[bounded Agent task contract](docs/nexus-agent-runtime-contract.md).
+content-hash changes re-enter quarantine instead of inheriting approval.
+
+Slice 1 adds the read-only `nexus.route_capabilities` MCP boundary. It accepts
+only normalized requirement tokens, rechecks reviewed provenance and local
+content integrity, runs the exact minimum-sufficient selector, and emits a
+versioned decision envelope with no execution authority. The existing R5 Host
+assessment also uses the selector as an internal fail-closed cross-check while
+retaining its frozen response and handoff semantics. See [Capability
+foundation](docs/nexus-capability-foundation.md), [Runtime integration Slice
+1](docs/nexus-post-r5-runtime-integration-slice1.md), and the [bounded Agent
+task contract](docs/nexus-agent-runtime-contract.md).
 
 ## Runtime R2 local MCP
 
 Runtime R2 is a separately configured, local stdio-only MCP adapter. Later
 development layers add read-only Host handoff and inventory-assessment tools;
 none execute a Host capability. The stable planning tools are `nexus.health`,
-`nexus.discover_capabilities`, and `nexus.plan_task`. It accepts a configured opaque workspace ID rather than a caller
+`nexus.discover_capabilities`, and `nexus.plan_task`; the additive Post-R5
+development surface also exposes the non-authorizing
+`nexus.route_capabilities`. Planning accepts a configured opaque workspace ID rather than a caller
 path, uses bounded safe context, returns redacted plan/load evidence, and never
 executes a plan. See [docs/nexus-runtime-r2-local-mcp.md](docs/nexus-runtime-r2-local-mcp.md)
 for installation, local configuration, security boundaries, and removal.

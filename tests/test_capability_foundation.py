@@ -7,6 +7,7 @@ import unittest
 from ash.capabilities import (
     CapabilityCatalogError,
     CapabilitySelectionError,
+    MAX_CONSIDERED_CAPABILITIES,
     MAX_EXACT_SELECTION_CANDIDATES,
     load_capability_catalog,
     select_minimum_sufficient_capabilities,
@@ -212,6 +213,60 @@ class CapabilityFoundationTests(unittest.TestCase):
                     "allowed_execution_mechanisms": ["host_mediated_skill"],
                 },
             )
+
+    def test_untrusted_or_unpinned_capability_cannot_claim_execution_authority(self) -> None:
+        untrusted = capability(
+            "skill/untrusted",
+            domains=["code"],
+            outputs=["patch"],
+            validations=[],
+            roles=["primary_creator"],
+        )
+        untrusted["trust"]["tier"] = "untrusted"
+        with self.assertRaisesRegex(CapabilityCatalogError, "trust is insufficient"):
+            validate_capability(untrusted)
+
+        unpinned = capability(
+            "skill/unpinned",
+            domains=["code"],
+            outputs=["patch"],
+            validations=[],
+            roles=["primary_creator"],
+        )
+        unpinned["provenance"]["content_sha256"] = None
+        with self.assertRaisesRegex(CapabilityCatalogError, "pinned content integrity"):
+            validate_capability(unpinned)
+
+    def test_selector_rejects_duplicate_ids_and_unbounded_considered_input(self) -> None:
+        item = capability(
+            "skill/duplicate",
+            domains=["code"],
+            outputs=["patch"],
+            validations=[],
+            roles=["primary_creator"],
+        )
+        requirements = {
+            "domains": ["code"],
+            "outputs": ["patch"],
+            "validation_requirements": [],
+            "allowed_permissions": ["read_skill_instructions"],
+            "allowed_execution_mechanisms": ["host_mediated_skill"],
+        }
+        with self.assertRaisesRegex(CapabilitySelectionError, "ID is duplicated"):
+            select_minimum_sufficient_capabilities([item, copy.deepcopy(item)], requirements)
+
+        too_many = [
+            capability(
+                f"skill/considered-{index}",
+                domains=[],
+                outputs=[],
+                validations=[],
+                roles=["alternative"],
+            )
+            for index in range(MAX_CONSIDERED_CAPABILITIES + 1)
+        ]
+        with self.assertRaisesRegex(CapabilitySelectionError, "bounded consideration"):
+            select_minimum_sufficient_capabilities(too_many, requirements)
 
 
 if __name__ == "__main__":

@@ -9,6 +9,27 @@ Use this plugin only for a substantive task. Nexus is a planning and handoff
 layer, never an execution runtime. The ChatGPT host alone owns tools, file
 writes, artifacts, validation, approvals, and the final response.
 
+## Post-R5 bounded capability decision
+
+For a substantive non-presentation task, after `nexus.plan_task` has produced
+an applicable plan, the Host may normalize only its required domain, output,
+validation, permission, and execution-mechanism identifiers into
+`nexus.runtime-requirements.v1` and call `nexus.route_capabilities`. Do not send
+the task text, a display name, candidate ID, provider, mapping, path, prompt,
+project content, Skill instructions, or prior result to this tool. Accept only
+a `nexus.runtime-capability-decision.v1` response with
+`mcp_execution_authority: none`, `selection_is_execution_evidence: false`,
+`execution: not_executed`, and `validation: not_validated`.
+
+A selected capability is only a bounded routing decision. Before the Host can
+use it, the existing applicable Skill load/integrity and Host permission gates
+must still succeed. Never report this envelope as loading, execution, artifact,
+or validation evidence. If it reports `CAPABILITY_NOT_COVERED`, retain the
+explicit V1/V2/native compatibility route rather than inventing a Skill. For a
+presentation task, use the current-turn Host inventory gate below; the R5
+assessment internally applies the same selector without changing its accepted
+v3 response or Presentations handoff contract.
+
 ## Current-turn Host capability inventory gate
 
 Run this gate before the supported presentation handoff. It is an advisory

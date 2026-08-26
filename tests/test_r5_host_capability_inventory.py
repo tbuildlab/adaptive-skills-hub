@@ -40,6 +40,7 @@ from ash.mcp.host_mapping import (
 )
 from ash.mcp.redaction import safe_host_capability_assessment
 from ash.mcp.schemas import MAX_SAFE_ENVELOPE_BYTES, NexusMcpError, parse_host_capability_snapshot
+from ash.runtime_decision import RuntimeDecisionError
 
 
 REQUIRED_INTERFACES = ["editable_pptx_create", "pptx_open_render_validate"]
@@ -162,6 +163,20 @@ def runtime_for(root: Path, clock: MutableClock | None = None) -> NexusMcpRuntim
 
 
 class R5HostCapabilityInventoryTests(unittest.TestCase):
+    def test_foundation_cross_check_failure_blocks_r5_assessment(self) -> None:
+        ticket = direct_ticket()
+        parsed = parse_host_capability_snapshot(
+            snapshot(ticket.ticket_id, [mapped_presentations()]),
+            ticket=ticket,
+        )
+        with patch(
+            "ash.mcp.redaction.host_runtime_decision",
+            side_effect=RuntimeDecisionError("selector mismatch"),
+        ):
+            with self.assertRaises(NexusMcpError) as raised:
+                safe_host_capability_assessment(parsed, ticket, now=ticket.issued_at)
+        self.assertEqual(raised.exception.code, "RUNTIME_CAPABILITY_DECISION_BLOCKED")
+
     def test_current_ppt_candidates_are_classified_without_name_authority(self) -> None:
         result = assess_direct([
             mapped_presentations(),

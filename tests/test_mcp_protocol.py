@@ -70,7 +70,7 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     initialized = await session.initialize()
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
-                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
+                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.route_capabilities", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
                     metadata = {item.name: item for item in tools.tools}
                     self.assertEqual(metadata["nexus.health"].title, "Nexus status")
                     self.assertIn("diagnostics", metadata["nexus.health"].description)
@@ -83,6 +83,9 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertIn("presentations", metadata["nexus.plan_task"].description)
                     self.assertIn("Do not use for greetings", metadata["nexus.plan_task"].description)
                     self.assertIn("or execution", metadata["nexus.plan_task"].description)
+                    self.assertEqual(metadata["nexus.route_capabilities"].title, "Nexus bounded capability decision")
+                    self.assertIn("non-authorizing", metadata["nexus.route_capabilities"].description)
+                    self.assertIn("cannot discover private Host state", metadata["nexus.route_capabilities"].description)
                     self.assertEqual(metadata["nexus.begin_host_capability_assessment"].title, "Nexus Host inventory ticket")
                     self.assertIn("single-use ticket", metadata["nexus.begin_host_capability_assessment"].description)
                     self.assertEqual(metadata["nexus.assess_host_capabilities"].title, "Nexus Host capability assessment")
@@ -116,6 +119,22 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     planned = await session.call_tool("nexus.plan_task", {"task": "Translate this text into Klingon", "workspace_id": "project", "project_context_mode": "none"})
                     self.assertFalse(planned.is_error)
                     self.assertEqual(self._payload(planned)["fallback"]["kind"], "native_codex_fallback")
+                    routed = await session.call_tool("nexus.route_capabilities", {
+                        "schema_version": "nexus.runtime-requirements.v1",
+                        "requirements_id": "req:protocol-presentation",
+                        "requirements_version": "1",
+                        "task_category": "presentation",
+                        "domains": ["presentation"],
+                        "outputs": ["editable_pptx_create"],
+                        "validation_requirements": ["pptx_open_render_validate"],
+                        "allowed_permissions": ["write_artifact"],
+                        "allowed_execution_mechanisms": ["host_native"],
+                    })
+                    self.assertFalse(routed.is_error)
+                    routed_payload = self._payload(routed)
+                    self.assertEqual(routed_payload["result_code"], "HOST_EVIDENCE_REQUIRED")
+                    self.assertEqual(routed_payload["selected_capabilities"], [])
+                    self.assertEqual(routed_payload["security_result"]["mcp_execution_authority"], "none")
                     ticket_result = await session.call_tool("nexus.begin_host_capability_assessment", {
                         "schema_version": "nexus.host-capability-ticket-request.v1",
                         "host_surface": "chatgpt_desktop",

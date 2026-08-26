@@ -20,6 +20,7 @@ from .schemas import (
     PLAN_INPUT_SCHEMA,
     PREPARE_ENHANCEMENT_HANDOFF_INPUT_SCHEMA,
     PREPARE_HOST_HANDOFF_INPUT_SCHEMA,
+    RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA,
     NexusMcpError,
 )
 from .telemetry import emit
@@ -51,6 +52,13 @@ PLAN_TOOL_DESCRIPTION = (
     "spreadsheets, PDFs), engineering/debugging/testing/security, evidence-based research, "
     "coursework, or work where choosing capabilities improves reliability. Do not use for "
     "greetings, simple calculations or facts, simple translation, short rewrites, or execution."
+)
+ROUTE_CAPABILITIES_DESCRIPTION = (
+    "Select a minimum sufficient set from the reviewed Capability Foundation "
+    "after a task has been normalized into bounded domain, output, validation, "
+    "permission, and execution-mechanism tokens. Returns a non-authorizing, "
+    "redacted decision envelope only. It cannot discover private Host state, "
+    "load or execute a Skill, invoke an Agent, or validate an artifact."
 )
 ONE_USE_READ_ONLY_TOOL_ANNOTATIONS = types.ToolAnnotations(
     readOnlyHint=True,
@@ -111,6 +119,7 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
             types.Tool(name="nexus.health", title="Nexus status", description=HEALTH_TOOL_DESCRIPTION, inputSchema=HEALTH_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.discover_capabilities", title="Nexus capability catalog", description=DISCOVER_TOOL_DESCRIPTION, inputSchema=DISCOVER_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.plan_task", title="Nexus substantive-task planner", description=PLAN_TOOL_DESCRIPTION, inputSchema=PLAN_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
+            types.Tool(name="nexus.route_capabilities", title="Nexus bounded capability decision", description=ROUTE_CAPABILITIES_DESCRIPTION, inputSchema=RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.begin_host_capability_assessment", title="Nexus Host inventory ticket", description=BEGIN_HOST_CAPABILITY_ASSESSMENT_DESCRIPTION, inputSchema=BEGIN_HOST_CAPABILITY_ASSESSMENT_INPUT_SCHEMA, annotations=ONE_USE_READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.assess_host_capabilities", title="Nexus Host capability assessment", description=ASSESS_HOST_CAPABILITIES_DESCRIPTION, inputSchema=ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA, annotations=ONE_USE_READ_ONLY_TOOL_ANNOTATIONS),
             types.Tool(name="nexus.prepare_host_handoff", title="Nexus Presentations host handoff", description=PREPARE_HOST_HANDOFF_DESCRIPTION, inputSchema=PREPARE_HOST_HANDOFF_INPUT_SCHEMA, annotations=READ_ONLY_TOOL_ANNOTATIONS),
@@ -127,6 +136,8 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
                 payload = runtime.discover_capabilities(params.arguments)
             elif params.name == "nexus.plan_task":
                 payload = runtime.plan(params.arguments)
+            elif params.name == "nexus.route_capabilities":
+                payload = runtime.route_capabilities(params.arguments)
             elif params.name == "nexus.begin_host_capability_assessment":
                 payload = runtime.begin_host_capability_assessment(params.arguments)
             elif params.name == "nexus.assess_host_capabilities":

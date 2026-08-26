@@ -25,6 +25,7 @@ ALLOWED_DOCS = {
     "docs/license-inventory.md",
     "docs/upstream-source-registry.md",
     "docs/nexus-capability-foundation.md",
+    "docs/nexus-post-r5-runtime-integration-slice1.md",
     "docs/nexus-agent-runtime-contract.md",
 }
 
