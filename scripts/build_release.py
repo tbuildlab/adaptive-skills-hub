@@ -273,7 +273,6 @@ def build(output: Path, version: str, wheelhouse: Path, python_embed: Path) -> t
         plugin_manifest = stage / "plugins" / "nexus-desktop" / ".codex-plugin" / "plugin.json"
         manifest_payload = json.loads(plugin_manifest.read_text(encoding="utf-8"))
         manifest_payload["version"] = version
-        manifest_payload["description"] = "Local Nexus task-planning workflow for ChatGPT Desktop and Codex."
         plugin_manifest.write_text(json.dumps(manifest_payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
         # The staged artifact is a self-contained release.  Its canonical
         # version marker must describe this build rather than the source

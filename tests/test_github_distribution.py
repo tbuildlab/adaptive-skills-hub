@@ -92,6 +92,11 @@ class GitHubDistributionTests(unittest.TestCase):
                 self.assertFalse(any("__pycache__" in name or name.endswith(".pyc") for name in names))
                 payload = json.loads(bundle.read("Nexus-0.1.0-rc.2/plugins/nexus-desktop/.codex-plugin/plugin.json"))
                 self.assertEqual(payload["version"], "0.1.0-rc.2")
+                source_payload = json.loads(
+                    (ROOT / "plugins" / "nexus-desktop" / ".codex-plugin" / "plugin.json").read_text(encoding="utf-8")
+                )
+                self.assertEqual(payload["description"], source_payload["description"])
+                self.assertIn("server-issued short-lived Host inventory tickets", payload["description"])
                 self.assertEqual(bundle.read("Nexus-0.1.0-rc.2/release/VERSION").decode("utf-8"), "0.1.0-rc.2\n")
                 mcp = json.loads(bundle.read("Nexus-0.1.0-rc.2/plugins/nexus-desktop/.mcp.json"))
                 self.assertEqual(mcp["mcpServers"]["nexus_desktop_local"]["command"], "../../runtime/python/python.exe")
@@ -244,6 +249,12 @@ class GitHubDistributionTests(unittest.TestCase):
         with patch.object(release_install.sys, "stdout", stream):
             release_install._configure_utf8_stdout()
         self.assertEqual(stream.calls, [{"encoding": "utf-8", "errors": "backslashreplace"}])
+
+    def test_windows_bootstrap_constructs_the_host_action_without_non_ascii_source(self) -> None:
+        """Windows PowerShell 5.1 must not misdecode a UTF-8 arrow literal."""
+        source = (ROOT / "scripts" / "Install-Nexus.ps1").read_bytes()
+        self.assertNotIn("→".encode("utf-8"), source)
+        self.assertIn(b"$NexusArrow = [char]0x2192", source)
 
     def test_same_plugin_release_upgrade_retains_the_original_rollback_boundary(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -526,7 +537,7 @@ class GitHubDistributionTests(unittest.TestCase):
                 powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(bootstrap),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "standalone",
-            ], capture_output=True, text=True, env=environment, timeout=60)
+            ], capture_output=True, text=True, encoding="utf-8", errors="strict", env=environment, timeout=60)
             self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
             release = next((data / "releases").iterdir())
             runtime = release / "runtime" / "python" / "python.exe"
@@ -570,18 +581,19 @@ async def main():
             }})
             ticket = json.loads(ticket_result.content[0].text)
             inventory = {{
-                'schema_version': 'nexus.host-capability-snapshot.v2',
+                'schema_version': 'nexus.host-capability-snapshot.v3',
                 'ticket_id': ticket['ticket_id'],
                 'snapshot_id': str(uuid4()),
                 'capabilities': [{{
-                    'capability_id': 'host-presentations',
-                    'provider_id': 'openai-host',
+                    'capability_id': 'presentations',
+                    'provider_id': 'openai-primary-runtime',
                     'display_name': 'Presentations',
-                    'resource_kind': 'tool',
-                    'availability': 'tool_callable_current_turn',
-                    'evidence': ['current_turn_tool_catalog'],
+                    'resource_kind': 'skill',
+                    'availability': 'skill_workflow_ready_current_turn',
+                    'evidence': ['current_turn_skill_metadata', 'current_turn_skill_instructions', 'current_turn_tool_catalog', 'current_turn_execution_substrate'],
                     'interfaces': ['editable_pptx_create', 'pptx_open_render_validate'],
                     'logical_capability': 'chatgpt.presentations',
+                    'execution_binding_kind': 'host_skill_workflow',
                 }}],
             }}
             assessment = await session.call_tool('nexus.assess_host_capabilities', inventory)
@@ -633,7 +645,7 @@ asyncio.run(main())
                 powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.6.ps1"),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "plugin",
-            ], capture_output=True, text=True, env=environment, timeout=60)
+            ], capture_output=True, text=True, encoding="utf-8", errors="strict", env=environment, timeout=60)
             output_text = result.stdout + result.stderr
             self.assertEqual(result.returncode, 0, output_text)
             self.assertNotIn("[WinError 2]", output_text)
@@ -686,7 +698,7 @@ asyncio.run(main())
                 powershell, "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(output / "Install-Nexus-0.1.0-rc.6.ps1"),
                 "-ArchivePath", str(archive), "-ChecksumPath", str(archive.with_suffix(".zip.sha256")),
                 "-WorkspaceRoot", str(project), "-DataRoot", str(data), "-Mode", "plugin",
-            ], capture_output=True, text=True, env=environment, timeout=90)
+            ], capture_output=True, text=True, encoding="utf-8", errors="strict", env=environment, timeout=90)
             self.assertEqual(result.returncode, 0, result.stderr + result.stdout)
             release = next((data / "releases").iterdir())
             runtime = release / "runtime" / "python" / "python.exe"
@@ -718,18 +730,19 @@ async def main():
             assert not begun.is_error
             ticket = json.loads(begun.content[0].text)
             inventory = {
-                'schema_version': 'nexus.host-capability-snapshot.v2',
+                'schema_version': 'nexus.host-capability-snapshot.v3',
                 'ticket_id': ticket['ticket_id'],
                 'snapshot_id': '6f6bb973-bb39-4ad4-a48d-76290c827f93',
                 'capabilities': [{
-                    'capability_id': 'host-presentations',
-                    'provider_id': 'openai-host',
+                    'capability_id': 'presentations',
+                    'provider_id': 'openai-primary-runtime',
                     'display_name': 'Presentations',
-                    'resource_kind': 'tool',
-                    'availability': 'tool_callable_current_turn',
-                    'evidence': ['current_turn_tool_catalog'],
+                    'resource_kind': 'skill',
+                    'availability': 'skill_workflow_ready_current_turn',
+                    'evidence': ['current_turn_skill_metadata', 'current_turn_skill_instructions', 'current_turn_tool_catalog', 'current_turn_execution_substrate'],
                     'interfaces': ['editable_pptx_create', 'pptx_open_render_validate'],
                     'logical_capability': 'chatgpt.presentations',
+                    'execution_binding_kind': 'host_skill_workflow',
                 }],
             }
             assessed = await session.call_tool('nexus.assess_host_capabilities', inventory)

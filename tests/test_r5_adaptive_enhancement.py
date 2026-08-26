@@ -156,6 +156,16 @@ class R5AdaptiveEnhancementTests(unittest.TestCase):
         no_artifact = self._success_receipt(handoff)
         no_artifact["artifact_ref"] = ""
         self.assertEqual(validate_enhancement_receipt(handoff, no_artifact, base_handoff=base_handoff, base_receipt=base_receipt), "ARTIFACT_MISSING")
+        for invalid_ref in ("C:private.pptx", "file:private", "https:example.invalid", "host-artifact:../private.pptx"):
+            leaked = self._success_receipt(handoff)
+            leaked["artifact_ref"] = invalid_ref
+            with self.subTest(artifact_ref=invalid_ref):
+                self.assertEqual(
+                    validate_enhancement_receipt(
+                        handoff, leaked, base_handoff=base_handoff, base_receipt=base_receipt,
+                    ),
+                    "ARTIFACT_MISSING",
+                )
         no_improvement_evidence = self._success_receipt(handoff)
         no_improvement_evidence.pop("improvement_assessment")
         self.assertEqual(validate_enhancement_receipt(handoff, no_improvement_evidence, base_handoff=base_handoff, base_receipt=base_receipt), "IMPROVEMENT_UNVERIFIED")
@@ -184,9 +194,13 @@ class R5AdaptiveEnhancementTests(unittest.TestCase):
         base_handoff, base_receipt = valid_base_pair()
         unavailable = self._success_receipt(handoff)
         unavailable.update({"states": ["base_execution_verified", "artifact_state_verified", "enhancement_requested"], "result_code": "HOST_CAPABILITY_UNAVAILABLE"})
+        unavailable.pop("artifact_ref")
+        unavailable.pop("artifact_kind")
         self.assertEqual(validate_enhancement_receipt(handoff, unavailable, base_handoff=base_handoff, base_receipt=base_receipt), "HOST_CAPABILITY_UNAVAILABLE")
         refused = self._success_receipt(handoff)
         refused.update({"states": ["base_execution_verified", "artifact_state_verified", "enhancement_requested"], "result_code": "EXECUTION_REFUSED"})
+        refused.pop("artifact_ref")
+        refused.pop("artifact_kind")
         self.assertEqual(validate_enhancement_receipt(handoff, refused, base_handoff=base_handoff, base_receipt=base_receipt), "EXECUTION_REFUSED")
         validation_failed = self._success_receipt(handoff)
         validation_failed.update({
@@ -194,6 +208,8 @@ class R5AdaptiveEnhancementTests(unittest.TestCase):
             "result_code": "VALIDATION_FAILED",
             "rollback_status": "restored",
         })
+        validation_failed.pop("artifact_ref")
+        validation_failed.pop("artifact_kind")
         self.assertEqual(validate_enhancement_receipt(handoff, validation_failed, base_handoff=base_handoff, base_receipt=base_receipt), "VALIDATION_FAILED_ROLLBACK_RESTORED")
         no_improvement = self._success_receipt(handoff)
         no_improvement.update({
@@ -202,6 +218,8 @@ class R5AdaptiveEnhancementTests(unittest.TestCase):
             "rollback_status": "restored",
             "improvement_assessment": "not_improved",
         })
+        no_improvement.pop("artifact_ref")
+        no_improvement.pop("artifact_kind")
         self.assertEqual(validate_enhancement_receipt(handoff, no_improvement, base_handoff=base_handoff, base_receipt=base_receipt), "NO_IMPROVEMENT_ROLLBACK_RESTORED")
         rollback_unavailable = self._success_receipt(handoff)
         rollback_unavailable.update({
@@ -209,4 +227,14 @@ class R5AdaptiveEnhancementTests(unittest.TestCase):
             "result_code": "HOST_ROLLBACK_UNAVAILABLE",
             "checkpoint_created": False,
         })
+        rollback_unavailable.pop("artifact_ref")
+        rollback_unavailable.pop("artifact_kind")
         self.assertEqual(validate_enhancement_receipt(handoff, rollback_unavailable, base_handoff=base_handoff, base_receipt=base_receipt), "HOST_ROLLBACK_UNAVAILABLE")
+        leaked_failure = dict(unavailable)
+        leaked_failure["artifact_ref"] = "C:private.pptx"
+        self.assertEqual(
+            validate_enhancement_receipt(
+                handoff, leaked_failure, base_handoff=base_handoff, base_receipt=base_receipt,
+            ),
+            "ENHANCEMENT_RECEIPT_MALFORMED",
+        )

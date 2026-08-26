@@ -12,6 +12,17 @@ from typing import Any
 
 PRESENTATIONS_MAPPING_ID = "nexus.host-map.presentations.v1"
 PRESENTATIONS_ENHANCEMENT_MAPPING_ID = "nexus.host-map.presentations.enhancement.v1"
+DIRECT_HOST_TOOL_BINDING = "direct_host_tool"
+HOST_SKILL_WORKFLOW_BINDING = "host_skill_workflow"
+NO_EXECUTION_BINDING = "none"
+
+# Canonical Host provenance, not a display-name match.  The public OpenAI
+# Presentations plugin manifest identifies the plugin as ``presentations`` and
+# the Host source namespace exposes it from ``openai-primary-runtime``.  A
+# caller-controlled label can never satisfy this tuple.
+PRESENTATIONS_HOST_PROVIDER_ID = "openai-primary-runtime"
+PRESENTATIONS_HOST_CAPABILITY_ID = "presentations"
+PRESENTATIONS_HOST_RESOURCE_KIND = "skill"
 
 
 def presentation_profile() -> dict[str, Any]:

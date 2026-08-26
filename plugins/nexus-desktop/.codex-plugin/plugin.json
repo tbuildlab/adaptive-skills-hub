@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
-  "version": "0.1.0-r5.pilot.3",
-  "description": "Local Nexus capability routing with server-issued short-lived Host inventory tickets, host-owned execution handoff, and post-validation enhancement handoff for ChatGPT Desktop and Codex.",
+  "version": "0.1.0-r5.pilot.4",
+  "description": "Local Nexus capability routing with server-issued short-lived Host inventory tickets, verified Host Skill-workflow bindings, host-owned execution handoff, and post-validation enhancement handoff for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
   },

@@ -163,6 +163,8 @@ After a future local R5 pilot is installed, use the accepted R4 task:
 Acceptance requires a real primary editable `.pptx` with R4 validation. If a
 clearly observable allowlisted issue exists, it additionally requires an R5
 copy-on-write checkpoint, actual Host-native Presentations refinement, a new
-artifact reference, open/render revalidation, and a truthful R5 receipt. If no
+`host-artifact:<opaque-token>` reference, open/render revalidation, and a
+truthful R5 receipt. Paths and URI-like artifact references are never accepted.
+If no
 high-value safe enhancement exists, retaining the validated primary artifact is
 the correct R5 result.

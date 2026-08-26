@@ -33,7 +33,7 @@ User
   -> @Nexus
   -> nexus.plan_task (Nexus: select and guarded-load verification)
   -> nexus.prepare_host_handoff (Nexus: redacted intent only)
-  -> ChatGPT Desktop host (eligibility, Presentations tool, artifact, validation)
+  -> ChatGPT Desktop host (eligibility, Presentations Skill workflow, artifact, validation)
   -> host execution receipt and final response
 ```
 
@@ -143,8 +143,10 @@ Skill, or native fallback after execution was requested.  If execution is
 refused, fails, returns no artifact, or fails validation, it must return the
 corresponding safe failure code and must not report success.
 
-The host obtains a real opaque artifact reference and validates that the output
-is an editable `.pptx` and can be opened/rendered before a successful receipt.
+The host obtains a real opaque artifact reference in the bounded
+`host-artifact:<opaque-token>` namespace and validates that the output is an
+editable `.pptx` and can be opened/rendered before a successful receipt. Paths,
+URLs, URI-like values, and unapproved namespaces are rejected.
 The public plugin model supports explicit `@` use after installation; the host
 still controls which installed tools it can actually call.
 [Using plugins](https://learn.chatgpt.com/docs/plugins)
@@ -153,8 +155,9 @@ still controls which installed tools it can actually call.
 
 The pure local protocol validator used by tests accepts only a receipt linked
 to the current handoff ID, Skill identity, and content SHA-256.  A successful
-receipt needs an opaque artifact reference, `artifact_kind: "pptx"`, and both
-`execution_succeeded` and `validation_passed`.  It also exercises explicit
+receipt needs a `host-artifact:<opaque-token>` reference, `artifact_kind:
+"pptx"`, and both `execution_succeeded` and `validation_passed`.  It also
+exercises explicit
 failure codes for unavailable capability, execution refusal, artifact failure,
 validation failure, substitution, replay, expiry, and malformed input.
 
@@ -187,7 +190,8 @@ exactly:
 
 Acceptance requires evidence that the trace contains `Presentations` selected,
 `loaded_verified`, a valid R4 handoff, host eligibility, a genuine host-native
-Presentations tool call, a real editable `.pptx` artifact reference, an
+execution of the loaded Presentations workflow through its required Host tools,
+a real editable `.pptx` artifact reference, an
 open/render validation, and an execution receipt ending in
 `execution_succeeded` plus `validation_passed`.  Planning-only output does not
 pass R4 acceptance.

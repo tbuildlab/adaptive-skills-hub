@@ -148,7 +148,7 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
             emit(request_id, params.name, "INTERNAL_ERROR", int((time.monotonic() - started) * 1000))
             return _result(payload, error=True)
 
-    return Server("nexus-local-r5", version="2.0-r5.1", title="Nexus", description="Adaptive AI Capability Hub local read/plan-and-handoff-only MCP server", on_list_tools=list_tools, on_call_tool=call_tool)
+    return Server("nexus-local-r5", version="2.0-r5.2", title="Nexus", description="Adaptive AI Capability Hub local read/plan-and-handoff-only MCP server", on_list_tools=list_tools, on_call_tool=call_tool)
 
 
 async def run_stdio(runtime: NexusMcpRuntime) -> None:

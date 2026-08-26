@@ -128,18 +128,19 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     ticket = self._payload(ticket_result)
                     self.assertEqual(ticket["security_result"]["code"], "HOST_INVENTORY_TICKET_READY")
                     snapshot = {
-                        "schema_version": "nexus.host-capability-snapshot.v2",
+                        "schema_version": "nexus.host-capability-snapshot.v3",
                         "ticket_id": ticket["ticket_id"],
                         "snapshot_id": str(uuid4()),
                         "capabilities": [{
-                            "capability_id": "host-presentations",
-                            "provider_id": "openai-host",
+                            "capability_id": "presentations",
+                            "provider_id": "openai-primary-runtime",
                             "display_name": "Presentations",
-                            "resource_kind": "tool",
-                            "availability": "tool_callable_current_turn",
-                            "evidence": ["current_turn_tool_catalog"],
+                            "resource_kind": "skill",
+                            "availability": "skill_workflow_ready_current_turn",
+                            "evidence": ["current_turn_skill_metadata", "current_turn_skill_instructions", "current_turn_tool_catalog", "current_turn_execution_substrate"],
                             "interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
                             "logical_capability": "chatgpt.presentations",
+                            "execution_binding_kind": "host_skill_workflow",
                         }],
                     }
                     assessment = await session.call_tool("nexus.assess_host_capabilities", snapshot)

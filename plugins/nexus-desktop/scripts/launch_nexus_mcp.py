@@ -42,7 +42,10 @@ def _absolute_file(value: object, field: str) -> Path:
     path = Path(value)
     if not path.is_absolute():
         raise ValueError(f"{field} is invalid")
-    resolved = path.resolve(strict=True)
+    try:
+        resolved = path.resolve(strict=True)
+    except OSError as exc:
+        raise ValueError(f"{field} is unavailable") from exc
     if not resolved.is_file() or resolved.is_symlink():
         raise ValueError(f"{field} is invalid")
     return resolved
@@ -54,7 +57,10 @@ def _absolute_directory(value: object, field: str) -> Path:
     path = Path(value)
     if not path.is_absolute():
         raise ValueError(f"{field} is invalid")
-    resolved = path.resolve(strict=True)
+    try:
+        resolved = path.resolve(strict=True)
+    except OSError as exc:
+        raise ValueError(f"{field} is unavailable") from exc
     if not resolved.is_dir() or resolved.is_symlink() or resolved == Path(resolved.anchor):
         raise ValueError(f"{field} is invalid")
     return resolved
@@ -83,6 +89,13 @@ def load_launch_configuration(config_path: Path | None = None) -> tuple[Path, Pa
 def main() -> int:
     try:
         python, root, workspace = load_launch_configuration()
+    except Exception:
+        print(
+            "Nexus Desktop plugin could not start: local launch configuration is invalid or unavailable",
+            file=sys.stderr,
+        )
+        return 2
+    try:
         completed = subprocess.run(
             [str(python), str(root / "scripts" / "nexus_mcp.py"), "--workspace-config", str(workspace)],
             cwd=str(root),
@@ -90,10 +103,15 @@ def main() -> int:
             shell=False,
         )
         return completed.returncode
-    except Exception as exc:
-        print(f"Nexus Desktop plugin could not start: {exc}", file=sys.stderr)
+    except OSError:
+        print(
+            "Nexus Desktop plugin could not start: runtime process launch failed",
+            file=sys.stderr,
+        )
         return 2
-    return 2
+    except Exception:
+        print("Nexus Desktop plugin could not start: internal launch error", file=sys.stderr)
+        return 2
 
 
 if __name__ == "__main__":

@@ -21,14 +21,22 @@ from .handoff import (
     strict_handoff_digest_for_execution_start,
     validate_host_receipt,
 )
-from .host_mapping import PRESENTATIONS_MAPPING_ID
+from .host_mapping import (
+    DIRECT_HOST_TOOL_BINDING,
+    HOST_SKILL_WORKFLOW_BINDING,
+    NO_EXECUTION_BINDING,
+    PRESENTATIONS_HOST_CAPABILITY_ID,
+    PRESENTATIONS_HOST_PROVIDER_ID,
+    PRESENTATIONS_HOST_RESOURCE_KIND,
+    PRESENTATIONS_MAPPING_ID,
+)
 
 
 HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION = "nexus.host-capability-ticket-request.v1"
 HOST_CAPABILITY_TICKET_SCHEMA_VERSION = "nexus.host-capability-ticket.v1"
-HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION = "nexus.host-capability-snapshot.v2"
-HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION = "nexus.host-capability-assessment.v2"
-HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION = "nexus.host-capability-receipt.v2"
+HOST_CAPABILITY_SNAPSHOT_SCHEMA_VERSION = "nexus.host-capability-snapshot.v3"
+HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION = "nexus.host-capability-assessment.v3"
+HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION = "nexus.host-capability-receipt.v3"
 HOST_INVENTORY_TTL_SECONDS = 120
 MAX_OUTSTANDING_HOST_INVENTORY_TICKETS = 16
 
@@ -48,6 +56,25 @@ APPROVED_HOST_MAPPINGS: dict[str, dict[str, Any]] = {
     HOST_PRESENTATIONS_CAPABILITY: {
         "mapping_id": PRESENTATIONS_MAPPING_ID,
         "requested_execution_mode": HOST_NATIVE_PRESENTATIONS_MODE,
+        "approved_identities": frozenset({
+            (
+                PRESENTATIONS_HOST_PROVIDER_ID,
+                PRESENTATIONS_HOST_CAPABILITY_ID,
+                PRESENTATIONS_HOST_RESOURCE_KIND,
+            ),
+        }),
+        "binding_requirements": {
+            HOST_SKILL_WORKFLOW_BINDING: {
+                "availability": "skill_workflow_ready_current_turn",
+                "evidence": frozenset({
+                    "current_turn_skill_metadata",
+                    "current_turn_skill_instructions",
+                    "current_turn_tool_catalog",
+                    "current_turn_execution_substrate",
+                }),
+                "resource_kind": "skill",
+            },
+        },
         "interfaces": frozenset({
             "editable_pptx_create",
             "presentation_create",
@@ -70,6 +97,7 @@ class HostCapability:
     evidence: tuple[str, ...]
     interfaces: tuple[str, ...]
     logical_capability: str
+    execution_binding_kind: str
 
 
 @dataclass(frozen=True)
@@ -116,6 +144,9 @@ class HostInventoryExecutionStartClaim:
     logical_capability: str
     mapping_id: str
     requested_execution_mode: str
+    execution_binding_kind: str
+    selected_skill_resource_id: str
+    selected_skill_content_sha256: str
 
 
 @dataclass(frozen=True)
@@ -140,6 +171,7 @@ class CapabilityAssessment:
     covered_interfaces: tuple[str, ...]
     mapping_id: str | None = None
     requested_execution_mode: str | None = None
+    execution_binding_kind: str = NO_EXECUTION_BINDING
 
 
 @dataclass(frozen=True)
@@ -164,13 +196,46 @@ def _functional_role(capability: HostCapability) -> str:
     return "incompatible"
 
 
-def _mapping_for(capability: HostCapability) -> dict[str, Any] | None:
+def approved_mapping_identity(
+    logical_capability: str,
+    provider_id: str,
+    capability_id: str,
+    resource_kind: str,
+) -> bool:
+    """Check a reviewed stable Host identity without consulting its label."""
+    mapping = APPROVED_HOST_MAPPINGS.get(logical_capability)
+    if mapping is None:
+        return False
+    identity = (provider_id.casefold(), capability_id.casefold(), resource_kind)
+    return identity in mapping.get("approved_identities", ())
+
+
+def _declared_mapping_for(capability: HostCapability) -> dict[str, Any] | None:
     mapping = APPROVED_HOST_MAPPINGS.get(capability.logical_capability)
     if mapping is None:
         return None
-    if capability.availability != "tool_callable_current_turn":
+    if not approved_mapping_identity(
+        capability.logical_capability,
+        capability.provider_id,
+        capability.capability_id,
+        capability.resource_kind,
+    ):
         return None
-    if "current_turn_tool_catalog" not in capability.evidence:
+    return mapping
+
+
+def _mapping_for(capability: HostCapability) -> dict[str, Any] | None:
+    mapping = _declared_mapping_for(capability)
+    if mapping is None:
+        return None
+    requirement = mapping["binding_requirements"].get(capability.execution_binding_kind)
+    if requirement is None:
+        return None
+    if capability.resource_kind != requirement["resource_kind"]:
+        return None
+    if capability.availability != requirement["availability"]:
+        return None
+    if not set(requirement["evidence"]) <= set(capability.evidence):
         return None
     if not set(capability.interfaces) <= set(mapping["interfaces"]):
         return None
@@ -209,6 +274,7 @@ def snapshot_digest(snapshot: HostCapabilitySnapshot) -> str:
                 "evidence": list(item.evidence),
                 "interfaces": list(item.interfaces),
                 "logical_capability": item.logical_capability,
+                "execution_binding_kind": item.execution_binding_kind,
             }
             for item in snapshot.capabilities
         ],
@@ -226,6 +292,7 @@ def assess_host_capabilities(snapshot: HostCapabilitySnapshot) -> HostCapability
     for capability in snapshot.capabilities:
         role = _functional_role(capability)
         mapping = _mapping_for(capability)
+        declared_mapping = _declared_mapping_for(capability)
         covered = required & set(capability.interfaces)
         reasons: list[str] = []
         classification = role
@@ -238,6 +305,9 @@ def assess_host_capabilities(snapshot: HostCapabilitySnapshot) -> HostCapability
         elif capability.availability in {"disabled", "unavailable"}:
             classification = "unavailable"
             reasons.append("HOST_CAPABILITY_UNAVAILABLE")
+        elif declared_mapping is not None and mapping is None:
+            classification = "unavailable"
+            reasons.append("HOST_EXECUTION_BINDING_UNAVAILABLE")
         elif capability.availability in {
             "metadata_visible", "enabled_unverified", "installed_unverified",
             "skill_loadable_current_turn",
@@ -259,6 +329,7 @@ def assess_host_capabilities(snapshot: HostCapabilitySnapshot) -> HostCapability
             covered_interfaces=tuple(sorted(covered)),
             mapping_id=str(mapping["mapping_id"]) if mapping else None,
             requested_execution_mode=str(mapping["requested_execution_mode"]) if mapping else None,
+            execution_binding_kind=capability.execution_binding_kind,
         ))
 
     # Evidence and coverage dominate; names are never ranking signals. Stable
@@ -319,7 +390,11 @@ def assess_host_capabilities(snapshot: HostCapabilitySnapshot) -> HostCapability
     if selected_indices is None:
         selected_identities = []
         status = "no_executable_host_capability"
-        result_code = "HOST_CAPABILITY_UNAVAILABLE"
+        result_code = (
+            "HOST_EXECUTION_BINDING_UNAVAILABLE"
+            if any("HOST_EXECUTION_BINDING_UNAVAILABLE" in item.reason_codes for item in assessments)
+            else "HOST_CAPABILITY_UNAVAILABLE"
+        )
     else:
         status = "selection_ready"
         result_code = "HOST_CAPABILITY_SELECTION_READY"
@@ -360,7 +435,9 @@ def assess_host_capabilities(snapshot: HostCapabilitySnapshot) -> HostCapability
                 ))
         elif (
             selected_indices is not None
-            and assessment.capability.availability == "tool_callable_current_turn"
+            and assessment.capability.availability in {
+                "tool_callable_current_turn", "skill_workflow_ready_current_turn",
+            }
             and assessment.functional_role == "primary_creator"
             and assessment.covered_interfaces
             and set(assessment.covered_interfaces) <= selected_coverage
@@ -463,9 +540,32 @@ def _selected_assessment_item(assessment: Mapping[str, Any]) -> Mapping[str, Any
     selected_item = selected[0]
     selected_required = {
         "capability_id", "provider_id", "logical_capability", "mapping_id",
-        "requested_execution_mode",
+        "requested_execution_mode", "execution_binding_kind",
     }
     if not isinstance(selected_item, Mapping) or set(selected_item) != selected_required:
+        return None
+    logical_capability = selected_item.get("logical_capability")
+    mapping = APPROVED_HOST_MAPPINGS.get(logical_capability)
+    if not isinstance(mapping, Mapping):
+        return None
+    binding = selected_item.get("execution_binding_kind")
+    requirements = mapping.get("binding_requirements")
+    if not isinstance(requirements, Mapping):
+        return None
+    requirement = requirements.get(binding)
+    if not isinstance(requirement, Mapping):
+        return None
+    provider_id = selected_item.get("provider_id")
+    capability_id = selected_item.get("capability_id")
+    resource_kind = requirement.get("resource_kind")
+    if not all(isinstance(value, str) for value in (provider_id, capability_id, resource_kind)):
+        return None
+    identity = (provider_id.casefold(), capability_id.casefold(), resource_kind)
+    if (
+        identity not in mapping.get("approved_identities", ())
+        or selected_item.get("mapping_id") != mapping.get("mapping_id")
+        or selected_item.get("requested_execution_mode") != mapping.get("requested_execution_mode")
+    ):
         return None
     return selected_item
 
@@ -503,6 +603,9 @@ def claim_inventory_bound_execution_start(
         or selected_item.get("mapping_id") != profile.get("mapping_id")
         or selected_item.get("logical_capability") != handoff.get("logical_host_capability")
         or selected_item.get("requested_execution_mode") != handoff.get("requested_execution_mode")
+        or selected_item.get("execution_binding_kind") not in {
+            DIRECT_HOST_TOOL_BINDING, HOST_SKILL_WORKFLOW_BINDING,
+        }
     ):
         return "HOST_INVENTORY_HANDOFF_MISMATCH", None
     assessment_id = assessment.get("assessment_id")
@@ -530,6 +633,9 @@ def claim_inventory_bound_execution_start(
         logical_capability=str(selected_item.get("logical_capability")),
         mapping_id=str(selected_item.get("mapping_id")),
         requested_execution_mode=str(selected_item.get("requested_execution_mode")),
+        execution_binding_kind=str(selected_item.get("execution_binding_kind")),
+        selected_skill_resource_id=str(handoff["selected_skill"]["resource_id"]),
+        selected_skill_content_sha256=str(handoff["selected_skill"]["content_sha256"]),
     )
 
 
@@ -586,6 +692,12 @@ def validate_inventory_bound_host_receipt(
     if receipt.get("selected_capabilities") != [dict(selected_item)]:
         return "HOST_INVENTORY_SELECTION_MISMATCH"
 
+    if not isinstance(handoff, Mapping):
+        return (
+            "HOST_EXECUTION_START_CLAIM_MISMATCH"
+            if execution_start_claim is not None
+            else "HOST_INVENTORY_HANDOFF_MISMATCH"
+        )
     profile = handoff.get("host_execution_profile")
     if (
         not isinstance(profile, Mapping)
@@ -601,13 +713,24 @@ def validate_inventory_bound_host_receipt(
         current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
         if claim.claimed_at.tzinfo is None or claim.claimed_at.astimezone(timezone.utc) > current + timedelta(seconds=30):
             return "HOST_EXECUTION_START_CLAIM_INVALID"
+        handoff_sha256 = strict_handoff_digest_for_execution_start(handoff, claim.claimed_at)
+        selected_skill = handoff.get("selected_skill")
+        if handoff_sha256 is None or not isinstance(selected_skill, Mapping):
+            return "HOST_EXECUTION_START_CLAIM_MISMATCH"
+        selected_resource_id = selected_skill.get("resource_id")
+        selected_content_sha256 = selected_skill.get("content_sha256")
+        if not isinstance(selected_resource_id, str) or not isinstance(selected_content_sha256, str):
+            return "HOST_EXECUTION_START_CLAIM_MISMATCH"
         expected_claim = (
             assessment.get("ticket_id"), assessment_id,
             assessment.get("snapshot_sha256"), handoff.get("handoff_id"),
-            strict_handoff_digest_for_execution_start(handoff, claim.claimed_at),
+            handoff_sha256,
             selected_item.get("capability_id"), selected_item.get("provider_id"),
             selected_item.get("logical_capability"), selected_item.get("mapping_id"),
             selected_item.get("requested_execution_mode"),
+            selected_item.get("execution_binding_kind"),
+            selected_resource_id,
+            selected_content_sha256,
         )
         observed_claim = (
             claim.ticket_id, claim.assessment_id, claim.snapshot_sha256,
@@ -615,19 +738,17 @@ def validate_inventory_bound_host_receipt(
             claim.capability_id, claim.provider_id,
             claim.logical_capability, claim.mapping_id,
             claim.requested_execution_mode,
+            claim.execution_binding_kind,
+            claim.selected_skill_resource_id,
+            claim.selected_skill_content_sha256,
         )
         if observed_claim != expected_claim:
             return "HOST_EXECUTION_START_CLAIM_MISMATCH"
         if seen_execution_claim_ids is not None and claim.claim_id in seen_execution_claim_ids:
             return "HOST_EXECUTION_START_CLAIM_REPLAYED"
+        if seen_execution_claim_ids is not None:
+            seen_execution_claim_ids.add(claim.claim_id)
         receipt_validation_time = claim.claimed_at
-
-    r4_receipt = receipt.get("r4_receipt")
-    if not isinstance(r4_receipt, Mapping):
-        return "HOST_INVENTORY_RECEIPT_MALFORMED"
-    result = validate_host_receipt(handoff, r4_receipt, now=receipt_validation_time)
-    if result != "EXECUTION_SUCCEEDED":
-        return result
 
     handoff_id = handoff.get("handoff_id")
     if execution_start_claim is None:
@@ -641,6 +762,12 @@ def validate_inventory_bound_host_receipt(
             seen_assessment_ids.add(assessment_id)
         if seen_handoff_ids is not None and isinstance(handoff_id, str):
             seen_handoff_ids.add(handoff_id)
-    elif seen_execution_claim_ids is not None:
-        seen_execution_claim_ids.add(execution_start_claim.claim_id)
+
+    r4_receipt = receipt.get("r4_receipt")
+    if not isinstance(r4_receipt, Mapping):
+        return "HOST_INVENTORY_RECEIPT_MALFORMED"
+    result = validate_host_receipt(handoff, r4_receipt, now=receipt_validation_time)
+    if result != "EXECUTION_SUCCEEDED":
+        return result
+
     return "EXECUTION_SUCCEEDED"

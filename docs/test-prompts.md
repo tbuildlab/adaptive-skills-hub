@@ -49,8 +49,11 @@ Expected behavior:
 - `nexus.assess_host_capabilities` is called before the R4 handoff;
 - every genuinely Host-visible relevant presentation capability is considered,
   without assuming a memorized name is installed or executable;
-- installed/visible/loadable candidates without a reviewed callable Host
-  mapping are rejected truthfully;
+- installed/visible/loadable candidates without a reviewed current-turn Host
+  execution binding are rejected truthfully;
+- the canonical Presentations Skill may qualify as a `host_skill_workflow`
+  only after its instructions and every required Host execution/validation
+  facility are current-turn verified; no same-name tool is required;
 - the smallest complete mapped set is selected;
 - the existing R4 plan/load/hash handoff and Host-owned execution remain
   unchanged;
@@ -65,7 +68,8 @@ Expected behavior:
 - capabilities absent from the current Host-visible subset are reported as
   `not observed`, not `unavailable`.
 - the snapshot contains no Host-generated timestamp, and the assessment binds
-  the same ticket ID through the Host-local v2 receipt;
+  the same ticket ID, selected identity, binding kind, and R4 Skill hash through
+  the Host-local v3 receipt;
 - if assessment fails, no Nexus plan/handoff/enhancement follows; any safe
   native run is labelled `adaptive_path.status: failed` and
   `fallback.kind: native_host_fallback`, never adaptive success.

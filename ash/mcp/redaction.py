@@ -178,12 +178,16 @@ def safe_host_capability_assessment(
             "evidence": list(capability.evidence),
             "interfaces": list(capability.interfaces),
             "logical_capability": capability.logical_capability,
+            "execution_binding_kind": capability.execution_binding_kind,
             "functional_role": item.functional_role,
             "classification": item.classification,
             "decision_state": item.decision_state,
             "reason_codes": list(item.reason_codes),
             "covered_interfaces": list(item.covered_interfaces),
-            "execution_eligibility": "mapped_current_turn" if item.mapping_id else "not_execution_eligible",
+            "execution_eligibility": (
+                f"mapped_{item.execution_binding_kind}"
+                if item.mapping_id else "not_execution_eligible"
+            ),
         }
         if item.decision_state == "selected" and item.mapping_id:
             value["mapping_id"] = item.mapping_id
@@ -198,6 +202,7 @@ def safe_host_capability_assessment(
             "logical_capability": item["logical_capability"],
             "mapping_id": item["mapping_id"],
             "requested_execution_mode": item["requested_execution_mode"],
+            "execution_binding_kind": item["execution_binding_kind"],
         }
         for item in considered
         if item["decision_state"] == "selected"
@@ -233,7 +238,7 @@ def safe_host_capability_assessment(
         "rejected_capabilities": rejected,
         "fallback": {
             "status": "not_needed" if selected else "needed",
-            "reason_code": "NOT_NEEDED" if selected else "HOST_CAPABILITY_UNAVAILABLE",
+            "reason_code": "NOT_NEEDED" if selected else decision.result_code,
         },
         "security_result": {
             "code": decision.result_code,

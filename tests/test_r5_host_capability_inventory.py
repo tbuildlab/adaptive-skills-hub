@@ -29,7 +29,15 @@ from ash.mcp.host_inventory import (
     snapshot_digest,
     validate_inventory_bound_host_receipt,
 )
-from ash.mcp.host_mapping import PRESENTATIONS_MAPPING_ID, presentation_profile
+from ash.mcp.host_mapping import (
+    DIRECT_HOST_TOOL_BINDING,
+    HOST_SKILL_WORKFLOW_BINDING,
+    NO_EXECUTION_BINDING,
+    PRESENTATIONS_HOST_CAPABILITY_ID,
+    PRESENTATIONS_HOST_PROVIDER_ID,
+    PRESENTATIONS_MAPPING_ID,
+    presentation_profile,
+)
 from ash.mcp.redaction import safe_host_capability_assessment
 from ash.mcp.schemas import MAX_SAFE_ENVELOPE_BYTES, NexusMcpError, parse_host_capability_snapshot
 
@@ -64,6 +72,7 @@ def capability(
     evidence: list[str] | None = None,
     interfaces: list[str] | None = None,
     logical_capability: str = "unmapped",
+    execution_binding_kind: str = NO_EXECUTION_BINDING,
 ) -> dict:
     return {
         "capability_id": capability_id,
@@ -74,19 +83,26 @@ def capability(
         "evidence": evidence or ["current_turn_skill_metadata"],
         "interfaces": interfaces or [],
         "logical_capability": logical_capability,
+        "execution_binding_kind": execution_binding_kind,
     }
 
 
-def mapped_presentations(name: str = "Presentations", capability_id: str = "host-presentations") -> dict:
+def mapped_presentations(name: str = "Presentations") -> dict:
     return capability(
-        capability_id,
+        PRESENTATIONS_HOST_CAPABILITY_ID,
         name,
-        provider_id="openai-host",
-        resource_kind="tool",
-        availability="tool_callable_current_turn",
-        evidence=["current_turn_tool_catalog"],
+        provider_id=PRESENTATIONS_HOST_PROVIDER_ID,
+        resource_kind="skill",
+        availability="skill_workflow_ready_current_turn",
+        evidence=[
+            "current_turn_skill_metadata",
+            "current_turn_skill_instructions",
+            "current_turn_tool_catalog",
+            "current_turn_execution_substrate",
+        ],
         interfaces=["editable_pptx_create", "pptx_open_render_validate", "presentation_edit"],
         logical_capability="chatgpt.presentations",
+        execution_binding_kind=HOST_SKILL_WORKFLOW_BINDING,
     )
 
 
@@ -152,11 +168,18 @@ class R5HostCapabilityInventoryTests(unittest.TestCase):
             capability("dashai-ppt", "DashAI PPT", availability="skill_loadable_current_turn", interfaces=["editable_pptx_create", "presentation_edit"]),
             capability("ppt-master", "Ppt Master", availability="metadata_visible", interfaces=["editable_pptx_create", "presentation_enhance"]),
             capability("emil-design-eng", "emil-design-eng", availability="metadata_visible", interfaces=["presentation_review"]),
-            capability("web-slide-maker", "Another Slide Maker", resource_kind="plugin", availability="tool_callable_current_turn", evidence=["current_turn_tool_catalog"], interfaces=["presentation_create"]),
+            capability(
+                "web-slide-maker", "Another Slide Maker", resource_kind="tool",
+                availability="tool_callable_current_turn",
+                evidence=["current_turn_tool_catalog"],
+                interfaces=["presentation_create"],
+                execution_binding_kind=DIRECT_HOST_TOOL_BINDING,
+            ),
         ])
         self.assertEqual(result["schema_version"], HOST_CAPABILITY_ASSESSMENT_SCHEMA_VERSION)
         self.assertEqual(result["status"], "selection_ready")
-        self.assertEqual([item["capability_id"] for item in result["selected_capabilities"]], ["host-presentations"])
+        self.assertEqual([item["capability_id"] for item in result["selected_capabilities"]], ["presentations"])
+        self.assertEqual(result["selected_capabilities"][0]["execution_binding_kind"], HOST_SKILL_WORKFLOW_BINDING)
         by_id = {item["capability_id"]: item for item in result["considered_capabilities"]}
         self.assertEqual(by_id["dashai-ppt"]["functional_role"], "primary_creator")
         self.assertEqual(by_id["dashai-ppt"]["classification"], "unavailable")
@@ -185,17 +208,79 @@ class R5HostCapabilityInventoryTests(unittest.TestCase):
             self.assertEqual(result["status"], "no_executable_host_capability")
             self.assertEqual(result["considered_capabilities"][0]["classification"], "unavailable")
 
+    def test_presentations_without_a_current_workflow_binding_is_an_explicit_blocker(self) -> None:
+        unbound = capability(
+            PRESENTATIONS_HOST_CAPABILITY_ID,
+            "Presentations",
+            provider_id=PRESENTATIONS_HOST_PROVIDER_ID,
+            resource_kind="skill",
+            availability="skill_loadable_current_turn",
+            evidence=["current_turn_skill_metadata"],
+            interfaces=REQUIRED_INTERFACES,
+            logical_capability="chatgpt.presentations",
+            execution_binding_kind=NO_EXECUTION_BINDING,
+        )
+        result = assess_direct([unbound])
+        self.assertEqual(result["status"], "no_executable_host_capability")
+        self.assertEqual(result["selected_capabilities"], [])
+        self.assertEqual(result["security_result"]["code"], "HOST_EXECUTION_BINDING_UNAVAILABLE")
+        self.assertEqual(result["fallback"], {
+            "status": "needed",
+            "reason_code": "HOST_EXECUTION_BINDING_UNAVAILABLE",
+        })
+        self.assertEqual(
+            result["considered_capabilities"][0]["reason_codes"],
+            ["HOST_EXECUTION_BINDING_UNAVAILABLE"],
+        )
+
+    def test_host_skill_workflow_requires_complete_current_turn_substrate(self) -> None:
+        required_evidence = [
+            "current_turn_skill_metadata",
+            "current_turn_skill_instructions",
+            "current_turn_tool_catalog",
+            "current_turn_execution_substrate",
+        ]
+        for missing in required_evidence:
+            candidate = mapped_presentations()
+            candidate["evidence"] = [item for item in required_evidence if item != missing]
+            ticket = direct_ticket()
+            with self.subTest(missing=missing), self.assertRaises(NexusMcpError) as raised:
+                parse_host_capability_snapshot(
+                    snapshot(ticket.ticket_id, [candidate]), ticket=ticket,
+                )
+            self.assertEqual(raised.exception.code, "HOST_CAPABILITY_UNVERIFIED")
+
+    def test_caller_cannot_spoof_an_approved_host_mapping_by_label_or_logical_id(self) -> None:
+        spoofed = mapped_presentations(name="Presentations")
+        spoofed["provider_id"] = "attacker-controlled"
+        ticket = direct_ticket()
+        with self.assertRaises(NexusMcpError) as raised:
+            parse_host_capability_snapshot(snapshot(ticket.ticket_id, [spoofed]), ticket=ticket)
+        self.assertEqual(raised.exception.code, "HOST_MAPPING_IDENTITY_UNAPPROVED")
+
+        wrong_kind = mapped_presentations(name="Presentations")
+        wrong_kind["resource_kind"] = "tool"
+        ticket = direct_ticket()
+        with self.assertRaises(NexusMcpError) as raised:
+            parse_host_capability_snapshot(snapshot(ticket.ticket_id, [wrong_kind]), ticket=ticket)
+        self.assertEqual(raised.exception.code, "HOST_MAPPING_IDENTITY_UNAPPROVED")
+
     def test_minimum_coverage_marks_lower_evidence_creator_redundant(self) -> None:
-        lower = capability("lower", "Lower Evidence", provider_id="other-provider", resource_kind="tool", availability="tool_callable_current_turn", evidence=["current_turn_tool_catalog"], interfaces=REQUIRED_INTERFACES)
-        result = assess_direct([lower, mapped_presentations(capability_id="higher")])
-        self.assertEqual([item["capability_id"] for item in result["selected_capabilities"]], ["higher"])
+        lower = capability(
+            "lower", "Lower Evidence", provider_id="other-provider",
+            resource_kind="tool", availability="tool_callable_current_turn",
+            evidence=["current_turn_tool_catalog"], interfaces=REQUIRED_INTERFACES,
+            execution_binding_kind=DIRECT_HOST_TOOL_BINDING,
+        )
+        result = assess_direct([lower, mapped_presentations()])
+        self.assertEqual([item["capability_id"] for item in result["selected_capabilities"]], ["presentations"])
         rejected = {item["capability_id"]: item for item in result["rejected_capabilities"]}
         self.assertEqual(rejected["lower"]["classification"], "redundant")
 
     def test_same_name_different_identity_is_not_deduplicated_by_name(self) -> None:
         ticket = direct_ticket()
         parsed = parse_host_capability_snapshot(snapshot(ticket.ticket_id, [
-            mapped_presentations(name="Same Name", capability_id="first"),
+            mapped_presentations(name="Same Name"),
             capability("second", "Same Name", provider_id="another-provider", availability="metadata_visible", interfaces=["presentation_review"]),
         ]), ticket=ticket)
         self.assertEqual(len(parsed.capabilities), 2)
@@ -205,17 +290,54 @@ class R5HostCapabilityInventoryTests(unittest.TestCase):
         with self.assertRaises(NexusMcpError) as identity:
             parse_host_capability_snapshot(snapshot(ticket.ticket_id, [capability("duplicate", "One"), capability("duplicate", "Two")]), ticket=ticket)
         self.assertEqual(identity.exception.code, "HOST_CAPABILITY_DUPLICATE_CONFLICT")
-        with self.assertRaises(NexusMcpError) as mapping:
-            parse_host_capability_snapshot(snapshot(ticket.ticket_id, [mapped_presentations(capability_id="first"), mapped_presentations(capability_id="second")]), ticket=ticket)
+        second = capability(
+            "presentations-copy", "Another label", provider_id="openai-primary-runtime",
+            resource_kind="skill", availability="skill_workflow_ready_current_turn",
+            evidence=[
+                "current_turn_skill_metadata", "current_turn_skill_instructions",
+                "current_turn_tool_catalog", "current_turn_execution_substrate",
+            ],
+            interfaces=REQUIRED_INTERFACES,
+            logical_capability="chatgpt.presentations",
+            execution_binding_kind=HOST_SKILL_WORKFLOW_BINDING,
+        )
+        expanded = {
+            **APPROVED_HOST_MAPPINGS["chatgpt.presentations"],
+            "approved_identities": frozenset({
+                ("openai-primary-runtime", "presentations", "skill"),
+                ("openai-primary-runtime", "presentations-copy", "skill"),
+            }),
+        }
+        with patch.dict(APPROVED_HOST_MAPPINGS, {"chatgpt.presentations": expanded}, clear=True), self.assertRaises(NexusMcpError) as mapping:
+            parse_host_capability_snapshot(snapshot(ticket.ticket_id, [mapped_presentations(), second]), ticket=ticket)
         self.assertEqual(mapping.exception.code, "HOST_CAPABILITY_DUPLICATE_CONFLICT")
 
     def test_selection_is_exactly_minimum_not_greedy(self) -> None:
         required = ["editable_pptx_create", "presentation_create", "presentation_edit", "presentation_enhance", "presentation_review", "pptx_open_render_validate"]
         logicals = ("host.test.large", "host.test.creator", "host.test.finisher")
-        mappings = {logical: {"mapping_id": f"nexus.host-map.{logical.rsplit('.', 1)[-1]}.test", "requested_execution_mode": "host_native_presentations", "interfaces": frozenset(required)} for logical in logicals}
+        mappings = {
+            logical: {
+                "mapping_id": f"nexus.host-map.{logical.rsplit('.', 1)[-1]}.test",
+                "requested_execution_mode": "host_native_presentations",
+                "interfaces": frozenset(required),
+                "approved_identities": frozenset({("openai-host", identity, "tool")}),
+                "binding_requirements": {
+                    DIRECT_HOST_TOOL_BINDING: {
+                        "availability": "tool_callable_current_turn",
+                        "evidence": frozenset({"current_turn_tool_catalog"}),
+                        "resource_kind": "tool",
+                    },
+                },
+            }
+            for logical, identity in zip(logicals, ("large-greedy", "creator", "finisher"))
+        }
 
         def mapped_part(capability_id: str, interfaces: list[str], logical: str) -> HostCapability:
-            return HostCapability(capability_id, "openai-host", capability_id, "tool", "tool_callable_current_turn", ("current_turn_tool_catalog",), tuple(interfaces), logical)
+            return HostCapability(
+                capability_id, "openai-host", capability_id, "tool",
+                "tool_callable_current_turn", ("current_turn_tool_catalog",),
+                tuple(interfaces), logical, DIRECT_HOST_TOOL_BINDING,
+            )
 
         ticket = direct_ticket(required)
         raw = HostCapabilitySnapshot(
@@ -528,6 +650,15 @@ class R5HostCapabilityInventoryTests(unittest.TestCase):
         )
         self.assertEqual(code, "EXECUTION_START_CLAIMED")
         self.assertIsNotNone(claim)
+        assert claim is not None
+        self.assertEqual(claim.capability_id, PRESENTATIONS_HOST_CAPABILITY_ID)
+        self.assertEqual(claim.provider_id, PRESENTATIONS_HOST_PROVIDER_ID)
+        self.assertEqual(claim.execution_binding_kind, HOST_SKILL_WORKFLOW_BINDING)
+        self.assertEqual(claim.selected_skill_resource_id, handoff["selected_skill"]["resource_id"])
+        self.assertEqual(
+            claim.selected_skill_content_sha256,
+            handoff["selected_skill"]["content_sha256"],
+        )
         receipt = {
             "schema_version": HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION,
             "ticket_id": assessment["ticket_id"],
@@ -561,6 +692,136 @@ class R5HostCapabilityInventoryTests(unittest.TestCase):
             ),
             "HOST_EXECUTION_START_CLAIM_REPLAYED",
         )
+
+    def test_failed_receipt_consumes_the_execution_start_claim(self) -> None:
+        assessment = assess_direct([mapped_presentations()])
+        handoff = self._handoff()
+        start = datetime.now(timezone.utc)
+        code, claim = claim_inventory_bound_execution_start(assessment, handoff, now=start)
+        self.assertEqual(code, "EXECUTION_START_CLAIMED")
+        self.assertIsNotNone(claim)
+        receipt = {
+            "schema_version": HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION,
+            "ticket_id": assessment["ticket_id"],
+            "assessment_id": assessment["assessment_id"],
+            "snapshot_sha256": assessment["snapshot_sha256"],
+            "inventory_states": ["considered", "selected"],
+            "selected_capabilities": assessment["selected_capabilities"],
+            "r4_receipt": self._r4_receipt(handoff),
+        }
+        receipt["r4_receipt"]["artifact_ref"] = ""
+        seen_claims: set[str] = set()
+        self.assertEqual(
+            validate_inventory_bound_host_receipt(
+                assessment,
+                handoff,
+                receipt,
+                execution_start_claim=claim,
+                seen_execution_claim_ids=seen_claims,
+                now=start,
+            ),
+            "ARTIFACT_MISSING",
+        )
+        self.assertEqual(
+            validate_inventory_bound_host_receipt(
+                assessment,
+                handoff,
+                receipt,
+                execution_start_claim=claim,
+                seen_execution_claim_ids=seen_claims,
+                now=start,
+            ),
+            "HOST_EXECUTION_START_CLAIM_REPLAYED",
+        )
+
+    def test_native_fallback_cannot_validate_as_adaptive_execution(self) -> None:
+        assessment = assess_direct([
+            capability(
+                "native-fallback",
+                "Native fallback",
+                availability="metadata_visible",
+                interfaces=REQUIRED_INTERFACES,
+            ),
+        ])
+        self.assertEqual(assessment["status"], "no_executable_host_capability")
+        handoff = self._handoff()
+        receipt = {
+            "schema_version": HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION,
+            "ticket_id": assessment["ticket_id"],
+            "assessment_id": assessment["assessment_id"],
+            "snapshot_sha256": assessment["snapshot_sha256"],
+            "inventory_states": ["considered", "selected"],
+            "selected_capabilities": assessment["selected_capabilities"],
+            "r4_receipt": self._r4_receipt(handoff),
+        }
+        self.assertEqual(
+            validate_inventory_bound_host_receipt(assessment, handoff, receipt),
+            "HOST_INVENTORY_ASSESSMENT_INVALID",
+        )
+
+    def test_execution_start_claim_detects_selected_identity_or_binding_mutation(self) -> None:
+        assessment = assess_direct([mapped_presentations()])
+        handoff = self._handoff()
+        start = datetime.now(timezone.utc)
+        code, claim = claim_inventory_bound_execution_start(assessment, handoff, now=start)
+        self.assertEqual(code, "EXECUTION_START_CLAIMED")
+        self.assertIsNotNone(claim)
+        for field, replacement in (
+            ("provider_id", "other-provider"),
+            ("capability_id", "other-capability"),
+            ("execution_binding_kind", DIRECT_HOST_TOOL_BINDING),
+        ):
+            mutated = json.loads(json.dumps(assessment))
+            mutated["selected_capabilities"][0][field] = replacement
+            receipt = {
+                "schema_version": HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION,
+                "ticket_id": mutated["ticket_id"],
+                "assessment_id": mutated["assessment_id"],
+                "snapshot_sha256": mutated["snapshot_sha256"],
+                "inventory_states": ["considered", "selected"],
+                "selected_capabilities": mutated["selected_capabilities"],
+                "r4_receipt": self._r4_receipt(handoff),
+            }
+            with self.subTest(field=field):
+                self.assertEqual(
+                    validate_inventory_bound_host_receipt(
+                        mutated,
+                        handoff,
+                        receipt,
+                        execution_start_claim=claim,
+                        now=start,
+                    ),
+                    "HOST_INVENTORY_SELECTION_INVALID",
+                )
+
+    def test_execution_start_claim_rejects_forged_identity_or_binding_before_claim(self) -> None:
+        assessment = assess_direct([mapped_presentations()])
+        handoff = self._handoff()
+        start = datetime.now(timezone.utc)
+        for field, replacement in (
+            ("provider_id", "attacker-provider"),
+            ("capability_id", "attacker-capability"),
+            ("execution_binding_kind", DIRECT_HOST_TOOL_BINDING),
+        ):
+            forged = json.loads(json.dumps(assessment))
+            forged["selected_capabilities"][0][field] = replacement
+            receipt = {
+                "schema_version": HOST_CAPABILITY_RECEIPT_SCHEMA_VERSION,
+                "ticket_id": forged["ticket_id"],
+                "assessment_id": forged["assessment_id"],
+                "snapshot_sha256": forged["snapshot_sha256"],
+                "inventory_states": ["considered", "selected"],
+                "selected_capabilities": forged["selected_capabilities"],
+                "r4_receipt": self._r4_receipt(handoff),
+            }
+            with self.subTest(field=field):
+                code, claim = claim_inventory_bound_execution_start(forged, handoff, now=start)
+                self.assertEqual(code, "HOST_INVENTORY_SELECTION_INVALID")
+                self.assertIsNone(claim)
+                self.assertEqual(
+                    validate_inventory_bound_host_receipt(forged, handoff, receipt, now=start),
+                    "HOST_INVENTORY_SELECTION_INVALID",
+                )
 
     def test_execution_start_claim_rejects_expired_or_replayed_start(self) -> None:
         assessment = assess_direct([mapped_presentations()])
@@ -640,6 +901,16 @@ class R5HostCapabilityInventoryTests(unittest.TestCase):
         changed_profile = json.loads(json.dumps(handoff))
         changed_profile["host_execution_profile"]["resolved_defaults"]["artifact_format"] = "html"
         mutations.append((changed_profile, receipt))
+        missing_skill = json.loads(json.dumps(handoff))
+        missing_skill.pop("selected_skill")
+        mutations.append((missing_skill, receipt))
+        non_object_skill = json.loads(json.dumps(handoff))
+        non_object_skill["selected_skill"] = "Presentations"
+        mutations.append((non_object_skill, receipt))
+        for missing_field in ("resource_id", "content_sha256"):
+            incomplete_skill = json.loads(json.dumps(handoff))
+            incomplete_skill["selected_skill"].pop(missing_field)
+            mutations.append((incomplete_skill, receipt))
         for mutated_handoff, mutated_receipt in mutations:
             with self.subTest(handoff=mutated_handoff):
                 self.assertEqual(

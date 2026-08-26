@@ -58,7 +58,7 @@ class McpBoundaryTests(unittest.TestCase):
             required_interfaces=("editable_pptx_create",),
         )
         base = {
-            "schema_version": "nexus.host-capability-snapshot.v2",
+            "schema_version": "nexus.host-capability-snapshot.v3",
             "ticket_id": ticket.ticket_id,
             "snapshot_id": str(uuid4()),
             "capabilities": [],

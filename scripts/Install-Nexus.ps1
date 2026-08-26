@@ -9,6 +9,12 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# PowerShell 5.1 otherwise serializes redirected non-ASCII output through the
+# active legacy code page.  Pin UTF-8 so release automation and users receive
+# the exact host-managed installation instruction on every Windows locale.
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+$OutputEncoding = [Console]::OutputEncoding
+$NexusArrow = [char]0x2192
 function Fail([string]$Message) { throw "Nexus installation failed: $Message" }
 function ExtendedPath([string]$Path) {
     $full = [IO.Path]::GetFullPath($Path)
@@ -70,7 +76,7 @@ if ($MigrateStandalone) { $arguments += '--migrate-standalone' }
 & $python @arguments
 if ($LASTEXITCODE -ne 0) { Fail 'release configuration failed; extracted files remain verified for inspection' }
 if ($Mode -eq 'plugin') {
-    Write-Host 'Nexus personal marketplace source is ready. Required action: ChatGPT Desktop → Plugins → Personal → Nexus → + Install'
+    Write-Host ("Nexus personal marketplace source is ready. Required action: ChatGPT Desktop {0} Plugins {0} Personal {0} Nexus {0} + Install" -f $NexusArrow)
     Write-Host 'After ChatGPT Desktop installs the Plugin, start a new chat and use @Nexus.'
 } else {
     Write-Host 'Nexus standalone installation completed.'

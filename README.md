@@ -151,6 +151,9 @@ a bounded assessment of the capability metadata already surfaced by the Host
 in the current conversation. This assessment is explicitly incomplete and is
 not a ChatGPT Desktop plugin-enumeration API. Host labels are untrusted and are
 not reflected by the MCP result; opaque identities preserve correlation.
+R5 distinguishes a direct Host tool from a verified Host Skill workflow; a
+Skill workflow uses the tools/runtime required by its loaded instructions and
+does not require a fictional same-name callable tool.
 Neither layer lets Nexus execute a Host tool, read/write an artifact, select an
 arbitrary replacement Skill, spawn an Agent, or claim Host execution without a
 real artifact and validation receipt. A Host-local receipt binds the inventory

@@ -12,7 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Any, Mapping, MutableSet
 
-from .handoff import validate_host_receipt
+from .handoff import is_valid_opaque_artifact_ref, validate_host_receipt
 from .host_mapping import (
     PRESENTATIONS_ENHANCEMENT_MAPPING_ID,
     PRESENTATIONS_MAPPING_ID,
@@ -130,6 +130,10 @@ def validate_enhancement_receipt(
     if not isinstance(states, list) or not all(isinstance(item, str) for item in states) or states[:3] != required_prefix:
         return "ENHANCEMENT_RECEIPT_MALFORMED"
     result_code = receipt.get("result_code")
+    if result_code != "ENHANCEMENT_SUCCEEDED" and (
+        "artifact_ref" in receipt or "artifact_kind" in receipt
+    ):
+        return "ENHANCEMENT_RECEIPT_MALFORMED"
     if result_code == "HOST_CAPABILITY_UNAVAILABLE":
         return "HOST_CAPABILITY_UNAVAILABLE" if states == required_prefix else "ENHANCEMENT_RECEIPT_MALFORMED"
     if result_code == "EXECUTION_REFUSED":
@@ -160,7 +164,7 @@ def validate_enhancement_receipt(
     checks = receipt.get("validation_checks")
     if not isinstance(checks, Mapping) or checks != {"artifact_editable": "passed", "presentation_open_render": "passed"}:
         return "ENHANCEMENT_RECEIPT_MALFORMED"
-    if not isinstance(receipt.get("artifact_ref"), str) or not receipt["artifact_ref"] or receipt.get("artifact_kind") != "pptx":
+    if not is_valid_opaque_artifact_ref(receipt.get("artifact_ref")) or receipt.get("artifact_kind") != "pptx":
         return "ARTIFACT_MISSING"
     if receipt.get("improvement_assessment") != "improved":
         return "IMPROVEMENT_UNVERIFIED"

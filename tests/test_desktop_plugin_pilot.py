@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+from contextlib import redirect_stderr
+import importlib.util
+import io
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -33,7 +37,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         marketplace = json.loads((ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
         skill = (PLUGIN_ROOT / "skills" / "nexus" / "SKILL.md").read_text(encoding="utf-8")
         self.assertEqual(manifest["name"], "nexus-desktop")
-        self.assertEqual(manifest["version"], "0.1.0-r5.pilot.3")
+        self.assertEqual(manifest["version"], "0.1.0-r5.pilot.4")
         self.assertEqual(manifest["interface"]["displayName"], "Nexus")
         self.assertIn("server-issued short-lived Host inventory tickets", manifest["description"])
         self.assertIn("ChatGPT Host retains artifact and tool authority", manifest["interface"]["longDescription"])
@@ -53,9 +57,11 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("not_globally_enumerated", skill)
         self.assertIn("Installed, enabled, selected, and loaded are", skill)
         self.assertIn("mcp_execution_authority: none", skill)
-        self.assertIn("nexus.host-capability-snapshot.v2", skill)
-        self.assertIn("nexus.host-capability-assessment.v2", skill)
-        self.assertIn("nexus.host-capability-receipt.v2", skill)
+        self.assertIn("nexus.host-capability-snapshot.v3", skill)
+        self.assertIn("nexus.host-capability-assessment.v3", skill)
+        self.assertIn("nexus.host-capability-receipt.v3", skill)
+        self.assertIn("host_skill_workflow", skill)
+        self.assertIn("current_turn_execution_substrate", skill)
         self.assertIn("generate or send a timestamp", skill)
         self.assertIn("Do not compare its", skill)
         self.assertIn("runtime-local monotonic clock", skill)
@@ -123,6 +129,94 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         with patch.object(setup.shutil, "which", side_effect=["C:/npm/codex.cmd", "C:/Codex/codex.exe"]):
             self.assertEqual(setup.default_codex_command(), "C:/npm/codex.cmd")
 
+    def test_launcher_failure_does_not_expose_configured_private_paths(self) -> None:
+        launcher = PLUGIN_ROOT / "scripts" / "launch_nexus_mcp.py"
+        with tempfile.TemporaryDirectory() as temporary:
+            data_root = Path(temporary) / "Local App Data" / "Nexus"
+            data_root.mkdir(parents=True)
+            private_marker = Path(temporary) / "Private User Workspace" / "missing"
+            payload = {
+                "schema_version": "nexus.desktop.local.v1",
+                "nexus_root": str(private_marker / "root"),
+                "python_executable": str(private_marker / "python.exe"),
+                "workspace_config": str(private_marker / "workspaces.json"),
+            }
+            (data_root / "nexus-desktop-plugin.json").write_text(
+                json.dumps(payload), encoding="utf-8",
+            )
+            environment = os.environ.copy()
+            environment["NEXUS_DATA_ROOT"] = str(data_root)
+            result = subprocess.run(
+                [sys.executable, str(launcher)],
+                cwd=str(PLUGIN_ROOT),
+                env=environment,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            self.assertEqual(result.returncode, 2)
+            self.assertEqual(
+                result.stderr.strip(),
+                "Nexus Desktop plugin could not start: local launch configuration is invalid or unavailable",
+            )
+            self.assertNotIn(str(private_marker), result.stderr)
+            self.assertNotIn(str(Path(temporary)), result.stderr)
+
+    def test_launcher_exceptions_are_redacted_without_changing_process_contract(self) -> None:
+        launcher_path = PLUGIN_ROOT / "scripts" / "launch_nexus_mcp.py"
+        spec = importlib.util.spec_from_file_location("nexus_launcher_security_test", launcher_path)
+        self.assertIsNotNone(spec)
+        self.assertIsNotNone(spec.loader)
+        launcher = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(launcher)
+        secret = "C:\\Users\\SecretOwner\\Private Workspace\\missing.exe"
+
+        config_stderr = io.StringIO()
+        with patch.object(
+            launcher,
+            "load_launch_configuration",
+            side_effect=FileNotFoundError(secret),
+        ), redirect_stderr(config_stderr):
+            self.assertEqual(launcher.main(), 2)
+        self.assertEqual(
+            config_stderr.getvalue().strip(),
+            "Nexus Desktop plugin could not start: local launch configuration is invalid or unavailable",
+        )
+
+        runtime_python = Path("C:/Nexus/runtime/python.exe")
+        runtime_root = Path("C:/Nexus/release")
+        workspace = Path("C:/Nexus/config/workspaces.json")
+        launch_stderr = io.StringIO()
+        with patch.object(
+            launcher,
+            "load_launch_configuration",
+            return_value=(runtime_python, runtime_root, workspace),
+        ), patch.object(
+            launcher.subprocess,
+            "run",
+            side_effect=PermissionError(secret),
+        ) as run, redirect_stderr(launch_stderr):
+            self.assertEqual(launcher.main(), 2)
+        self.assertEqual(
+            launch_stderr.getvalue().strip(),
+            "Nexus Desktop plugin could not start: runtime process launch failed",
+        )
+        run.assert_called_once_with(
+            [
+                str(runtime_python), str(runtime_root / "scripts" / "nexus_mcp.py"),
+                "--workspace-config", str(workspace),
+            ],
+            cwd=str(runtime_root),
+            check=False,
+            shell=False,
+        )
+        for output in (config_stderr.getvalue(), launch_stderr.getvalue()):
+            self.assertNotIn(secret, output)
+            self.assertNotIn("SecretOwner", output)
+            self.assertNotIn("Traceback", output)
+            self.assertNotIn("FileNotFoundError", output)
+            self.assertNotIn("PermissionError", output)
+
     async def test_isolated_install_health_discover_plan_and_uninstall(self) -> None:
         runtime_python = self._runtime_python()
         try:
@@ -168,18 +262,19 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
                     })
                     ticket = json.loads(ticket_result.content[0].text)
                     inventory = {
-                        "schema_version": "nexus.host-capability-snapshot.v2",
+                        "schema_version": "nexus.host-capability-snapshot.v3",
                         "ticket_id": ticket["ticket_id"],
                         "snapshot_id": str(uuid4()),
                         "capabilities": [{
-                            "capability_id": "host-presentations",
-                            "provider_id": "openai-host",
+                            "capability_id": "presentations",
+                            "provider_id": "openai-primary-runtime",
                             "display_name": "Presentations",
-                            "resource_kind": "tool",
-                            "availability": "tool_callable_current_turn",
-                            "evidence": ["current_turn_tool_catalog"],
+                            "resource_kind": "skill",
+                            "availability": "skill_workflow_ready_current_turn",
+                            "evidence": ["current_turn_skill_metadata", "current_turn_skill_instructions", "current_turn_tool_catalog", "current_turn_execution_substrate"],
                             "interfaces": ["editable_pptx_create", "pptx_open_render_validate"],
                             "logical_capability": "chatgpt.presentations",
+                            "execution_binding_kind": "host_skill_workflow",
                         }],
                     }
                     assessment = await session.call_tool("nexus.assess_host_capabilities", inventory)

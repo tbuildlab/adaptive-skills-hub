@@ -161,23 +161,109 @@ class R4HostHandoffTests(unittest.TestCase):
     def test_host_capability_unavailable_and_execution_refused_are_explicit(self) -> None:
         handoff = self._handoff()
         unavailable = self._success_receipt(handoff)
-        unavailable.update({"host_capability": "unavailable", "states": ["selected", "loaded_verified", "host_eligible", "execution_requested"], "result_code": "HOST_CAPABILITY_UNAVAILABLE"})
+        unavailable.update({
+            "host_capability": "unavailable",
+            "states": [
+                "selected", "loaded_verified", "execution_requested",
+                "host_capability_unavailable",
+            ],
+            "result_code": "HOST_CAPABILITY_UNAVAILABLE",
+        })
+        unavailable.pop("artifact_ref")
+        unavailable.pop("artifact_kind")
         self.assertEqual(validate_host_receipt(handoff, unavailable), "HOST_CAPABILITY_UNAVAILABLE")
         refused = self._success_receipt(handoff)
-        refused.update({"states": ["selected", "loaded_verified", "host_eligible", "execution_requested"], "result_code": "EXECUTION_REFUSED"})
+        refused.update({
+            "states": [
+                "selected", "loaded_verified", "host_eligible",
+                "execution_requested", "execution_refused",
+            ],
+            "result_code": "EXECUTION_REFUSED",
+        })
+        refused.pop("artifact_ref")
+        refused.pop("artifact_kind")
         self.assertEqual(validate_host_receipt(handoff, refused), "EXECUTION_REFUSED")
+        binding_unavailable = self._success_receipt(handoff)
+        binding_unavailable.update({
+            "states": [
+                "selected", "loaded_verified", "execution_requested",
+                "host_execution_binding_unavailable",
+            ],
+            "result_code": "HOST_EXECUTION_BINDING_UNAVAILABLE",
+        })
+        binding_unavailable.pop("artifact_ref")
+        binding_unavailable.pop("artifact_kind")
+        self.assertEqual(
+            validate_host_receipt(handoff, binding_unavailable),
+            "HOST_EXECUTION_BINDING_UNAVAILABLE",
+        )
+
+    def test_contradictory_or_noncanonical_state_sequences_fail_closed(self) -> None:
+        handoff = self._handoff()
+        contradictory = self._success_receipt(handoff)
+        contradictory["states"] = [
+            "selected", "loaded_verified", "host_eligible",
+            "execution_requested", "execution_started", "execution_failed",
+            "execution_succeeded", "validation_passed",
+        ]
+        self.assertEqual(validate_host_receipt(handoff, contradictory), "HANDOFF_MALFORMED")
+
+        validation_without_execution = self._success_receipt(handoff)
+        validation_without_execution["states"] = [
+            "selected", "loaded_verified", "host_eligible",
+            "execution_requested", "validation_passed",
+        ]
+        self.assertEqual(validate_host_receipt(handoff, validation_without_execution), "HANDOFF_MALFORMED")
+
+        failed_with_success_trace = self._success_receipt(handoff)
+        failed_with_success_trace.update({
+            "result_code": "ARTIFACT_GENERATION_FAILED",
+            "states": [
+                "selected", "loaded_verified", "host_eligible",
+                "execution_requested", "execution_started", "execution_succeeded",
+                "validation_passed",
+            ],
+        })
+        self.assertEqual(validate_host_receipt(handoff, failed_with_success_trace), "HANDOFF_MALFORMED")
 
     def test_no_artifact_generation_failure_and_validation_failure_are_not_success(self) -> None:
         handoff = self._handoff()
         no_artifact = self._success_receipt(handoff)
         no_artifact.update({"states": ["selected", "loaded_verified", "host_eligible", "execution_requested", "execution_started"], "artifact_ref": ""})
         self.assertEqual(validate_host_receipt(handoff, no_artifact), "ARTIFACT_MISSING")
+        for invalid_ref in (
+            " ", "opaque-presentation", "C:\\private\\deck.pptx", "C:private.pptx",
+            "/tmp/deck.pptx", "file:private", "https:example.invalid",
+            "https://example.invalid/deck.pptx", "host-artifact:C:private.pptx",
+            "host-artifact:../private.pptx", "host-artifact:private/secret.pptx",
+            "host-artifact:%2Fprivate.pptx", "host-artifact:" + "a" * 243,
+        ):
+            invalid_artifact = self._success_receipt(handoff)
+            invalid_artifact["artifact_ref"] = invalid_ref
+            with self.subTest(artifact_ref=invalid_ref):
+                self.assertEqual(validate_host_receipt(handoff, invalid_artifact), "ARTIFACT_MISSING")
         generated_failure = self._success_receipt(handoff)
         generated_failure.update({"states": ["selected", "loaded_verified", "host_eligible", "execution_requested", "execution_started", "execution_failed"], "result_code": "ARTIFACT_GENERATION_FAILED"})
+        generated_failure.pop("artifact_ref")
+        generated_failure.pop("artifact_kind")
         self.assertEqual(validate_host_receipt(handoff, generated_failure), "ARTIFACT_GENERATION_FAILED")
+        for leaked_artifact in ("C:\\private\\deck.pptx", "https://example.invalid/deck.pptx"):
+            malformed_failure = dict(generated_failure)
+            malformed_failure["artifact_ref"] = leaked_artifact
+            with self.subTest(failure_artifact_ref=leaked_artifact):
+                self.assertEqual(validate_host_receipt(handoff, malformed_failure), "HANDOFF_MALFORMED")
         validation_failure = self._success_receipt(handoff)
         validation_failure.update({"states": ["selected", "loaded_verified", "host_eligible", "execution_requested", "execution_started", "execution_succeeded", "validation_failed"], "result_code": "VALIDATION_FAILED"})
         self.assertEqual(validate_host_receipt(handoff, validation_failure), "VALIDATION_FAILED")
+        validation_failure["artifact_ref"] = ""
+        self.assertEqual(validate_host_receipt(handoff, validation_failure), "ARTIFACT_MISSING")
+
+        invalid_input_resolution = self._success_receipt(handoff)
+        invalid_input_resolution["input_resolution"] = "caller_supplied"
+        self.assertEqual(
+            validate_host_receipt(handoff, invalid_input_resolution),
+            "INPUT_RESOLUTION_UNVERIFIED",
+        )
 
     def test_malformed_receipt_is_rejected_without_accepting_extra_context(self) -> None:
         handoff = self._handoff()

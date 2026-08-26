@@ -15,6 +15,12 @@ from .host_inventory import (
     HostCapabilitySnapshot,
     HostCapabilityTicket,
     HostCapabilityTicketRequest,
+    approved_mapping_identity,
+)
+from .host_mapping import (
+    DIRECT_HOST_TOOL_BINDING,
+    HOST_SKILL_WORKFLOW_BINDING,
+    NO_EXECUTION_BINDING,
 )
 
 SCHEMA_VERSION = "nexus.mcp.v1"
@@ -44,6 +50,7 @@ HOST_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
 HOST_CAPABILITY_KINDS = frozenset({"skill", "plugin", "tool"})
 HOST_CAPABILITY_AVAILABILITY = frozenset({
     "tool_callable_current_turn",
+    "skill_workflow_ready_current_turn",
     "skill_loadable_current_turn",
     "metadata_visible",
     "enabled_unverified",
@@ -54,9 +61,16 @@ HOST_CAPABILITY_AVAILABILITY = frozenset({
 HOST_CAPABILITY_EVIDENCE = frozenset({
     "current_turn_tool_catalog",
     "current_turn_skill_metadata",
+    "current_turn_skill_instructions",
+    "current_turn_execution_substrate",
     "current_turn_plugin_metadata",
 })
 HOST_LOGICAL_CAPABILITIES = frozenset({"chatgpt.presentations", "unmapped"})
+HOST_EXECUTION_BINDING_KINDS = frozenset({
+    DIRECT_HOST_TOOL_BINDING,
+    HOST_SKILL_WORKFLOW_BINDING,
+    NO_EXECUTION_BINDING,
+})
 
 
 class NexusMcpError(ValueError):
@@ -246,8 +260,9 @@ def parse_host_capability_snapshot(
         item = _object(raw, {
             "capability_id", "provider_id", "display_name", "resource_kind",
             "availability", "evidence", "interfaces", "logical_capability",
+            "execution_binding_kind",
         })
-        if len(item) != 8:
+        if len(item) != 9:
             raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability descriptor is incomplete")
         capability_id = item.get("capability_id")
         provider_id = item.get("provider_id")
@@ -264,6 +279,7 @@ def parse_host_capability_snapshot(
         evidence = item.get("evidence")
         interfaces = item.get("interfaces")
         logical_capability = item.get("logical_capability")
+        execution_binding_kind = item.get("execution_binding_kind")
         if resource_kind not in HOST_CAPABILITY_KINDS:
             raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability kind is invalid")
         if availability not in HOST_CAPABILITY_AVAILABILITY:
@@ -285,6 +301,15 @@ def parse_host_capability_snapshot(
             raise NexusMcpError("HOST_INVENTORY_INVALID", "Host capability interfaces are invalid")
         if logical_capability not in HOST_LOGICAL_CAPABILITIES:
             raise NexusMcpError("HOST_INVENTORY_INVALID", "Host logical capability is invalid")
+        if execution_binding_kind not in HOST_EXECUTION_BINDING_KINDS:
+            raise NexusMcpError("HOST_INVENTORY_INVALID", "Host execution binding kind is invalid")
+        if logical_capability != "unmapped" and not approved_mapping_identity(
+            str(logical_capability), provider_id, capability_id, str(resource_kind),
+        ):
+            raise NexusMcpError(
+                "HOST_MAPPING_IDENTITY_UNAPPROVED",
+                "Host capability identity is not approved for the requested mapping",
+            )
         if logical_capability != "unmapped":
             if logical_capability in mapped_logical_capabilities:
                 raise NexusMcpError("HOST_CAPABILITY_DUPLICATE_CONFLICT", "Host execution mapping is duplicated")
@@ -293,10 +318,31 @@ def parse_host_capability_snapshot(
             raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Callable Host capability lacks current tool evidence")
         if availability == "skill_loadable_current_turn" and "current_turn_skill_metadata" not in evidence:
             raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Loadable Host Skill lacks current metadata evidence")
-        if logical_capability != "unmapped" and (
-            availability != "tool_callable_current_turn" or "current_turn_tool_catalog" not in evidence
+        if execution_binding_kind == DIRECT_HOST_TOOL_BINDING and (
+            resource_kind != "tool"
+            or availability != "tool_callable_current_turn"
+            or "current_turn_tool_catalog" not in evidence
         ):
-            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Mapped Host capability is not currently callable")
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Direct Host tool binding lacks current tool evidence")
+        if execution_binding_kind == HOST_SKILL_WORKFLOW_BINDING and (
+            resource_kind != "skill"
+            or availability != "skill_workflow_ready_current_turn"
+            or not {
+                "current_turn_skill_metadata",
+                "current_turn_skill_instructions",
+                "current_turn_tool_catalog",
+                "current_turn_execution_substrate",
+            } <= set(evidence)
+        ):
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Host Skill workflow binding lacks current Skill or execution-substrate evidence")
+        if availability == "tool_callable_current_turn" and execution_binding_kind != DIRECT_HOST_TOOL_BINDING:
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Callable Host tool lacks a direct-tool binding")
+        if availability == "skill_workflow_ready_current_turn" and execution_binding_kind != HOST_SKILL_WORKFLOW_BINDING:
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Ready Host Skill workflow lacks a workflow binding")
+        if execution_binding_kind == NO_EXECUTION_BINDING and availability in {
+            "tool_callable_current_turn", "skill_workflow_ready_current_turn",
+        }:
+            raise NexusMcpError("HOST_CAPABILITY_UNVERIFIED", "Executable Host capability lacks an execution binding")
         capabilities.append(HostCapability(
             capability_id=capability_id,
             provider_id=provider_id,
@@ -306,6 +352,7 @@ def parse_host_capability_snapshot(
             evidence=tuple(sorted(evidence)),
             interfaces=tuple(sorted(interfaces)),
             logical_capability=str(logical_capability),
+            execution_binding_kind=str(execution_binding_kind),
         ))
     capabilities.sort(key=lambda entry: (entry.provider_id.casefold(), entry.capability_id.casefold()))
     return HostCapabilitySnapshot(
@@ -367,6 +414,7 @@ ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA: dict[str, Any] = {
                 "required": [
                     "capability_id", "provider_id", "display_name", "resource_kind",
                     "availability", "evidence", "interfaces", "logical_capability",
+                    "execution_binding_kind",
                 ],
                 "properties": {
                     "capability_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]{0,127}$"},
@@ -383,6 +431,7 @@ ASSESS_HOST_CAPABILITIES_INPUT_SCHEMA: dict[str, Any] = {
                         "items": {"type": "string", "enum": sorted(PRESENTATION_INTERFACES)},
                     },
                     "logical_capability": {"type": "string", "enum": sorted(HOST_LOGICAL_CAPABILITIES)},
+                    "execution_binding_kind": {"type": "string", "enum": sorted(HOST_EXECUTION_BINDING_KINDS)},
                 },
             },
         },

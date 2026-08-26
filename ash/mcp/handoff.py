@@ -32,6 +32,27 @@ HANDOFF_FIELDS = {
 }
 
 
+HOST_ARTIFACT_REF_PREFIX = "host-artifact:"
+
+
+def is_valid_opaque_artifact_ref(value: Any) -> bool:
+    """Accept only a bounded Host-issued identifier, never a path or URL."""
+    if not isinstance(value, str) or not value.startswith(HOST_ARTIFACT_REF_PREFIX):
+        return False
+    identifier = value[len(HOST_ARTIFACT_REF_PREFIX):]
+    return (
+        1 <= len(value) <= 256
+        and bool(identifier)
+        and identifier[0].isascii()
+        and identifier[0].isalnum()
+        and all(
+            character.isascii()
+            and (character.isalnum() or character in "._-")
+            for character in identifier
+        )
+    )
+
+
 def issue_window(now: datetime | None = None) -> tuple[str, str]:
     """Return UTC issue/expiry timestamps for one host execution intent."""
     current = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
@@ -162,7 +183,11 @@ def validate_host_receipt(
     selected = handoff.get("selected_skill")
     if not isinstance(selected, Mapping) or receipt.get("selected_skill") != selected.get("name") or receipt.get("content_sha256") != selected.get("content_sha256"):
         return "SKILL_SUBSTITUTION_REJECTED"
-    if receipt.get("host_capability") != handoff.get("logical_host_capability"):
+    result_code = receipt.get("result_code")
+    if result_code == "HOST_CAPABILITY_UNAVAILABLE":
+        if receipt.get("host_capability") != "unavailable":
+            return "HANDOFF_MALFORMED"
+    elif receipt.get("host_capability") != handoff.get("logical_host_capability"):
         return "HOST_CAPABILITY_UNAVAILABLE"
     profile = handoff.get("host_execution_profile")
     if not isinstance(profile, Mapping) or profile.get("mapping_id") != PRESENTATIONS_MAPPING_ID:
@@ -172,26 +197,57 @@ def validate_host_receipt(
     states = receipt.get("states")
     if not isinstance(states, list) or not all(isinstance(item, str) for item in states):
         return "HANDOFF_MALFORMED"
-    required_prefix = ["selected", "loaded_verified", "host_eligible", "execution_requested"]
-    if states[:4] != required_prefix:
-        return "HANDOFF_MALFORMED"
-    result_code = receipt.get("result_code")
     if not isinstance(result_code, str):
         return "HANDOFF_MALFORMED"
-    if result_code == "HOST_CAPABILITY_UNAVAILABLE":
-        return "HOST_CAPABILITY_UNAVAILABLE"
-    if result_code == "EXECUTION_REFUSED":
-        return "EXECUTION_REFUSED"
-    if result_code == "ARTIFACT_GENERATION_FAILED":
-        return "ARTIFACT_GENERATION_FAILED"
-    if result_code == "VALIDATION_FAILED":
-        return "VALIDATION_FAILED"
-    if result_code != "EXECUTION_SUCCEEDED":
+    if (
+        "input_resolution" in receipt
+        and receipt.get("input_resolution") != "safe_defaults_applied"
+    ):
+        return "INPUT_RESOLUTION_UNVERIFIED"
+    canonical_states = {
+        "HOST_CAPABILITY_UNAVAILABLE": [
+            "selected", "loaded_verified", "execution_requested",
+            "host_capability_unavailable",
+        ],
+        "HOST_EXECUTION_BINDING_UNAVAILABLE": [
+            "selected", "loaded_verified", "execution_requested",
+            "host_execution_binding_unavailable",
+        ],
+        "EXECUTION_REFUSED": [
+            "selected", "loaded_verified", "host_eligible",
+            "execution_requested", "execution_refused",
+        ],
+        "ARTIFACT_GENERATION_FAILED": [
+            "selected", "loaded_verified", "host_eligible",
+            "execution_requested", "execution_started", "execution_failed",
+        ],
+        "VALIDATION_FAILED": [
+            "selected", "loaded_verified", "host_eligible",
+            "execution_requested", "execution_started", "execution_succeeded",
+            "validation_failed",
+        ],
+        "EXECUTION_SUCCEEDED": [
+            "selected", "loaded_verified", "host_eligible",
+            "execution_requested", "execution_started", "execution_succeeded",
+            "validation_passed",
+        ],
+    }
+    expected_states = canonical_states.get(result_code)
+    if expected_states is None:
         return "HANDOFF_MALFORMED"
+    artifact_results = {"EXECUTION_SUCCEEDED", "VALIDATION_FAILED"}
+    if result_code in artifact_results:
+        if (
+            not is_valid_opaque_artifact_ref(receipt.get("artifact_ref"))
+            or receipt.get("artifact_kind") != "pptx"
+        ):
+            return "ARTIFACT_MISSING"
+    elif "artifact_ref" in receipt or "artifact_kind" in receipt:
+        return "HANDOFF_MALFORMED"
+    if states != expected_states:
+        return "HANDOFF_MALFORMED"
+    if result_code != "EXECUTION_SUCCEEDED":
+        return result_code
     if receipt.get("input_resolution") != "safe_defaults_applied":
         return "INPUT_RESOLUTION_UNVERIFIED"
-    if not isinstance(receipt.get("artifact_ref"), str) or not receipt["artifact_ref"] or receipt.get("artifact_kind") != "pptx":
-        return "ARTIFACT_MISSING"
-    if states[-2:] != ["execution_succeeded", "validation_passed"]:
-        return "HANDOFF_MALFORMED"
     return "EXECUTION_SUCCEEDED"
