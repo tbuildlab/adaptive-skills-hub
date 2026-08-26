@@ -140,16 +140,16 @@
     "sha256": "d8d867d6f15a6f8a9d85927b112964486a623c036c7371354409dccd926c32c6"
   },
   "docs/nexus-runtime-r4-host-handoff.md": {
-    "bytes": 8711,
-    "sha256": "dcba5531c2213f8103464931832fe03cec2b2b6ce6836406b0d255f42973fc6d"
+    "bytes": 9315,
+    "sha256": "2ab9e9322904176eb6ed70b64d33cede39729885cf95afda3ec3914342aab1a2"
   },
   "docs/nexus-runtime-r5-adaptive-enhancement.md": {
-    "bytes": 7267,
-    "sha256": "e4a2c04a7ed89f28544976973705a397f0bdab7d7aa2e22a61950bf3ff9849fd"
+    "bytes": 9689,
+    "sha256": "209b3824fe6535bb298652dc8b49d8410ec5e1407f1fb4d38b823f97eeb7e62c"
   },
   "docs/nexus-runtime-r5-host-capability-inventory.md": {
-    "bytes": 11798,
-    "sha256": "4c49bc0a366f475b0eab0cdd0ba42ad3c811ab88b25c587601b0fdef9a103902"
+    "bytes": 13151,
+    "sha256": "ffef98d9e4afb678912152b536aae7b6251b60f6db8d82bae30c918556f3135a"
   },
   "docs/portable-installation.md": {
     "bytes": 2133,
@@ -196,8 +196,8 @@
     "sha256": "733e9dba48ca644446423036c6a814a2b7142ce1f609e3ee2bb6f1e926a68f69"
   },
   "README.md": {
-    "bytes": 7826,
-    "sha256": "1c215b6268305c8a48d97ec6f22b1c030a35c0f2317616fea6801213ba80afc6"
+    "bytes": 7947,
+    "sha256": "af01a1e5fd8a3dd11cc7fad5a2d8eae0d24d2c8c72de5d38252882927224df06"
   },
   "release/VERSION": {
     "bytes": 11,

@@ -142,10 +142,12 @@ See [docs/v1.2-usage.md](docs/v1.2-usage.md) for context budgets, evidence
 packets, validation, re-planning, safety boundaries, and optional project-level
 Codex integration.
 
-## Runtime R4/R5 development layers
+## Runtime R4/R5 accepted integration layer
 
-R4 and R5 are separate, unmerged development layers over the frozen Core.
-R4 supplies a redacted Host-owned Presentations execution handoff; R5 adds at
+The `runtime-r5-final` baseline is the human-accepted, frozen integration
+layer over the frozen Core and Desktop Plugin. It remains separate from Core
+versioning and does not begin V1.3. R4 supplies a redacted Host-owned
+Presentations execution handoff; R5 adds at
 most one Host-owned, copy-on-write post-validation presentation refinement and
 a bounded assessment of the capability metadata already surfaced by the Host
 in the current conversation. This assessment is explicitly incomplete and is

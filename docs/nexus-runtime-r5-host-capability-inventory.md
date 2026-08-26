@@ -1,7 +1,10 @@
 # Nexus Runtime R5 — Host Capability Inventory
 
-**Status:** development pilot only. This additive protocol does not modify the
-frozen Core, R1–R4 baselines, RC1–RC6, or any final tag.
+**Status:** human accepted as the bounded inventory component of
+`runtime-r5-final`. This additive protocol does not modify the frozen Core,
+R1–R3 baselines, RC1–RC6, or any earlier final tag. The R4 Host handoff is
+accepted as a component of the same R5 baseline rather than through a separate
+R4 tag.
 
 ## Finding and pilot.3 defect
 
@@ -209,3 +212,25 @@ Desktop can prove which capability metadata is surfaced in a real conversation
 and whether the Host actually executes the mapped capability. Human acceptance
 must inspect the inventory trace, then require the existing real editable
 `.pptx`, open/render validation, and execution receipt.
+
+## Pilot.4 accepted inventory evidence
+
+The successful Desktop trace used inventory scope
+`current_turn_host_visible_subset` and completeness
+`not_globally_enumerated`. The restricted assessment considered and selected
+only the relevant `presentations` capability. Its execution
+binding was the reviewed `host_skill_workflow -> chatgpt.presentations ->
+nexus.host-map.presentations.v1` mapping. The subsequent Host receipt proved
+actual execution and validation; the inventory assessment itself did not claim
+those states.
+
+Ppt Master was visible in the Host skill directory but was not included in the
+restricted snapshot. It was therefore not considered, selected, rejected, or
+executed by Nexus. DashAI PPT (`dashiai-ppt`) was visible but disabled and was
+also absent from the snapshot; it likewise was not considered, selected,
+rejected, or executed. Neither name is an authorization rule, and the accepted
+freeze does not expand Nexus into unsupported global Host enumeration.
+
+Known limitation: the protocol truthfully reasons only over current-turn
+Host-surfaced metadata. Capabilities outside that subset are `not observed`,
+not implicitly unavailable, redundant, or rejected.

@@ -1,9 +1,11 @@
 # Nexus Runtime R4 — Host Skill Execution Handoff
 
-**Status:** development branch only; not merged, frozen, or released.  R4 is a
-runtime integration layer over frozen Nexus V1.2, Runtime R1/R2/R3, Desktop
-Plugin final, and RC6 distribution behavior.  It changes none of their
-selection, ranking, installation, or execution authority.
+**Status:** accepted as the Host execution component of the human-validated
+`runtime-r5-final` integration baseline. There is no separate
+`runtime-r4-final` tag. R4 is a runtime integration layer over frozen Nexus
+V1.2, Runtime R1/R2/R3, Desktop Plugin final, and RC6 distribution behavior.
+It changes none of their selection, ranking, installation, or execution
+authority.
 
 ## Scope
 
@@ -134,8 +136,11 @@ selected
 -> execution_started
 -> execution_succeeded | execution_failed
 -> validation_passed | validation_failed
--> reported
 ```
+
+`reported` may be used by the Host as an outer conversational lifecycle label,
+but it is not a normative R4 receipt field, is not required to be serialized,
+and is not an acceptance gate.
 
 If `chatgpt.presentations` is unavailable, it must return
 `HOST_CAPABILITY_UNAVAILABLE` and must not substitute Canva, HTML, another
@@ -179,14 +184,20 @@ Automated R4 coverage includes:
 - MCP stdio protocol registration and read-only annotations;
 - existing V1.1/V1.2/R1/R2/R3/plugin/distribution regressions.
 
-## Required human Desktop acceptance
+## Human Desktop acceptance
 
-In a fresh ChatGPT Desktop conversation with the R4 plugin installed, submit
-exactly:
+In a fresh ChatGPT Desktop conversation with the R5 pilot.4 plugin installed,
+the user submitted exactly:
 
 ```text
 @Nexus Create an editable PowerPoint presentation about digital transformation in business.
 ```
+
+The accepted trace recorded `Presentations` selected and `loaded_verified`;
+the binding `host_skill_workflow -> chatgpt.presentations ->
+nexus.host-map.presentations.v1`; `HOST_HANDOFF_READY`; actual Host workflow
+execution; and a real editable `.pptx` that passed artifact creation,
+editability, and open/render validation.
 
 Acceptance requires evidence that the trace contains `Presentations` selected,
 `loaded_verified`, a valid R4 handoff, host eligibility, a genuine host-native

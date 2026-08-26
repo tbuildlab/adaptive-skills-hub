@@ -1,9 +1,10 @@
 # Nexus Runtime R5 — Adaptive Enhancement Loop
 
-**Status:** development branch only. R5 is not merged, frozen, tagged, or
-released. It layers a bounded, Host-owned post-execution enhancement pass over
-the accepted R4 Presentations handoff. It does not change V1.1, V1.2 planning,
-R1/R2/R3, Desktop Plugin final, RC1–RC6, or any frozen tag.
+**Status:** Desktop human accepted and frozen as `runtime-r5-final`. R5 remains
+an integration layer rather than a Core V1.3 release. It layers a bounded,
+Host-owned post-execution enhancement pass over the accepted R4 Presentations
+handoff. It does not change V1.1, V1.2 planning, R1/R2/R3, Desktop Plugin
+final, RC1–RC6, or any earlier frozen tag.
 
 ## Scope and non-goals
 
@@ -49,8 +50,12 @@ The primary R4 trace remains independent and authoritative:
 ```text
 selected -> loaded_verified -> host_eligible -> execution_requested
 -> execution_started -> execution_succeeded|execution_failed
--> validation_passed|validation_failed -> reported
+-> validation_passed|validation_failed
 ```
+
+For the primary R4 receipt, `reported` is only an optional outer
+conversational lifecycle label, not a normative serialized state or acceptance
+gate.
 
 R5 adds a distinct trace only after that primary success:
 
@@ -152,9 +157,10 @@ leakage, host-unavailable and refusal paths, no artifact, mapping/candidate
 substitution, primary-receipt mismatch, expired/replayed handoffs, validation
 failure, rollback restoration/unavailability, and R4/MCP regressions.
 
-## Required Desktop acceptance
+## Final Desktop acceptance — pilot.4
 
-After a future local R5 pilot is installed, use the accepted R4 task:
+The accepted local pilot was `0.1.0-r5.pilot.4`. In a fresh ChatGPT Desktop
+conversation, the user submitted the accepted R4 task:
 
 ```text
 @Nexus Create an editable PowerPoint presentation about digital transformation in business.
@@ -165,6 +171,45 @@ clearly observable allowlisted issue exists, it additionally requires an R5
 copy-on-write checkpoint, actual Host-native Presentations refinement, a new
 `host-artifact:<opaque-token>` reference, open/render revalidation, and a
 truthful R5 receipt. Paths and URI-like artifact references are never accepted.
-If no
-high-value safe enhancement exists, retaining the validated primary artifact is
-the correct R5 result.
+If no high-value safe enhancement exists, retaining the validated primary
+artifact is the correct R5 result.
+
+The authoritative human trace recorded:
+
+- inventory scope `current_turn_host_visible_subset` with completeness
+  `not_globally_enumerated`;
+- considered and selected capability `presentations`, with no rejected
+  capability in that restricted snapshot;
+- provider `openai-primary-runtime`, resource `skill:8647bd4b96a0d908`, and
+  logical capability `presentations`;
+- execution binding `host_skill_workflow -> chatgpt.presentations ->
+  nexus.host-map.presentations.v1`;
+- load state `loaded_verified` and Skill content SHA-256
+  `06e8f0547ea0c9cc35be7deffb25edf20b94f07cbeba4327bd8a76d5d1a3b843`;
+- handoff ID `2d2ae4af-ed16-4a2b-ba20-eccbcc1a63cb`, result
+  `HOST_HANDOFF_READY`, and input resolution `safe_defaults_applied`;
+- state chain `selected -> loaded_verified -> host_eligible ->
+  execution_requested -> execution_started -> execution_succeeded ->
+  validation_passed`;
+- passed checks `artifact_created`, `artifact_editable`, and
+  `presentation_open_render`; and
+- real artifact `digital-transformation-in-business.pptx`, SHA-256
+  `8C077A747F4CAA609D1EF53FA6A622FE52C18C4B52DD18CAC13091C93230C8D6`.
+
+This is evidence of actual Host Skill Workflow execution, not selection,
+loading, planning, or fallback. Safe defaults resolved ordinary audience,
+page-count, and style omissions without clarification. No additional enhancer
+or reviewer was surfaced as a considered candidate in the restricted
+assessment, so none was selected or executed; the validated primary artifact
+was retained.
+
+`reported` is not a normative R4 receipt state. `adaptive_path.status` was not
+serialized, and the final receipt omitted `fallback`; the assessment, plan,
+and handoff had already recorded fallback as `not_needed`. These accepted
+schema facts are not retroactively changed for the freeze.
+
+Final automated evidence for the same baseline is 190/190 unit and protocol
+tests passing with four intentional skips, 68/68 targeted R4/R5/Plugin
+security tests passing, 29/29 independent protocol review tests passing, and
+the final smoke suite passing 10/10. Manifest integrity, release isolation,
+secret/private-path scans, and frozen-baseline checks passed.
