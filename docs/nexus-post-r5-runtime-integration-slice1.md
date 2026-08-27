@@ -1,7 +1,8 @@
 # Nexus Post-R5 Runtime Integration — Slice 1
 
-**Status:** development checkpoint, ready for review after validation. This is
-not a frozen or accepted release and does not change any existing final tag.
+**Status:** independently reviewed, accepted, and frozen as
+`post-r5-runtime-integration-slice1-final`. This additive integration baseline
+does not move or replace `runtime-r5-final` or any earlier final/RC tag.
 
 ## Purpose
 
@@ -132,3 +133,42 @@ shell, network, install, update, or delegation runtime is added.
 No Skill Scout, new upstream, automatic install/update, unrestricted
 reviewer/enhancer execution, Agent Runtime, Remote MCP, OAuth, R6, Slice 2, or
 V1.3 work is included.
+
+## Final independent acceptance
+
+The final review rechecked all previously identified blockers and the complete
+diff from the accepted R5 baseline. One additional blocker was reproduced:
+persisted catalog metadata could claim `host_native` and
+`observed_current_turn=true`, causing a non-authorizing but misleading selected
+state without fresh Host evidence. The accepted repair makes every static
+`host_native` record unavailable and requires an internal R5 mapping before a
+Host-native record can enter a selected state. A regression now covers both
+the static-catalog path and a direct unmapped selection attempt.
+
+Final validation on 2026-08-27 recorded:
+
+- 230/230 full unit/protocol tests successful, with four intentional
+  environment skips;
+- 29/29 focused Capability Foundation/runtime-decision tests successful;
+- 73/73 targeted R4/R5/Desktop Plugin tests successful;
+- 53/53 security/protocol tests successful, with one Windows symlink-privilege
+  skip included in that suite;
+- 21/21 distribution tests successful, with three intentional environment
+  skips;
+- stable single reads of the integrity manifest, catalog, and upstream
+  registry, with the decision parsed from those verified byte buffers;
+- static manifest reproducibility and per-entry integrity successful;
+- no execution/network authority, secret/private-path leakage, generated
+  runtime state, or packaging regression in the Slice 1 diff; and
+- unchanged R5 v3 response fields, Presentations mapping, current-turn Host
+  evidence requirement, TTL/replay gates, handoff, artifact, and receipt
+  contracts.
+
+The legacy final smoke remains 6/10 in the current Host-managed environment.
+The identical failures (`document`, `spreadsheet`, `pdf`, and the dependent
+`research_document_chain`) reproduce from the unchanged pre-Slice-1 checkpoint
+`65304b7cd2d787f06b8054ac8e54dc05981e5cda`. Its persisted index references
+Host Plugin cache version `26.819.11345`, while the Host currently exposes a
+newer cache version and the indexed Skill files no longer exist. Nexus does not
+fabricate or rewrite those Host-managed files; this environmental cache drift
+is a recorded non-blocking limitation, not a Slice 1 regression.

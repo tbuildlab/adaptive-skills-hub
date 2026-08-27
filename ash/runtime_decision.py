@@ -304,6 +304,16 @@ def prepare_catalog_runtime_candidates(
     prepared: list[dict[str, Any]] = []
     for original in validated["capabilities"]:
         record = validate_capability(original)
+        # Current-turn Host evidence is ephemeral and can only enter through
+        # ``host_runtime_decision`` after the R5 ticket/snapshot gate.  A
+        # persisted catalog record cannot make that assertion authoritative,
+        # even when its static fields claim a current-turn observation.
+        if record["execution"]["mechanism"] == "host_native":
+            prepared.append(_unavailable(
+                record,
+                "static_catalog_cannot_establish_host_eligibility",
+            ))
+            continue
         if not record["execution"]["directly_executable"]:
             prepared.append(record)
             continue
@@ -403,6 +413,12 @@ def build_runtime_decision(
         raise RuntimeDecisionError("runtime Host mapping references an unknown capability")
     if mappings and not allow_internal_host_mappings:
         raise RuntimeDecisionError("runtime Host mapping must come from the R5 internal assessment")
+    if any(
+        record_by_id[identifier]["execution"]["mechanism"] == "host_native"
+        and identifier not in mappings
+        for identifier in selected_ids
+    ):
+        raise RuntimeDecisionError("runtime Host-native selection lacks an R5 internal mapping")
 
     considered = [
         _safe_capability_decision(

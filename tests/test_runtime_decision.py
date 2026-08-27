@@ -275,6 +275,62 @@ class RuntimeDecisionTests(unittest.TestCase):
             item["capability_id"] for item in result["selected_capabilities"]
         ])
 
+    def test_static_catalog_cannot_manufacture_current_turn_host_eligibility(self) -> None:
+        catalog = json.loads(CATALOG.read_text(encoding="utf-8"))
+        upstream = json.loads(UPSTREAM.read_text(encoding="utf-8"))
+        emil = next(
+            item for item in catalog["capabilities"]
+            if item["capability_id"] == "skill/emil-design-eng"
+        )
+        emil["execution"]["mechanism"] = "host_native"
+        emil["host_visibility"] = {
+            "scope": "current_turn_host_visible_subset",
+            "enumeration": "not_globally_enumerated",
+            "observed_current_turn": True,
+        }
+        prepared = prepare_catalog_runtime_candidates(
+            catalog,
+            upstream,
+            local_roots={"emilkowalski-skills": LIBRARY},
+        )
+        static_host_claim = next(
+            item for item in prepared
+            if item["capability_id"] == "skill/emil-design-eng"
+        )
+        self.assertFalse(static_host_claim["execution"]["directly_executable"])
+        self.assertEqual(static_host_claim["availability"]["state"], "unavailable")
+        self.assertEqual(
+            static_host_claim["availability"]["reason"],
+            "static_catalog_cannot_establish_host_eligibility",
+        )
+
+        request = parse_runtime_requirements(requirements(
+            mechanisms=["host_native"],
+        ))
+        result = build_runtime_decision(request, prepared)
+        self.assertEqual(result["selected_capabilities"], [])
+        considered = next(
+            item for item in result["considered_capabilities"]
+            if item["capability_id"] == "skill/emil-design-eng"
+        )
+        self.assertEqual(considered["execution_eligibility"], "not_execution_eligible")
+
+        forged_direct = executable_capability(
+            "skill/forged-host",
+            outputs=["frontend_implementation"],
+            validations=["visual_review", "accessibility_review"],
+            roles=["primary_creator"],
+        )
+        forged_direct["execution"]["mechanism"] = "host_native"
+        forged_direct["domains"] = ["frontend"]
+        forged_direct["host_visibility"] = {
+            "scope": "current_turn_host_visible_subset",
+            "enumeration": "not_globally_enumerated",
+            "observed_current_turn": True,
+        }
+        with self.assertRaisesRegex(RuntimeDecisionError, "lacks an R5 internal mapping"):
+            build_runtime_decision(request, [forged_direct])
+
     def test_nonpresentation_host_native_gap_does_not_route_to_r5_presentations(self) -> None:
         request = requirements(
             category="document",
