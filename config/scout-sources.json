@@ -1,0 +1,25 @@
+{
+  "schema_version": "nexus.scout-sources.v1",
+  "policy": "Read-only candidate metadata only; no install, no enable, no load, no MCP connection, no execution, and no lifecycle promotion.",
+  "sources": [
+    {
+      "source_id": "ecosystem-gap-scan",
+      "kind": "research_snapshot",
+      "enabled": true,
+      "default": true,
+      "trust_state": "manifest_verified_research_evidence_only",
+      "relative_path": "research/nexus-ecosystem-gap-scan.json"
+    },
+    {
+      "source_id": "official-mcp-registry",
+      "kind": "mcp_registry",
+      "enabled": true,
+      "default": false,
+      "trust_state": "official_registry_metadata_not_publisher_execution_trust",
+      "canonical_url": "https://registry.modelcontextprotocol.io/v0.1/servers",
+      "allowed_hosts": [
+        "registry.modelcontextprotocol.io"
+      ]
+    }
+  ]
+}

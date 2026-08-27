@@ -196,6 +196,22 @@ foundation](docs/nexus-capability-foundation.md), [Runtime integration Slice
 1](docs/nexus-post-r5-runtime-integration-slice1.md), and the [bounded Agent
 task contract](docs/nexus-agent-runtime-contract.md).
 
+## Post-R5 read-only Skill/MCP Scout (Slice 2 development candidate)
+
+The Slice 2 branch adds `nexus.scout_candidates` only at the bounded
+`CAPABILITY_NOT_COVERED` boundary. It independently reruns the trusted Slice 1
+decision, then may inspect manifest-approved Gap Scan evidence, the fixed
+official MCP Registry endpoint, or an explicitly reviewed Agent Skills
+well-known index. Every external description and `SKILL.md` body remains
+untrusted data.
+
+The result is a provenance-aware recommendation receipt, not a capability
+selection or installation. All candidates remain `not_installed`,
+`not_enabled`, `not_loaded`, `not_executed`, and `not_validated`, with no MCP
+connection, Host mapping, lifecycle-promotion, or execution authority. Trusted
+coverage and the R5 `HOST_EVIDENCE_REQUIRED` path never invoke Scout. See
+[Runtime integration Slice 2](docs/nexus-post-r5-runtime-integration-slice2.md).
+
 ## Runtime R2 local MCP
 
 Runtime R2 is a separately configured, local stdio-only MCP adapter. Later

@@ -16,6 +16,7 @@ SENSITIVE_TOKENS = ("credential", "token", "oauth", "session", "cookie", "privat
 # but it is not a portable-install artifact.  An allowlist prevents old local
 # developer paths or machine-specific evidence from silently entering a zip.
 ALLOWED_ROOT_FILES = {"SKILL.md", "sources.json", "requirements-r2-mcp.txt", "requirements-r2-mcp.lock"}
+ALLOWED_RESEARCH = {"research/nexus-ecosystem-gap-scan.json"}
 ALLOWED_DIRECTORIES = {"ash", "config", "plugins", "scripts", "tests", ".agents"}
 ALLOWED_DOCS = {
     "docs/nexus-desktop-plugin-pilot.md",
@@ -26,6 +27,7 @@ ALLOWED_DOCS = {
     "docs/upstream-source-registry.md",
     "docs/nexus-capability-foundation.md",
     "docs/nexus-post-r5-runtime-integration-slice1.md",
+    "docs/nexus-post-r5-runtime-integration-slice2.md",
     "docs/nexus-agent-runtime-contract.md",
 }
 
@@ -37,6 +39,7 @@ def allowed(path: Path) -> bool:
         path.is_file()
         and (
             relative.as_posix() in ALLOWED_ROOT_FILES
+            or relative.as_posix() in ALLOWED_RESEARCH
             or relative.as_posix() in ALLOWED_DOCS
             or relative.parts[0] in ALLOWED_DIRECTORIES
         )

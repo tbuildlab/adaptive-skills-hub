@@ -70,7 +70,7 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     initialized = await session.initialize()
                     self.assertTrue(initialized.server_info.name.startswith("nexus"))
                     tools = await session.list_tools()
-                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.route_capabilities", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
+                    self.assertEqual([item.name for item in tools.tools], ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.route_capabilities", "nexus.scout_candidates", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"])
                     metadata = {item.name: item for item in tools.tools}
                     self.assertEqual(metadata["nexus.health"].title, "Nexus status")
                     self.assertIn("diagnostics", metadata["nexus.health"].description)
@@ -86,6 +86,9 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(metadata["nexus.route_capabilities"].title, "Nexus bounded capability decision")
                     self.assertIn("non-authorizing", metadata["nexus.route_capabilities"].description)
                     self.assertIn("cannot discover private Host state", metadata["nexus.route_capabilities"].description)
+                    self.assertEqual(metadata["nexus.scout_candidates"].title, "Nexus read-only Skill/MCP Scout")
+                    self.assertIn("CAPABILITY_NOT_COVERED", metadata["nexus.scout_candidates"].description)
+                    self.assertIn("no install", metadata["nexus.scout_candidates"].description)
                     self.assertEqual(metadata["nexus.begin_host_capability_assessment"].title, "Nexus Host inventory ticket")
                     self.assertIn("single-use ticket", metadata["nexus.begin_host_capability_assessment"].description)
                     self.assertEqual(metadata["nexus.assess_host_capabilities"].title, "Nexus Host capability assessment")
@@ -105,12 +108,16 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                                 "nexus.assess_host_capabilities",
                             },
                         )
-                        self.assertFalse(tool.annotations.open_world_hint)
+                        self.assertEqual(
+                            tool.annotations.open_world_hint,
+                            tool.name == "nexus.scout_candidates",
+                        )
                     health = await session.call_tool("nexus.health", {})
                     self.assertFalse(health.is_error)
                     health_payload = self._payload(health)
                     self.assertEqual(health_payload["transport"], "stdio")
                     self.assertIn("nexus.begin_host_capability_assessment", health_payload["supported_tools"])
+                    self.assertIn("nexus.scout_candidates", health_payload["supported_tools"])
                     self.assertFalse(health_payload["capabilities"]["persistent_state"])
                     self.assertEqual(
                         health_payload["capabilities"]["ephemeral_security_state"],
@@ -135,6 +142,27 @@ class McpProtocolTests(unittest.IsolatedAsyncioTestCase):
                     self.assertEqual(routed_payload["result_code"], "HOST_EVIDENCE_REQUIRED")
                     self.assertEqual(routed_payload["selected_capabilities"], [])
                     self.assertEqual(routed_payload["security_result"]["mcp_execution_authority"], "none")
+                    scouted = await session.call_tool("nexus.scout_candidates", {
+                        "schema_version": "nexus.candidate-scout-request.v1",
+                        "runtime_requirements": {
+                            "schema_version": "nexus.runtime-requirements.v1",
+                            "requirements_id": "req:protocol-scout",
+                            "requirements_version": "1",
+                            "task_category": "mcp",
+                            "domains": ["skill-standard"],
+                            "outputs": ["candidate-recommendation"],
+                            "validation_requirements": ["provenance-review"],
+                            "allowed_permissions": ["read_metadata"],
+                            "allowed_execution_mechanisms": ["nexus_local_read_plan"],
+                        },
+                        "source_ids": ["ecosystem-gap-scan"],
+                    })
+                    self.assertFalse(scouted.is_error)
+                    scout_payload = self._payload(scouted)
+                    self.assertEqual(scout_payload["invoked_reason"], "trusted_capability_gap_capability_not_covered")
+                    self.assertEqual(scout_payload["security_result"]["execution_authority"], "none")
+                    self.assertEqual(scout_payload["authority_states"]["installation"], "not_installed")
+                    self.assertTrue(all(item["execution_mechanism"] == "none" for item in scout_payload["candidates"]))
                     ticket_result = await session.call_tool("nexus.begin_host_capability_assessment", {
                         "schema_version": "nexus.host-capability-ticket-request.v1",
                         "host_surface": "chatgpt_desktop",

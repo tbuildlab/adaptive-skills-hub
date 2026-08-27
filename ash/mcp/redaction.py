@@ -48,7 +48,7 @@ def safe_health() -> dict[str, Any]:
             "persistent_state": False,
             "ephemeral_security_state": "bounded_runtime_local",
         },
-        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.route_capabilities", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
+        "supported_tools": ["nexus.health", "nexus.discover_capabilities", "nexus.plan_task", "nexus.route_capabilities", "nexus.scout_candidates", "nexus.begin_host_capability_assessment", "nexus.assess_host_capabilities", "nexus.prepare_host_handoff", "nexus.prepare_enhancement_handoff"],
         "core_baseline": "Nexus V1.2 plus Runtime R1",
     })
 

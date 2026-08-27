@@ -17,6 +17,7 @@ from ash.runtime_decision import (
     RuntimeRequirements,
     parse_runtime_requirements,
 )
+from ash.scout import MAX_SOURCE_IDS, SCOUT_REQUEST_SCHEMA_VERSION
 
 from .host_inventory import (
     HOST_CAPABILITY_TICKET_REQUEST_SCHEMA_VERSION,
@@ -443,6 +444,25 @@ RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA: dict[str, Any] = {
             "type": "array", "minItems": 1, "maxItems": len(RUNTIME_SAFE_MECHANISMS),
             "uniqueItems": True,
             "items": {"type": "string", "enum": sorted(RUNTIME_SAFE_MECHANISMS)},
+        },
+    },
+}
+SCOUT_CANDIDATES_INPUT_SCHEMA: dict[str, Any] = {
+    "type": "object",
+    "additionalProperties": False,
+    "required": ["schema_version", "runtime_requirements", "source_ids"],
+    "properties": {
+        "schema_version": {"const": SCOUT_REQUEST_SCHEMA_VERSION},
+        "runtime_requirements": RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA,
+        "source_ids": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": MAX_SOURCE_IDS,
+            "uniqueItems": True,
+            "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9][a-z0-9._-]{0,63}$",
+            },
         },
     },
 }

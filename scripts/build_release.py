@@ -55,6 +55,7 @@ EXTRA_FILES = {
     "docs/license-inventory.md",
     "release/VERSION",
     "release/windows-runtime.json",
+    "research/nexus-ecosystem-gap-scan.json",
 }
 SENSITIVE_PARTS = ("credential", "token", "oauth", "session", "cookie", "private_key")
 VERSION_PATTERN = re.compile(r"^[0-9]+\.[0-9]+\.[0-9]+(?:-[0-9A-Za-z.-]+)?$")

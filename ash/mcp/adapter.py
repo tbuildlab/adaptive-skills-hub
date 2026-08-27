@@ -9,7 +9,8 @@ from typing import Any, Callable, Mapping
 from uuid import uuid4
 
 from ash.discovery import build_index
-from ash.runtime_decision import RuntimeCapabilityAdapter, RuntimeDecisionError
+from ash.runtime_decision import RuntimeCapabilityAdapter, RuntimeDecisionError, parse_runtime_requirements
+from ash.scout import ScoutError, ScoutRuntimeAdapter, parse_scout_request
 from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
@@ -59,6 +60,7 @@ class NexusMcpRuntime:
         clock: Callable[[], datetime] | None = None,
         monotonic_clock: Callable[[], float] | None = None,
         capability_adapter: RuntimeCapabilityAdapter | None = None,
+        scout_adapter: ScoutRuntimeAdapter | None = None,
     ) -> None:
         self.authorizer = authorizer
         self.catalog_builder = catalog_builder or self._build_catalog
@@ -78,6 +80,10 @@ class NexusMcpRuntime:
                 # this sibling library and therefore reports it unavailable.
                 "emilkowalski-skills": ROOT.parent / "adaptive-skills-library",
             },
+        )
+        self.scout_adapter = scout_adapter or ScoutRuntimeAdapter(
+            self.capability_adapter,
+            root=ROOT,
         )
 
     @staticmethod
@@ -110,6 +116,17 @@ class NexusMcpRuntime:
             raise NexusMcpError(
                 "RUNTIME_CAPABILITY_DECISION_BLOCKED",
                 "runtime capability decision failed closed",
+            ) from exc
+
+    def scout_candidates(self, arguments: Any) -> dict[str, Any]:
+        """Discover recommendation-only candidates after an independently rechecked gap."""
+        try:
+            request = parse_scout_request(arguments, parse_requirements=parse_runtime_requirements)
+            return ensure_response_limit(self.scout_adapter.scout(request))
+        except ScoutError as exc:
+            raise NexusMcpError(
+                "SCOUT_ADMISSION_BLOCKED",
+                "read-only candidate Scout failed closed",
             ) from exc
 
     def _purge_expired_host_inventory_tickets(

@@ -84,6 +84,9 @@ class GitHubDistributionTests(unittest.TestCase):
                 joined = "\n".join(bundle.read(name).decode("utf-8", errors="ignore") for name in text_names)
                 self.assertIn("Nexus-0.1.0-rc.2/release-manifest.json", names)
                 self.assertIn("Nexus-0.1.0-rc.2/requirements-release.lock", names)
+                self.assertIn("Nexus-0.1.0-rc.2/research/nexus-ecosystem-gap-scan.json", names)
+                self.assertIn("Nexus-0.1.0-rc.2/config/scout-sources.json", names)
+                self.assertIn("Nexus-0.1.0-rc.2/ash/scout.py", names)
                 self.assertNotIn("Nexus-0.1.0-rc.2/wheelhouse/example_dependency-1.0.0-py3-none-any.whl", names)
                 self.assertIn("Nexus-0.1.0-rc.2/runtime/python/python.exe", names)
                 self.assertNotIn("D:" + chr(92) + "chatgpt", joined)
@@ -115,6 +118,7 @@ class GitHubDistributionTests(unittest.TestCase):
                         "import json,sys;from pathlib import Path;root=Path(sys.argv[1]);"
                         "sys.path.insert(0,str(root));"
                         "from ash.runtime_decision import RuntimeCapabilityAdapter,parse_runtime_requirements;"
+                        "from ash.scout import ScoutRuntimeAdapter,parse_scout_request;"
                         "adapter=RuntimeCapabilityAdapter(root/'config'/'capability-foundation.json',"
                         "root/'config'/'upstream-source-registry.json',local_roots={});"
                         "request=parse_runtime_requirements({'schema_version':'nexus.runtime-requirements.v1',"
@@ -125,9 +129,20 @@ class GitHubDistributionTests(unittest.TestCase):
                         "'allowed_permissions':['write_artifact'],"
                         "'allowed_execution_mechanisms':['host_native']});"
                         "result=adapter.decide(request);"
+                        "scout=ScoutRuntimeAdapter(adapter,root=root);"
+                        "scout_request=parse_scout_request({'schema_version':'nexus.candidate-scout-request.v1',"
+                        "'runtime_requirements':{'schema_version':'nexus.runtime-requirements.v1',"
+                        "'requirements_id':'req:isolated-scout','requirements_version':'1',"
+                        "'task_category':'mcp','domains':['skill-standard'],'outputs':[],"
+                        "'validation_requirements':[],'allowed_permissions':['read_metadata'],"
+                        "'allowed_execution_mechanisms':['nexus_local_read_plan']},"
+                        "'source_ids':['ecosystem-gap-scan']},parse_requirements=parse_runtime_requirements);"
+                        "scouted=scout.scout(scout_request);"
                         "print(json.dumps({'result_code':result['result_code'],"
                         "'selected':result['selected_capabilities'],"
-                        "'authority':result['security_result']['mcp_execution_authority']}))"
+                        "'authority':result['security_result']['mcp_execution_authority'],"
+                        "'scout_status':scouted['status'],"
+                        "'scout_authority':scouted['security_result']['execution_authority']}))"
                     ),
                     str(extracted),
                 ],
@@ -141,6 +156,8 @@ class GitHubDistributionTests(unittest.TestCase):
                 "result_code": "HOST_EVIDENCE_REQUIRED",
                 "selected": [],
                 "authority": "none",
+                "scout_status": "recommendation_ready",
+                "scout_authority": "none",
             })
 
     def test_release_manifest_excludes_host_generated_embedded_python_bytecode(self) -> None:
