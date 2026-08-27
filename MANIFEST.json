@@ -139,6 +139,10 @@
     "bytes": 5179,
     "sha256": "949bb1a6e4dfc90c2dbee2709729e45e2d988605be5e17ddd5b3d6fdfddf5e7f"
   },
+  "docs/nexus-ecosystem-gap-scan.md": {
+    "bytes": 95581,
+    "sha256": "95c6b41a7c24a4857fd4114793ff54cf9694369a25fc93b9b1883111de2e84a9"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
@@ -246,6 +250,10 @@
   "requirements-r2-mcp.txt": {
     "bytes": 173,
     "sha256": "886eb229741aff4a96f88bef1ef667eaf2f635d9d33c12ff64b9ab4666bc2ca1"
+  },
+  "research/nexus-ecosystem-gap-scan.json": {
+    "bytes": 362161,
+    "sha256": "ef77cb0e37adb4d844d5f34a07e9f66935e6f5dbfb3970168db906eed513165d"
   },
   "scripts/build_manifest.py": {
     "bytes": 1930,
