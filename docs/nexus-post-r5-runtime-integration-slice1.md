@@ -145,6 +145,11 @@ state without fresh Host evidence. The accepted repair makes every static
 Host-native record can enter a selected state. A regression now covers both
 the static-catalog path and a direct unmapped selection attempt.
 
+The first post-merge validation pass also exposed a Windows-only test-fixture
+error: its temporary manifest hashed raw CRLF bytes while the production
+manifest contract normalizes UTF-8 text to LF. The fixture now uses the
+production normalization rule; no runtime integrity check was weakened.
+
 Final validation on 2026-08-27 recorded:
 
 - 230/230 full unit/protocol tests successful, with four intentional

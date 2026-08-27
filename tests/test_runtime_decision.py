@@ -230,13 +230,17 @@ class RuntimeDecisionTests(unittest.TestCase):
             upstream = config / UPSTREAM.name
             shutil.copyfile(CATALOG, catalog)
             shutil.copyfile(UPSTREAM, upstream)
-            manifest = {
-                path.relative_to(root).as_posix(): {
-                    "bytes": len(path.read_bytes()),
-                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+
+            def manifest_bytes(path: Path) -> bytes:
+                return path.read_bytes().decode("utf-8").replace("\r\n", "\n").encode("utf-8")
+
+            manifest = {}
+            for path in (catalog, upstream):
+                contents = manifest_bytes(path)
+                manifest[path.relative_to(root).as_posix()] = {
+                    "bytes": len(contents),
+                    "sha256": hashlib.sha256(contents).hexdigest(),
                 }
-                for path in (catalog, upstream)
-            }
             manifest_path = root / "MANIFEST.json"
             manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
             adapter = RuntimeCapabilityAdapter(
