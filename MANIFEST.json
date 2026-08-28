@@ -92,8 +92,8 @@
     "sha256": "e547e468d1b458f0f0ef228cc64fd9adacb691945ad47c83c6c3fec9da01ee7d"
   },
   "ash/scout.py": {
-    "bytes": 80829,
-    "sha256": "944061a47b84b0e2108c1a6f3e29f424e1b713f0b5e3878e5a387f6799a434da"
+    "bytes": 86517,
+    "sha256": "f86b79da0f3cecd71639c3b7537178c348feb1391ee8260cfaea57f2e1813bfb"
   },
   "ash/upstream.py": {
     "bytes": 9199,
@@ -156,8 +156,8 @@
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
   },
   "docs/nexus-post-r5-runtime-integration-slice2.md": {
-    "bytes": 11660,
-    "sha256": "72dba96d347b2f9f585502ed42b84020f25c70e3cd7cfaad43a12cbdf77b7a33"
+    "bytes": 14326,
+    "sha256": "8d301eed4dfb024f2d7f1e27505d542917fe157f7dbb85ba5a694ad7ba7185ec"
   },
   "docs/nexus-runtime-integration-architecture.md": {
     "bytes": 28785,
@@ -244,8 +244,8 @@
     "sha256": "6b49163caa30bde4bb43d148b192c4a05cbd8475a1cebeedbd3c133dfb082a93"
   },
   "README.md": {
-    "bytes": 10626,
-    "sha256": "a9cd6b04b4eb62b2a88dc01ce18d283d895d96c887c8fd34b8d0949a53eaa2d3"
+    "bytes": 10622,
+    "sha256": "2ce47f8673b086c01ea1f35eddbdca3451a597a37fc9871c098ab0b98eb831e2"
   },
   "release/VERSION": {
     "bytes": 11,
@@ -396,8 +396,8 @@
     "sha256": "185c795c5ed74f93dbb64170631c201582d9fa84cd8afafe24231c3cbcb9f602"
   },
   "tests/test_scout.py": {
-    "bytes": 33613,
-    "sha256": "152b53c5c9c89fb81c6ae054ed3c1783ed3d429df98b30b03d0bd47e4856f985"
+    "bytes": 45607,
+    "sha256": "e844078f780fbca221d19db1f4fa4b22b72898301e66549c27125bcbd6c61c58"
   },
   "tests/test_upstream_source_registry.py": {
     "bytes": 6653,

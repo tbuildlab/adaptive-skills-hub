@@ -19,7 +19,7 @@ import socket
 from typing import Any, Callable, Iterable, Mapping, Sequence
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, unquote, urlencode, urljoin, urlsplit, urlunsplit
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 from uuid import UUID, uuid4
 
 from .runtime_decision import (
@@ -205,6 +205,11 @@ class _BoundedRedirectHandler(HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+def _build_public_opener(redirects: _BoundedRedirectHandler) -> Any:
+    """Build a direct HTTPS opener without inheriting machine proxy state."""
+    return build_opener(ProxyHandler({}), redirects)
+
+
 class PublicMetadataFetcher:
     """HTTPS-only fetcher for manifest-approved public origins.
 
@@ -230,7 +235,7 @@ class PublicMetadataFetcher:
         _validate_public_resolution((urlsplit(checked_url).hostname or "").casefold())
         self.requests += 1
         redirects = _BoundedRedirectHandler(hosts)
-        opener = build_opener(redirects)
+        opener = _build_public_opener(redirects)
         request = Request(
             url,
             method="GET",
@@ -277,8 +282,21 @@ def _validated_https_url(
         or "." not in host
     ):
         raise ScoutError("URL_INVALID", "candidate URL is not an approved public HTTPS URL")
-    decoded_path = unquote(parsed.path)
-    decoded_query = unquote(parsed.query)
+    if re.search(r"%(?![0-9A-Fa-f]{2})", parsed.path + parsed.query):
+        raise ScoutError("URL_INVALID", "candidate URL encoding is unsafe")
+    decoded_path = parsed.path
+    decoded_query = parsed.query
+    # Repeated encoding must not hide traversal, backslashes, or controls.
+    # Each changing pass strictly shortens a valid percent-escape sequence, so
+    # the URL-length bound also bounds this loop.
+    for _index in range(len(value) + 1):
+        next_path = unquote(decoded_path)
+        next_query = unquote(decoded_query)
+        if next_path == decoded_path and next_query == decoded_query:
+            break
+        decoded_path, decoded_query = next_path, next_query
+    else:  # pragma: no cover - monotonic decoding makes this defensive only.
+        raise ScoutError("URL_INVALID", "candidate URL encoding is unsafe")
     if (
         "\\" in decoded_path
         or ".." in decoded_path.split("/")
@@ -286,10 +304,11 @@ def _validated_https_url(
     ):
         raise ScoutError("URL_INVALID", "candidate URL path is unsafe")
     try:
-        if ipaddress.ip_address(host).is_private or ipaddress.ip_address(host).is_loopback:
-            raise ScoutError("URL_INVALID", "candidate URL may not target a private address")
+        ipaddress.ip_address(host)
     except ValueError:
         pass
+    else:
+        raise ScoutError("URL_INVALID", "candidate URL may not use a literal IP address")
     if allowed_hosts is not None and host not in allowed_hosts:
         raise ScoutError("REDIRECT_ORIGIN_REJECTED", "candidate URL origin is not approved")
     return urlunsplit(("https", parsed.netloc.casefold(), parsed.path or "/", parsed.query, ""))
@@ -588,6 +607,14 @@ def validate_candidate(value: Any) -> dict[str, Any]:
         raise ScoutError("CANDIDATE_MALFORMED", "candidate disposition is malformed")
     if value.get("license_state") not in LICENSE_STATES:
         raise ScoutError("CANDIDATE_MALFORMED", "candidate license state is malformed")
+    if (
+        value.get("license_state") == "INCOMPATIBLE"
+        and value.get("admission_disposition") == "ADMITTED_FOR_REVIEW"
+    ):
+        raise ScoutError(
+            "ADMISSION_INVALID",
+            "candidate with an incompatible license cannot be admitted for review",
+        )
     for key in ("provenance_state", "trust_state", "compatibility_state"):
         state = value.get(key)
         if not isinstance(state, str) or not TOKEN_RE.fullmatch(state):
@@ -629,7 +656,13 @@ def validate_candidate(value: Any) -> dict[str, Any]:
         if not isinstance(items, list) or len(items) != len(set(items)):
             raise ScoutError("CANDIDATE_MALFORMED", "candidate list field is malformed")
     if (
-        any(not isinstance(item, str) or not SOURCE_ID_RE.fullmatch(item) for item in value["source_ids"])
+        not 1 <= len(value["source_ids"]) <= MAX_SOURCE_IDS
+        or len(value["claimed_capability_tags"]) > 12
+        or len(value["verified_capability_tags"]) > 12
+        or len(value["evidence_references"]) > 3
+        or len(value["reason_codes"]) > 16
+        or not set(value["verified_capability_tags"]) <= set(value["claimed_capability_tags"])
+        or any(not isinstance(item, str) or not SOURCE_ID_RE.fullmatch(item) for item in value["source_ids"])
         or any(not isinstance(item, str) or not SAFE_TAG_RE.fullmatch(item) for item in value["claimed_capability_tags"] + value["verified_capability_tags"])
         or any(not isinstance(item, str) or not TOKEN_RE.fullmatch(item) for item in value["reason_codes"])
     ):
@@ -643,8 +676,13 @@ def validate_candidate(value: Any) -> dict[str, Any]:
     if (
         not isinstance(ranking, Mapping)
         or set(ranking) != {"score", "position", "relation"}
-        or not isinstance(ranking.get("score"), int)
-        or ranking.get("position") is not None and not isinstance(ranking.get("position"), int)
+        or type(ranking.get("score")) is not int
+        or not 0 <= ranking["score"] <= 256
+        or ranking.get("position") is not None
+        and (
+            type(ranking.get("position")) is not int
+            or not 1 <= ranking["position"] <= MAX_TOTAL_CANDIDATES
+        )
         or ranking.get("relation") not in {
             "ineligible", "recommended", "alternative", "complementary", "redundant", "reference_only"
         }
@@ -901,6 +939,7 @@ def candidates_from_agent_skills_index(
         elif verified and metadata_match:
             admission, lifecycle = "ADMITTED_FOR_REVIEW", "classified"
             reason_codes.append("artifact_digest_verified")
+            reason_codes.append("capability_claims_unverified")
         else:
             admission, lifecycle = "INSUFFICIENT_EVIDENCE", "classified"
         identity_key = f"agent-skill:{index_host}/{name}"
@@ -922,7 +961,9 @@ def candidates_from_agent_skills_index(
             compatibility_state="adaptable" if admission == "ADMITTED_FOR_REVIEW" else "unknown",
             lifecycle_state=lifecycle,
             claimed_tags=tags,
-            verified_tags=tags if verified and metadata_match else [],
+            # A matching digest and metadata identity prove which bytes were
+            # inspected, not that the publisher's capability claims are true.
+            verified_tags=[],
             evidence_references=[index_url, resolved],
             admission_disposition=admission,
             reason_codes=reason_codes,
@@ -1016,7 +1057,12 @@ def candidates_from_mcp_registry(
                     break
         identity_key = f"mcp-registry:{name.casefold()}"
         immutable_value = digest or version
-        reason_codes = ["official_registry_metadata_only", "no_mcp_connection", "no_execution_authority"]
+        reason_codes = [
+            "official_registry_metadata_only",
+            "registry_claims_unverified",
+            "no_mcp_connection",
+            "no_execution_authority",
+        ]
         license_state = _license_from_untrusted_metadata(server.get("license"))
         if suspicious:
             admission, lifecycle = "QUARANTINED", "quarantined"
@@ -1051,7 +1097,9 @@ def candidates_from_mcp_registry(
             compatibility_state="adaptable" if not unsupported else "incompatible",
             lifecycle_state=lifecycle,
             claimed_tags=tags,
-            verified_tags=sorted(transports) if not unsupported else [],
+            # Registry fields are useful publisher claims, not independently
+            # verified capability or transport evidence.
+            verified_tags=[],
             evidence_references=[source_url] + ([canonical_url] if canonical_url != source_url else []),
             admission_disposition=admission,
             reason_codes=reason_codes,
@@ -1082,18 +1130,23 @@ def _deduplicate_and_rank(
             conflict_fields = {
                 "capability_type", "provider_id", "canonical_identity", "canonical_url",
                 "provenance_state", "license_state", "trust_state", "compatibility_state",
-                "admission_disposition", "lifecycle_state",
+                "admission_disposition", "lifecycle_state", "immutable_reference",
+                "declared_execution_mechanisms", "authentication_state",
+                "claimed_capability_tags", "verified_capability_tags",
             }
             if any(existing[field] != item[field] for field in conflict_fields):
                 existing["admission_disposition"] = "QUARANTINED"
                 existing["lifecycle_state"] = "quarantined"
-                existing["reason_codes"] = sorted(set(
-                    existing["reason_codes"] + item["reason_codes"] + ["duplicate_evidence_conflict"]
-                ))
+                item["reason_codes"] = sorted(set(item["reason_codes"] + ["duplicate_evidence_conflict"]))
             existing["source_ids"] = sorted(set(existing["source_ids"] + item["source_ids"]))
             existing["evidence_references"] = sorted(
                 set(existing["evidence_references"] + item["evidence_references"])
             )[:3]
+            existing["reason_codes"] = sorted(set(existing["reason_codes"] + item["reason_codes"]))
+            existing["evidence_observed_at"] = min(
+                existing["evidence_observed_at"], item["evidence_observed_at"]
+            )
+            existing["discovered_at"] = max(existing["discovered_at"], item["discovered_at"])
         else:
             by_id[candidate_id] = item
     for identity_key, candidate_ids in identities.items():
@@ -1265,10 +1318,78 @@ def validate_scout_receipt(value: Any) -> dict[str, Any]:
         for item in checked if item["candidate_id"] in recommended
     ):
         raise ScoutError("SCOUT_RECEIPT_MALFORMED", "Scout recommendation is not admissible")
+    ranked_recommendations = {
+        item["candidate_id"]
+        for item in checked
+        if item["ranking"]["relation"] == "recommended"
+    }
+    if set(recommended) != ranked_recommendations:
+        raise ScoutError(
+            "SCOUT_RECEIPT_MALFORMED",
+            "Scout recommendation list and ranking are inconsistent",
+        )
+    positioned = sorted(
+        (
+            item["ranking"]["position"],
+            item["candidate_id"],
+            item["ranking"]["relation"],
+        )
+        for item in checked
+        if item["ranking"]["position"] is not None
+    )
+    if (
+        [position for position, _candidate_id_value, _relation in positioned]
+        != list(range(1, len(positioned) + 1))
+        or any(
+            (item["ranking"]["relation"] in {"ineligible", "reference_only"})
+            != (item["ranking"]["position"] is None)
+            for item in checked
+        )
+        or recommended != [
+            candidate_id_value
+            for _position, candidate_id_value, relation in positioned
+            if relation == "recommended"
+        ]
+    ):
+        raise ScoutError(
+            "SCOUT_RECEIPT_MALFORMED",
+            "Scout ranking positions and recommendation order are inconsistent",
+        )
     status = value.get("status")
     result_code = value.get("result_code")
     reason = value.get("invoked_reason")
     freshness = value.get("evidence_freshness")
+    candidate_freshness = {
+        item["candidate_id"]: _freshness(
+            _iso_timestamp(item["evidence_observed_at"]),
+            issued,
+        )
+        for item in checked
+    }
+    if "future_invalid" in candidate_freshness.values() or any(
+        _iso_timestamp(item["discovered_at"]) > issued + timedelta(minutes=5)
+        for item in checked
+    ):
+        raise ScoutError(
+            "SCOUT_RECEIPT_MALFORMED",
+            "Scout candidate timestamp is inconsistent with the receipt",
+        )
+    expected_freshness = (
+        "not_applicable" if status == "not_invoked" else
+        "no_candidates" if not checked else
+        "fresh" if set(candidate_freshness.values()) <= {"fresh"} else
+        "mixed_or_stale"
+    )
+    if freshness != expected_freshness:
+        raise ScoutError(
+            "SCOUT_RECEIPT_MALFORMED",
+            "Scout evidence freshness is inconsistent with candidate evidence",
+        )
+    if any(candidate_freshness[candidate_id] != "fresh" for candidate_id in recommended):
+        raise ScoutError(
+            "SCOUT_RECEIPT_MALFORMED",
+            "Scout recommendation uses stale candidate evidence",
+        )
     allowed_outcomes = {
         ("not_invoked", "SCOUT_NOT_REQUIRED_TRUSTED_COVERAGE", "not_invoked_trusted_coverage_or_host_evidence_path", "not_applicable"),
         ("not_invoked", "SCOUT_NOT_APPLICABLE_HOST_EVIDENCE_REQUIRED", "not_invoked_trusted_coverage_or_host_evidence_path", "not_applicable"),
@@ -1280,6 +1401,11 @@ def validate_scout_receipt(value: Any) -> dict[str, Any]:
     }
     if (status, result_code, reason, freshness) not in allowed_outcomes:
         raise ScoutError("SCOUT_RECEIPT_MALFORMED", "Scout receipt outcome is inconsistent")
+    if (status == "recommendation_ready") != bool(recommended):
+        raise ScoutError(
+            "SCOUT_RECEIPT_MALFORMED",
+            "Scout recommendation status and list are inconsistent",
+        )
     if status == "not_invoked" and any((source_ids, queries, source_results, candidates, recommended)):
         raise ScoutError("SCOUT_RECEIPT_MALFORMED", "non-invoked Scout receipt contains discovery evidence")
     if status != "not_invoked" and (not source_ids or not queries):
@@ -1612,7 +1738,18 @@ class ScoutRuntimeAdapter:
                     payload = json.loads(response.body.decode("utf-8"))
                 except (UnicodeDecodeError, json.JSONDecodeError) as exc:
                     raise ScoutError("SKILL_INDEX_MALFORMED", "Agent Skills index JSON is invalid") from exc
-                entries = payload.get("skills", []) if isinstance(payload, Mapping) else []
+                if (
+                    not isinstance(payload, Mapping)
+                    or payload.get("$schema") != AGENT_SKILLS_DISCOVERY_SCHEMA
+                    or not isinstance(payload.get("skills"), list)
+                ):
+                    raise ScoutError("SKILL_INDEX_MALFORMED", "Agent Skills index is malformed")
+                entries = payload["skills"]
+                if len(entries) > MAX_CANDIDATES_PER_SOURCE:
+                    raise ScoutError(
+                        "CANDIDATE_OVERFLOW",
+                        "Agent Skills index exceeds the candidate budget",
+                    )
                 ranked_entries = sorted(
                     [entry for entry in entries if isinstance(entry, Mapping)],
                     key=lambda entry: (

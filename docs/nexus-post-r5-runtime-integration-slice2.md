@@ -1,14 +1,17 @@
 # Nexus Post-R5 Runtime Integration — Slice 2
 
-**Status:** development candidate for independent review. It is not accepted,
-merged, frozen, installed, or execution-authorized.
+**Status:** independently reviewed, accepted, and frozen as
+`post-r5-runtime-integration-slice2-final`. This additive recommendation-only
+baseline does not move or replace `runtime-r5-final`, the Slice 1 final tag, or
+any earlier final/RC tag.
 
 ## Baselines and scope
 
 Slice 2 starts from the accepted Slice 1 commit
 `32d01941acca95a9067329f0493508d151893b42` and retains the R5 frozen commit
 `627484495a6578b13532e7560918c137394379af`. The completed Ecosystem Gap Scan
-research commit `1968a8ddde1eaaa9ff99393fbb15d625cfb4b013` was cherry-picked as a
+source-branch research commit `1968a8ddde1eaaa9ff99393fbb15d625cfb4b013`
+was cherry-picked as `d80dc36691a06532598ebabdc9fbdd995f67f995`, a
 separate, auditable research-only commit. Its 55 bounded queries, 265
 deduplicated repositories, 69 serious candidates, and 6/17/28/8/10
 INTEGRATE/ADAPT/REFERENCE/WATCH/REJECT dispositions were not recomputed.
@@ -99,8 +102,11 @@ separate provenance review.
 
 For `skill-md`, the Scout can read a bounded artifact, verify its raw SHA-256,
 and parse only strict frontmatter needed for static classification. The body is
-never loaded as instructions or returned in the receipt. Archives are not
-extracted in Slice 2. See:
+never loaded as instructions or returned in the receipt. Publisher capability
+descriptions remain `claimed_capability_tags`; digest and frontmatter identity
+verification do not promote those claims to `verified_capability_tags` without
+a separate reviewed evidence source. Archives are not extracted in Slice 2.
+See:
 
 - <https://agentskills.io/specification>
 - <https://github.com/cloudflare/agent-skills-discovery-rfc/blob/1bd1167983fa5ac9cd47987710c525308eda1a98/README.md>
@@ -131,6 +137,15 @@ Malformed fields, unknown source IDs, query/candidate/redirect/size overflow,
 cross-origin redirects, credentials in URLs, private/literal IP targets,
 unsafe URL paths, unsupported schemas/transports, and local integrity changes
 fail closed.
+
+The fetcher explicitly disables environment-proxy inheritance, sends only GET
+with fixed `Accept` and `User-Agent` headers, and performs no credential or
+cookie forwarding. DNS answers are checked before the request and before each
+redirect; any non-global IPv4 or IPv6 answer is rejected. The connection still
+performs its own DNS lookup after the check, so DNS rebinding remains a bounded
+TOCTOU limitation. Fixed manifest-approved hostnames, direct TLS certificate
+validation, no credentials, response/request/time bounds, and redirect
+revalidation reduce its consequence; Slice 2 does not claim DNS pinning.
 
 Normalized requirements are not sent verbatim to public sources. Public search
 terms are reduced to a fixed non-sensitive capability vocabulary; an unknown
@@ -178,6 +193,14 @@ ranked for recommendation. Exact duplicates merge only when their evidence is
 consistent; known duplicate groups and redundant coverage are marked
 redundant, while alternatives/complements remain distinct.
 
+Agent Skill descriptions and MCP Registry transport/capability fields remain
+publisher claims. A matching Skill digest or a Registry package digest binds
+the examined identity/artifact claim, but does not independently verify the
+claimed capability. Exact duplicate IDs merge source references only when all
+semantic evidence agrees; any provenance, digest-verification, license, trust,
+compatibility, mechanism, authentication, or capability-tag conflict is
+quarantined independent of source order.
+
 ## Receipt and execution boundary
 
 `nexus.candidate-scout-receipt.v1` binds the trusted decision ID, gap, search
@@ -217,19 +240,20 @@ open URL fetcher. The local research path performs no network request.
 - Agent Runtime, automatic installation/update, remote MCP/OAuth, Slice 3, R6,
   and V1.3 remain deferred.
 
-No Desktop UI/human acceptance is required for this read-only protocol slice.
-Independent code/security review and repository acceptance are still required
-before any merge or freeze.
+No Desktop UI/human acceptance was required because Slice 2 adds no new
+Host-visible execution behavior.
 
-## Development checkpoint validation
+## Final independent acceptance
 
-- Focused Scout/admission/security coverage: 31 tests passed.
-- Full repository regression: 261 tests passed with four expected
+- Focused Scout/admission/security coverage: 36 tests passed.
+- Capability Foundation/R4/R5 targeted coverage: 81 tests passed.
+- MCP protocol/Desktop Plugin compatibility: 11 tests passed.
+- Full repository regression: 266 tests passed with four expected
   environment-dependent skips.
 - Isolated GitHub-distribution coverage: 21 tests passed with three expected
   environment-dependent skips. The packaged runtime exercised the local
   research Scout without a development repository or execution authority.
-- A live bounded query against the fixed official MCP Registry returned eight
+- A final live bounded query against the fixed official MCP Registry returned six
   metadata candidates and no admissible recommendation because immutable
   evidence was insufficient. No server was connected to or launched.
 - Final smoke remains 6/10 on both this branch and the unchanged Slice 1
@@ -241,3 +265,24 @@ before any merge or freeze.
 - Static review found no execution primitives in the Scout, no tracked
   runtime/generated state, and no newly introduced credentials or private
   machine paths.
+
+The adversarial review reproduced and closed the following acceptance
+blockers without expanding Slice 2 authority:
+
+- inherited `urllib` proxy environment state on an otherwise allowlisted
+  request;
+- literal public, carrier-grade NAT, metadata-service, and IPv6 URL targets,
+  plus nested percent-encoding that hid traversal/backslash path components;
+- receipt disagreement among status, recommendation list, ranking relation,
+  position/order, and evidence freshness;
+- an `INCOMPATIBLE` candidate being structurally admissible for review;
+- Agent Skill and MCP Registry self-claims being mislabeled as verified;
+- source-order-dependent merging of duplicate IDs with conflicting semantic
+  evidence;
+- excessive candidate tags or forged verified-tag subsets in a receipt; and
+- an oversized Agent Skills index initiating artifact reads before its
+  candidate bound was rejected.
+
+All repairs fail closed and retain `execution_authority: none`. No Critical or
+High finding remains open. The known DNS check/connect TOCTOU and Host-managed
+Plugin-cache drift are recorded limitations, not hidden green results.

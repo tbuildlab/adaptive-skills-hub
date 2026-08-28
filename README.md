@@ -196,7 +196,7 @@ foundation](docs/nexus-capability-foundation.md), [Runtime integration Slice
 1](docs/nexus-post-r5-runtime-integration-slice1.md), and the [bounded Agent
 task contract](docs/nexus-agent-runtime-contract.md).
 
-## Post-R5 read-only Skill/MCP Scout (Slice 2 development candidate)
+## Post-R5 read-only Skill/MCP Scout (Slice 2 accepted baseline)
 
 The Slice 2 branch adds `nexus.scout_candidates` only at the bounded
 `CAPABILITY_NOT_COVERED` boundary. It independently reruns the trusted Slice 1

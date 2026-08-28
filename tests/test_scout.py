@@ -4,11 +4,14 @@ import copy
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
+import socket
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.request import ProxyHandler
 from uuid import uuid4
 
 from ash.runtime_decision import (
@@ -19,7 +22,9 @@ from ash.scout import (
     ADMISSION_DISPOSITIONS,
     AGENT_SKILLS_DISCOVERY_SCHEMA,
     FetchResult,
+    HTTP_TIMEOUT_SECONDS,
     MAX_CANDIDATES_PER_SOURCE,
+    MAX_HTTP_REQUESTS,
     MAX_REDIRECTS,
     MAX_SOURCE_IDS,
     SCOUT_REQUEST_SCHEMA_VERSION,
@@ -28,8 +33,11 @@ from ash.scout import (
     ScoutRuntimeAdapter,
     _base_candidate,
     _BoundedRedirectHandler,
+    _build_public_opener,
+    _canonical_github_repository,
     _deduplicate_and_rank,
     _limits_receipt,
+    _validate_public_resolution,
     _validated_https_url,
     candidates_from_agent_skills_index,
     candidates_from_mcp_registry,
@@ -225,12 +233,26 @@ class ScoutRequestAndBoundaryTests(unittest.TestCase):
             "http://registry.modelcontextprotocol.io/v0.1/servers",
             "https://user:secret@registry.modelcontextprotocol.io/v0.1/servers",
             "https://127.0.0.1/v0.1/servers",
+            "https://8.8.8.8/v0.1/servers",
+            "https://100.64.0.1/v0.1/servers",
+            "https://169.254.169.254/latest/meta-data",
+            "https://[2001:4860:4860::8888]/v0.1/servers",
             "https://attacker.example/v0.1/servers",
             "https://registry.modelcontextprotocol.io/../private",
+            "https://registry.modelcontextprotocol.io/%252e%252e/private",
+            "https://registry.modelcontextprotocol.io/%255c..%255cprivate",
+            "https://registry.modelcontextprotocol.io/%zz/private",
             "https://registry.modelcontextprotocol.io/v0.1/servers?credential=secret",
         ):
             with self.assertRaises(ScoutError):
                 _validated_https_url(url, allowed_hosts=allowed)
+
+        for repository in (
+            "modelcontextprotocоl/registry",  # Cyrillic small o.
+            "ｍodelcontextprotocol/registry",  # Full-width m.
+        ):
+            with self.assertRaisesRegex(ScoutError, "identity is invalid"):
+                _canonical_github_repository(repository)
 
     def test_redirect_overflow_fails_before_following_another_location(self) -> None:
         handler = _BoundedRedirectHandler(frozenset({"registry.modelcontextprotocol.io"}))
@@ -260,6 +282,111 @@ class ScoutRequestAndBoundaryTests(unittest.TestCase):
                     "https://registry.modelcontextprotocol.io/v0.1/servers",
                 )
         resolver.assert_called_once_with("registry.modelcontextprotocol.io")
+
+    def test_public_opener_does_not_inherit_environment_proxy_state(self) -> None:
+        redirects = _BoundedRedirectHandler(frozenset({"registry.modelcontextprotocol.io"}))
+        with patch("ash.scout.build_opener") as builder:
+            _build_public_opener(redirects)
+        explicit_proxy = builder.call_args.args[0]
+        self.assertIsInstance(explicit_proxy, ProxyHandler)
+        self.assertEqual(explicit_proxy.proxies, {})
+
+        with patch.dict(os.environ, {"HTTPS_PROXY": "http://127.0.0.1:65534"}):
+            opener = _build_public_opener(redirects)
+        self.assertFalse(any(
+            isinstance(handler, ProxyHandler) and handler.proxies
+            for handler in opener.handlers
+        ))
+
+    def test_public_resolution_rejects_private_link_local_and_loopback_answers(self) -> None:
+        for address in ("127.0.0.1", "169.254.169.254", "10.20.30.40", "::1", "fc00::1"):
+            family = socket.AF_INET6 if ":" in address else socket.AF_INET
+            answer = [(family, socket.SOCK_STREAM, 6, "", (address, 443))]
+            with patch("ash.scout.socket.getaddrinfo", return_value=answer):
+                with self.assertRaisesRegex(ScoutError, "outside the public network"):
+                    _validate_public_resolution("registry.modelcontextprotocol.io")
+
+        answer = [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))]
+        with patch("ash.scout.socket.getaddrinfo", return_value=answer):
+            _validate_public_resolution("registry.modelcontextprotocol.io")
+
+    def test_public_fetch_is_get_only_header_bounded_size_bounded_and_request_bounded(self) -> None:
+        class Headers:
+            @staticmethod
+            def get_content_type() -> str:
+                return "application/json"
+
+        class Response:
+            headers = Headers()
+
+            def __init__(self, body: bytes) -> None:
+                self.body = body
+
+            def __enter__(self) -> "Response":
+                return self
+
+            def __exit__(self, *_args: object) -> None:
+                return None
+
+            @staticmethod
+            def geturl() -> str:
+                return "https://registry.modelcontextprotocol.io/v0.1/servers"
+
+            def read(self, size: int) -> bytes:
+                return self.body[:size]
+
+        class Opener:
+            def __init__(self, body: bytes) -> None:
+                self.body = body
+                self.request = None
+                self.timeout = None
+
+            def open(self, request: object, *, timeout: float) -> Response:
+                self.request = request
+                self.timeout = timeout
+                return Response(self.body)
+
+        allowed = {"registry.modelcontextprotocol.io"}
+        fetcher = PublicMetadataFetcher()
+        opener = Opener(b"{}")
+        with (
+            patch("ash.scout._validate_public_resolution"),
+            patch("ash.scout._build_public_opener", return_value=opener),
+        ):
+            fetcher.fetch(
+                "https://registry.modelcontextprotocol.io/v0.1/servers",
+                allowed_hosts=allowed,
+                max_bytes=8,
+            )
+        self.assertEqual(opener.request.get_method(), "GET")
+        self.assertIsNone(opener.request.data)
+        headers = {key.casefold(): value for key, value in opener.request.header_items()}
+        self.assertEqual(set(headers), {"accept", "user-agent"})
+        self.assertNotIn("authorization", headers)
+        self.assertNotIn("cookie", headers)
+        self.assertEqual(opener.timeout, HTTP_TIMEOUT_SECONDS)
+
+        oversized = PublicMetadataFetcher()
+        with (
+            patch("ash.scout._validate_public_resolution"),
+            patch("ash.scout._build_public_opener", return_value=Opener(b"12345")),
+        ):
+            with self.assertRaisesRegex(ScoutError, "byte budget"):
+                oversized.fetch(
+                    "https://registry.modelcontextprotocol.io/v0.1/servers",
+                    allowed_hosts=allowed,
+                    max_bytes=4,
+                )
+
+        exhausted = PublicMetadataFetcher()
+        exhausted.requests = MAX_HTTP_REQUESTS
+        with patch("ash.scout._build_public_opener") as builder:
+            with self.assertRaisesRegex(ScoutError, "request budget"):
+                exhausted.fetch(
+                    "https://registry.modelcontextprotocol.io/v0.1/servers",
+                    allowed_hosts=allowed,
+                )
+        builder.assert_not_called()
 
     def test_source_config_rejects_arbitrary_path_url_and_execution_policy(self) -> None:
         valid = json.loads((ROOT / "config" / "scout-sources.json").read_text(encoding="utf-8"))
@@ -294,6 +421,9 @@ class SkillMetadataTests(unittest.TestCase):
         result = self.run_index(payload, artifacts, source)[0]
         self.assertEqual(result["admission_disposition"], "ADMITTED_FOR_REVIEW")
         self.assertEqual(result["immutable_reference"]["verification_state"], "artifact_digest_verified")
+        self.assertTrue(result["claimed_capability_tags"])
+        self.assertEqual(result["verified_capability_tags"], [])
+        self.assertIn("capability_claims_unverified", result["reason_codes"])
         self.assertEqual(result["execution_mechanism"], "none")
         self.assertEqual(result["authority_states"]["loading"], "not_loaded")
         self.assertNotIn("Review only", json.dumps(result))
@@ -364,6 +494,9 @@ class McpMetadataTests(unittest.TestCase):
     def test_digest_backed_mcp_is_review_only_never_connected(self) -> None:
         result = self.run_payload(mcp_payload())[0]
         self.assertEqual(result["admission_disposition"], "ADMITTED_FOR_REVIEW")
+        self.assertTrue(result["claimed_capability_tags"])
+        self.assertEqual(result["verified_capability_tags"], [])
+        self.assertIn("registry_claims_unverified", result["reason_codes"])
         self.assertEqual(result["execution_mechanism"], "none")
         self.assertEqual(result["authority_states"]["execution"], "not_executed")
         self.assertIn("no_mcp_connection", result["reason_codes"])
@@ -485,6 +618,19 @@ class AdmissionRankingAndReceiptTests(unittest.TestCase):
         self.assertEqual(ranked[0]["admission_disposition"], "QUARANTINED")
         self.assertIn("duplicate_evidence_conflict", ranked[0]["reason_codes"])
 
+        for mutate in (
+            lambda item: item["immutable_reference"].update(verification_state="unverified"),
+            lambda item: item.update(claimed_capability_tags=["mcp", "security"]),
+            lambda item: item.update(declared_execution_mechanisms=["skill_md"]),
+        ):
+            contradictory = copy.deepcopy(first)
+            mutate(contradictory)
+            for ordered in ([first, contradictory], [contradictory, first]):
+                ranked, recommended = _deduplicate_and_rank(ordered, req)
+                self.assertEqual(recommended, [])
+                self.assertEqual(ranked[0]["admission_disposition"], "QUARANTINED")
+                self.assertIn("duplicate_evidence_conflict", ranked[0]["reason_codes"])
+
         conflict = candidate(immutable="c" * 64)
         ranked, recommended = _deduplicate_and_rank([first, conflict], req)
         self.assertEqual(recommended, [])
@@ -520,6 +666,35 @@ class AdmissionRankingAndReceiptTests(unittest.TestCase):
             with self.assertRaises(ScoutError):
                 validate_candidate(forged)
 
+        incompatible = candidate()
+        incompatible["license_state"] = "INCOMPATIBLE"
+        with self.assertRaisesRegex(ScoutError, "incompatible license"):
+            validate_candidate(incompatible)
+
+        excessive = candidate()
+        excessive["claimed_capability_tags"] = [f"tag-{index}" for index in range(13)]
+        with self.assertRaisesRegex(ScoutError, "bounded token"):
+            validate_candidate(excessive)
+
+        forged_verification = candidate()
+        forged_verification["verified_capability_tags"] = ["security"]
+        with self.assertRaisesRegex(ScoutError, "bounded token"):
+            validate_candidate(forged_verification)
+
+        popularity = candidate()
+        popularity["stars"] = 1_000_000
+        with self.assertRaisesRegex(ScoutError, "malformed"):
+            validate_candidate(popularity)
+
+    def test_restricted_license_state_survives_ranking_without_execution_authority(self) -> None:
+        req = parse_runtime_requirements(requirements(domains=["mcp"], outputs=[], validations=[]))
+        restricted = candidate(license_state="VERIFIED_RESTRICTED")
+        ranked, recommended = _deduplicate_and_rank([restricted], req)
+        self.assertEqual(recommended, [restricted["candidate_id"]])
+        self.assertEqual(ranked[0]["license_state"], "VERIFIED_RESTRICTED")
+        self.assertEqual(ranked[0]["execution_mechanism"], "none")
+        self.assertEqual(ranked[0]["authority_states"]["execution"], "not_executed")
+
     def test_recommendation_receipt_never_means_selected_loaded_executed_or_validated(self) -> None:
         req = parse_runtime_requirements(requirements(domains=["mcp"], outputs=[], validations=[]))
         ranked, recommended = _deduplicate_and_rank([candidate()], req)
@@ -550,6 +725,31 @@ class AdmissionRankingAndReceiptTests(unittest.TestCase):
         self.assertNotIn('"host_mapping":', encoded)
         self.assertNotIn("mapping_id", encoded)
         self.assertEqual(validated["authority_states"]["execution"], "not_executed")
+
+        inconsistent = copy.deepcopy(receipt)
+        inconsistent["recommended_candidate_ids"] = []
+        with self.assertRaisesRegex(ScoutError, "recommendation list and ranking"):
+            validate_scout_receipt(inconsistent)
+
+        inconsistent = copy.deepcopy(receipt)
+        inconsistent["status"] = "evidence_only"
+        inconsistent["result_code"] = "SCOUT_NO_ADMISSIBLE_RECOMMENDATION"
+        with self.assertRaisesRegex(ScoutError, "recommendation status and list"):
+            validate_scout_receipt(inconsistent)
+
+        inconsistent = copy.deepcopy(receipt)
+        inconsistent["candidates"][0]["ranking"]["position"] = None
+        with self.assertRaisesRegex(ScoutError, "ranking positions"):
+            validate_scout_receipt(inconsistent)
+
+        stale = copy.deepcopy(receipt)
+        stale["issued_at"] = datetime(2026, 10, 1, tzinfo=timezone.utc).isoformat().replace("+00:00", "Z")
+        with self.assertRaisesRegex(ScoutError, "evidence freshness"):
+            validate_scout_receipt(stale)
+
+        stale["evidence_freshness"] = "mixed_or_stale"
+        with self.assertRaisesRegex(ScoutError, "stale candidate evidence"):
+            validate_scout_receipt(stale)
 
 
 class RuntimeGapIntegrationTests(unittest.TestCase):
@@ -679,6 +879,58 @@ class RuntimeGapIntegrationTests(unittest.TestCase):
             research.write_text(research.read_text(encoding="utf-8") + " ", encoding="utf-8")
             with self.assertRaisesRegex(ScoutError, "integrity check failed"):
                 local._load_sources()
+
+    def test_oversized_agent_skill_index_fails_before_artifact_fetch(self) -> None:
+        payload, _artifacts, _source = skill_index()
+        payload["skills"] = [
+            {**copy.deepcopy(payload["skills"][0]), "name": f"review-code-{index}"}
+            for index in range(MAX_CANDIDATES_PER_SOURCE + 1)
+        ]
+        fetcher = ScriptedFetcher(payload)
+        with tempfile.TemporaryDirectory() as temporary:
+            temp_root = Path(temporary)
+            (temp_root / "config").mkdir()
+            (temp_root / "research").mkdir()
+            config = temp_root / "config" / "scout-sources.json"
+            research = temp_root / "research" / "nexus-ecosystem-gap-scan.json"
+            source_config = {
+                "schema_version": "nexus.scout-sources.v1",
+                "policy": "No install and no execution; read-only candidate evidence.",
+                "sources": [{
+                    "source_id": "skills-example",
+                    "kind": "agent_skills_well_known",
+                    "enabled": True,
+                    "default": False,
+                    "trust_state": "untrusted_public_candidate_metadata",
+                    "canonical_url": "https://skills.example.com/.well-known/agent-skills/index.json",
+                    "allowed_hosts": ["skills.example.com"],
+                }],
+            }
+            config.write_text(json.dumps(source_config), encoding="utf-8")
+            shutil.copyfile(ROOT / "research" / "nexus-ecosystem-gap-scan.json", research)
+            manifest = {}
+            for path in (config, research):
+                raw = path.read_bytes().decode("utf-8").replace("\r\n", "\n").encode("utf-8")
+                manifest[path.relative_to(temp_root).as_posix()] = {
+                    "bytes": len(raw), "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            manifest_path = temp_root / "MANIFEST.json"
+            manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+            adapter = ScoutRuntimeAdapter(
+                FakeCapabilityAdapter("CAPABILITY_NOT_COVERED"),
+                root=temp_root,
+                integrity_manifest_path=manifest_path,
+                fetcher_factory=lambda: fetcher,
+                clock=lambda: datetime(2026, 8, 28, tzinfo=timezone.utc),
+            )
+            request = parse_scout_request(
+                scout_request(source_ids=["skills-example"]),
+                parse_requirements=parse_runtime_requirements,
+            )
+            with self.assertRaisesRegex(ScoutError, "candidate budget"):
+                adapter.scout(request)
+        self.assertEqual(fetcher.requests, 1)
+        self.assertEqual(len(fetcher.urls), 1)
 
 
 if __name__ == "__main__":
