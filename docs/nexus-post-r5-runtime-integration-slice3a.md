@@ -190,5 +190,5 @@ catalog IDs are not authorization evidence.
 
 Slice 3B/3C, executable external candidates, automatic Skill
 installation/update, Agent Runtime, remote MCP/OAuth, R6, and V1.3 remain
-deferred. This candidate must pass an independent acceptance review before any
-merge or freeze decision.
+deferred. The independent Slice 3A acceptance review is complete; no deferred
+roadmap item was started as part of this merge and freeze.
