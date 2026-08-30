@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 from pathlib import Path
 import subprocess
@@ -8,6 +9,7 @@ import sys
 import tempfile
 import unittest
 
+from ash.semantic_domains import make_trusted_applicability
 from ash.v2 import (
     CapabilityRequirement,
     ProjectContext,
@@ -29,15 +31,57 @@ from ash.v2 import (
 from scripts.hub import _plan_handoff
 
 
-def make_skill(root: Path, folder: str, name: str, description: str, extra: str = "") -> dict:
+def make_skill(
+    root: Path,
+    folder: str,
+    name: str,
+    description: str,
+    extra: str = "",
+    *,
+    supported_domains: tuple[str, ...] | None = None,
+    supported_task_kinds: tuple[str, ...] | None = None,
+    required_context: tuple[str, ...] = (),
+    artifact_families: tuple[str, ...] = (),
+    incompatible_domains: tuple[str, ...] = (),
+) -> dict:
     path = root / folder / "SKILL.md"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(f"---\nname: {name}\ndescription: {description}\n{extra}---\n\n# {name}\n", encoding="utf-8")
+    test_defaults = {
+        "backend": (("backend_repair",), ("software_debug",), ("software_system",), ()),
+        "testing": (("software_testing",), ("software_test",), ("software_system",), ()),
+        "security": (("security_review",), ("review", "security_review"), ("software_system",), ()),
+        "ppt": (("presentation",), ("create_artifact", "edit_artifact", "read_artifact"), ("office_artifact",), ("presentation",)),
+        "document": (("document",), ("create_artifact", "edit_artifact", "read_artifact"), ("office_artifact",), ("document",)),
+        "research": (("general_research", "software_research"), ("research",), ("general_evidence",), ()),
+        "pdf": (("pdf",), ("create_artifact", "edit_artifact", "read_artifact"), ("office_artifact",), ("pdf",)),
+        "frontend": (("frontend_implementation",), ("implementation",), (), ()),
+        "canva": (("presentation",), ("create_artifact", "edit_artifact"), ("office_artifact",), ("presentation",)),
+        "presentations": (("presentation",), ("create_artifact", "edit_artifact", "read_artifact"), ("office_artifact",), ("presentation",)),
+        "product-design/research": (("product_ux_research",), ("research",), ("product_experience",), ()),
+        "gsap": (("frontend_implementation",), ("animation",), (), ()),
+        "template": (("document",), ("create_artifact",), ("office_artifact",), ("document",)),
+    }
+    default = test_defaults.get(folder, (("general",), ("analysis",), (), ()))
+    domains = supported_domains or default[0]
+    kinds = supported_task_kinds or default[1]
+    contexts = required_context or default[2]
+    artifacts = artifact_families or default[3]
     return {
         "id": f"skill:{folder}", "kind": "skill", "name": name, "description": description,
         "path": str(path.parent), "skill_md_path": str(path), "scope": "project", "source": "local",
         "tags": [], "status": "available", "metadata": {},
         "provenance": {"source_scope": "project-specific", "precedence": 40},
+        "content_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "content_bytes": path.stat().st_size,
+        "_nexus_trusted_applicability": make_trusted_applicability(
+            supported_domains=domains,
+            supported_task_kinds=kinds,
+            required_context=contexts,
+            artifact_families=artifacts,
+            incompatible_domains=incompatible_domains,
+            provenance="unit_test_fixture",
+        ),
     }
 
 
@@ -71,11 +115,14 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
             "required_operations": ["research"], "required_capabilities": ["research"], "confidence": 0.9,
         })
         self.assertEqual(profile.extraction_source, "codex_structured_semantic_extraction")
-        self.assertEqual(profile.required_capabilities, ["research"])
+        # Structured extraction remains accepted for legacy fields, but it
+        # cannot manufacture a trusted semantic domain from an ambiguous task.
+        self.assertEqual(profile.required_capabilities, [])
+        self.assertEqual(profile.primary_domain, "general")
         self.assertIn("accepted", evidence[0].detail)
 
     def test_task_profile_invalid_semantic_extraction_uses_fallback(self) -> None:
-        profile, evidence = task_profile_for("Fix an API HTTP 500", lambda _task: {"original_task": 7})
+        profile, evidence = task_profile_for("Fix an API HTTP 500", lambda _task: {"confidence": 7})
         self.assertEqual(profile.extraction_source, "fallback_parser")
         self.assertIn("backend", profile.required_capabilities)
         self.assertIn("rejected", evidence[0].detail)
@@ -255,11 +302,12 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertEqual([item.capability for item in plan.requirements], ["pdf"])
         self.assertEqual([item.name for item in plan.selected], ["pdf"])
 
-    def test_product_design_research_requires_product_or_ux_scope(self) -> None:
+    def test_architecture_task_rejects_product_ux_and_generic_research_without_exact_domain(self) -> None:
         product_research = make_skill(self.root, "product-design/research", "research", "Run UX research on a named product")
         plan = plan_task("Design an architecture for an AI research assistant", {"skills": [self.research, product_research], "agents": []}, self.root)
-        self.assertEqual([item.name for item in plan.selected], ["evidence-research"])
-        self.assertTrue(any(item["name"] == "research" and "product-design research" in item["reason"] for item in plan.rejected))
+        self.assertEqual(plan.selected, [])
+        self.assertIn("architecture_review", plan.fallback["missing_domains"])
+        self.assertTrue(any(item["name"] == "research" and item.get("reason_code") in {"DOMAIN_INCOMPATIBLE", "DOMAIN_EVIDENCE_MISSING"} for item in plan.rejected))
 
     def test_gsap_requires_explicit_animation_not_general_frontend(self) -> None:
         gsap = make_skill(self.root, "gsap", "gsap-react", "Animate React interfaces with GSAP")
@@ -402,7 +450,7 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
             self.root,
         )
 
-    def test_cli_handoff_is_strictly_stateless_and_records_actual_selected_skill_loads(self) -> None:
+    def test_cli_handoff_is_strictly_stateless_and_rejects_docx_for_code_documentation(self) -> None:
         hub = Path(__file__).resolve().parents[1] / "scripts" / "hub.py"
         state_path = hub.parents[1] / "state" / "last-plan.json"
         state_before = (
@@ -410,7 +458,7 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
             if state_path.exists() else None
         )
         result = subprocess.run(
-            [sys.executable, str(hub), "plan", "Fix an API validation bug and add a regression test", "--project", str(self.root), "--handoff"],
+            [sys.executable, str(hub), "plan", "Document the API behavior in README.md", "--project", str(self.root), "--handoff"],
             capture_output=True,
             text=True,
             check=False,
@@ -418,12 +466,9 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stderr)
         handoff = json.loads(result.stdout.split("Handoff:\n", 1)[1])
         self.assertEqual(handoff["schema_version"], "nexus.plan-handoff.v1")
-        selected_names = [item["name"] for item in handoff["selected_skills"]]
-        self.assertEqual(selected_names[0], "backend-debug")
-        self.assertTrue(any("regression" in name for name in selected_names))
-        self.assertTrue(all(item["loaded"] for item in handoff["selected_skills"]))
-        self.assertTrue(all(item["sha256"] for item in handoff["selected_skills"]))
-        self.assertTrue(all(item["load_status"] == "loaded" for item in handoff["selected_skills"]))
+        self.assertEqual(handoff["selected_skills"], [])
+        self.assertEqual(handoff["fallback"]["status"], "needed")
+        self.assertEqual(handoff["fallback"]["reason_code"], "CAPABILITY_NOT_COVERED")
         state_after = (
             (state_path.read_bytes(), state_path.stat().st_mtime_ns)
             if state_path.exists() else None
@@ -443,7 +488,7 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
             if state_path.exists() else None
         )
         self.assertEqual(state_after_rejected_packet, state_before)
-        self.assertEqual(handoff["fallback"]["status"], "not_needed")
+        self.assertEqual(handoff["fallback"]["status"], "needed")
 
     def test_cli_normal_plan_retains_stateful_compatibility(self) -> None:
         hub = Path(__file__).resolve().parents[1] / "scripts" / "hub.py"

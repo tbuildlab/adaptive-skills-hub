@@ -1,19 +1,36 @@
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
 
 from ash.mcp.adapter import NexusMcpRuntime
 from ash.mcp.authorization import WorkspaceAuthorizer
+from ash.semantic_domains import make_trusted_applicability
 
 
 def make_skill(root: Path, name: str, description: str, body: str) -> dict:
     path = root / name / "SKILL.md"
     path.parent.mkdir(parents=True)
     path.write_text(f"---\nname: {name}\ndescription: {description}\n---\n{body}", encoding="utf-8")
-    return {"id": f"skill:{name}", "kind": "skill", "name": name, "description": description, "path": str(path.parent), "skill_md_path": str(path), "scope": "project", "source": "local", "tags": ["presentation"], "status": "available", "metadata": {}, "provenance": {"source_scope": "project-specific", "precedence": 40}}
+    return {
+        "id": f"skill:{name}", "kind": "skill", "name": name,
+        "description": description, "path": str(path.parent),
+        "skill_md_path": str(path), "scope": "project", "source": "local",
+        "tags": ["presentation"], "status": "available", "metadata": {},
+        "provenance": {"source_scope": "project-specific", "precedence": 40},
+        "content_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "content_bytes": path.stat().st_size,
+        "_nexus_trusted_applicability": make_trusted_applicability(
+            supported_domains=("presentation",),
+            supported_task_kinds=("create_artifact", "edit_artifact", "read_artifact"),
+            required_context=("office_artifact",),
+            artifact_families=("presentation",),
+            provenance="unit_test_fixture",
+        ),
+    }
 
 
 class McpRedactionTests(unittest.TestCase):

@@ -11,6 +11,7 @@ from uuid import uuid4
 from ash.discovery import build_index
 from ash.runtime_decision import RuntimeCapabilityAdapter, RuntimeDecisionError, parse_runtime_requirements
 from ash.scout import ScoutError, ScoutRuntimeAdapter, parse_scout_request
+from ash.semantic_domains import make_trusted_applicability
 from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
@@ -202,13 +203,37 @@ class NexusMcpRuntime:
         return raw
 
     @staticmethod
+    def _r4_presentations_catalog(index: Mapping[str, Any]) -> Mapping[str, Any]:
+        skills = index.get("skills")
+        if not isinstance(skills, list):
+            raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
+        restricted: list[dict[str, Any]] = []
+        for item in skills:
+            if str(item.get("name", "")).casefold() != "presentations":
+                continue
+            trusted = dict(item)
+            # This is not inferred from the Skill name.  It is the existing,
+            # frozen R4 Host mapping that the explicit constraint activates.
+            # The normal V2 path still requires a manifest-bound registry rule.
+            trusted["_nexus_trusted_applicability"] = make_trusted_applicability(
+                supported_domains=("presentation",),
+                incompatible_domains=("software_research", "security_review", "code_review"),
+                supported_task_kinds=("create_artifact", "edit_artifact", "read_artifact"),
+                required_context=("office_artifact",),
+                artifact_families=("presentation",),
+                provenance="r4_host_capability_mapping",
+                applicability_version="r4-compatible-1",
+            )
+            restricted.append(trusted)
+        return {**index, "skills": restricted}
+
+    @staticmethod
     def _catalog_for_request(index: Mapping[str, Any], request: Any) -> Mapping[str, Any]:
         """Apply the narrow R4 host capability allowlist, if explicitly requested.
 
-        This does not alter V1.2 ranking for ordinary plans.  The R4 Desktop
-        Skill adds the constraint only when it is asking for a host-owned
-        Presentations execution handoff.  No caller can use this mechanism to
-        select an arbitrary Skill: the sole supported value is Presentations.
+        This does not alter V1.2 ranking for ordinary plans.  No caller can use
+        this mechanism to select an arbitrary Skill: the sole supported value
+        is the frozen Presentations Host mapping.
         """
         host_constraints = [
             item.casefold() for item in request.constraints
@@ -218,11 +243,7 @@ class NexusMcpRuntime:
             return index
         if host_constraints != [R4_PRESENTATIONS_CONSTRAINT]:
             raise NexusMcpError("INVALID_REQUEST", "R4 host capability constraint is unsupported")
-        skills = index.get("skills")
-        if not isinstance(skills, list):
-            raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
-        restricted = [item for item in skills if str(item.get("name", "")).casefold() == "presentations"]
-        return {**index, "skills": restricted}
+        return NexusMcpRuntime._r4_presentations_catalog(index)
 
     def _plan_and_load(self, request: Any) -> tuple[Any, list[dict[str, Any]], dict[str, Any]]:
         workspace = self.authorizer.resolve(request.workspace_id)

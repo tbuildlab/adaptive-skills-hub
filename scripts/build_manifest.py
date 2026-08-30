@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 # Runtime indexes and live-test packets can contain machine-specific paths,
 # generated vendor assets, and large transient artifacts.  The static manifest
 # intentionally covers only version-controlled package files.
-EXCLUDED_PARTS = {"state", "output", "__pycache__", ".git"}
+EXCLUDED_PARTS = {"state", "output", "__pycache__", ".pytest_cache", ".git"}
 # This is intentionally an ignored, machine-local setup record.  Keeping it out
 # of the static package manifest preserves the manifest's version-controlled
 # package boundary while allowing local environment documentation to exist.

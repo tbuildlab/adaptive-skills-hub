@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+import hashlib
 import json
 from pathlib import Path
 import tempfile
@@ -14,6 +15,7 @@ from ash.mcp.handoff import HANDOFF_SCHEMA_VERSION, is_current_handoff, validate
 from ash.mcp.host_mapping import PRESENTATIONS_MAPPING_ID
 from ash.mcp.redaction import safe_host_handoff
 from ash.mcp.schemas import NexusMcpError, parse_prepare_host_handoff_request
+from ash.semantic_domains import make_trusted_applicability
 
 
 def presentation_record(root: Path, *, name: str = "Presentations") -> dict:
@@ -30,6 +32,15 @@ def presentation_record(root: Path, *, name: str = "Presentations") -> dict:
         "path": str(path.parent), "skill_md_path": str(path), "scope": "project",
         "source": "local", "tags": ["presentation"], "status": "available", "metadata": {},
         "provenance": {"source_scope": "project-specific", "precedence": 40},
+        "content_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+        "content_bytes": path.stat().st_size,
+        "_nexus_trusted_applicability": make_trusted_applicability(
+            supported_domains=("presentation",),
+            supported_task_kinds=("create_artifact", "edit_artifact", "read_artifact"),
+            required_context=("office_artifact",),
+            artifact_families=("presentation",),
+            provenance="unit_test_fixture",
+        ),
     }
 
 
@@ -113,6 +124,8 @@ class R4HostHandoffTests(unittest.TestCase):
         ppt = {
             **self.skill, "id": "skill:ppt-master", "name": "ppt-master", "description": "Create editable PowerPoint PPTX presentation decks.",
             "path": str(ppt_root), "skill_md_path": str(ppt_path),
+            "content_sha256": hashlib.sha256(ppt_path.read_bytes()).hexdigest(),
+            "content_bytes": ppt_path.stat().st_size,
         }
         self.runtime.catalog_builder = lambda: {"skills": [ppt, self.skill], "agents": []}
         self.runtime.skill_roots = [self.skills, ppt_root]

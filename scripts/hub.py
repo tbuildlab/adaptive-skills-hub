@@ -262,7 +262,11 @@ def main() -> int:
             for agent in v2_plan.advisory_agents:
                 print(f"- {agent.name}")
         if v2_plan.fallback["status"] == "needed":
-            print(f"Fallback: native Codex capability required for {', '.join(v2_plan.fallback['missing_capabilities'])}")
+            missing = list(dict.fromkeys([
+                *v2_plan.fallback.get("missing_capabilities", []),
+                *v2_plan.fallback.get("missing_domains", []),
+            ]))
+            print(f"Fallback: native Codex capability required for {', '.join(missing)}")
         print("Validation:")
         for check in v2_plan.validation_plan.checks:
             print(f"- {_friendly_validation_label(check['kind'])}")

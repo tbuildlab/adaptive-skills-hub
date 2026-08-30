@@ -1,0 +1,366 @@
+{
+  "schema_version": "nexus.skill-applicability-registry.v1",
+  "model_version": "nexus.semantic-task-domain.v1",
+  "rules": [
+    {
+      "skill_name": "documents",
+      "metadata_fingerprint": "54d390ce32e1f8d8576031f4aaefee87545eafa81540763581080ebf7698bac1",
+      "skill_content_sha256": "adb4fa343854795dcb724871b66c5e05ba537d110a62ecc700fa2f44967a0295",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["document"],
+        "incompatible_domains": ["code_review", "software_research", "security_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["document"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "emil-design-eng",
+      "metadata_fingerprint": "87b2b9aff6e1008b5243daca34b22541cd52bcd772d46e69c5c5be0ce68925ae",
+      "skill_content_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+      "source_scopes": ["project-specific", "external-local"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation", "visual_design_qa"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["implementation", "visual_review"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "evidence-driven-backend-debugging",
+      "metadata_fingerprint": "20d835b4762be55dac8c864fe6e2a6fc8cb5d8116f92aa79d2b99ca997a53f23",
+      "skill_content_sha256": "20d835b4762be55dac8c864fe6e2a6fc8cb5d8116f92aa79d2b99ca997a53f23",
+      "source_scopes": ["project-specific", "external-local"],
+      "applicability": {
+        "supported_domains": ["backend_repair"],
+        "incompatible_domains": ["product_ux_research", "software_research", "architecture_review", "security_review"],
+        "supported_task_kinds": ["software_debug"],
+        "required_context": ["software_system"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "evidence-first-research",
+      "metadata_fingerprint": "264e1a6b6e34ee8da29aa261b7ad188a15a0d1b1226797a088ac74c9ad01bb3f",
+      "skill_content_sha256": "264e1a6b6e34ee8da29aa261b7ad188a15a0d1b1226797a088ac74c9ad01bb3f",
+      "source_scopes": ["project-specific", "external-local"],
+      "applicability": {
+        "supported_domains": ["software_research", "general_research"],
+        "incompatible_domains": ["product_ux_research", "visual_design_qa", "code_review"],
+        "supported_task_kinds": ["research"],
+        "required_context": ["general_evidence"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "pdf",
+      "metadata_fingerprint": "afc4472ec4d625f703e9f414fe6814ce3cfa0ec51c7a07887fe587264c8b561e",
+      "skill_content_sha256": "9e429bfc5ada20ccf25a531484e3dcc5da59811d936a7cc5dfd23dbf2dfadd31",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["pdf"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["pdf"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "ppt-master",
+      "metadata_fingerprint": "d4da6642f723b9596e6522daf42ee5d7fe48d04a40433e1e0c63517ee5ad4e19",
+      "skill_content_sha256": "a3f7cfe2378e1281dd602afa05baf7be84c0e997b42d0343b6771aacabf4bf14",
+      "source_scopes": ["local-maintained"],
+      "applicability": {
+        "supported_domains": ["presentation"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["presentation"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "ppt-master",
+      "metadata_fingerprint": "a103e12a9a9a82dc2670fb82ee14d6b061d2a1ac632d01ed1949a9fa24d8382f",
+      "skill_content_sha256": "a103e12a9a9a82dc2670fb82ee14d6b061d2a1ac632d01ed1949a9fa24d8382f",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["presentation"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["presentation"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "Presentations",
+      "metadata_fingerprint": "2cd248453d0de1f13830eb78c4058c71ff46009e3dc405cec87e9ac54f30e05d",
+      "skill_content_sha256": "ff995d3fa77181b3f43f9a8a3892d453f91900729a9fa6eb1c7b3de8af35318b",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["presentation"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["presentation"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "canva-branded-presentation",
+      "metadata_fingerprint": "cb941d4892cfeda9034f77cccaf1e1d8c45546bd3a41c5c85e72e37055150ca1",
+      "skill_content_sha256": "cb941d4892cfeda9034f77cccaf1e1d8c45546bd3a41c5c85e72e37055150ca1",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["presentation"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["presentation"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "regression-first-testing",
+      "metadata_fingerprint": "ab1d760aab27f48f1e875615ae6442da538b0017693a0098599f461ef4537086",
+      "skill_content_sha256": "ab1d760aab27f48f1e875615ae6442da538b0017693a0098599f461ef4537086",
+      "source_scopes": ["project-specific", "external-local"],
+      "applicability": {
+        "supported_domains": ["software_testing"],
+        "incompatible_domains": ["product_ux_research", "software_research", "visual_design_qa"],
+        "supported_task_kinds": ["software_test"],
+        "required_context": ["software_system"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "security-best-practices",
+      "metadata_fingerprint": "7b3dae1ffc5434d890f3c65c8f552af52d0307fab3b35dec13013c9ca3844c4f",
+      "skill_content_sha256": "7b3dae1ffc5434d890f3c65c8f552af52d0307fab3b35dec13013c9ca3844c4f",
+      "source_scopes": ["project-specific", "external-local"],
+      "applicability": {
+        "supported_domains": ["security_review"],
+        "incompatible_domains": ["product_ux_research", "visual_design_qa", "backend_repair"],
+        "supported_task_kinds": ["security_review", "review"],
+        "required_context": ["software_system"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "Spreadsheets",
+      "metadata_fingerprint": "4252df058f6981faaed31f6ce3fb8a239ed3a0cdd49977d92a5374b998b18514",
+      "skill_content_sha256": "829379e0e7c425369bbd2ce1f84d060bf4d36b9b9e2d6ecd6af89209707de882",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["spreadsheet"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["create_artifact", "edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["spreadsheet"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "excel-live-control",
+      "metadata_fingerprint": "1626834625ed9ea9c8c55e3a76645ce83e547390f2fa404e98694e45e2c5873e",
+      "skill_content_sha256": "0f39bcdd71196888dcf5e68b16968a353bb5dd69e761caa4c1ebbc31ab8981a8",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["spreadsheet"],
+        "incompatible_domains": ["software_research", "security_review", "code_review"],
+        "supported_task_kinds": ["edit_artifact", "read_artifact"],
+        "required_context": ["office_artifact"],
+        "artifact_families": ["spreadsheet"],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "research",
+      "metadata_fingerprint": "bf824e72dd93941c8d591e4af13bb7e3a09380cd6ed7dd8c1f61a295648fa023",
+      "skill_content_sha256": "bf824e72dd93941c8d591e4af13bb7e3a09380cd6ed7dd8c1f61a295648fa023",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["product_ux_research"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review", "visual_design_qa"],
+        "supported_task_kinds": ["research"],
+        "required_context": ["product_experience"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "audit",
+      "metadata_fingerprint": "616e74f59da25ae72f5c853b7c9cfc4317400d224ff162abd67293b6f3ee1c82",
+      "skill_content_sha256": "616e74f59da25ae72f5c853b7c9cfc4317400d224ff162abd67293b6f3ee1c82",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["product_ux_research"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review", "visual_design_qa"],
+        "supported_task_kinds": ["review"],
+        "required_context": ["product_experience"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "design-qa",
+      "metadata_fingerprint": "19303684c7c84e279f3582d784493a6f09d207d92a29e9b15b7056020bcf306e",
+      "skill_content_sha256": "19303684c7c84e279f3582d784493a6f09d207d92a29e9b15b7056020bcf306e",
+      "source_scopes": ["external-local"],
+      "applicability": {
+        "supported_domains": ["visual_design_qa"],
+        "incompatible_domains": ["product_ux_research", "software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["visual_review"],
+        "required_context": ["rendered_visual"],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-core",
+      "metadata_fingerprint": "3887b47e050ab5afbe2a9a820f23d39fa02ab785e06a343be44c6f91d84d12b3",
+      "skill_content_sha256": "3887b47e050ab5afbe2a9a820f23d39fa02ab785e06a343be44c6f91d84d12b3",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-frameworks",
+      "metadata_fingerprint": "842d9d3659ec3ddc8abbdc524708f8facf81f468ac25d0577f48c759c4fa31e6",
+      "skill_content_sha256": "842d9d3659ec3ddc8abbdc524708f8facf81f468ac25d0577f48c759c4fa31e6",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-performance",
+      "metadata_fingerprint": "cb5408d6fba707aabcbfe3320317a14c1f8fca6070074e5261047930f50d441e",
+      "skill_content_sha256": "cb5408d6fba707aabcbfe3320317a14c1f8fca6070074e5261047930f50d441e",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-plugins",
+      "metadata_fingerprint": "0d3baf9c26299a16aba9b8e306bbcb28e4952c0fad1c8d1a179336d15f11bfb5",
+      "skill_content_sha256": "5838b856c74c07fbc9fa99b6dfd1eee34ea554c3e530c30e0d58014b707d70a4",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-react",
+      "metadata_fingerprint": "88e2a5312b45e8cc7b3c496637ff5bc9af2ae9c925b555c8b235b34cbc989d74",
+      "skill_content_sha256": "88e2a5312b45e8cc7b3c496637ff5bc9af2ae9c925b555c8b235b34cbc989d74",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-scrolltrigger",
+      "metadata_fingerprint": "487fd301e93fc7b5fc976269ebaf32695de303a40d3e8668d3a831f624a65c42",
+      "skill_content_sha256": "9351b6666a4749c0740406ea363aaccb99a087ff45cc5e8b99a0f367facf3ef4",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-timeline",
+      "metadata_fingerprint": "1a8b0f39cc4be3ed3d834b89672e4ae2f151b901dc3450bebf10bbc45379fe02",
+      "skill_content_sha256": "1a8b0f39cc4be3ed3d834b89672e4ae2f151b901dc3450bebf10bbc45379fe02",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    },
+    {
+      "skill_name": "gsap-utils",
+      "metadata_fingerprint": "1927bcc4ea95b38203404ad5ea1d060b15c4a886c65ae53e885ff1793aabe0ba",
+      "skill_content_sha256": "1927bcc4ea95b38203404ad5ea1d060b15c4a886c65ae53e885ff1793aabe0ba",
+      "source_scopes": ["codex-user"],
+      "applicability": {
+        "supported_domains": ["frontend_implementation"],
+        "incompatible_domains": ["software_research", "architecture_review", "security_review", "code_review"],
+        "supported_task_kinds": ["animation"],
+        "required_context": [],
+        "artifact_families": [],
+        "provenance": "nexus_reviewed_local_skill",
+        "applicability_version": "1"
+      }
+    }
+  ]
+}

@@ -87,6 +87,8 @@ class GitHubDistributionTests(unittest.TestCase):
                 self.assertIn("Nexus-0.1.0-rc.2/research/nexus-ecosystem-gap-scan.json", names)
                 self.assertIn("Nexus-0.1.0-rc.2/config/scout-sources.json", names)
                 self.assertIn("Nexus-0.1.0-rc.2/ash/scout.py", names)
+                self.assertIn("Nexus-0.1.0-rc.2/ash/semantic_domains.py", names)
+                self.assertIn("Nexus-0.1.0-rc.2/config/skill-applicability.json", names)
                 self.assertNotIn("Nexus-0.1.0-rc.2/wheelhouse/example_dependency-1.0.0-py3-none-any.whl", names)
                 self.assertIn("Nexus-0.1.0-rc.2/runtime/python/python.exe", names)
                 self.assertNotIn("D:" + chr(92) + "chatgpt", joined)
@@ -106,6 +108,25 @@ class GitHubDistributionTests(unittest.TestCase):
             extracted = safe_extract(archive, output / "clean machine path with spaces")
             manifest = verify_release_tree(extracted)
             self.assertEqual(manifest["version"], "0.1.0-rc.2")
+            applicability = subprocess.run(
+                [
+                    sys.executable,
+                    "-I",
+                    "-c",
+                    (
+                        "import json,sys;from pathlib import Path;root=Path(sys.argv[1]);"
+                        "sys.path.insert(0,str(root));"
+                        "from ash.semantic_domains import load_trusted_applicability_registry;"
+                        "registry=load_trusted_applicability_registry(root=root);"
+                        "print(json.dumps({'rules':len(registry.rules)}))"
+                    ),
+                    str(extracted),
+                ],
+                capture_output=True,
+                text=True,
+            )
+            self.assertEqual(applicability.returncode, 0, applicability.stderr)
+            self.assertEqual(json.loads(applicability.stdout), {"rules": 24})
             check = subprocess.run([sys.executable, str(extracted / "scripts" / "release_install.py"), "verify"], capture_output=True, text=True)
             self.assertEqual(check.returncode, 0, check.stderr)
 

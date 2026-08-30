@@ -9,6 +9,7 @@ from typing import Any, Iterable
 
 from .common import first_heading, parse_frontmatter_prefix, relative_or_absolute, stable_id, tokenize, utc_now
 
+MAX_SKILL_INTEGRITY_BYTES = 128 * 1024
 SKIP_DIRS = {".git", ".hg", ".svn", "node_modules", "__pycache__", ".venv", "venv"}
 SKILL_KEYWORDS = {
     "frontend", "backend", "api", "python", "react", "design", "ui", "ux", "test", "testing",
@@ -16,6 +17,24 @@ SKILL_KEYWORDS = {
     "animation", "accessibility", "orchestration", "architecture", "code", "review", "pdf",
 }
 DISABLED_PATH_MARKERS = (".disabled-", ".disabled_")
+
+
+def _bounded_stable_skill_digest(path: Path) -> tuple[str | None, int | None]:
+    """Hash a bounded SKILL.md without retaining or exposing instructions."""
+    try:
+        if path.is_symlink() or not path.is_file():
+            return None, None
+        before = path.stat()
+        if before.st_size > MAX_SKILL_INTEGRITY_BYTES:
+            return None, before.st_size
+        raw = path.read_bytes()
+        after = path.stat()
+    except OSError:
+        return None, None
+    identity = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns)
+    if identity(before) != identity(after) or len(raw) != after.st_size:
+        return None, after.st_size
+    return hashlib.sha256(raw).hexdigest(), len(raw)
 
 
 def _has_git_metadata(path: Path, boundary: Path) -> bool:
@@ -168,6 +187,7 @@ def discover_skills(
             except OSError:
                 modified = None
                 status = "inaccessible"
+            content_sha256, content_bytes = _bounded_stable_skill_digest(path)
             record = {
                 "id": stable_id("skill", resolved),
                 "kind": "skill",
@@ -184,6 +204,8 @@ def discover_skills(
                 "metadata": metadata,
                 "base_status": status,
                 "metadata_fingerprint": hashlib.sha256(prefix.encode("utf-8")).hexdigest(),
+                "content_sha256": content_sha256,
+                "content_bytes": content_bytes,
                 "provenance": _provenance(resolved, workspace_root),
             }
             records.append(record)

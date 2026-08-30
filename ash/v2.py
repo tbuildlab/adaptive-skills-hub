@@ -16,6 +16,24 @@ from uuid import uuid4
 
 from .common import sha256_text, tokenize, utc_now, write_json
 from .execution import load_selected_skills
+from .semantic_domains import (
+    CAPABILITY_NOT_COVERED,
+    DOMAIN_EVIDENCE_MISSING,
+    DOMAIN_MATCH,
+    MINIMAL_SET_REDUNDANT,
+    SEMANTIC_DOMAIN_MODEL_VERSION,
+    SHA256_RE,
+    SKILL_INTEGRITY_CHANGED,
+    SKILL_INTEGRITY_EVIDENCE_MISSING,
+    ApplicabilityDecision,
+    SemanticRoutingError,
+    TrustedApplicabilityRegistry,
+    DOMAIN_TO_CAPABILITY,
+    evaluate_applicability,
+    load_trusted_applicability_registry,
+    resolve_trusted_applicability,
+    semantic_task_model,
+)
 
 
 SOFT_CONTEXT_FILES = 8
@@ -89,6 +107,12 @@ class TaskProfile:
     confidence: float = 0.5
     negative_evidence: list[str] = field(default_factory=list)
     extraction_source: str = "fallback_parser"
+    semantic_domain_model_version: str = SEMANTIC_DOMAIN_MODEL_VERSION
+    primary_domain: str = "general"
+    secondary_domains: list[str] = field(default_factory=list)
+    incompatible_domains: list[str] = field(default_factory=list)
+    semantic_task_kinds: list[str] = field(default_factory=list)
+    context_kinds: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -178,6 +202,8 @@ class ResourceCandidate:
     runtime_compatibility: str
     status: str
     record: dict[str, Any] = field(repr=False, default_factory=dict)
+    domain_coverage: list[str] = field(default_factory=list)
+    applicability_evidence: dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -192,6 +218,8 @@ class ResourceCandidate:
             "provenance": self.provenance,
             "runtime_compatibility": self.runtime_compatibility,
             "status": self.status,
+            "domain_coverage": self.domain_coverage,
+            "applicability_evidence": self.applicability_evidence,
         }
 
 
@@ -290,7 +318,12 @@ def validate_task_profile(value: Mapping[str, Any]) -> tuple[TaskProfile | None,
         errors.append("original_task must be a non-empty string")
     if not isinstance(objective, str) or not objective.strip():
         errors.append("primary_objective must be a non-empty string")
-    for name in ("required_operations", "explicit_constraints", "inferred_constraints", "required_capabilities", "validation_expectations", "ambiguities", "negative_evidence"):
+    for name in (
+        "required_operations", "explicit_constraints", "inferred_constraints",
+        "required_capabilities", "validation_expectations", "ambiguities",
+        "negative_evidence", "secondary_domains", "incompatible_domains",
+        "semantic_task_kinds", "context_kinds",
+    ):
         if name in value and (not isinstance(value[name], list) or not all(isinstance(item, str) for item in value[name])):
             errors.append(f"{name} must be a list of strings")
     confidence = value.get("confidence", 0.5)
@@ -423,6 +456,65 @@ def _apply_output_format_constraints(profile: TaskProfile) -> TaskProfile:
     return profile
 
 
+def _apply_semantic_task_model(profile: TaskProfile) -> TaskProfile:
+    """Bind every extractor result to the deterministic Slice 3A model.
+
+    Optional structured extraction may improve the older V2 fields, but it
+    cannot manufacture authoritative semantic domains.  The original task is
+    always reclassified locally and the ambiguous ``document`` capability is
+    removed unless the task names a genuine document artifact.
+    """
+    model = semantic_task_model(profile.original_task)
+    profile.semantic_domain_model_version = model.schema_version
+    profile.primary_domain = model.primary_domain
+    profile.secondary_domains = list(model.secondary_domains)
+    profile.incompatible_domains = list(model.incompatible_domains)
+    profile.semantic_task_kinds = list(model.task_kinds)
+    profile.context_kinds = list(model.context_kinds)
+    profile.domain_type = model.primary_domain
+    if model.primary_domain in ARTIFACT_CAPABILITIES:
+        profile.task_type = "artifact"
+    elif model.primary_domain == "backend_repair":
+        profile.task_type = "backend"
+    elif model.primary_domain in {"frontend_implementation", "visual_design_qa"}:
+        profile.task_type = "frontend"
+    elif model.primary_domain in {
+        "product_ux_research", "software_research", "architecture_review",
+        "security_review", "general_research",
+    }:
+        profile.task_type = "research"
+    elif model.primary_domain == "general":
+        profile.task_type = "general"
+
+    artifacts = list(model.artifact_families)
+    if profile.artifact_type in ARTIFACT_CAPABILITIES and profile.artifact_type not in artifacts:
+        profile.required_capabilities = [item for item in profile.required_capabilities if item != profile.artifact_type]
+        if profile.deliverable == profile.artifact_type:
+            profile.deliverable = None
+        profile.artifact_type = None
+    if artifacts:
+        profile.artifact_type = artifacts[0]
+        profile.deliverable = profile.deliverable or artifacts[0]
+
+    semantic_capabilities = [
+        DOMAIN_TO_CAPABILITY[domain]
+        for domain in model.required_domains
+        if DOMAIN_TO_CAPABILITY.get(domain) != "general"
+    ]
+    modeled_capabilities = set(DOMAIN_TO_CAPABILITY.values()) - {"general"}
+    unmodeled_capabilities = [
+        item for item in profile.required_capabilities
+        if item not in modeled_capabilities
+    ]
+    profile.required_capabilities = list(dict.fromkeys([
+        *semantic_capabilities,
+        *unmodeled_capabilities,
+    ]))
+    if not model.required_domains and profile.required_capabilities == ["document"]:
+        profile.required_capabilities = []
+    return profile
+
+
 def task_profile_for(task: str, semantic_extractor: Callable[[str], Mapping[str, Any]] | None = None) -> tuple[TaskProfile, list[DecisionEvidence]]:
     if not isinstance(task, str) or not task.strip():
         raise ValueError("task must be a non-empty string")
@@ -430,18 +522,20 @@ def task_profile_for(task: str, semantic_extractor: Callable[[str], Mapping[str,
     if semantic_extractor is not None:
         try:
             proposed = dict(semantic_extractor(task))
-            proposed.setdefault("original_task", task)
+            # The optional extractor may structure the task, but it cannot
+            # replace the user-authored text that drives deterministic domains.
+            proposed["original_task"] = task
             proposed.setdefault("primary_objective", task)
             proposed["extraction_source"] = "codex_structured_semantic_extraction"
             profile, errors = validate_task_profile(proposed)
             if profile is not None:
-                profile = _apply_output_format_constraints(profile)
+                profile = _apply_output_format_constraints(_apply_semantic_task_model(profile))
                 evidence.append(DecisionEvidence("task_profile", "accepted schema-valid Codex structured semantic extraction", {"source": profile.extraction_source}))
                 return profile, evidence
             evidence.append(DecisionEvidence("task_profile", "rejected invalid structured extraction; used conservative fallback", {"errors": errors}))
         except Exception as exc:  # boundary: extractor is an optional runtime integration
             evidence.append(DecisionEvidence("task_profile", "structured extraction unavailable; used conservative fallback", {"error": type(exc).__name__}))
-    profile = _apply_output_format_constraints(_fallback_task_profile(task))
+    profile = _apply_output_format_constraints(_apply_semantic_task_model(_fallback_task_profile(task)))
     evidence.append(DecisionEvidence("task_profile", "used minimal deterministic fallback parser", {"source": profile.extraction_source}))
     return profile, evidence
 
@@ -627,30 +721,22 @@ def _resource_identity_tokens(record: Mapping[str, Any]) -> set[str]:
     return tokenize(" ".join([str(record.get("name", "")), *[str(item) for item in declared if isinstance(item, str)]]))
 
 
-def _coverage_for(record: Mapping[str, Any], requirements: list[CapabilityRequirement]) -> list[str]:
-    tokens = _resource_identity_tokens(record)
-    name_tokens = tokenize(str(record.get("name", "")))
+def _required_semantic_domains(profile: TaskProfile) -> tuple[str, ...]:
+    return tuple(
+        domain for domain in (profile.primary_domain, *profile.secondary_domains)
+        if domain != "general"
+    )
+
+
+def _coverage_for_domains(
+    decision: ApplicabilityDecision, requirements: list[CapabilityRequirement],
+) -> list[str]:
+    required_capabilities = {item.capability for item in requirements if item.required}
     coverage: list[str] = []
-    for requirement in requirements:
-        cues = RESOURCE_CAPABILITY_TERMS.get(requirement.capability, {requirement.capability})
-        # Broad words such as "backend" in a regression-test description do
-        # not make that Skill a backend-debugging workflow.  Use a small
-        # domain discriminator for these easily-confused engineering roles.
-        if requirement.capability == "backend" and tokens & {"regression", "testing", "tests", "test"} and not tokens & {"debug", "diagnose", "endpoint", "http", "api", "server"}:
-            continue
-        # An output format mentioned inside a different workflow's description
-        # (for example, PPT export to PDF) is not an identity-level capability.
-        if requirement.capability == "pdf" and "pdf" not in name_tokens:
-            continue
-        # Security guidance must be explicitly security-named; a backend
-        # debugger that mentions authentication is not itself a security review.
-        if requirement.capability == "security" and not name_tokens & {"security", "secure", "threat", "authorization", "authz", "appsec", "vulnerability"}:
-            continue
-        if requirement.capability == "frontend" and _identifier(str(record.get("name", ""))) == "emil_design_eng":
-            coverage.append(requirement.capability)
-            continue
-        if tokens & cues:
-            coverage.append(requirement.capability)
+    for domain in decision.matched_domains:
+        capability = DOMAIN_TO_CAPABILITY.get(domain)
+        if capability in required_capabilities and capability not in coverage:
+            coverage.append(capability)
     return coverage
 
 
@@ -701,8 +787,6 @@ def _eligible_skill(record: Mapping[str, Any], profile: TaskProfile, rules: list
         record, require_editable="editable" in output_constraints,
     ):
         return False, "native editable PPTX requirement is not explicitly supported by this Skill"
-    if name == "research" and "product-design" in str(skill_path).casefold() and not (tokenize(profile.original_task) & {"ux", "user", "users", "onboarding", "workflow", "friction", "product"}):
-        return False, "product-design research requires an explicit product or UX research task"
     if "threat-model" in name and "threat_model" not in profile.required_operations and "threat" not in tokenize(profile.original_task):
         return False, "threat-model workflow requires an explicit threat-model task"
     if "security" in name and "security" not in profile.required_capabilities:
@@ -712,26 +796,78 @@ def _eligible_skill(record: Mapping[str, Any], profile: TaskProfile, rules: list
     return True, None
 
 
-def rank_resources(index: Mapping[str, Any], profile: TaskProfile, requirements: list[CapabilityRequirement], rules: list[Rule], excluded_ids: set[str] | None = None) -> tuple[list[ResourceCandidate], list[dict[str, Any]]]:
+def rank_resources(
+    index: Mapping[str, Any],
+    profile: TaskProfile,
+    requirements: list[CapabilityRequirement],
+    rules: list[Rule],
+    excluded_ids: set[str] | None = None,
+    *,
+    applicability_registry: TrustedApplicabilityRegistry | None = None,
+) -> tuple[list[ResourceCandidate], list[dict[str, Any]]]:
     excluded_ids = excluded_ids or set()
     candidates: list[ResourceCandidate] = []
     rejected: list[dict[str, Any]] = []
     task_tokens = tokenize(profile.original_task)
+    registry_error = False
+    if applicability_registry is None:
+        try:
+            applicability_registry = load_trusted_applicability_registry()
+        except SemanticRoutingError:
+            # Registry failure is deliberately non-executable and redacted.
+            # Nexus can still use its honest native fallback.
+            registry_error = True
+            applicability_registry = None
     for record in index.get("skills", []):
         if record.get("id") in excluded_ids:
-            rejected.append({"name": record.get("name"), "reason": "excluded by bounded re-plan"})
+            rejected.append({"name": record.get("name"), "reason": "excluded by bounded re-plan", "reason_code": DOMAIN_EVIDENCE_MISSING})
             continue
         eligible, reason = _eligible_skill(record, profile, rules)
         if not eligible:
             rejected.append({"name": record.get("name"), "reason": reason})
             continue
-        coverage = _coverage_for(record, requirements)
-        if not coverage:
-            rejected.append({"name": record.get("name"), "reason": "no required capability coverage"})
+        content_sha256 = record.get("content_sha256")
+        if not isinstance(content_sha256, str) or not SHA256_RE.fullmatch(content_sha256.casefold()):
+            rejected.append({
+                "name": record.get("name"),
+                "reason": "stable Skill content-integrity evidence is missing",
+                "reason_code": SKILL_INTEGRITY_EVIDENCE_MISSING,
+            })
+            continue
+        try:
+            applicability = resolve_trusted_applicability(record, applicability_registry)
+        except SemanticRoutingError:
+            applicability = None
+        if applicability is None:
+            rejected.append({
+                "name": record.get("name"),
+                "reason": "trusted semantic applicability evidence is missing",
+                "reason_code": DOMAIN_EVIDENCE_MISSING,
+                "registry_status": "integrity_unavailable" if registry_error else "no_matching_rule",
+            })
+            continue
+        model = semantic_task_model(profile.original_task)
+        decision = evaluate_applicability(model, applicability)
+        if not decision.allowed:
+            rejected.append({
+                "name": record.get("name"),
+                "reason": "Skill is outside the task's trusted semantic applicability",
+                "reason_code": decision.reason_code,
+                "matched_domains": list(decision.matched_domains),
+            })
+            continue
+        coverage = _coverage_for_domains(decision, requirements)
+        if not coverage and decision.matched_domains:
+            rejected.append({
+                "name": record.get("name"),
+                "reason": "semantic domain match does not cover a required capability",
+                "reason_code": DOMAIN_EVIDENCE_MISSING,
+            })
             continue
         tokens = _candidate_tokens(record)
         signals: list[str] = []
-        score = float(len(coverage) * 100)
+        score = float(len(coverage) * 100 + len(decision.matched_domains) * 120)
+        signals.append(f"{DOMAIN_MATCH}: {', '.join(decision.matched_domains)}")
         signals.append(f"exact capability coverage: {', '.join(coverage)}")
         overlap = task_tokens & tokens
         if overlap:
@@ -759,37 +895,69 @@ def rank_resources(index: Mapping[str, Any], profile: TaskProfile, requirements:
             continue
         specificity = len(set(record.get("tags", [])) & set(CAPABILITY_TERMS.get(profile.task_type, set())))
         score += min(8, specificity)
+        registry_digest = applicability_registry.registry_sha256 if applicability_registry is not None else "nexus_internal"
         candidates.append(ResourceCandidate(
-            str(record.get("id")), str(record.get("name")), "skill", str(record.get("skill_md_path", record.get("path", ""))),
-            sorted(coverage), round(score, 2), signals, str(provenance.get("source_scope", "local")), provenance,
-            str(record.get("metadata", {}).get("execution_compatibility", "directly_usable_by_codex")), str(record.get("status")), dict(record),
+            resource_id=str(record.get("id")),
+            name=str(record.get("name")),
+            resource_type="skill",
+            path=str(record.get("skill_md_path", record.get("path", ""))),
+            coverage=sorted(coverage),
+            score=round(score, 2),
+            score_signals=signals,
+            trust=str(provenance.get("source_scope", "local")),
+            provenance=provenance,
+            runtime_compatibility=str(record.get("metadata", {}).get("execution_compatibility", "directly_usable_by_codex")),
+            status=str(record.get("status")),
+            record=dict(record),
+            domain_coverage=list(decision.matched_domains),
+            applicability_evidence={
+                "reason_code": decision.reason_code,
+                "model_version": applicability.model_version,
+                "applicability_version": applicability.applicability_version,
+                "provenance": applicability.provenance,
+                "registry_sha256": registry_digest,
+                "matched_task_kinds": list(decision.matched_task_kinds),
+            },
         ))
     candidates.sort(key=lambda item: (-item.score, item.name.casefold(), item.path.casefold()))
     return candidates, rejected
 
 
-def greedy_select(candidates: list[ResourceCandidate], requirements: list[CapabilityRequirement]) -> tuple[list[ResourceCandidate], list[dict[str, Any]]]:
-    required = {item.capability for item in requirements if item.required}
+def greedy_select(
+    candidates: list[ResourceCandidate],
+    requirements: list[CapabilityRequirement],
+    required_domains: Iterable[str] = (),
+) -> tuple[list[ResourceCandidate], list[dict[str, Any]]]:
+    required_capabilities = {item.capability for item in requirements if item.required}
+    required_domain_set = set(required_domains)
+    required = {f"capability:{item}" for item in required_capabilities} | {f"domain:{item}" for item in required_domain_set}
     selected: list[ResourceCandidate] = []
     covered: set[str] = set()
     evidence: list[dict[str, Any]] = []
     remaining = list(candidates)
     while required - covered:
-        choices = [item for item in remaining if set(item.coverage) - covered]
+        def units(item: ResourceCandidate) -> set[str]:
+            return (
+                {f"capability:{value}" for value in item.coverage if value in required_capabilities}
+                | {f"domain:{value}" for value in item.domain_coverage if value in required_domain_set}
+            )
+
+        choices = [item for item in remaining if units(item) - covered]
         if not choices:
             break
+        choices.sort(key=lambda item: (-len(units(item) - covered), -item.score, item.name.casefold(), item.path.casefold()))
         choice = choices[0]
-        contribution = sorted(set(choice.coverage) - covered)
+        contribution = sorted(units(choice) - covered)
         selected.append(choice)
-        covered.update(choice.coverage)
+        covered.update(units(choice))
         remaining.remove(choice)
-        evidence.append({"name": choice.name, "reason": "greedy capability contribution", "coverage": contribution})
+        evidence.append({"name": choice.name, "reason": "greedy semantic contribution", "reason_code": DOMAIN_MATCH, "coverage": contribution})
     # Redundancy elimination is a bounded reverse pass over the selected list.
     for candidate in list(reversed(selected)):
-        other_coverage = set().union(*(set(item.coverage) for item in selected if item is not candidate)) if len(selected) > 1 else set()
+        other_coverage = set().union(*(units(item) for item in selected if item is not candidate)) if len(selected) > 1 else set()
         if required <= other_coverage:
             selected.remove(candidate)
-            evidence.append({"name": candidate.name, "reason": "removed as redundant after coverage check"})
+            evidence.append({"name": candidate.name, "reason": "removed as redundant after semantic coverage check", "reason_code": MINIMAL_SET_REDUNDANT})
     return selected, evidence
 
 
@@ -904,6 +1072,12 @@ def plan_task(
 ) -> ExecutionPlan:
     context_options = dict(context_options or {})
     profile, evidence = task_profile_for(task, semantic_extractor)
+    semantic_model = semantic_task_model(profile.original_task)
+    evidence.append(DecisionEvidence(
+        "semantic_domain",
+        "classified task with the bounded Slice 3A semantic-domain model",
+        semantic_model.to_dict(),
+    ))
     reader = context_reader or discover_project_context
     context = reader(project_root, task, **context_options)
     rules, conflicts = extract_rules(profile, context, user_requirements)
@@ -917,17 +1091,46 @@ def plan_task(
         rejected.append({"name": "all", "reason": "selection blocked by unresolved higher-priority rule conflict"})
         selection_evidence: list[dict[str, Any]] = []
     else:
-        selected, selection_evidence = greedy_select(candidates, requirements)
+        selected, selection_evidence = greedy_select(candidates, requirements, semantic_model.required_domains)
         selected = _ordered_selected(selected, requirements)
     for item in selection_evidence:
         evidence.append(DecisionEvidence("selection", item["reason"], item))
+    selected_ids = {item.resource_id for item in selected}
+    selected_domains = set().union(*(set(item.domain_coverage) for item in selected)) if selected else set()
+    selected_capabilities = set().union(*(set(item.coverage) for item in selected)) if selected else set()
+    for candidate in candidates:
+        if candidate.resource_id in selected_ids:
+            continue
+        if set(candidate.domain_coverage) <= selected_domains and set(candidate.coverage) <= selected_capabilities:
+            rejected.append({
+                "name": candidate.name,
+                "reason": "compatible candidate adds no required semantic coverage beyond the selected minimum set",
+                "reason_code": MINIMAL_SET_REDUNDANT,
+                "matched_domains": candidate.domain_coverage,
+            })
     covered = set().union(*(set(item.coverage) for item in selected)) if selected else set()
     missing = [item.capability for item in requirements if item.required and item.capability not in covered]
-    if missing:
-        fallback = {"kind": "native_codex_fallback", "status": "needed", "missing_capabilities": missing, "reason": "no compatible installed Skill covers every required capability"}
-        evidence.append(DecisionEvidence("fallback", "native Codex fallback required for uncovered capabilities", fallback))
+    covered_domains = set().union(*(set(item.domain_coverage) for item in selected)) if selected else set()
+    missing_domains = [domain for domain in semantic_model.required_domains if domain not in covered_domains]
+    if missing or missing_domains:
+        fallback = {
+            "kind": "native_codex_fallback",
+            "status": "needed",
+            "reason_code": CAPABILITY_NOT_COVERED,
+            "missing_capabilities": missing,
+            "missing_domains": missing_domains,
+            "reason": "no compatible installed Skill covers every required semantic domain and capability",
+        }
+        evidence.append(DecisionEvidence("fallback", "native Codex fallback required for uncovered semantic requirements", fallback))
     else:
-        fallback = {"kind": "native_codex_fallback", "status": "not_needed", "reason": "selected Skills cover required capabilities"}
+        fallback = {
+            "kind": "native_codex_fallback",
+            "status": "not_needed",
+            "reason_code": DOMAIN_MATCH,
+            "missing_capabilities": [],
+            "missing_domains": [],
+            "reason": "selected Skills cover required semantic domains and capabilities",
+        }
     validation = validation_plan_for(profile, requirements)
     steps = execution_steps_for(selected, requirements, validation)
     agents = _advisory_agents(index, profile, requirements)
@@ -947,14 +1150,36 @@ def load_plan_skills(
     max_total_bytes: int | None = None,
 ) -> list[dict[str, Any]]:
     """Use V1.1's actual loader for selected Skills only; never load candidates."""
-    route = {"selected_skills": [candidate.record for candidate in plan.selected if candidate.resource_type == "skill"]}
-    return load_selected_skills(
+    selected = [candidate for candidate in plan.selected if candidate.resource_type == "skill"]
+    route = {"selected_skills": [candidate.record for candidate in selected]}
+    loaded = load_selected_skills(
         route,
         path_guard=path_guard,
         read_guard=read_guard,
         max_file_bytes=max_file_bytes,
         max_total_bytes=max_total_bytes,
     )
+    # The applicability registry is bound to the exact discovered SKILL.md
+    # bytes.  Recheck that digest after the guarded load so an on-disk change
+    # between selection and loading cannot inherit the earlier applicability.
+    for candidate, item in zip(selected, loaded):
+        if "load_error" in item:
+            continue
+        expected = candidate.record.get("content_sha256")
+        observed = item.get("sha256")
+        if (
+            not isinstance(expected, str)
+            or not SHA256_RE.fullmatch(expected.casefold())
+            or not isinstance(observed, str)
+            or observed.casefold() != expected.casefold()
+        ):
+            item.clear()
+            item.update({
+                "name": candidate.name,
+                "load_error": "selected Skill changed after applicability verification",
+                "reason_code": SKILL_INTEGRITY_CHANGED,
+            })
+    return loaded
 
 
 def validate_plan(plan: ExecutionPlan, loaded: list[dict[str, Any]] | None = None) -> dict[str, Any]:
@@ -962,16 +1187,18 @@ def validate_plan(plan: ExecutionPlan, loaded: list[dict[str, Any]] | None = Non
     selected_ids = {item.resource_id for item in plan.selected}
     duplicate = len(selected_ids) != len(plan.selected)
     missing = list(plan.fallback.get("missing_capabilities", []))
+    missing_domains = list(plan.fallback.get("missing_domains", []))
     load_errors = [item["name"] for item in loaded if "load_error" in item]
     expected_loads = {item.name for item in plan.selected if item.resource_type == "skill"}
     observed_loads = {str(item.get("name")) for item in loaded}
     missing_loads = sorted(expected_loads - observed_loads)
-    status = "passed" if not duplicate and not missing and not load_errors and not missing_loads else "unvalidated"
+    status = "passed" if not duplicate and not missing and not missing_domains and not load_errors and not missing_loads else "unvalidated"
     return {
         "status": status,
         "checks": [
             {"kind": "no_duplicate_selected_resource", "passed": not duplicate},
             {"kind": "required_capability_coverage", "passed": not missing, "missing": missing},
+            {"kind": "required_semantic_domain_coverage", "passed": not missing_domains, "missing": missing_domains},
             {"kind": "selected_skill_load", "passed": not load_errors and not missing_loads, "load_errors": load_errors, "missing_loads": missing_loads},
         ],
     }
