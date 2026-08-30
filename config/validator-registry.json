@@ -1,0 +1,134 @@
+{
+  "schema_version": "nexus.validator-registry.v1",
+  "registry_version": "1",
+  "validators": [
+    {
+      "validator_id": "nexus.validator.schema",
+      "display_name": "Nexus Schema Validator",
+      "validator_version": "1",
+      "validator_type": "schema",
+      "subject_types": [
+        "artifact",
+        "decision",
+        "metadata",
+        "receipt",
+        "state"
+      ],
+      "operators": [
+        "equals",
+        "present"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.digest-integrity",
+      "display_name": "Nexus Digest Integrity Validator",
+      "validator_version": "1",
+      "validator_type": "digest_integrity",
+      "subject_types": [
+        "artifact",
+        "content",
+        "decision",
+        "receipt",
+        "state"
+      ],
+      "operators": [
+        "sha256_matches_subject"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.bounded-predicate",
+      "display_name": "Nexus Bounded Predicate Validator",
+      "validator_version": "1",
+      "validator_type": "bounded_predicate",
+      "subject_types": [
+        "artifact",
+        "content",
+        "decision",
+        "metadata",
+        "receipt",
+        "state"
+      ],
+      "operators": [
+        "equals",
+        "not_equals",
+        "present"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.artifact-metadata",
+      "display_name": "Nexus Artifact Metadata Validator",
+      "validator_version": "1",
+      "validator_type": "artifact_metadata",
+      "subject_types": [
+        "artifact"
+      ],
+      "operators": [
+        "equals",
+        "present",
+        "sha256_matches_subject"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": true,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.state-consistency",
+      "display_name": "Nexus State Consistency Validator",
+      "validator_version": "1",
+      "validator_type": "state_consistency",
+      "subject_types": [
+        "decision",
+        "receipt",
+        "state"
+      ],
+      "operators": [
+        "state_consistent"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.receipt-consistency",
+      "display_name": "Nexus Receipt Consistency Validator",
+      "validator_version": "1",
+      "validator_type": "receipt_consistency",
+      "subject_types": [
+        "receipt"
+      ],
+      "operators": [
+        "receipt_consistent"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    }
+  ]
+}

@@ -29,6 +29,7 @@ ALLOWED_DOCS = {
     "docs/nexus-post-r5-runtime-integration-slice1.md",
     "docs/nexus-post-r5-runtime-integration-slice2.md",
     "docs/nexus-post-r5-runtime-integration-slice3a.md",
+    "docs/nexus-post-r5-runtime-integration-slice3b.md",
     "docs/nexus-agent-runtime-contract.md",
 }
 
