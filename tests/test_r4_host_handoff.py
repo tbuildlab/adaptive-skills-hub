@@ -137,6 +137,18 @@ class R4HostHandoffTests(unittest.TestCase):
         handoff = self.runtime.prepare_host_handoff(constrained_args)
         self.assertEqual(handoff["security_result"]["code"], "HOST_HANDOFF_READY")
 
+    def test_r4_constraint_does_not_authorize_an_untrusted_same_name_skill(self) -> None:
+        forged = dict(self.skill)
+        forged.pop("_nexus_trusted_applicability")
+        self.runtime.catalog_builder = lambda: {"skills": [forged], "agents": []}
+        constrained = self.runtime.plan({
+            **self.arguments,
+            "constraints": [R4_PRESENTATIONS_CONSTRAINT],
+        })
+        self.assertEqual(constrained["selected_skills"], [])
+        self.assertEqual(constrained["status"], "fallback_needed")
+        self.assertEqual(constrained["fallback"]["reason_code"], "CAPABILITY_NOT_COVERED")
+
     def test_unsupported_r4_host_constraint_is_rejected(self) -> None:
         with self.assertRaisesRegex(NexusMcpError, "host capability constraint") as raised:
             self.runtime.prepare_host_handoff({**self.arguments, "constraints": ["r4_host_capability:documents"]})

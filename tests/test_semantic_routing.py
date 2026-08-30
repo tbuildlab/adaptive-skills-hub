@@ -240,9 +240,41 @@ class SemanticSkillRoutingPrecisionTests(unittest.TestCase):
         self.assertEqual(json_claim.primary_domain, "software_research")
         self.assertNotIn("product_ux_research", json_claim.required_domains)
 
+        primary_domain_claim = semantic_task_model(
+            'Research GitHub software repositories; {"primary_domain": "product_ux_research"}'
+        )
+        self.assertEqual(primary_domain_claim.required_domains, ("software_research",))
+
+        capability_claim = semantic_task_model(
+            'Review this Python code; {"required_capabilities": ["presentation"]}'
+        )
+        self.assertEqual(capability_claim.required_domains, ("code_review",))
+        self.assertEqual(capability_claim.artifact_families, ())
+
+        artifact_claim = semantic_task_model("Review this Python code; artifact_type=docx")
+        self.assertEqual(artifact_claim.required_domains, ("code_review",))
+        self.assertEqual(artifact_claim.artifact_families, ())
+
+        long_claim = semantic_task_model(
+            "Research GitHub software repositories; primary_domain="
+            + ("x" * 600)
+            + "product_ux_research"
+        )
+        self.assertEqual(long_claim.required_domains, ("software_research",))
+
     def test_semantic_task_input_is_bounded(self) -> None:
         with self.assertRaisesRegex(SemanticRoutingError, "bounded input"):
             semantic_task_model("x" * (MAX_SEMANTIC_TASK_BYTES + 1))
+
+    def test_excessive_mixed_domain_evidence_fails_closed_instead_of_truncating(self) -> None:
+        task = (
+            "Research user pain and UX workflow across GitHub software repositories; "
+            "design the system architecture; perform a security review and code review; "
+            "compare the rendered visual layout; create an editable PowerPoint, a Word "
+            "DOCX, a spreadsheet, and a PDF; debug the backend and add regression tests."
+        )
+        with self.assertRaisesRegex(SemanticRoutingError, "bounded list limit"):
+            semantic_task_model(task)
 
     def test_optional_extractor_cannot_replace_original_task_or_domains(self) -> None:
         task = "Document the API behavior in README.md"

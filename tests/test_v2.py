@@ -434,6 +434,23 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         self.assertIn("task must be a non-empty string", result.stderr)
         self.assertNotIn("Traceback", result.stderr)
 
+    def test_cli_rejects_semantic_domain_overflow_without_path_leaking_traceback(self) -> None:
+        hub = Path(__file__).resolve().parents[1] / "scripts" / "hub.py"
+        task = (
+            "Research user pain and UX workflow across GitHub software repositories; "
+            "design the system architecture; perform a security review and code review; "
+            "compare the rendered visual layout; create an editable PowerPoint, a Word "
+            "DOCX, a spreadsheet, and a PDF; debug the backend and add regression tests."
+        )
+        result = subprocess.run(
+            [sys.executable, str(hub), "plan", task, "--project", str(self.root), "--no-state"],
+            capture_output=True, text=True, check=False,
+        )
+        self.assertEqual(result.returncode, 2)
+        self.assertIn("bounded list limit", result.stderr)
+        self.assertNotIn("Traceback", result.stderr)
+        self.assertNotIn(str(hub), result.stderr)
+
     def test_nexus_alias_runs_compatible_plan_with_branded_output(self) -> None:
         nexus = Path(__file__).resolve().parents[1] / "scripts" / "nexus.py"
         result = subprocess.run([sys.executable, str(nexus), "plan", "Translate this text into Klingon", "--project", str(self.root), "--no-state"], capture_output=True, text=True, check=False)

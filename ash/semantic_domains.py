@@ -3,9 +3,9 @@
 The task classifier in this module is deterministic and side-effect free.  It
 does not grant execution authority.  A Skill can pass the compatibility gate
 only through a manifest-protected Nexus registry entry or an in-memory
-``TrustedSkillApplicability`` object created by Nexus itself (used by tests and
-the frozen R4 Host mapping).  Raw Skill text and discovery metadata are never
-treated as applicability evidence.
+``TrustedSkillApplicability`` object created by Nexus itself (used by bounded
+internal callers and deterministic fixtures). Raw Skill text and discovery
+metadata are never treated as applicability evidence.
 """
 from __future__ import annotations
 
@@ -30,6 +30,16 @@ MAX_REGISTRY_RULES = 256
 MAX_SEMANTIC_TASK_BYTES = 8 * 1024
 MAX_SEMANTIC_TASK_CHARS = 8 * 1024
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+CONTROL_PLANE_FIELD_RE = re.compile(
+    r'''["']?\b(?:schema_version|model_version|semantic_domain_model_version|'''
+    r'''primary_domain|secondary_domains|required_domains|domain_type|task_type|'''
+    r'''semantic_task_kinds|task_kinds|context_kinds|supported_domains|'''
+    r'''incompatible_domains|supported_task_kinds|required_context|artifact_families|'''
+    r'''required_capabilities|required_operations|artifact_type|deliverable|'''
+    r'''output_format_constraints|applicability_evidence|domain_coverage|reason_code|'''
+    r'''execution_authority|selected_skills|selected_skill|host_eligible|execution_requested)'''
+    r'''\b["']?\s*[:=]\s*(?:\[[^\]\n]{0,8192}\]|[^.;\n]{0,8192})''',
+)
 
 KNOWN_DOMAINS = frozenset({
     "product_ux_research",
@@ -114,11 +124,11 @@ def _ordered_unique(values: Iterable[str], *, limit: int, allowed: frozenset[str
     result: list[str] = []
     for value in values:
         if not isinstance(value, str) or value not in allowed:
-            raise SemanticRoutingError("semantic applicability contains an unsupported value")
+            raise SemanticRoutingError("semantic evidence contains an unsupported value")
         if value not in result:
             result.append(value)
         if len(result) > limit:
-            raise SemanticRoutingError("semantic applicability exceeds its bounded list limit")
+            raise SemanticRoutingError("semantic evidence exceeds its bounded list limit")
     return tuple(result)
 
 
@@ -278,11 +288,7 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
     # Treat serialized applicability claims inside the user task as data, not
     # routing authority.  This covers common prompt-injection/protocol-shaping
     # forms while leaving ordinary natural-language intent intact.
-    text = re.sub(
-        r'''["']?\b(supported_domains|incompatible_domains|supported_task_kinds|required_context|artifact_families)\b["']?\s*[:=]\s*(?:\[[^\]\n]{0,512}\]|[^.;\n]{0,512})''',
-        " ",
-        text,
-    )
+    text = CONTROL_PLANE_FIELD_RE.sub(" ", text)
     text = " ".join(text.split())
     tokens = tokenize(text)
     informational = text.startswith(("what is ", "what are ", "what does ", "define ", "explain "))
@@ -361,7 +367,7 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
     if backend_repair and "backend_repair" in domains:
         domains.remove("backend_repair")
         domains.insert(0, "backend_repair")
-    domains = list(dict.fromkeys(domains))[:MAX_TASK_DOMAINS]
+    domains = list(_ordered_unique(domains, limit=MAX_TASK_DOMAINS, allowed=KNOWN_DOMAINS))
     if not domains:
         domains = ["general"]
 
@@ -396,7 +402,7 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
         task_kinds.append("code_documentation")
     if not task_kinds:
         task_kinds.append("analysis")
-    task_kinds = list(dict.fromkeys(task_kinds))[:MAX_TASK_KINDS]
+    task_kinds = list(_ordered_unique(task_kinds, limit=MAX_TASK_KINDS, allowed=KNOWN_TASK_KINDS))
 
     contexts: list[str] = []
     if ux_context:
@@ -413,7 +419,7 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
         contexts.append("office_artifact")
     if research_intent:
         contexts.append("general_evidence")
-    contexts = list(dict.fromkeys(contexts))[:MAX_CONTEXT_KINDS]
+    contexts = list(_ordered_unique(contexts, limit=MAX_CONTEXT_KINDS, allowed=KNOWN_CONTEXT_KINDS))
 
     required = set(domains)
     incompatible: list[str] = []

@@ -1,7 +1,8 @@
 # Nexus Post-R5 Runtime Integration — Slice 3A
 
-**Status:** implementation candidate ready for independent review on the
-dedicated Slice 3A branch. It is not merged, accepted, or frozen.
+**Status:** independently reviewed and accepted for the immutable
+`post-r5-runtime-integration-slice3a-final` freeze record. Slice 3B/3C remain
+deferred.
 
 ## Baseline and scope
 
@@ -84,9 +85,11 @@ digest used for applicability. A change between discovery, selection, and
 loading therefore fails closed rather than inheriting an earlier rule.
 
 The one direct in-memory applicability path is reserved for Nexus-owned Python
-objects. In production it is used only by the existing explicit R4
-Presentations Host mapping; JSON/frontmatter/external metadata cannot construct
-that object.
+objects used by internal callers and deterministic fixtures;
+JSON/frontmatter/external metadata cannot construct that object. The R4
+Presentations constraint only narrows the candidate set and does not create
+applicability. Production Presentations routing must independently match the
+manifest-bound registry identity before selection.
 
 ## Selection and receipts
 
@@ -122,22 +125,66 @@ in executable Skill selection.
 - Unknown or unreviewed Skills fail closed to honest native capability rather
   than receiving applicability from descriptive prose.
 
-## Validation evidence
+## Independent acceptance review
 
-- Semantic/V2/CLI/MCP/R4 focused validation: 105 tests and 19 subtests passed.
-- Isolated GitHub-distribution validation: 18 tests passed with three expected
-  environment-dependent skips; the packaged release loaded the exact
-  manifest-verified 24-rule applicability registry without a development
-  repository.
-- Full repository regression: 282 tests passed with four expected
-  environment-dependent skips and 50 subtests passed.
-- The final legacy smoke remains 6/10 in the current Host environment. The four
-  failures are `load_failed` for Documents, Spreadsheets, PDF, and the
-  research-to-Documents chain. That smoke uses the unchanged legacy V1.1 route
-  and reflects the known Host-managed Plugin-cache drift; no Skill file or
-  loading evidence is fabricated to obtain 10/10.
-- The static manifest, source package, secret/private-path scan, generated-state
-  scan, and Git integrity checks are rerun before the candidate is pushed.
+The review started from candidate
+`08af81854a54c7fe81ac2d6e0dac40e874caf71e` and independently reproduced the
+historical UX-research, design-QA, and DOCX/documentation mismatches before
+attacking the new trust and integrity paths. Three blocking defects were found
+and closed without adding authority:
+
+1. the explicit R4 constraint was narrowing by the `Presentations` display name
+   and then manufacturing an in-memory trusted applicability object; it now
+   narrows only, while the normal manifest-bound registry remains mandatory;
+2. a task containing more than six genuine domains was silently truncated, and
+   the first fail-closed repair exposed a CLI traceback with a local path; domain,
+   task-kind, and context bounds now reject overflow and the CLI reports a
+   bounded error without a traceback; and
+3. protocol-shaped fields other than `supported_domains` (for example
+   `primary_domain`, `required_capabilities`, and `artifact_type`) could inject
+   routing tokens, including through a long scalar tail; bounded control-plane
+   assignments are now treated as inert data after Unicode normalization.
+
+The review also verified registry schema strictness, duplicate/contradictory
+rule rejection, stable single-read manifest/registry parsing, source-order
+determinism, prompt/body inertness, minimal complementary selection, exact
+select-to-load digest revalidation (byte change, replacement, truncation,
+newline change, missing file, and malformed digest), receipt redaction, Agent
+advisory-only behavior, and unchanged R4/R5 Host-mediated execution authority.
+No Critical or High finding remains open.
+
+Final validation evidence:
+
+- Semantic/V2/CLI/R4 focused validation: **77 tests passed**, including **19
+  subtests**.
+- Independent adversarial matrix: **20/20 checks passed**, plus stable
+  manifest/registry single-read and strict-registry mutation checks.
+- Capability Foundation, Slice 2, MCP, R4/R5, Desktop Plugin, and distribution
+  regression group: **238 tests passed**, **4 expected environment skips**, and
+  **50 subtests passed**.
+- The remaining repository test modules: **42 tests passed**.
+- Authoritative full repository regression: **285 tests passed**, **4 expected
+  environment skips**, and **50 subtests passed**.
+- Isolated distribution regression: **18 tests passed** with **3 expected
+  environment skips**. Two source-package builds were byte-identical; the
+  85-member archive included the Slice 3A router, registry, and documentation,
+  while traversal, runtime-state, private-path, and credential-pattern checks
+  passed.
+- The 106-file static manifest rebuilt identically twice and an independent
+  per-entry verifier found **0 mismatches**. The exact verified registry byte
+  buffer loaded **24 rules**.
+- Candidate and unchanged Slice 2 baseline both reproduce the same legacy smoke
+  result: **6/10**. The four failures are `document`, `spreadsheet`, `pdf`, and
+  `research_document_chain`, all `load_failed` because the persisted V1.1 index
+  points at Host-managed Plugin-cache files that no longer exist. No Skill file,
+  index, or loading evidence was fabricated to obtain 10/10.
+
+The semantic classifier remains a bounded deterministic ruleset, not general
+semantic intelligence. Tasks with more semantic domains than the v1 model can
+represent fail closed rather than silently discarding requirements. The
+registry uses a portable content-addressed identity (name, frontmatter digest,
+full content digest, and approved source scope); volatile absolute-path-derived
+catalog IDs are not authorization evidence.
 
 ## Deferred work
 

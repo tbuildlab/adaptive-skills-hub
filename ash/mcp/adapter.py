@@ -11,7 +11,6 @@ from uuid import uuid4
 from ash.discovery import build_index
 from ash.runtime_decision import RuntimeCapabilityAdapter, RuntimeDecisionError, parse_runtime_requirements
 from ash.scout import ScoutError, ScoutRuntimeAdapter, parse_scout_request
-from ash.semantic_domains import make_trusted_applicability
 from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
@@ -211,20 +210,11 @@ class NexusMcpRuntime:
         for item in skills:
             if str(item.get("name", "")).casefold() != "presentations":
                 continue
-            trusted = dict(item)
-            # This is not inferred from the Skill name.  It is the existing,
-            # frozen R4 Host mapping that the explicit constraint activates.
-            # The normal V2 path still requires a manifest-bound registry rule.
-            trusted["_nexus_trusted_applicability"] = make_trusted_applicability(
-                supported_domains=("presentation",),
-                incompatible_domains=("software_research", "security_review", "code_review"),
-                supported_task_kinds=("create_artifact", "edit_artifact", "read_artifact"),
-                required_context=("office_artifact",),
-                artifact_families=("presentation",),
-                provenance="r4_host_capability_mapping",
-                applicability_version="r4-compatible-1",
-            )
-            restricted.append(trusted)
+            # The frozen R4 mapping narrows the candidate set, but it must not
+            # manufacture semantic authority from a display name.  The normal
+            # V2 path below still requires a manifest-bound registry rule (or
+            # an already-trusted Nexus-owned in-memory applicability object).
+            restricted.append(dict(item))
         return {**index, "skills": restricted}
 
     @staticmethod

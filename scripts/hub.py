@@ -23,6 +23,7 @@ from ash.common import read_json, write_json  # noqa: E402
 from ash.discovery import build_index  # noqa: E402
 from ash.execution import execute_route, write_packet  # noqa: E402
 from ash.router import route_task  # noqa: E402
+from ash.semantic_domains import SemanticRoutingError  # noqa: E402
 from ash.v2 import load_plan_skills, plan_task, validate_plan, write_plan_packet  # noqa: E402
 
 
@@ -241,7 +242,7 @@ def main() -> int:
         }
         try:
             v2_plan = plan_task(args.task, index, project, context_options=context_options, sources=_sources())
-        except ValueError as exc:
+        except (ValueError, SemanticRoutingError) as exc:
             cli.error(str(exc))
         loaded = load_plan_skills(v2_plan)
         validation = validate_plan(v2_plan, loaded)
