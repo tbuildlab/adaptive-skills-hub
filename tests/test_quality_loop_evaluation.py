@@ -515,17 +515,87 @@ class QualityLoopEvaluationTests(unittest.TestCase):
         self.assertEqual(validated["subject"]["current_subject_sha256"], SUBJECT_A)
 
     def test_secret_shaped_stage_identifier_fails_closed(self) -> None:
-        with self.assertRaises(QualityLoopError):
+        secret_like_values = (
+            "sk-" + "A" * 32,
+            "gho_" + "A" * 32,
+            "glpat-" + "A" * 32,
+            "ASIA" + "A" * 16,
+            "xoxb-" + "A" * 24,
+        )
+        for secret_like in secret_like_values:
+            with self.subTest(secret_like=secret_like):
+                with self.assertRaises(QualityLoopError):
+                    build_quality_stage_receipt(
+                        stage="creator",
+                        sequence=0,
+                        capability_id=secret_like,
+                        stage_state="execution_succeeded",
+                        input_subject_sha256=None,
+                        output_subject_sha256=SUBJECT_A,
+                        evaluation_receipt=None,
+                        mutation_policy="new_candidate",
+                    )
+
+    def test_deeply_nested_v2_receipt_fails_with_closed_quality_error(self) -> None:
+        nested: object = "leaf"
+        for _ in range(5000):
+            nested = [nested]
+
+        with self.assertRaisesRegex(QualityLoopError, "not canonical JSON"):
             build_quality_stage_receipt(
-                stage="creator",
-                sequence=0,
-                capability_id="sk-" + "A" * 32,
+                stage="reviewer",
+                sequence=1,
+                capability_id="nexus.validator.artifact-metadata",
                 stage_state="execution_succeeded",
-                input_subject_sha256=None,
+                input_subject_sha256=SUBJECT_A,
                 output_subject_sha256=SUBJECT_A,
-                evaluation_receipt=None,
-                mutation_policy="new_candidate",
+                evaluation_receipt={"nested": nested},
+                mutation_policy="read_only",
+                review_cycle=1,
             )
+        with self.assertRaisesRegex(QualityLoopError, "not canonical JSON"):
+            validate_quality_receipt(
+                {"schema_version": QUALITY_RECEIPT_SCHEMA_VERSION, "nested": nested},
+                registry=self.registry,
+            )
+
+    def test_v2_budget_and_authority_types_fail_closed(self) -> None:
+        evaluation = evaluation_receipt(self.registry, SUBJECT_A, passes=True)
+        receipt = quality_receipt(
+            stages=[
+                creator_stage(),
+                reviewer_stage(
+                    evaluation, sequence=1, digest=SUBJECT_A, cycle=1,
+                    enhancement_pass=0,
+                ),
+            ],
+            selected=["skill/creator", "nexus.validator.artifact-metadata"],
+            original=SUBJECT_A,
+            current=SUBJECT_A,
+            evidence_states={
+                "creation": "created",
+                "selection": "selected",
+                "execution": "execution_succeeded",
+                "review": "review_completed",
+                "enhancement": "not_enhanced",
+                "validation": "validation_passed",
+                "reporting": "not_reported",
+            },
+            review_cycles=1,
+            enhancement_passes=0,
+            outcome="validation_passed",
+        )
+        mutations = (
+            lambda value: value["budgets"].__setitem__("review_cycles_used", True),
+            lambda value: value["budgets"].__setitem__("enhancement_passes_used", False),
+            lambda value: value["budgets"].__setitem__("enhancement_passes_used", 0.0),
+            lambda value: value["authority"].__setitem__("automatic_execution", 0),
+        )
+        for mutate in mutations:
+            malformed = copy.deepcopy(receipt)
+            mutate(malformed)
+            with self.assertRaises(QualityLoopError):
+                validate_quality_receipt(malformed, registry=self.registry)
 
 
 if __name__ == "__main__":

@@ -234,6 +234,84 @@ reproducibility, bounded cycles, frozen v1 compatibility, and zero authority.
 Acceptance is entirely deterministic and local. No billable or live model is
 used.
 
+## Independent acceptance review
+
+The independent review started from candidate
+`498ef7f87dfbc54c45e6ecaf6a3022c4c2f1739a` on the unchanged frozen Slice 3A
+baseline `80340c178a18345aa7aec4102d5aff96c886c18d`. It found and closed the
+following blockers without adding execution or delegation authority:
+
+1. `sha256_matches_subject` receipt validation trusted a caller-rebound
+   observed/evidence digest instead of cryptographically deriving that digest
+   from the recorded subject binding;
+2. registry parsing could manufacture the same in-memory trusted seal as the
+   integrity loader, and sealed registries were not re-bound to their sealed
+   semantic digest at every authority-sensitive use;
+3. evidence summaries incompletely covered environment assignments, quoted
+   JSON/YAML secrets, credential URLs, private-key material, credential-shaped
+   tokens, and Windows/UNC/Unix private paths, especially values containing
+   commas, semicolons, or spaces; receipt re-validation also did not prove that
+   redaction markers and disclosure flags agreed;
+4. deeply nested JSON and Python's excessive-integer JSON limit could escape as
+   raw recursion or value errors, and size calculation materialized complete
+   serialized objects before enforcing the ceiling;
+5. receipt counters, transition flags, redaction flags, quality budgets, and
+   authority booleans accepted Python boolean/integer equality substitutions;
+6. a non-digest operator could carry an impossible subject-binding digest if a
+   forged receipt also rewrote its result to a self-consistent invalid state;
+7. high-confidence `glpat-` credential-shaped values were not covered, and a
+   non-string current-subject digest expectation leaked a raw `TypeError`.
+
+Permanent regressions now prove parser-only registries remain unsealed,
+MANIFEST tampering cannot return a trusted registry, post-seal semantic
+mutation invalidates authority, a recomputed registry digest must match its
+sealed digest, and a legitimate manifest-loaded registry still evaluates and
+re-validates normally. Additional regressions cover stale digest evidence,
+impossible non-digest binding, type confusion, bounded/deep JSON failures,
+privacy generation and re-validation, reserved redaction-marker truth, and
+secret-shaped evaluation and quality identifiers.
+
+Final local evidence after the repairs:
+
+- evaluation, quality-receipt v2, and frozen quality-loop v1 focused suites:
+  **59/59 passed**;
+- independently mutated receipt/authority matrix: **40/40 passed**, with
+  separate advisory matrices covering all six result states, validator types,
+  and closed operators;
+- full repository regression: **339 tests**, **0 failures**, **0 errors**, and
+  **4 expected environment skips**;
+- the static manifest contains **111 files** with zero missing, extra, size, or
+  digest mismatches after rebuilding;
+- two independently generated private source archives contain **90 members**
+  and are byte-for-byte reproducible; allowlist, member order, CRC, traversal,
+  symlink, generated-state, private-root, and package-receipt checks pass;
+- the legacy final smoke remains **6/10**. Only `document`, `spreadsheet`,
+  `pdf`, and `research_document_chain` fail, because the frozen installed-Skill
+  index references Host-managed Plugin-cache versions that no longer exist.
+  No files, trust evidence, or Host state were fabricated to change that
+  result.
+
+### Agent and Skill utilization
+
+- The local Nexus Skill was used as the bounded planning/routing layer. It
+  returned `CAPABILITY_NOT_COVERED`, selected no Skill or Agent, and granted no
+  execution authority. This is retained as an applicability-routing gap, not
+  misreported as execution.
+- The Code Review Agent independently checked registry construction, receipt
+  semantics, deterministic identities/digests, state separation, and v1
+  compatibility. It identified the impossible non-digest binding acceptance.
+- The Security Agent independently checked registry trust, privacy/redaction,
+  fail-closed errors, resource boundaries, and fixed execution/install/MCP/Host
+  and Agent authority. It identified the missing `glpat-` coverage and raw
+  expected-digest type error.
+- The Testing Evidence Agent independently exercised focused/full suites,
+  cross-Python determinism, all validator classes/operators, package
+  reproducibility, and the known smoke limitation.
+- All Agents remained advisory-only. Native Codex performed the uncovered code
+  changes, local test execution, MANIFEST/package verification, repository
+  checks, and Git freeze operations. No unavailable or untrusted external
+  capability was installed, invoked, or promoted.
+
 ## Known limitations and deferred work
 
 This contract proves deterministic checks over bounded facts; it does not

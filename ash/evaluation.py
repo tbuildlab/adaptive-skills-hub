@@ -11,7 +11,7 @@ module executes, installs, connects, delegates, mutates, or reports a result.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import hashlib
 import json
 from pathlib import Path
@@ -43,8 +43,10 @@ SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 TOKEN_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
 SUBJECT_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 SECRET_IDENTIFIER_RE = re.compile(
-    r"(?i)^(?:sk-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9]{20,}"
-    r"|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16})$"
+    r"(?i)^(?:sk[-_][A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}"
+    r"|github_pat_[A-Za-z0-9_]{20,}|glpat-[A-Za-z0-9_-]{20,}"
+    r"|(?:AKIA|ASIA)[0-9A-Z]{16}"
+    r"|xox[A-Za-z]-[A-Za-z0-9-]{8,}|xapp-[A-Za-z0-9-]{8,})$"
 )
 
 VALIDATOR_TYPES = frozenset(
@@ -165,17 +167,36 @@ _RECEIPT_FIELDS = {
     "authority",
 }
 
-_WINDOWS_PATH_RE = re.compile(r"(?i)(?<![A-Za-z0-9])[A-Z]:\\[^\r\n,;]*")
+_WINDOWS_PATH_RE = re.compile(
+    r"(?i)(?<![A-Za-z0-9])(?:[A-Z]:\\|\\\\[^\\\r\n]+\\)[^\r\n]*"
+)
 _UNIX_PRIVATE_PATH_RE = re.compile(
-    r"(?<![A-Za-z0-9])/(?:home|Users|root|private|var/folders|tmp)/(?:[^\s,;]+)",
+    r"(?<![A-Za-z0-9])/(?:home|Users|root|private|var/folders|tmp)/(?:[^\r\n]*)",
     re.IGNORECASE,
 )
-_AUTHORIZATION_RE = re.compile(r"(?i)\bauthorization\s*:\s*[^\r\n,;]+")
+_AUTHORIZATION_RE = re.compile(r"(?i)\bauthorization\s*:\s*[^\r\n]+")
 _SECRET_ASSIGNMENT_RE = re.compile(
-    r"(?i)\b(?:api[_-]?key|access[_-]?token|token|secret|password|credential|private[_-]?key)"
-    r"\s*(?:=|:)\s*[^\s,;]+"
+    r"(?i)(?<![A-Za-z0-9])(?:api[_-]?key|secret[_-]?access[_-]?key|access[_-]?token|"
+    r"private[_-]?key|database[_-]?url|connection[_-]?string|token|secret|password|"
+    r"credential)[\"']?\s*(?:=|:)\s*[^\r\n]+"
 )
-_TOKEN_VALUE_RE = re.compile(r"(?i)\b(?:bearer\s+|sk[-_])[A-Za-z0-9._~+/=-]{8,}")
+_ENVIRONMENT_ASSIGNMENT_RE = re.compile(
+    r"(?i)(?<![A-Za-z0-9])(?:username|userprofile|userdomain|user|logname|homedrive|"
+    r"homepath|home|computername|hostname)[\"']?\s*(?:=|:)\s*[^\r\n]+"
+)
+_TOKEN_VALUE_RE = re.compile(
+    r"(?i)(?:\bbearer\s+[A-Za-z0-9._~+/=-]{8,}|\bsk[-_][A-Za-z0-9._~+/=-]{8,}|"
+    r"\bgh[pousr]_[A-Za-z0-9]{20,}|\bgithub_pat_[A-Za-z0-9_]{20,}|"
+    r"\bglpat-[A-Za-z0-9_-]{20,}|"
+    r"\b(?:AKIA|ASIA)[0-9A-Z]{16}\b|\bxox[A-Za-z]-[A-Za-z0-9-]{8,}|"
+    r"\bxapp-[A-Za-z0-9-]{8,})"
+)
+_CREDENTIAL_URL_RE = re.compile(
+    r"(?i)\b[A-Za-z][A-Za-z0-9+.-]{1,15}://[^\s/:@]+:[^@\s]+@[^\r\n]+"
+)
+_PRIVATE_KEY_MATERIAL_RE = re.compile(
+    r"-----BEGIN [A-Z0-9 ]{0,64}PRIVATE KEY-----.*", re.IGNORECASE | re.DOTALL
+)
 _INJECTION_RE = re.compile(
     r"(?i)(?:ignore\s+(?:all\s+|the\s+)?(?:previous\s+|prior\s+)?(?:policy|instructions?)"
     r"|validation_result\s*=\s*pass"
@@ -185,6 +206,11 @@ _INJECTION_RE = re.compile(
     r"|host_handoff_ready"
     r"|mcp_execution_authority\s*=\s*granted)"
 )
+_REDACTION_MARKER_RE = re.compile(
+    r"\[REDACTED_(?:AUTHORIZATION|SECRET|ENVIRONMENT|TOKEN|PRIVATE_PATH|"
+    r"CREDENTIAL_URL|PRIVATE_KEY|UNTRUSTED_INSTRUCTION|CONTENT)\]"
+)
+_TRUSTED_REGISTRY_SEAL = object()
 
 
 class EvaluationError(ValueError):
@@ -232,6 +258,8 @@ class ValidatorDefinition:
 class TrustedValidatorRegistry:
     validators: tuple[ValidatorDefinition, ...]
     registry_sha256: str
+    _integrity_seal: object = field(init=False, repr=False, compare=False)
+    _integrity_sha256: str = field(init=False, repr=False, compare=False)
 
     def resolve(self, validator_id: str, validator_version: str) -> ValidatorDefinition:
         matching_id = [item for item in self.validators if item.validator_id == validator_id]
@@ -243,6 +271,33 @@ class TrustedValidatorRegistry:
         return matching_version[0]
 
 
+def _registry_semantic_sha256(value: TrustedValidatorRegistry) -> str:
+    if (
+        type(value.validators) is not tuple
+        or any(type(item) is not ValidatorDefinition for item in value.validators)
+    ):
+        raise EvaluationError("evaluation registry is not integrity-verified")
+    canonical = {
+        "schema_version": VALIDATOR_REGISTRY_SCHEMA_VERSION,
+        "registry_version": VALIDATOR_REGISTRY_VERSION,
+        "validators": [item.canonical_record() for item in value.validators],
+    }
+    return canonical_sha256(canonical)
+
+
+def _require_trusted_registry(value: Any) -> TrustedValidatorRegistry:
+    if (
+        type(value) is not TrustedValidatorRegistry
+        or getattr(value, "_integrity_seal", None) is not _TRUSTED_REGISTRY_SEAL
+        or getattr(value, "_integrity_sha256", None) != value.registry_sha256
+        or not isinstance(value.registry_sha256, str)
+        or not SHA256_RE.fullmatch(value.registry_sha256)
+        or _registry_semantic_sha256(value) != value.registry_sha256
+    ):
+        raise EvaluationError("evaluation registry is not integrity-verified")
+    return value
+
+
 def _canonical_json(value: Any) -> bytes:
     try:
         return json.dumps(
@@ -252,7 +307,7 @@ def _canonical_json(value: Any) -> bytes:
             separators=(",", ":"),
             allow_nan=False,
         ).encode("utf-8")
-    except (TypeError, ValueError) as exc:
+    except (TypeError, ValueError, RecursionError) as exc:
         raise EvaluationError("evaluation value is not canonical JSON") from exc
 
 
@@ -268,10 +323,26 @@ def evaluation_receipt_sha256(value: Mapping[str, Any]) -> str:
 
 
 def _ensure_json_size(value: Any, limit: int, label: str) -> bytes:
-    raw = _canonical_json(value)
-    if len(raw) > limit:
-        raise EvaluationError(f"{label} exceeds its bounded size")
-    return raw
+    try:
+        encoder = json.JSONEncoder(
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
+        )
+        chunks: list[bytes] = []
+        size = 0
+        for chunk in encoder.iterencode(value):
+            encoded = chunk.encode("utf-8")
+            size += len(encoded)
+            if size > limit:
+                raise EvaluationError(f"{label} exceeds its bounded size")
+            chunks.append(encoded)
+        return b"".join(chunks)
+    except EvaluationError:
+        raise
+    except (TypeError, ValueError, RecursionError) as exc:
+        raise EvaluationError(f"{label} is not canonical JSON") from exc
 
 
 def _bounded_value(value: Any, *, depth: int = 0) -> Any:
@@ -334,7 +405,7 @@ def _json_loads(raw: bytes, label: str) -> Any:
         return json.loads(raw.decode("utf-8"), object_pairs_hook=_reject_duplicate_json_keys)
     except EvaluationError:
         raise
-    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+    except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         raise EvaluationError(f"{label} is invalid") from exc
 
 
@@ -468,7 +539,10 @@ def load_trusted_validator_registry(
         or (not is_release and metadata.get("bytes") != len(digest_bytes))
     ):
         raise EvaluationError("validator registry integrity check failed")
-    return _parse_registry(_json_loads(registry_raw, "validator registry"))
+    registry = _parse_registry(_json_loads(registry_raw, "validator registry"))
+    object.__setattr__(registry, "_integrity_seal", _TRUSTED_REGISTRY_SEAL)
+    object.__setattr__(registry, "_integrity_sha256", registry.registry_sha256)
+    return registry
 
 
 def _nullable_sha256(value: Any, label: str) -> str | None:
@@ -547,9 +621,13 @@ def _redact_summary(value: str) -> tuple[str, bool, bool]:
     redacted = value
     applied = False
     for pattern, replacement in (
+        (_REDACTION_MARKER_RE, "[REDACTED_UNTRUSTED_INSTRUCTION]"),
         (_AUTHORIZATION_RE, "[REDACTED_AUTHORIZATION]"),
         (_SECRET_ASSIGNMENT_RE, "[REDACTED_SECRET]"),
+        (_ENVIRONMENT_ASSIGNMENT_RE, "[REDACTED_ENVIRONMENT]"),
         (_TOKEN_VALUE_RE, "[REDACTED_TOKEN]"),
+        (_CREDENTIAL_URL_RE, "[REDACTED_CREDENTIAL_URL]"),
+        (_PRIVATE_KEY_MATERIAL_RE, "[REDACTED_PRIVATE_KEY]"),
         (_WINDOWS_PATH_RE, "[REDACTED_PRIVATE_PATH]"),
         (_UNIX_PRIVATE_PATH_RE, "[REDACTED_PRIVATE_PATH]"),
         (_INJECTION_RE, "[REDACTED_UNTRUSTED_INSTRUCTION]"),
@@ -559,6 +637,9 @@ def _redact_summary(value: str) -> tuple[str, bool, bool]:
     truncated = len(redacted) > MAX_OUTPUT_SUMMARY
     if truncated:
         redacted = redacted[: MAX_OUTPUT_SUMMARY - 1] + "…"
+        if applied and not _REDACTION_MARKER_RE.search(redacted):
+            prefix = "[REDACTED_CONTENT] "
+            redacted = prefix + redacted[: MAX_OUTPUT_SUMMARY - len(prefix) - 1] + "…"
     return redacted, applied, truncated
 
 
@@ -572,6 +653,7 @@ def _check_request(value: Any) -> tuple[dict[str, Any], dict[str, Any] | None]:
     _reject_secret_identifier(check_id, "evaluation check identity")
     if not isinstance(operator, str) or not TOKEN_RE.fullmatch(operator):
         raise EvaluationError("evaluation check operator is invalid")
+    _reject_secret_identifier(operator, "evaluation check operator")
     if not isinstance(value.get("required"), bool):
         raise EvaluationError("evaluation check required flag is invalid")
     expected = _bounded_value(value.get("expected"))
@@ -804,9 +886,9 @@ def evaluate_contract(
         raise EvaluationError("evaluation validator identity is invalid")
     if not isinstance(validator_version, str) or not TOKEN_RE.fullmatch(validator_version):
         raise EvaluationError("evaluation validator version is invalid")
-    trusted = registry or load_trusted_validator_registry()
-    if not isinstance(trusted, TrustedValidatorRegistry):
-        raise EvaluationError("evaluation registry is not a trusted registry object")
+    trusted = _require_trusted_registry(
+        load_trusted_validator_registry() if registry is None else registry
+    )
     definition = trusted.resolve(validator_id, validator_version)
     subject = _parse_subject(request.get("subject"))
     raw_checks = request.get("checks")
@@ -886,6 +968,7 @@ def _recompute_check(
     _reject_secret_identifier(check_id, "evaluation receipt check identity")
     if not isinstance(operator, str) or not TOKEN_RE.fullmatch(operator):
         raise EvaluationError("evaluation receipt check operator is invalid")
+    _reject_secret_identifier(operator, "evaluation receipt check operator")
     if not isinstance(value.get("required"), bool):
         raise EvaluationError("evaluation receipt check required flag is invalid")
     expected_sha = _nullable_sha256(value.get("expected_sha256"), "evaluation expected value")
@@ -899,6 +982,9 @@ def _recompute_check(
         _reject_secret_identifier(evidence_id, "evaluation receipt evidence identity")
     if (evidence_id is None) != (evidence_sha is None):
         raise EvaluationError("evaluation receipt evidence identity and digest disagree")
+
+    if operator != "sha256_matches_subject" and binding_sha is not None:
+        raise EvaluationError("evaluation receipt check result is contradictory")
 
     status, reason = "PASS", "CHECK_PASSED"
     if operator not in OPERATORS or operator not in definition.operators:
@@ -930,6 +1016,8 @@ def _recompute_check(
         elif observed_sha is None or evidence_sha is None:
             status, reason = "INVALID_REQUEST", "SUBJECT_BINDING_DIGEST_INVALID"
         elif binding_sha is None:
+            status, reason = "INVALID_REQUEST", "SUBJECT_BINDING_DIGEST_INVALID"
+        elif observed_sha != canonical_sha256(binding_sha):
             status, reason = "INVALID_REQUEST", "SUBJECT_BINDING_DIGEST_INVALID"
         elif binding_sha != subject["subject_sha256"]:
             status, reason = "FAIL", "SUBJECT_DIGEST_MISMATCH"
@@ -971,9 +1059,9 @@ def validate_evaluation_receipt(
         raise EvaluationError("evaluation receipt schema is malformed")
     if payload.get("schema_version") != EVALUATION_CONTRACT_SCHEMA_VERSION:
         raise EvaluationError("evaluation receipt schema is unsupported")
-    trusted = registry or load_trusted_validator_registry()
-    if not isinstance(trusted, TrustedValidatorRegistry):
-        raise EvaluationError("evaluation registry is not a trusted registry object")
+    trusted = _require_trusted_registry(
+        load_trusted_validator_registry() if registry is None else registry
+    )
     validator = payload.get("validator")
     if not isinstance(validator, Mapping) or set(validator) != {
         "validator_id", "validator_version", "validator_type", "output_schema_version"
@@ -986,7 +1074,11 @@ def validate_evaluation_receipt(
     if expected_subject_id is not None and subject["subject_id"] != expected_subject_id:
         raise EvaluationError("evaluation receipt subject identity does not match current subject")
     if expected_subject_sha256 is not None:
-        if not SHA256_RE.fullmatch(expected_subject_sha256) or subject["subject_sha256"] != expected_subject_sha256:
+        if (
+            not isinstance(expected_subject_sha256, str)
+            or not SHA256_RE.fullmatch(expected_subject_sha256)
+            or subject["subject_sha256"] != expected_subject_sha256
+        ):
             raise EvaluationError("evaluation receipt subject digest does not match current subject")
     raw_checks = payload.get("checks")
     if not isinstance(raw_checks, list) or len(raw_checks) > MAX_CHECKS:
@@ -999,7 +1091,12 @@ def validate_evaluation_receipt(
     if not isinstance(evidence, Mapping) or set(evidence) != {"item_count", "items", "evidence_sha256"}:
         raise EvaluationError("evaluation receipt evidence schema is malformed")
     items = evidence.get("items")
-    if not isinstance(items, list) or len(items) > MAX_EVIDENCE_ITEMS or evidence.get("item_count") != len(items):
+    if (
+        not isinstance(items, list)
+        or len(items) > MAX_EVIDENCE_ITEMS
+        or type(evidence.get("item_count")) is not int
+        or evidence.get("item_count") != len(items)
+    ):
         raise EvaluationError("evaluation receipt evidence is invalid or unbounded")
     normalized_items: list[dict[str, Any]] = []
     for item in items:
@@ -1017,9 +1114,16 @@ def validate_evaluation_receipt(
             raise EvaluationError("evaluation receipt evidence summary is invalid")
         if not isinstance(item.get("redacted"), bool) or not isinstance(item.get("truncated"), bool):
             raise EvaluationError("evaluation receipt evidence disclosure flags are invalid")
+        if item["redacted"] != bool(_REDACTION_MARKER_RE.search(summary)):
+            raise EvaluationError("evaluation receipt evidence disclosure flags are invalid")
+        if item["truncated"] and (
+            len(summary) != MAX_OUTPUT_SUMMARY or not summary.endswith("…")
+        ):
+            raise EvaluationError("evaluation receipt evidence disclosure flags are invalid")
         if any(pattern.search(summary) for pattern in (
             _WINDOWS_PATH_RE, _UNIX_PRIVATE_PATH_RE, _AUTHORIZATION_RE,
-            _SECRET_ASSIGNMENT_RE, _TOKEN_VALUE_RE, _INJECTION_RE,
+            _SECRET_ASSIGNMENT_RE, _ENVIRONMENT_ASSIGNMENT_RE, _TOKEN_VALUE_RE,
+            _CREDENTIAL_URL_RE, _PRIVATE_KEY_MATERIAL_RE, _INJECTION_RE,
         )):
             raise EvaluationError("evaluation receipt evidence summary is not redacted")
         normalized_items.append(dict(item))
@@ -1042,10 +1146,25 @@ def validate_evaluation_receipt(
     if evidence.get("evidence_sha256") != expected_evidence_sha:
         raise EvaluationError("evaluation receipt evidence digest is inconsistent")
     expected_result = _derive_result(definition, subject, checks)
-    if payload.get("result") != expected_result:
+    result = payload.get("result")
+    count_fields = (
+        "declared_check_count", "required_check_count",
+        "passed_check_count", "failed_check_count",
+    )
+    if (
+        not isinstance(result, Mapping)
+        or any(type(result.get(field)) is not int for field in count_fields)
+        or result != expected_result
+    ):
         raise EvaluationError("evaluation receipt result is contradictory")
     expected_transition = _state_transition(definition, subject, expected_result["state"])
-    if payload.get("state_transition") != expected_transition:
+    transition = payload.get("state_transition")
+    if (
+        not isinstance(transition, Mapping)
+        or type(transition.get("permitted")) is not bool
+        or type(transition.get("applied")) is not bool
+        or transition != expected_transition
+    ):
         raise EvaluationError("evaluation receipt state transition is contradictory")
     if payload.get("provenance") != _provenance_output(definition, trusted):
         raise EvaluationError("evaluation receipt provenance is inconsistent")
@@ -1054,9 +1173,20 @@ def validate_evaluation_receipt(
         "summary_truncated": any(item["truncated"] for item in normalized_items),
         "authoritative_data_truncated": False,
     }
-    if payload.get("redaction") != expected_redaction:
+    redaction = payload.get("redaction")
+    if (
+        not isinstance(redaction, Mapping)
+        or any(type(redaction.get(field)) is not bool for field in expected_redaction)
+        or redaction != expected_redaction
+    ):
         raise EvaluationError("evaluation receipt redaction status is inconsistent")
-    if payload.get("proof_scope") != _fixed_proof_scope() or payload.get("authority") != _fixed_authority():
+    authority = payload.get("authority")
+    if (
+        payload.get("proof_scope") != _fixed_proof_scope()
+        or not isinstance(authority, Mapping)
+        or type(authority.get("state_transition_applied")) is not bool
+        or authority != _fixed_authority()
+    ):
         raise EvaluationError("evaluation receipt authority boundary is invalid")
     body = {key: payload[key] for key in payload if key != "evaluation_id"}
     if payload.get("evaluation_id") != "evaluation:" + canonical_sha256(body):

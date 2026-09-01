@@ -28,8 +28,10 @@ CAPABILITY_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$")
 WORKFLOW_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
 SECRET_IDENTIFIER_RE = re.compile(
-    r"(?i)^(?:sk-[A-Za-z0-9_-]{20,}|ghp_[A-Za-z0-9]{20,}"
-    r"|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16})$"
+    r"(?i)^(?:sk[-_][A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9]{20,}"
+    r"|github_pat_[A-Za-z0-9_]{20,}|glpat-[A-Za-z0-9_-]{20,}"
+    r"|(?:AKIA|ASIA)[0-9A-Z]{16}"
+    r"|xox[A-Za-z]-[A-Za-z0-9-]{8,}|xapp-[A-Za-z0-9-]{8,})$"
 )
 STEP_TYPES = frozenset(
     {
@@ -240,16 +242,28 @@ def _nullable_digest(value: Any, label: str) -> str | None:
 
 def _quality_json_size(value: Any) -> int:
     try:
-        return len(
-            json.dumps(
-                value,
-                ensure_ascii=False,
-                sort_keys=True,
-                separators=(",", ":"),
-                allow_nan=False,
-            ).encode("utf-8")
+        encoder = json.JSONEncoder(
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+            allow_nan=False,
         )
-    except (TypeError, ValueError) as exc:
+        size = 0
+        for chunk in encoder.iterencode(value):
+            size += len(chunk.encode("utf-8"))
+            if size > MAX_QUALITY_RECEIPT_BYTES:
+                return size
+        return size
+    except (TypeError, ValueError, RecursionError) as exc:
+        raise QualityLoopError("quality receipt is not canonical JSON") from exc
+
+
+def _bounded_quality_copy(value: Any) -> Any:
+    if _quality_json_size(value) > MAX_QUALITY_RECEIPT_BYTES:
+        raise QualityLoopError("quality receipt exceeds its bounded size")
+    try:
+        return json.loads(json.dumps(value, ensure_ascii=False, allow_nan=False))
+    except (TypeError, ValueError, RecursionError) as exc:
         raise QualityLoopError("quality receipt is not canonical JSON") from exc
 
 
@@ -276,7 +290,7 @@ def build_quality_stage_receipt(
         "input_subject_sha256": input_subject_sha256,
         "output_subject_sha256": output_subject_sha256,
         "evaluation_receipt": (
-            json.loads(json.dumps(evaluation_receipt, ensure_ascii=False))
+            _bounded_quality_copy(evaluation_receipt)
             if evaluation_receipt is not None
             else None
         ),
@@ -545,7 +559,12 @@ def _validate_quality_receipt_v2(
         "review_cycles_used": review_count,
         "enhancement_passes_used": enhancement_count,
     }
-    if not isinstance(budgets, Mapping) or set(budgets) != _QUALITY_BUDGET_FIELDS or dict(budgets) != expected_budgets:
+    if (
+        not isinstance(budgets, Mapping)
+        or set(budgets) != _QUALITY_BUDGET_FIELDS
+        or any(type(budgets.get(field)) is not int for field in _QUALITY_BUDGET_FIELDS)
+        or dict(budgets) != expected_budgets
+    ):
         raise QualityLoopError("quality receipt budgets are inconsistent")
     if creator_state == "execution_failed":
         expected_outcome = "execution_failed"
@@ -559,7 +578,13 @@ def _validate_quality_receipt_v2(
         expected_outcome = "artifact_pending"
     if payload.get("outcome") != expected_outcome:
         raise QualityLoopError("quality receipt outcome contradicts its evidence")
-    if payload.get("authority") != _QUALITY_AUTHORITY:
+    authority = payload.get("authority")
+    if (
+        not isinstance(authority, Mapping)
+        or set(authority) != set(_QUALITY_AUTHORITY)
+        or type(authority.get("automatic_execution")) is not bool
+        or dict(authority) != _QUALITY_AUTHORITY
+    ):
         raise QualityLoopError("quality receipt authority boundary is invalid")
     return json.loads(json.dumps(payload, ensure_ascii=False))
 

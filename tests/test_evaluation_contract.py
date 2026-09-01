@@ -7,11 +7,14 @@ from pathlib import Path
 import tempfile
 import unittest
 
+import ash.evaluation as evaluation_module
 from ash.evaluation import (
     EVALUATION_CONTRACT_SCHEMA_VERSION,
     EVALUATION_REQUEST_SCHEMA_VERSION,
     MAX_CHECKS,
     EvaluationError,
+    TrustedValidatorRegistry,
+    ValidatorDefinition,
     canonical_sha256,
     evaluate_contract,
     load_trusted_validator_registry,
@@ -455,15 +458,237 @@ class EvaluationContractTests(unittest.TestCase):
             load_temporary_registry(payload)
 
     def test_31_secret_shaped_opaque_identifiers_fail_closed_instead_of_leaking(self) -> None:
-        secret_like = "sk-" + "A" * 32
-        secret_subject = subject()
-        secret_subject["subject_id"] = secret_like
-        with self.assertRaises(EvaluationError):
-            evaluate_contract(request(subject_value=secret_subject), registry=self.registry)
-        secret_evidence = check()
-        secret_evidence["evidence"]["evidence_id"] = secret_like
-        with self.assertRaises(EvaluationError):
-            evaluate_contract(request(checks=[secret_evidence]), registry=self.registry)
+        secret_like_values = (
+            "sk-" + "a" * 32,
+            "gho_" + "a" * 32,
+            "glpat-" + "a" * 32,
+            "ASIA" + "A" * 16,
+            "xoxb-" + "a" * 24,
+        )
+        for secret_like in secret_like_values:
+            with self.subTest(secret_like=secret_like):
+                secret_subject = subject()
+                secret_subject["subject_id"] = secret_like
+                with self.assertRaises(EvaluationError):
+                    evaluate_contract(request(subject_value=secret_subject), registry=self.registry)
+                if evaluation_module.TOKEN_RE.fullmatch(secret_like):
+                    secret_evidence = check()
+                    secret_evidence["evidence"]["evidence_id"] = secret_like
+                    with self.assertRaises(EvaluationError):
+                        evaluate_contract(request(checks=[secret_evidence]), registry=self.registry)
+                    secret_operator = check(operator=secret_like)
+                    with self.assertRaises(EvaluationError):
+                        evaluate_contract(request(checks=[secret_operator]), registry=self.registry)
+
+    def test_32_receipt_cannot_forge_digest_pass_by_rebinding_observed_evidence(self) -> None:
+        receipt = evaluate_contract(request(), registry=self.registry)
+        forged = copy.deepcopy(receipt)
+        forged_digest = "f" * 64
+        forged["checks"][0]["observed_sha256"] = forged_digest
+        forged["checks"][0]["evidence_sha256"] = forged_digest
+        forged["evidence"]["items"][0]["content_sha256"] = forged_digest
+        forged["evidence"]["evidence_sha256"] = canonical_sha256(
+            [
+                {
+                    "evidence_id": item["evidence_id"],
+                    "content_sha256": item["content_sha256"],
+                }
+                for item in forged["evidence"]["items"]
+            ]
+        )
+        body = {key: forged[key] for key in forged if key != "evaluation_id"}
+        forged["evaluation_id"] = "evaluation:" + canonical_sha256(body)
+
+        with self.assertRaisesRegex(EvaluationError, "check result is contradictory"):
+            validate_evaluation_receipt(forged, registry=self.registry)
+
+    def test_33_environment_tokens_and_unc_paths_are_redacted_truthfully(self) -> None:
+        sensitive_cases = (
+            ("DB_PASSWORD=not-a-real-secret-123", ("not-a-real-secret-123",)),
+            ('{"DB_PASSWORD":"alpha,beta;gamma"}', ("alpha,beta;gamma",)),
+            ("AWS_SECRET_ACCESS_KEY=NOTAREALSECRETVALUE1234567890", ("NOTAREALSECRETVALUE",)),
+            ("DATABASE_URL=postgresql://demo:not-real@example.invalid/db,option=yes", ("not-real", "option=yes")),
+            ("USER=ExampleUser", ("ExampleUser",)),
+            ("HOMEPATH=\\Users\\Example User,private;tail", ("Example User", "tail")),
+            ("LOGNAME=ExampleLogname", ("ExampleLogname",)),
+            ("COMPUTERNAME=EXAMPLE-WORKSTATION", ("EXAMPLE-WORKSTATION",)),
+            ("USERDOMAIN=EXAMPLE-DOMAIN", ("EXAMPLE-DOMAIN",)),
+            ("Authorization: Digest username=ExampleUser, response=not-real; tail=yes", ("ExampleUser", "tail=yes")),
+            ("gho_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+            ("ghu_ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+            ("glpat-ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890", ("ABCDEFGHIJKLMNOPQRSTUVWXYZ",)),
+            ("ASIAABCDEFGHIJKLMNOP", ("ASIAABCDEFGHIJKLMNOP",)),
+            ("xoxb-1234567890-not-a-real-slack-token", ("not-a-real-slack-token",)),
+            ("postgresql://ExampleUser:not-real@example.invalid/db,option=yes", ("ExampleUser", "option=yes")),
+            ("\\\\server\\private share\\ExampleUser\\secret,tail.txt", ("ExampleUser", "tail.txt")),
+            ("C:\\Users\\Example User\\private,segment;tail.txt", ("Example User", "tail.txt")),
+            ("/home/Example User/private,segment;tail.txt", ("Example User", "tail.txt")),
+            ("-----BEGIN PRIVATE KEY-----\nnot-real-private-material\n-----END PRIVATE KEY-----", ("not-real-private-material",)),
+        )
+        for index, (summary, forbidden_fragments) in enumerate(sensitive_cases):
+            with self.subTest(summary=summary):
+                receipt = evaluate_contract(
+                    request(
+                        checks=[check(
+                            check_id=f"privacy-{index:02d}",
+                            operator="equals",
+                            expected="same",
+                            observed="same",
+                            summary=summary,
+                        )]
+                    ),
+                    registry=self.registry,
+                )
+                item = receipt["evidence"]["items"][0]
+                self.assertEqual(receipt["result"]["state"], "PASS")
+                self.assertTrue(receipt["redaction"]["applied"])
+                self.assertTrue(item["redacted"])
+                for fragment in forbidden_fragments:
+                    self.assertNotIn(fragment, item["summary"])
+                self.assertEqual(validate_evaluation_receipt(receipt, registry=self.registry), receipt)
+
+                forged = evaluate_contract(
+                    request(checks=[check(summary="safe summary")]), registry=self.registry
+                )
+                forged["evidence"]["items"][0]["summary"] = summary
+                forged["evidence"]["items"][0]["redacted"] = False
+                forged["redaction"]["applied"] = False
+                body = {key: forged[key] for key in forged if key != "evaluation_id"}
+                forged["evaluation_id"] = "evaluation:" + canonical_sha256(body)
+                with self.assertRaisesRegex(EvaluationError, "summary is not redacted"):
+                    validate_evaluation_receipt(forged, registry=self.registry)
+
+        late_secret = "bounded-safe-prefix-" * 14 + " DB_PASSWORD=late-not-real-secret"
+        truncated = evaluate_contract(
+            request(checks=[check(summary=late_secret)]), registry=self.registry
+        )
+        truncated_item = truncated["evidence"]["items"][0]
+        self.assertTrue(truncated_item["redacted"])
+        self.assertTrue(truncated_item["truncated"])
+        self.assertEqual(len(truncated_item["summary"]), evaluation_module.MAX_OUTPUT_SUMMARY)
+        self.assertIn("[REDACTED_CONTENT]", truncated_item["summary"])
+        self.assertNotIn("late-not-real-secret", truncated_item["summary"])
+        self.assertEqual(validate_evaluation_receipt(truncated, registry=self.registry), truncated)
+
+        marker_forged = evaluate_contract(
+            request(checks=[check(summary="safe summary")]), registry=self.registry
+        )
+        marker_forged["evidence"]["items"][0]["summary"] = "[REDACTED_SECRET]"
+        marker_forged["evidence"]["items"][0]["redacted"] = False
+        body = {key: marker_forged[key] for key in marker_forged if key != "evaluation_id"}
+        marker_forged["evaluation_id"] = "evaluation:" + canonical_sha256(body)
+        with self.assertRaisesRegex(EvaluationError, "disclosure flags are invalid"):
+            validate_evaluation_receipt(marker_forged, registry=self.registry)
+
+    def test_34_unsealed_registry_cannot_manufacture_validator_authority(self) -> None:
+        forged_definition = ValidatorDefinition(
+            validator_id="nexus.validator.unmanifested",
+            display_name="Unmanifested Validator",
+            validator_version="1",
+            validator_type="bounded_predicate",
+            subject_types=("artifact",),
+            operators=("equals",),
+            output_schema_version=EVALUATION_CONTRACT_SCHEMA_VERSION,
+            minimum_checks=1,
+            requires_executed_subject=False,
+            pass_transition="validation_passed",
+            availability="available",
+            definition_source="nexus_core",
+        )
+        forged_registry = TrustedValidatorRegistry((forged_definition,), "f" * 64)
+        forged_request = request(
+            validator_id="nexus.validator.unmanifested",
+            checks=[check(operator="equals", expected="same", observed="same")],
+        )
+
+        with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
+            evaluate_contract(forged_request, registry=forged_registry)
+        valid_receipt = evaluate_contract(request(), registry=self.registry)
+        with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
+            validate_evaluation_receipt(valid_receipt, registry=forged_registry)
+
+        parsed_without_manifest = evaluation_module._parse_registry(registry_payload())
+        with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
+            evaluate_contract(request(), registry=parsed_without_manifest)
+
+        tampered_sealed = copy.copy(self.registry)
+        object.__setattr__(tampered_sealed, "validators", (forged_definition,))
+        with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
+            evaluate_contract(forged_request, registry=tampered_sealed)
+
+    def test_35_deeply_nested_request_fails_with_closed_evaluation_error(self) -> None:
+        nested: object = "leaf"
+        for _ in range(5000):
+            nested = [nested]
+        nested_check = {
+            "check_id": "deeply-nested",
+            "operator": "present",
+            "required": True,
+            "expected": None,
+            "observed": nested,
+            "evidence": None,
+        }
+
+        with self.assertRaisesRegex(EvaluationError, "evaluation request is not canonical JSON"):
+            evaluate_contract(request(checks=[nested_check]), registry=self.registry)
+
+    def test_36_non_digest_check_cannot_invent_subject_binding(self) -> None:
+        receipt = evaluate_contract(
+            request(checks=[check(operator="equals", expected="same", observed="same")]),
+            registry=self.registry,
+        )
+        receipt["checks"][0]["subject_binding_sha256"] = SUBJECT_A
+        receipt["checks"][0]["status"] = "INVALID_REQUEST"
+        receipt["checks"][0]["reason_code"] = "SUBJECT_BINDING_DIGEST_INVALID"
+        definition = self.registry.resolve(
+            receipt["validator"]["validator_id"], receipt["validator"]["validator_version"]
+        )
+        receipt["result"] = evaluation_module._derive_result(
+            definition, receipt["subject"], receipt["checks"]
+        )
+        receipt["state_transition"] = evaluation_module._state_transition(
+            definition, receipt["subject"], receipt["result"]["state"]
+        )
+        body = {key: receipt[key] for key in receipt if key != "evaluation_id"}
+        receipt["evaluation_id"] = "evaluation:" + canonical_sha256(body)
+
+        with self.assertRaisesRegex(EvaluationError, "check result is contradictory"):
+            validate_evaluation_receipt(receipt, registry=self.registry)
+
+    def test_37_receipt_boolean_and_count_types_fail_closed(self) -> None:
+        receipt = evaluate_contract(request(), registry=self.registry)
+        mutations = (
+            lambda value: value["evidence"].__setitem__("item_count", True),
+            lambda value: value["result"].__setitem__("declared_check_count", True),
+            lambda value: value["result"].__setitem__("failed_check_count", False),
+            lambda value: value["state_transition"].__setitem__("permitted", 1),
+            lambda value: value["state_transition"].__setitem__("applied", 0),
+            lambda value: value["redaction"].__setitem__("applied", 0),
+            lambda value: value["authority"].__setitem__("state_transition_applied", 0),
+        )
+        for mutate in mutations:
+            malformed = copy.deepcopy(receipt)
+            mutate(malformed)
+            body = {key: malformed[key] for key in malformed if key != "evaluation_id"}
+            malformed["evaluation_id"] = "evaluation:" + canonical_sha256(body)
+            with self.assertRaises(EvaluationError):
+                validate_evaluation_receipt(malformed, registry=self.registry)
+
+    def test_38_excessive_integer_json_fails_with_closed_evaluation_error(self) -> None:
+        raw = ("[" + "9" * 5000 + "]").encode("ascii")
+        with self.assertRaisesRegex(EvaluationError, "validator registry is invalid"):
+            evaluation_module._json_loads(raw, "validator registry")
+
+    def test_39_expected_subject_digest_type_confusion_fails_closed(self) -> None:
+        receipt = evaluate_contract(request(), registry=self.registry)
+        for malformed in (1, True, b"a" * 64, object()):
+            with self.subTest(malformed_type=type(malformed).__name__):
+                with self.assertRaisesRegex(EvaluationError, "does not match current subject"):
+                    validate_evaluation_receipt(
+                        receipt,
+                        registry=self.registry,
+                        expected_subject_sha256=malformed,  # type: ignore[arg-type]
+                    )
 
 
 if __name__ == "__main__":
