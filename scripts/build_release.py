@@ -32,9 +32,21 @@ if not __package__:
         sys.path.insert(0, str(_SCRIPT_DIRECTORY))
 
 if __package__:
-    from .release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
+    from .release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, _is_link_or_reparse, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
+    from .package_nexus import (
+        PackageBoundaryError,
+        _load_reviewed_manifest,
+        _manifest_bytes,
+        _stable_source_bytes,
+    )
 else:
-    from release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
+    from release_common import MANIFEST_NAME, MANIFEST_SCHEMA, ReleaseError, _is_link_or_reparse, atomic_json_write, safe_member_name, sha256_file, verify_release_tree
+    from package_nexus import (
+        PackageBoundaryError,
+        _load_reviewed_manifest,
+        _manifest_bytes,
+        _stable_source_bytes,
+    )
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -68,28 +80,80 @@ def release_version(value: str | None) -> str:
     return version
 
 
-def source_members() -> list[Path]:
+def _release_manifest_member(name: str) -> bool:
+    return (
+        name in ROOT_FILES
+        or name in EXTRA_FILES
+        or any(name.startswith(f"{directory}/") for directory in DIRECTORIES)
+    )
+
+
+def source_payloads() -> list[tuple[Path, bytes]]:
+    """Return the exact static-MANIFEST-reviewed release source snapshot."""
+    try:
+        reviewed_manifest = _load_reviewed_manifest(ROOT)
+    except PackageBoundaryError as exc:
+        raise ReleaseError("release source MANIFEST is invalid") from exc
+
     members: list[Path] = []
     for name in ROOT_FILES | EXTRA_FILES:
         path = ROOT / name
-        if not path.is_file() or path.is_symlink():
+        if _is_link_or_reparse(path) or not path.is_file():
             raise ReleaseError(f"required release file is unavailable: {name}")
         members.append(path)
     for directory in DIRECTORIES:
         root = ROOT / directory
-        if not root.is_dir() or root.is_symlink():
+        if _is_link_or_reparse(root) or not root.is_dir():
             raise ReleaseError(f"required release directory is unavailable: {directory}")
-        members.extend(
-            path for path in root.rglob("*")
-            if path.is_file() and not path.is_symlink()
-            and "__pycache__" not in path.parts and path.suffix != ".pyc"
-        )
+        for path in root.rglob("*"):
+            if _is_link_or_reparse(path):
+                raise ReleaseError("release source must not contain links or reparse points")
+            if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc":
+                members.append(path)
     result = sorted(set(members))
+    observed: dict[str, Path] = {}
     for path in result:
-        lower = path.relative_to(ROOT).as_posix().lower()
+        relative = path.relative_to(ROOT).as_posix()
+        # Apply the same closed portable path boundary before any source byte is
+        # copied into staging. This also rejects every Slice 3C mutable-state
+        # namespace even if one is accidentally created below an allowlisted
+        # source directory such as ``ash`` or ``config``.
+        safe_member_name(relative)
+        lower = relative.casefold()
         if any(part in lower for part in SENSITIVE_PARTS) or path.suffix.lower() in {".key", ".pem", ".p12", ".pfx"}:
             raise ReleaseError("release allowlist rejected a sensitive path")
-    return result
+        observed[relative] = path
+
+    expected = {
+        name for name in reviewed_manifest if _release_manifest_member(name)
+    }
+    if set(observed) != expected:
+        raise ReleaseError(
+            "release-eligible files differ from the integrity-reviewed MANIFEST set"
+        )
+
+    payloads: list[tuple[Path, bytes]] = []
+    for name in sorted(expected):
+        path = observed[name]
+        try:
+            contents = _manifest_bytes(_stable_source_bytes(path))
+        except PackageBoundaryError as exc:
+            raise ReleaseError("release source could not be read safely") from exc
+        metadata = reviewed_manifest[name]
+        if (
+            len(contents) != metadata["bytes"]
+            or hashlib.sha256(contents).hexdigest() != metadata["sha256"]
+        ):
+            raise ReleaseError(
+                "release source differs from the integrity-reviewed MANIFEST"
+            )
+        payloads.append((path, contents))
+    return payloads
+
+
+def source_members() -> list[Path]:
+    """Compatibility view of the reviewed release-source member paths."""
+    return [path for path, _contents in source_payloads()]
 
 
 def wheel_metadata(path: Path) -> tuple[str, str]:
@@ -235,13 +299,16 @@ def prepare_embedded_runtime(stage: Path, wheelhouse: Path, python_embed: Path) 
 def write_manifest(stage: Path, version: str) -> None:
     files: dict[str, dict[str, int | str]] = {}
     for path in sorted(stage.rglob("*")):
-        if not path.is_file() or path.name == MANIFEST_NAME:
+        if not path.is_file() or path.name.casefold() == MANIFEST_NAME.casefold():
             continue
         # A release may be staged from an already-started embedded runtime.
         # Its ``__pycache__`` bytecode is host-generated state, not a signed
         # payload member; release_common.verify_release_tree intentionally
         # ignores exactly these files after extraction as well.
-        if "__pycache__" in path.parts and path.suffix == ".pyc":
+        if (
+            "__pycache__" in {part.casefold() for part in path.parts}
+            and path.suffix.casefold() == ".pyc"
+        ):
             continue
         name = path.relative_to(stage).as_posix()
         safe_member_name(name)
@@ -267,10 +334,15 @@ def build(output: Path, version: str, wheelhouse: Path, python_embed: Path) -> t
     with tempfile.TemporaryDirectory(prefix="nexus-release-") as temporary:
         stage = Path(temporary) / f"Nexus-{version}"
         stage.mkdir()
-        for source in source_members():
+        reviewed_sources = source_payloads()
+        reviewed_source_bytes = {
+            source.relative_to(ROOT).as_posix(): contents
+            for source, contents in reviewed_sources
+        }
+        for source, contents in reviewed_sources:
             destination = stage / source.relative_to(ROOT)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, destination)
+            destination.write_bytes(contents)
         plugin_manifest = stage / "plugins" / "nexus-desktop" / ".codex-plugin" / "plugin.json"
         manifest_payload = json.loads(plugin_manifest.read_text(encoding="utf-8"))
         manifest_payload["version"] = version
@@ -298,14 +370,33 @@ def build(output: Path, version: str, wheelhouse: Path, python_embed: Path) -> t
         prepare_embedded_runtime(stage, resolved_wheelhouse, python_embed)
         write_manifest(stage, version)
         verify_release_tree(stage)
-        with zipfile.ZipFile(archive, "x", compression=zipfile.ZIP_DEFLATED, strict_timestamps=False) as bundle:
-            for member in sorted(stage.rglob("*")):
+        with zipfile.ZipFile(
+            archive,
+            "x",
+            compression=zipfile.ZIP_DEFLATED,
+            compresslevel=9,
+            strict_timestamps=False,
+        ) as bundle:
+            for member in sorted(
+                stage.rglob("*"),
+                key=lambda item: item.relative_to(stage.parent).as_posix().encode("utf-8"),
+            ):
                 if member.is_file():
-                    bundle.write(member, member.relative_to(stage.parent).as_posix())
+                    name = member.relative_to(stage.parent).as_posix()
+                    info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+                    info.compress_type = zipfile.ZIP_DEFLATED
+                    info.create_system = 3
+                    info.external_attr = 0o100644 << 16
+                    bundle.writestr(
+                        info,
+                        member.read_bytes(),
+                        compress_type=zipfile.ZIP_DEFLATED,
+                        compresslevel=9,
+                    )
     receipt.write_text(f"{sha256_file(archive)}  {archive.name}\n", encoding="ascii", newline="\n")
     bootstrap = output / f"Install-Nexus-{version}.ps1"
     bootstrap_receipt = bootstrap.with_suffix(".ps1.sha256")
-    shutil.copy2(ROOT / "scripts" / "Install-Nexus.ps1", bootstrap)
+    bootstrap.write_bytes(reviewed_source_bytes["scripts/Install-Nexus.ps1"])
     bootstrap_receipt.write_text(f"{sha256_file(bootstrap)}  {bootstrap.name}\n", encoding="ascii", newline="\n")
     # Publish the exact in-archive manifest as a separately hashable release
     # asset. This gives a downloader a six-asset receipt set without trusting

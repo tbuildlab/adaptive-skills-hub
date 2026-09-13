@@ -13,10 +13,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import hashlib
+import hmac
 import json
-from pathlib import Path
+import os
+from pathlib import Path, PurePosixPath
 import re
 from typing import Any, Mapping, Sequence
+import unicodedata
+import weakref
 
 
 EVALUATION_REQUEST_SCHEMA_VERSION = "nexus.evaluation-request.v1"
@@ -24,6 +28,7 @@ EVALUATION_CONTRACT_SCHEMA_VERSION = "nexus.evaluation-contract.v1"
 VALIDATOR_REGISTRY_SCHEMA_VERSION = "nexus.validator-registry.v1"
 VALIDATOR_REGISTRY_VERSION = "1"
 VALIDATOR_VERSION = "1"
+EXPECTED_VALIDATOR_REGISTRY_SHA256 = "ba1645ba3c85ed00a72daadbb112897bd54af33783808b44dd0fc878b07535a0"
 
 MAX_REGISTRY_BYTES = 32 * 1024
 MAX_MANIFEST_BYTES = 2 * 1024 * 1024
@@ -40,6 +45,7 @@ MAX_VALUE_DEPTH = 3
 MAX_VALUE_STRING = 512
 
 SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+RELEASE_VERSION_RE = re.compile(r"^[0-9A-Za-z][0-9A-Za-z._-]{0,63}$")
 TOKEN_RE = re.compile(r"^[a-z0-9][a-z0-9._:-]{0,127}$")
 SUBJECT_ID_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$")
 SECRET_IDENTIFIER_RE = re.compile(
@@ -168,8 +174,69 @@ _RECEIPT_FIELDS = {
 }
 
 _WINDOWS_PATH_RE = re.compile(
-    r"(?i)(?<![A-Za-z0-9])(?:[A-Z]:\\|\\\\[^\\\r\n]+\\)[^\r\n]*"
+    r"(?i)(?<![A-Za-z0-9])(?:[A-Z]:[\\/]|(?:\\\\|//)[^\\/\r\n]+[\\/])[^\r\n]*"
 )
+_BIDI_CONTROLS = frozenset(
+    chr(value)
+    for value in (
+        0x061C,
+        0x200E,
+        0x200F,
+        0x202A,
+        0x202B,
+        0x202C,
+        0x202D,
+        0x202E,
+        0x2066,
+        0x2067,
+        0x2068,
+        0x2069,
+    )
+)
+_WINDOWS_RESERVED = frozenset(
+    {"con", "prn", "aux", "nul"}
+    | {f"com{index}" for index in range(1, 10)}
+    | {f"lpt{index}" for index in range(1, 10)}
+)
+_FORBIDDEN_INTEGRITY_PARTS = frozenset(
+    {
+        ".git",
+        ".pytest_cache",
+        ".venv",
+        "__pycache__",
+        "comparisons",
+        "components",
+        "decisions",
+        "ecosystem",
+        "evidence",
+        "incoming",
+        "intake-attempts",
+        "locks",
+        "node_modules",
+        "objects",
+        "observations",
+        "output",
+        "quarantine",
+        "receipts",
+        "revisions",
+        "staging",
+        "state",
+        "tmp",
+        "trees",
+        "venv",
+    }
+)
+_FORBIDDEN_INTEGRITY_NAMES = frozenset(
+    {
+        ".env",
+        ".nexus-ecosystem-root.json",
+        "manifest.json",
+        "nexus-desktop-plugin.json",
+        "registry.json",
+        "workspaces.json",
+    }
+)
+_SECRET_FILE_SUFFIXES = (".key", ".pem", ".p12", ".pfx")
 _UNIX_PRIVATE_PATH_RE = re.compile(
     r"(?<![A-Za-z0-9])/(?:home|Users|root|private|var/folders|tmp)/(?:[^\r\n]*)",
     re.IGNORECASE,
@@ -211,6 +278,11 @@ _REDACTION_MARKER_RE = re.compile(
     r"CREDENTIAL_URL|PRIVATE_KEY|UNTRUSTED_INSTRUCTION|CONTENT)\]"
 )
 _TRUSTED_REGISTRY_SEAL = object()
+_PRODUCTION_REGISTRY_LOAD_TOKEN = object()
+_HERMETIC_TEST_REGISTRY_LOAD_TOKEN = object()
+_PRODUCTION_TRUST_MODE = "production"
+_HERMETIC_TEST_TRUST_MODE = "hermetic_test"
+_TRUSTED_REGISTRY_BASELINES: "weakref.WeakKeyDictionary[TrustedValidatorRegistry, tuple[Any, ...]]"
 
 
 class EvaluationError(ValueError):
@@ -254,12 +326,15 @@ class ValidatorDefinition:
         }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, eq=False)
 class TrustedValidatorRegistry:
     validators: tuple[ValidatorDefinition, ...]
     registry_sha256: str
     _integrity_seal: object = field(init=False, repr=False, compare=False)
     _integrity_sha256: str = field(init=False, repr=False, compare=False)
+    _integrity_manifest_sha256: str = field(init=False, repr=False, compare=False)
+    _trust_mode: str = field(init=False, repr=False, compare=False)
+    _repository_root: str = field(init=False, repr=False, compare=False)
 
     def resolve(self, validator_id: str, validator_version: str) -> ValidatorDefinition:
         matching_id = [item for item in self.validators if item.validator_id == validator_id]
@@ -269,6 +344,9 @@ class TrustedValidatorRegistry:
         if len(matching_version) != 1:
             raise EvaluationError("evaluation validator version is unsupported")
         return matching_version[0]
+
+
+_TRUSTED_REGISTRY_BASELINES = weakref.WeakKeyDictionary()
 
 
 def _registry_semantic_sha256(value: TrustedValidatorRegistry) -> str:
@@ -286,16 +364,46 @@ def _registry_semantic_sha256(value: TrustedValidatorRegistry) -> str:
 
 
 def _require_trusted_registry(value: Any) -> TrustedValidatorRegistry:
+    baseline = (
+        _TRUSTED_REGISTRY_BASELINES.get(value)
+        if type(value) is TrustedValidatorRegistry
+        else None
+    )
     if (
         type(value) is not TrustedValidatorRegistry
+        or type(baseline) is not tuple
+        or len(baseline) != 5
+        or baseline[0] is not getattr(value, "_integrity_seal", None)
+        or baseline[1] != value.registry_sha256
+        or baseline[2] != getattr(value, "_integrity_manifest_sha256", None)
+        or baseline[3] != getattr(value, "_trust_mode", None)
+        or baseline[4] != getattr(value, "_repository_root", None)
         or getattr(value, "_integrity_seal", None) is not _TRUSTED_REGISTRY_SEAL
         or getattr(value, "_integrity_sha256", None) != value.registry_sha256
+        or getattr(value, "_trust_mode", None)
+        not in {_PRODUCTION_TRUST_MODE, _HERMETIC_TEST_TRUST_MODE}
+        or not isinstance(getattr(value, "_repository_root", None), str)
+        or not isinstance(getattr(value, "_integrity_manifest_sha256", None), str)
+        or not SHA256_RE.fullmatch(value._integrity_manifest_sha256)
         or not isinstance(value.registry_sha256, str)
         or not SHA256_RE.fullmatch(value.registry_sha256)
-        or _registry_semantic_sha256(value) != value.registry_sha256
+        or not hmac.compare_digest(_registry_semantic_sha256(value), value.registry_sha256)
     ):
         raise EvaluationError("evaluation registry is not integrity-verified")
     return value
+
+
+def _require_production_registry(value: Any) -> TrustedValidatorRegistry:
+    trusted = _require_trusted_registry(value)
+    if (
+        trusted._trust_mode != _PRODUCTION_TRUST_MODE
+        or trusted._repository_root != str(Path(os.path.abspath(__file__)).parents[1])
+        or not hmac.compare_digest(
+            trusted.registry_sha256, EXPECTED_VALIDATOR_REGISTRY_SHA256
+        )
+    ):
+        raise EvaluationError("evaluation production registry is not approved")
+    return trusted
 
 
 def _canonical_json(value: Any) -> bytes:
@@ -377,18 +485,24 @@ def _bounded_value(value: Any, *, depth: int = 0) -> Any:
 
 
 def _stable_bytes(path: Path, maximum: int) -> bytes:
+    """Read one integrity input through the Slice 3C stable-handle boundary."""
     try:
-        before = path.stat()
-        if not path.is_file() or path.is_symlink() or before.st_size > maximum:
-            raise EvaluationError("evaluation integrity file is unavailable or unbounded")
-        contents = path.read_bytes()
-        after = path.stat()
-    except OSError as exc:
-        raise EvaluationError("evaluation integrity file is unavailable") from exc
-    fingerprint = lambda item: (item.st_dev, item.st_ino, item.st_size, item.st_mtime_ns)
-    if fingerprint(before) != fingerprint(after) or len(contents) != after.st_size:
-        raise EvaluationError("evaluation integrity file changed during verification")
-    return contents
+        # Delayed imports avoid a module-import cycle when the quarantine store
+        # later revalidates a registry.  The shared reader holds no-follow
+        # handles, rejects hardlinks/reparse points, and verifies Windows
+        # FileId/POSIX inode identity before and after the bounded read.
+        from .ecosystem_models import EcosystemError as _EcosystemError
+        from .ecosystem_storage import stable_read_bytes
+    except (ImportError, AttributeError):
+        raise EvaluationError("evaluation stable integrity reader is unavailable") from None
+    try:
+        return stable_read_bytes(
+            path,
+            maximum_bytes=maximum,
+            reason_code="INPUT_UNSTABLE",
+        )
+    except (OSError, ValueError, _EcosystemError):
+        raise EvaluationError("evaluation integrity file is unavailable or unstable") from None
 
 
 def _reject_duplicate_json_keys(pairs: Sequence[tuple[str, Any]]) -> dict[str, Any]:
@@ -407,6 +521,63 @@ def _json_loads(raw: bytes, label: str) -> Any:
         raise
     except (UnicodeDecodeError, ValueError, RecursionError) as exc:
         raise EvaluationError(f"{label} is invalid") from exc
+
+
+def _validate_integrity_manifest_entries(
+    value: Any, *, size_key: str
+) -> dict[str, dict[str, Any]]:
+    """Validate every integrity entry before any registry authority is issued."""
+    if type(value) is not dict or not value:
+        raise EvaluationError("evaluation integrity manifest entries are invalid")
+    collision_keys: set[str] = set()
+    for raw_name, metadata in value.items():
+        if (
+            type(raw_name) is not str
+            or not raw_name
+            or unicodedata.normalize("NFC", raw_name) != raw_name
+            or len(raw_name.encode("utf-8")) > 512
+            or "\\" in raw_name
+            or "\x00" in raw_name
+            or any(ord(character) < 32 or ord(character) == 127 for character in raw_name)
+        ):
+            raise EvaluationError("evaluation integrity manifest path is invalid")
+        parts = raw_name.split("/")
+        folded_parts = tuple(part.casefold() for part in parts)
+        folded_name = folded_parts[-1] if folded_parts else ""
+        if (
+            len(parts) > 32
+            or any(part in _FORBIDDEN_INTEGRITY_PARTS for part in folded_parts)
+            or folded_name in _FORBIDDEN_INTEGRITY_NAMES
+            or folded_name.startswith(".env.")
+            or folded_name.endswith(_SECRET_FILE_SUFFIXES)
+            or any(
+                part in {"", ".", ".."}
+                or ":" in part
+                or part.endswith((".", " "))
+                or len(part.encode("utf-8")) > 128
+                or any(character in _BIDI_CONTROLS for character in part)
+                or part.split(".", 1)[0].casefold() in _WINDOWS_RESERVED
+                for part in parts
+            )
+        ):
+            raise EvaluationError("evaluation integrity manifest path is invalid")
+        path = PurePosixPath(raw_name)
+        if path.is_absolute() or path.as_posix() != raw_name:
+            raise EvaluationError("evaluation integrity manifest path is invalid")
+        collision = raw_name.casefold()
+        if collision in collision_keys:
+            raise EvaluationError("evaluation integrity manifest paths collide")
+        collision_keys.add(collision)
+        if (
+            type(metadata) is not dict
+            or set(metadata) != {size_key, "sha256"}
+            or type(metadata[size_key]) is not int
+            or not 0 <= metadata[size_key] <= 9_223_372_036_854_775_807
+            or type(metadata["sha256"]) is not str
+            or not SHA256_RE.fullmatch(metadata["sha256"])
+        ):
+            raise EvaluationError("evaluation integrity manifest metadata is invalid")
+    return value
 
 
 def _bounded_token_list(value: Any, *, maximum: int, label: str) -> tuple[str, ...]:
@@ -498,30 +669,77 @@ def _parse_registry(payload: Any) -> TrustedValidatorRegistry:
     return TrustedValidatorRegistry(ordered, canonical_sha256(canonical))
 
 
-def load_trusted_validator_registry(
-    *, root: Path | None = None, integrity_manifest_path: Path | None = None,
+def _load_trusted_validator_registry_at(
+    *,
+    root: Path,
+    integrity_manifest_path: Path | None,
+    load_token: object,
 ) -> TrustedValidatorRegistry:
-    """Load the Nexus-controlled registry only after manifest verification."""
-    root = (root or Path(__file__).resolve().parents[1]).resolve()
+    """Load one integrity-bound registry in an explicitly selected trust context."""
+    if load_token is _PRODUCTION_REGISTRY_LOAD_TOKEN:
+        trust_mode = _PRODUCTION_TRUST_MODE
+        expected_registry_sha256: str | None = EXPECTED_VALIDATOR_REGISTRY_SHA256
+    elif load_token is _HERMETIC_TEST_REGISTRY_LOAD_TOKEN:
+        trust_mode = _HERMETIC_TEST_TRUST_MODE
+        expected_registry_sha256 = None
+    else:
+        raise EvaluationError("validator registry loader authority is unavailable")
+    if not isinstance(root, Path):
+        raise EvaluationError("validator registry root is invalid")
+    if integrity_manifest_path is not None and not isinstance(integrity_manifest_path, Path):
+        raise EvaluationError("validator registry integrity path is invalid")
+    try:
+        # Preserve the lexical root so the stable reader can reject a linked
+        # or reparse ancestor before issuing the trusted registry seal.
+        root = Path(os.path.abspath(root))
+    except (OSError, ValueError, TypeError) as exc:
+        raise EvaluationError("validator registry root is invalid") from exc
+    if not root.is_dir():
+        raise EvaluationError("validator registry root is invalid")
     registry_path = root / "config" / "validator-registry.json"
     release_manifest = root / "release-manifest.json"
     manifest_path = integrity_manifest_path or (
-        release_manifest if release_manifest.is_file() else root / "MANIFEST.json"
+        release_manifest if os.path.lexists(release_manifest) else root / "MANIFEST.json"
     )
+    try:
+        # Preserve the lexical path until the stable reader has inspected every
+        # component. Calling resolve() here would erase symlink/reparse evidence
+        # before the no-follow boundary sees it.
+        manifest_path = Path(os.path.abspath(manifest_path))
+        manifest_path.relative_to(root)
+    except (OSError, ValueError) as exc:
+        raise EvaluationError("validator registry integrity path is invalid") from exc
     manifest_raw = _stable_bytes(manifest_path, MAX_MANIFEST_BYTES)
     manifest = _json_loads(manifest_raw, "evaluation integrity manifest")
-    if not isinstance(manifest, Mapping):
+    if type(manifest) is not dict:
         raise EvaluationError("evaluation integrity manifest is invalid")
-    is_release = "files" in manifest
-    entries = manifest.get("files") if is_release else manifest
-    if not isinstance(entries, Mapping):
-        raise EvaluationError("evaluation integrity manifest is invalid")
-    try:
-        relative = registry_path.resolve(strict=True).relative_to(root).as_posix()
-    except (OSError, ValueError) as exc:
-        raise EvaluationError("validator registry is outside its integrity root") from exc
+    # The manifest contract is selected by the trusted path, never by a key
+    # that an attacker can place in an otherwise valid static MANIFEST.json.
+    is_release = manifest_path.name == "release-manifest.json"
+    if is_release:
+        release_fields = {"schema_version", "product", "distribution", "version", "files"}
+        if (
+            set(manifest) != release_fields
+            or manifest["schema_version"] != "nexus.release.manifest.v1"
+            or manifest["product"] != "Nexus"
+            or manifest["distribution"] != "github-release"
+            or type(manifest["version"]) is not str
+            or not RELEASE_VERSION_RE.fullmatch(manifest["version"])
+        ):
+            raise EvaluationError("evaluation release integrity manifest is invalid")
+        entries = _validate_integrity_manifest_entries(manifest["files"], size_key="size")
+    else:
+        entries = _validate_integrity_manifest_entries(manifest, size_key="bytes")
+    # This path was constructed from the lexical root and a fixed relative
+    # name.  Resolving it here would hide a link before _stable_bytes can
+    # inspect the original path through its no-follow boundary.
+    relative = registry_path.relative_to(root).as_posix()
     registry_raw = _stable_bytes(registry_path, MAX_REGISTRY_BYTES)
     metadata = entries.get(relative)
+    expected_metadata_fields = {"size", "sha256"} if is_release else {"bytes", "sha256"}
+    if type(metadata) is not dict or set(metadata) != expected_metadata_fields:
+        raise EvaluationError("validator registry integrity entry is invalid")
+    size_key = "size" if is_release else "bytes"
     try:
         digest_bytes = (
             registry_raw
@@ -531,18 +749,53 @@ def load_trusted_validator_registry(
     except UnicodeDecodeError as exc:
         raise EvaluationError("validator registry encoding is invalid") from exc
     if (
-        not isinstance(metadata, Mapping)
-        or not isinstance(metadata.get("sha256"), str)
+        type(metadata.get("sha256")) is not str
         or not SHA256_RE.fullmatch(str(metadata["sha256"]))
         or hashlib.sha256(digest_bytes).hexdigest() != metadata["sha256"]
-        or (is_release and metadata.get("size") != len(registry_raw))
-        or (not is_release and metadata.get("bytes") != len(digest_bytes))
+        or type(metadata.get(size_key)) is not int
+        or metadata[size_key] != len(digest_bytes)
     ):
         raise EvaluationError("validator registry integrity check failed")
     registry = _parse_registry(_json_loads(registry_raw, "validator registry"))
+    if expected_registry_sha256 is not None and not hmac.compare_digest(
+        registry.registry_sha256, expected_registry_sha256
+    ):
+        raise EvaluationError("validator registry differs from the approved production baseline")
     object.__setattr__(registry, "_integrity_seal", _TRUSTED_REGISTRY_SEAL)
     object.__setattr__(registry, "_integrity_sha256", registry.registry_sha256)
+    object.__setattr__(
+        registry, "_integrity_manifest_sha256", hashlib.sha256(manifest_raw).hexdigest()
+    )
+    object.__setattr__(registry, "_trust_mode", trust_mode)
+    object.__setattr__(registry, "_repository_root", str(root))
+    _TRUSTED_REGISTRY_BASELINES[registry] = (
+        _TRUSTED_REGISTRY_SEAL,
+        registry.registry_sha256,
+        registry._integrity_manifest_sha256,
+        registry._trust_mode,
+        registry._repository_root,
+    )
     return registry
+
+
+def load_trusted_validator_registry() -> TrustedValidatorRegistry:
+    """Load only the approved registry beside the executing Nexus module."""
+    return _load_trusted_validator_registry_at(
+        root=Path(os.path.abspath(__file__)).parents[1],
+        integrity_manifest_path=None,
+        load_token=_PRODUCTION_REGISTRY_LOAD_TOKEN,
+    )
+
+
+def _load_test_validator_registry(
+    *, root: Path, integrity_manifest_path: Path | None = None
+) -> TrustedValidatorRegistry:
+    """Private hermetic-fixture seam; it cannot authorize a production context."""
+    return _load_trusted_validator_registry_at(
+        root=root,
+        integrity_manifest_path=integrity_manifest_path,
+        load_token=_HERMETIC_TEST_REGISTRY_LOAD_TOKEN,
+    )
 
 
 def _nullable_sha256(value: Any, label: str) -> str | None:

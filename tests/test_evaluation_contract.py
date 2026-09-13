@@ -3,9 +3,12 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import tempfile
 import unittest
+
+from tests._windows_junction import create_junction
 
 import ash.evaluation as evaluation_module
 from ash.evaluation import (
@@ -15,9 +18,9 @@ from ash.evaluation import (
     EvaluationError,
     TrustedValidatorRegistry,
     ValidatorDefinition,
+    _load_test_validator_registry as load_trusted_validator_registry,
     canonical_sha256,
     evaluate_contract,
-    load_trusted_validator_registry,
     validate_evaluation_receipt,
 )
 
@@ -412,6 +415,129 @@ class EvaluationContractTests(unittest.TestCase):
         with self.assertRaises(EvaluationError):
             load_trusted_validator_registry(root=root)
 
+    def test_26a_integrity_manifest_must_be_single_link_stable_input(self) -> None:
+        for relative in ("MANIFEST.json", "config/validator-registry.json"):
+            payload = registry_payload()
+            temporary, _ = load_temporary_registry(payload)
+            self.addCleanup(temporary.cleanup)
+            root = Path(temporary.name)
+            source = root / relative
+            target = source.with_name(source.name + ".hardlink-target")
+            source.replace(target)
+            source.hardlink_to(target)
+
+            with self.subTest(relative=relative), self.assertRaises(EvaluationError):
+                load_trusted_validator_registry(root=root)
+
+    def test_26aa_production_registry_loader_is_root_closed_and_baseline_bound(self) -> None:
+        payload = registry_payload()
+        target = next(
+            item
+            for item in payload["validators"]
+            if item["validator_id"] == "nexus.validator.artifact-metadata"
+        )
+        target["availability"] = "unavailable"
+        temporary, hermetic = load_temporary_registry(payload)
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        with self.assertRaises(TypeError):
+            evaluation_module.load_trusted_validator_registry(root=root)  # type: ignore[call-arg]
+        with self.assertRaises(EvaluationError):
+            evaluation_module._require_production_registry(hermetic)
+
+        production = evaluation_module.load_trusted_validator_registry()
+        self.assertIs(evaluation_module._require_production_registry(production), production)
+
+    def test_repository_root_link_cannot_issue_a_registry_seal(self) -> None:
+        temporary, _trusted = load_temporary_registry(registry_payload())
+        with temporary, tempfile.TemporaryDirectory() as alias_parent:
+            real_root = Path(temporary.name)
+            alias = Path(alias_parent) / "linked-root"
+            if os.name == "nt":
+                create_junction(alias, real_root)
+            else:
+                os.symlink(real_root, alias, target_is_directory=True)
+            with self.assertRaises(EvaluationError):
+                load_trusted_validator_registry(root=alias)
+
+    def test_26a_manifest_format_is_path_bound_and_release_schema_is_closed(self) -> None:
+        payload = registry_payload()
+        temporary, _ = load_temporary_registry(payload)
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name)
+        manifest_path = root / "MANIFEST.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        manifest["files"] = {"bytes": 0, "sha256": "0" * 64}
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+        self.assertIsInstance(load_trusted_validator_registry(root=root), TrustedValidatorRegistry)
+
+        malformed_entries = (
+            ("ash/unknown-field.py", {"bytes": 0, "sha256": "0" * 64, "extra": True}),
+            ("ash/bool-size.py", {"bytes": False, "sha256": "0" * 64}),
+            ("ash/uppercase-digest.py", {"bytes": 0, "sha256": "A" * 64}),
+            ("ash/short-digest.py", {"bytes": 0, "sha256": "not-sha256"}),
+            ("ash/not-metadata.py", [0, "0" * 64]),
+            ("ash\\backslash.py", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/cafe\u0301.py", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/../outside.py", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/evil\u202etxt.py", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/CON.txt", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/.GIT/config", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/__PYCACHE__/module.pyc", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/.Env.Production", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/secret.PEM", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/comparisons/item.json", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/components/item.json", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/decisions/item.json", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/evidence/item.json", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/locks/item.lock", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/observations/item.json", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/revisions/item.json", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/staging/item.tmp", {"bytes": 0, "sha256": "0" * 64}),
+            ("ash/trees/item.json", {"bytes": 0, "sha256": "0" * 64}),
+        )
+        for name, metadata in malformed_entries:
+            with self.subTest(static_manifest_entry=name):
+                malformed = json.loads(json.dumps(manifest))
+                malformed[name] = metadata
+                manifest_path.write_text(json.dumps(malformed), encoding="utf-8")
+                with self.assertRaises(EvaluationError):
+                    load_trusted_validator_registry(root=root)
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+        registry_metadata = json.dumps(manifest["config/validator-registry.json"])
+        manifest_path.write_text(
+            "{"
+            f'"config/validator-registry.json":{registry_metadata},'
+            f'"config/validator-registry.json":{registry_metadata}'
+            "}",
+            encoding="utf-8",
+        )
+        with self.assertRaises(EvaluationError):
+            load_trusted_validator_registry(root=root)
+        manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+        raw = (root / "config" / "validator-registry.json").read_bytes()
+        release = {
+            "schema_version": "nexus.release.manifest.v1",
+            "product": "Nexus",
+            "distribution": "github-release",
+            "version": "test",
+            "files": {
+                "config/validator-registry.json": {
+                    "size": len(raw),
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                }
+            },
+        }
+        release_path = root / "release-manifest.json"
+        release_path.write_text(json.dumps(release), encoding="utf-8")
+        self.assertIsInstance(load_trusted_validator_registry(root=root), TrustedValidatorRegistry)
+        release["unexpected"] = True
+        release_path.write_text(json.dumps(release), encoding="utf-8")
+        with self.assertRaises(EvaluationError):
+            load_trusted_validator_registry(root=root)
+
     def test_27_receipt_cannot_invent_subject_binding_without_observed_evidence(self) -> None:
         receipt = evaluate_contract(request(), registry=self.registry)
         bad = copy.deepcopy(receipt)
@@ -522,6 +648,9 @@ class EvaluationContractTests(unittest.TestCase):
             ("postgresql://ExampleUser:not-real@example.invalid/db,option=yes", ("ExampleUser", "option=yes")),
             ("\\\\server\\private share\\ExampleUser\\secret,tail.txt", ("ExampleUser", "tail.txt")),
             ("C:\\Users\\Example User\\private,segment;tail.txt", ("Example User", "tail.txt")),
+            ("C:/Users/Example User/private,segment;tail.txt", ("Example User", "tail.txt")),
+            ("D:/private-cas\\incoming/item.zip", ("private-cas", "item.zip")),
+            ("//server/private share/ExampleUser/secret,tail.txt", ("ExampleUser", "tail.txt")),
             ("/home/Example User/private,segment;tail.txt", ("Example User", "tail.txt")),
             ("-----BEGIN PRIVATE KEY-----\nnot-real-private-material\n-----END PRIVATE KEY-----", ("not-real-private-material",)),
         )
@@ -611,8 +740,18 @@ class EvaluationContractTests(unittest.TestCase):
         with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
             evaluate_contract(request(), registry=parsed_without_manifest)
 
+        copied_sealed = copy.copy(self.registry)
+        with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
+            evaluate_contract(request(), registry=copied_sealed)
+
         tampered_sealed = copy.copy(self.registry)
         object.__setattr__(tampered_sealed, "validators", (forged_definition,))
+        with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
+            evaluate_contract(forged_request, registry=tampered_sealed)
+
+        forged_digest = evaluation_module._registry_semantic_sha256(tampered_sealed)
+        object.__setattr__(tampered_sealed, "registry_sha256", forged_digest)
+        object.__setattr__(tampered_sealed, "_integrity_sha256", forged_digest)
         with self.assertRaisesRegex(EvaluationError, "not integrity-verified"):
             evaluate_contract(forged_request, registry=tampered_sealed)
 

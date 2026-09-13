@@ -212,6 +212,24 @@ connection, Host mapping, lifecycle-promotion, or execution authority. Trusted
 coverage and the R5 `HOST_EVIDENCE_REQUIRED` path never invoke Scout. See
 [Runtime integration Slice 2](docs/nexus-post-r5-runtime-integration-slice2.md).
 
+## Post-R5 routing, evaluation, and immutable quarantine (Slices 3A–3C)
+
+Slice 3A adds bounded semantic routing without expanding execution authority.
+Slice 3B adds deterministic evaluation and quality-loop contracts whose
+receipts remain evidence rather than Host authority. The Slice 3C implementation
+candidate accepts only a validated Slice 2 bridge plus a stable, pre-supplied
+ZIP, streams inert bytes into a repository-external immutable quarantine/CAS,
+and produces subject-bound provenance, license, static-analysis,
+classification, comparison, and lifecycle evidence.
+
+Slice 3C never acquires, installs, activates, routes, loads, or executes a
+candidate and grants no Host, MCP, Agent-delegation, approval, or promotion
+authority. Its maximum positive state is
+`REVIEW_EVIDENCE_COMPLETE + COMPLETE + QUARANTINED`; review completion is not
+approval. See [Slice 3A](docs/nexus-post-r5-runtime-integration-slice3a.md),
+[Slice 3B](docs/nexus-post-r5-runtime-integration-slice3b.md), and the approved
+[Slice 3C ADR/PDS](docs/nexus-post-r5-runtime-integration-slice3c-adr-pds.md).
+
 ## Runtime R2 local MCP
 
 Runtime R2 is a separately configured, local stdio-only MCP adapter. Later

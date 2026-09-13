@@ -15,7 +15,13 @@ import unittest
 from unittest.mock import patch
 import zipfile
 
-from scripts.release_common import ReleaseError, safe_extract, verify_release_tree
+from scripts.release_common import (
+    ReleaseError,
+    load_manifest,
+    safe_extract,
+    safe_member_name,
+    verify_release_tree,
+)
 import scripts.release_install as release_install
 import scripts.build_release as release_build
 import scripts.rebase_release as rebase_release
@@ -52,6 +58,29 @@ def write_test_embed(directory: Path) -> tuple[Path, dict[str, str]]:
         "license_notice": "runtime/python/LICENSE.txt",
         "python_pth": "python313._pth",
     }
+
+
+def write_static_manifest(root: Path) -> None:
+    """Write the closed LF-normalized source-integrity fixture used by releases."""
+    entries: dict[str, dict[str, int | str]] = {}
+    for path in sorted(root.rglob("*")):
+        if not path.is_file() or path.name == "MANIFEST.json":
+            continue
+        contents = path.read_bytes()
+        try:
+            contents = contents.decode("utf-8").replace("\r\n", "\n").encode("utf-8")
+        except UnicodeDecodeError:
+            pass
+        entries[path.relative_to(root).as_posix()] = {
+            "bytes": len(contents),
+            "sha256": hashlib.sha256(contents).hexdigest(),
+        }
+    (root / "MANIFEST.json").write_text(
+        json.dumps(entries, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
 
 
 class GitHubDistributionTests(unittest.TestCase):
@@ -181,6 +210,41 @@ class GitHubDistributionTests(unittest.TestCase):
                 "scout_authority": "none",
             })
 
+    def test_release_archive_is_byte_reproducible_with_fixed_metadata(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            wheelhouse = base / "reviewed-wheels"
+            wheelhouse.mkdir()
+            wheel = write_test_wheel(wheelhouse)
+            embed, spec = write_test_embed(base)
+            with (
+                patch.object(release_build, "runtime_spec", return_value=spec),
+                patch.object(release_build, "embedded_runtime_self_check"),
+            ):
+                first, _ = release_build.build(
+                    base / "first-output", "0.1.0-repro", wheelhouse, embed
+                )
+                os.utime(wheel, ns=(1_700_000_000_000_000_000,) * 2)
+                os.utime(embed, ns=(1_800_000_000_000_000_000,) * 2)
+                second, _ = release_build.build(
+                    base / "second-output", "0.1.0-repro", wheelhouse, embed
+                )
+
+            self.assertEqual(first.read_bytes(), second.read_bytes())
+            self.assertEqual(
+                hashlib.sha256(first.read_bytes()).hexdigest(),
+                hashlib.sha256(second.read_bytes()).hexdigest(),
+            )
+            with zipfile.ZipFile(first) as archive:
+                self.assertTrue(archive.infolist())
+                self.assertEqual(
+                    archive.namelist(),
+                    sorted(archive.namelist(), key=lambda item: item.encode("utf-8")),
+                )
+                for info in archive.infolist():
+                    self.assertEqual(info.date_time, (1980, 1, 1, 0, 0, 0))
+                    self.assertEqual((info.external_attr >> 16) & 0o777, 0o644)
+
     def test_release_manifest_excludes_host_generated_embedded_python_bytecode(self) -> None:
         """A restarted/pilot runtime must remain verifiable after bytecode exists."""
         with tempfile.TemporaryDirectory() as temporary:
@@ -200,6 +264,295 @@ class GitHubDistributionTests(unittest.TestCase):
                 manifest["files"],
             )
             self.assertEqual(verify_release_tree(stage)["version"], "0.1.0-r5.pilot.1")
+
+    def test_release_manifest_schema_and_file_metadata_are_strictly_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            payload = {
+                "schema_version": "nexus.release.manifest.v1",
+                "product": "Nexus",
+                "distribution": "github-release",
+                "version": "0.1.0-test",
+                "files": {"ash/module.py": {"sha256": "a" * 64, "size": 1}},
+            }
+
+            def rejected(candidate: object) -> None:
+                (root / "release-manifest.json").write_text(
+                    json.dumps(candidate, sort_keys=True), encoding="utf-8"
+                )
+                with self.assertRaises(ReleaseError):
+                    load_manifest(root)
+
+            (root / "release-manifest.json").write_text(
+                json.dumps(payload, sort_keys=True), encoding="utf-8"
+            )
+            self.assertEqual(load_manifest(root), payload)
+            for mutate in (
+                lambda value: value.update(unexpected=True),
+                lambda value: value.update(product="Other"),
+                lambda value: value.update(distribution="other"),
+                lambda value: value.update(version="../unsafe"),
+                lambda value: value["files"]["ash/module.py"].update(unexpected=True),
+                lambda value: value["files"]["ash/module.py"].update(sha256="A" * 64),
+                lambda value: value["files"]["ash/module.py"].update(size=True),
+                lambda value: value["files"].update(
+                    {"ASH/MODULE.PY": {"sha256": "b" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash\\escape.py": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/name:stream": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/evil\u202etxt.py": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/CON.txt": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/.GIT/config": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/__PYCACHE__/module.pyc": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/.Env.Production": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"ash/secret.PEM": {"sha256": "a" * 64, "size": 1}}
+                ),
+                lambda value: value.update(
+                    files={"Release-Manifest.JSON": {"sha256": "a" * 64, "size": 1}}
+                ),
+            ):
+                candidate = json.loads(json.dumps(payload))
+                mutate(candidate)
+                rejected(candidate)
+
+            (root / "release-manifest.json").write_text(
+                '{"schema_version":"nexus.release.manifest.v1",'
+                '"schema_version":"nexus.release.manifest.v1",'
+                '"product":"Nexus","distribution":"github-release",'
+                '"version":"0.1.0-test","files":{"ash/module.py":'
+                '{"sha256":"' + ("a" * 64) + '","size":1}}}',
+                encoding="utf-8",
+            )
+            with self.assertRaises(ReleaseError):
+                load_manifest(root)
+
+    def test_release_rejects_every_ecosystem_state_namespace_before_staging(self) -> None:
+        namespaces = (
+            "ecosystem",
+            "objects",
+            "quarantine",
+            "incoming",
+            "intake-attempts",
+            "evidence",
+            "comparisons",
+            "state",
+            "receipts",
+            "trees",
+            "revisions",
+            "components",
+            "decisions",
+            "locks",
+            "observations",
+            "staging",
+            "tmp",
+        )
+        for namespace in namespaces:
+            member = f"ash/{namespace}/sha256/object"
+            with self.subTest(archive_member=namespace), self.assertRaises(ReleaseError):
+                safe_member_name(member)
+
+            with self.subTest(source_member=namespace), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                for name in release_build.ROOT_FILES | release_build.EXTRA_FILES:
+                    path = root / name
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text("synthetic release fixture\n", encoding="utf-8")
+                for directory in release_build.DIRECTORIES:
+                    (root / directory).mkdir(parents=True, exist_ok=True)
+                write_static_manifest(root)
+                state = root / member
+                state.parent.mkdir(parents=True, exist_ok=True)
+                state.write_bytes(b"mutable-state-must-not-stage")
+                with patch.object(release_build, "ROOT", root), self.assertRaises(ReleaseError):
+                    release_build.source_members()
+
+    def test_release_sources_are_exactly_bound_to_static_manifest(self) -> None:
+        def fixture(root: Path) -> None:
+            for name in release_build.ROOT_FILES | release_build.EXTRA_FILES:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("synthetic release fixture\n", encoding="utf-8")
+            for directory in release_build.DIRECTORIES:
+                (root / directory).mkdir(parents=True, exist_ok=True)
+
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+
+            unlisted = base / "unlisted"
+            fixture(unlisted)
+            write_static_manifest(unlisted)
+            (unlisted / "ash" / "unreviewed.py").write_text(
+                "UNREVIEWED = True\n", encoding="utf-8"
+            )
+            with patch.object(release_build, "ROOT", unlisted), self.assertRaisesRegex(
+                ReleaseError, "differ from the integrity-reviewed MANIFEST set"
+            ):
+                release_build.source_payloads()
+
+            drifted = base / "drifted"
+            fixture(drifted)
+            reviewed = drifted / "ash" / "reviewed.py"
+            reviewed.write_text("REVIEWED = True\n", encoding="utf-8")
+            write_static_manifest(drifted)
+            reviewed.write_text("REVIEWED = False\n", encoding="utf-8")
+            with patch.object(release_build, "ROOT", drifted), self.assertRaisesRegex(
+                ReleaseError, "differs from the integrity-reviewed MANIFEST"
+            ):
+                release_build.source_payloads()
+
+            missing = base / "missing"
+            fixture(missing)
+            reviewed = missing / "ash" / "reviewed.py"
+            reviewed.write_text("REVIEWED = True\n", encoding="utf-8")
+            write_static_manifest(missing)
+            reviewed.unlink()
+            with patch.object(release_build, "ROOT", missing), self.assertRaisesRegex(
+                ReleaseError, "differ from the integrity-reviewed MANIFEST set"
+            ):
+                release_build.source_payloads()
+
+            valid = base / "valid"
+            fixture(valid)
+            normalized = valid / "ash" / "normalized.py"
+            normalized.write_bytes(b"VALUE = True\r\n")
+            write_static_manifest(valid)
+            with patch.object(release_build, "ROOT", valid):
+                payloads = {
+                    path.relative_to(valid).as_posix(): contents
+                    for path, contents in release_build.source_payloads()
+                }
+            self.assertEqual(payloads["ash/normalized.py"], b"VALUE = True\n")
+
+    def test_release_manifest_boundary_failure_publishes_no_partial_assets(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            root = base / "source"
+            for name in release_build.ROOT_FILES | release_build.EXTRA_FILES:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("synthetic release fixture\n", encoding="utf-8")
+            for directory in release_build.DIRECTORIES:
+                (root / directory).mkdir(parents=True, exist_ok=True)
+            write_static_manifest(root)
+            (root / "ash" / "unreviewed.py").write_text(
+                "UNREVIEWED = True\n", encoding="utf-8"
+            )
+            output = base / "output"
+            with patch.object(release_build, "ROOT", root), self.assertRaisesRegex(
+                ReleaseError, "differ from the integrity-reviewed MANIFEST set"
+            ):
+                release_build.build(
+                    output,
+                    "0.1.0-boundary",
+                    base / "unused-wheelhouse",
+                    base / "unused-embed.zip",
+                )
+            self.assertTrue(output.is_dir())
+            self.assertEqual(list(output.iterdir()), [])
+
+    def test_release_source_mutation_during_stable_read_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name in release_build.ROOT_FILES | release_build.EXTRA_FILES:
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("synthetic release fixture\n", encoding="utf-8")
+            for directory in release_build.DIRECTORIES:
+                (root / directory).mkdir(parents=True, exist_ok=True)
+            target = root / "ash" / "reviewed.py"
+            target.write_text("REVIEWED = True\n", encoding="utf-8")
+            write_static_manifest(root)
+
+            original_read_bytes = Path.read_bytes
+            mutated = False
+
+            def read_then_mutate(path: Path) -> bytes:
+                nonlocal mutated
+                contents = original_read_bytes(path)
+                if path == target and not mutated:
+                    mutated = True
+                    path.write_text("REVIEWED = False and changed\n", encoding="utf-8")
+                return contents
+
+            with (
+                patch.object(release_build, "ROOT", root),
+                patch.object(Path, "read_bytes", read_then_mutate),
+                self.assertRaisesRegex(ReleaseError, "could not be read safely"),
+            ):
+                release_build.source_payloads()
+            self.assertTrue(mutated)
+
+    @unittest.skipUnless(os.name == "nt", "Windows-specific reparse-point boundary")
+    def test_release_source_and_verified_tree_reject_directory_junctions(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            source = base / "source"
+            outside = base / "outside"
+            outside.mkdir()
+            (outside / "external.py").write_text("external = True\n", encoding="utf-8")
+            for name in release_build.ROOT_FILES | release_build.EXTRA_FILES:
+                path = source / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("synthetic release fixture\n", encoding="utf-8")
+            for directory in release_build.DIRECTORIES:
+                (source / directory).mkdir(parents=True, exist_ok=True)
+            write_static_manifest(source)
+            junction = source / "ash" / "linked"
+            created = subprocess.run(
+                ["cmd.exe", "/d", "/s", "/c", "mklink", "/J", str(junction), str(outside)],
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            if created.returncode:
+                self.skipTest(f"junction fixture unavailable: {created.stderr.strip()}")
+
+            with patch.object(release_build, "ROOT", source), self.assertRaisesRegex(
+                ReleaseError, "links or reparse points"
+            ):
+                release_build.source_members()
+
+            # The first half models the static source tree; the second models
+            # an extracted release tree, where static MANIFEST.json is itself
+            # forbidden and would correctly fail before reaching the junction.
+            (source / "MANIFEST.json").unlink()
+            payload = source / "payload.txt"
+            payload.write_bytes(b"reviewed\n")
+            (source / "release-manifest.json").write_text(
+                json.dumps(
+                    {
+                        "schema_version": "nexus.release.manifest.v1",
+                        "product": "Nexus",
+                        "distribution": "github-release",
+                        "version": "0.1.0-test",
+                        "files": {
+                            "payload.txt": {
+                                "sha256": hashlib.sha256(payload.read_bytes()).hexdigest(),
+                                "size": payload.stat().st_size,
+                            }
+                        },
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ReleaseError, "links or reparse points"):
+                verify_release_tree(source)
 
     def test_corrupted_artifact_and_traversal_are_rejected_before_install(self) -> None:
         with tempfile.TemporaryDirectory() as temporary:
@@ -222,6 +575,35 @@ class GitHubDistributionTests(unittest.TestCase):
                 bundle.writestr(entry, "target")
             with self.assertRaises(ReleaseError):
                 safe_extract(symlink, root / "target-symlink")
+
+    def test_release_archive_rejects_unsafe_directory_members(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            archive_path = root / "candidate.zip"
+            payload = b"reviewed\n"
+            manifest = {
+                "schema_version": "nexus.release.manifest.v1",
+                "product": "Nexus",
+                "distribution": "github-release",
+                "version": "0.1.0-test",
+                "files": {
+                    "payload.txt": {
+                        "sha256": hashlib.sha256(payload).hexdigest(),
+                        "size": len(payload),
+                    }
+                },
+            }
+            with zipfile.ZipFile(archive_path, "w") as archive:
+                archive.writestr("release/../", b"")
+                archive.writestr("release/payload.txt", payload)
+                archive.writestr(
+                    "release/release-manifest.json",
+                    json.dumps(manifest, sort_keys=True).encode("utf-8"),
+                )
+
+            with self.assertRaisesRegex(ReleaseError, "unsafe path"):
+                safe_extract(archive_path, root / "output")
+            self.assertFalse((root / "output").exists())
 
     def test_windows_bootstrap_rejects_wrong_checksum_before_extraction(self) -> None:
         if not shutil.which("powershell") and not shutil.which("pwsh"):

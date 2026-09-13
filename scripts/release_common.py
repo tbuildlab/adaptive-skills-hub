@@ -8,18 +8,99 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 from pathlib import Path, PurePosixPath
+import re
+import stat
 import tempfile
 from typing import Any
+import unicodedata
 import zipfile
 
 
 MANIFEST_NAME = "release-manifest.json"
 MANIFEST_SCHEMA = "nexus.release.manifest.v1"
+_MANIFEST_FIELDS = {"schema_version", "product", "distribution", "version", "files"}
+_FILE_METADATA_FIELDS = {"sha256", "size"}
+_SHA256_RE = re.compile(r"^[0-9a-f]{64}$")
+_VERSION_RE = re.compile(r"^[0-9A-Za-z][0-9A-Za-z._-]{0,63}$")
+_MAX_MANIFEST_BYTES = 16 * 1024 * 1024
+_BIDI_CONTROLS = frozenset(
+    chr(value)
+    for value in (
+        0x061C,
+        0x200E,
+        0x200F,
+        0x202A,
+        0x202B,
+        0x202C,
+        0x202D,
+        0x202E,
+        0x2066,
+        0x2067,
+        0x2068,
+        0x2069,
+    )
+)
+_WINDOWS_RESERVED = frozenset(
+    {"con", "prn", "aux", "nul"}
+    | {f"com{index}" for index in range(1, 10)}
+    | {f"lpt{index}" for index in range(1, 10)}
+)
+_FORBIDDEN_RELEASE_PARTS = frozenset(
+    {
+        ".git",
+        ".pytest_cache",
+        ".venv",
+        "__pycache__",
+        "comparisons",
+        "components",
+        "decisions",
+        "ecosystem",
+        "evidence",
+        "incoming",
+        "intake-attempts",
+        "locks",
+        "node_modules",
+        "objects",
+        "observations",
+        "output",
+        "quarantine",
+        "receipts",
+        "revisions",
+        "staging",
+        "state",
+        "tmp",
+        "trees",
+        "venv",
+    }
+)
+_FORBIDDEN_RELEASE_NAMES = frozenset(
+    {
+        ".nexus-ecosystem-root.json",
+        ".env",
+        "manifest.json",
+        "nexus-desktop-plugin.json",
+        "registry.json",
+        "workspaces.json",
+    }
+)
 
 
 class ReleaseError(RuntimeError):
     """A release artifact or lifecycle invariant was violated."""
+
+
+def _is_link_or_reparse(path: Path) -> bool:
+    """Reject every link-like filesystem object without following it."""
+    try:
+        status = path.lstat()
+    except OSError as exc:
+        raise ReleaseError("release path metadata is unavailable") from exc
+    reparse_flag = getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
+    return stat.S_ISLNK(status.st_mode) or bool(
+        getattr(status, "st_file_attributes", 0) & reparse_flag
+    )
 
 
 def sha256_file(path: Path) -> str:
@@ -31,12 +112,51 @@ def sha256_file(path: Path) -> str:
 
 
 def safe_member_name(name: str) -> str:
+    if (
+        type(name) is not str
+        or not name
+        or unicodedata.normalize("NFC", name) != name
+        or len(name.encode("utf-8")) > 512
+        or "\\" in name
+        or "\x00" in name
+        or any(ord(character) < 32 or ord(character) == 127 for character in name)
+    ):
+        raise ReleaseError("release archive contains an unsafe path")
+    raw_parts = name.split("/")
+    folded_parts = tuple(part.casefold() for part in raw_parts)
+    folded_name = folded_parts[-1] if folded_parts else ""
+    if (
+        not 1 <= len(raw_parts) <= 32
+        or any(part in _FORBIDDEN_RELEASE_PARTS for part in folded_parts)
+        or folded_name in _FORBIDDEN_RELEASE_NAMES
+        or folded_name.startswith(".env.")
+        or folded_name.endswith((".key", ".pem", ".p12", ".pfx"))
+        or any(
+            part in {"", ".", ".."}
+            or ":" in part
+            or part.endswith((".", " "))
+            or len(part.encode("utf-8")) > 128
+            or any(character in _BIDI_CONTROLS for character in part)
+            or part.split(".", 1)[0].casefold() in _WINDOWS_RESERVED
+            for part in raw_parts
+        )
+    ):
+        raise ReleaseError("release archive contains an unsafe path")
     candidate = PurePosixPath(name)
-    if not name or candidate.is_absolute() or ".." in candidate.parts or ":" in candidate.parts[0]:
+    if candidate.is_absolute() or ".." in candidate.parts:
         raise ReleaseError("release archive contains an unsafe path")
     if candidate.name in {"", "."}:
         raise ReleaseError("release archive contains an unsafe path")
     return candidate.as_posix()
+
+
+def _closed_object(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    value: dict[str, Any] = {}
+    for key, item in pairs:
+        if key in value:
+            raise ReleaseError("release manifest contains a duplicate JSON key")
+        value[key] = item
+    return value
 
 
 def atomic_json_write(path: Path, payload: dict[str, Any]) -> None:
@@ -51,37 +171,66 @@ def atomic_json_write(path: Path, payload: dict[str, Any]) -> None:
 def load_manifest(root: Path) -> dict[str, Any]:
     location = root / MANIFEST_NAME
     try:
-        payload = json.loads(location.read_text(encoding="utf-8"))
+        raw = location.read_bytes()
+        if len(raw) > _MAX_MANIFEST_BYTES:
+            raise ReleaseError("release manifest exceeds its byte limit")
+        payload = json.loads(raw.decode("utf-8", errors="strict"), object_pairs_hook=_closed_object)
+    except ReleaseError:
+        raise
     except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
         raise ReleaseError("release manifest is unavailable or invalid") from exc
-    if not isinstance(payload, dict) or payload.get("schema_version") != MANIFEST_SCHEMA:
+    if (
+        type(payload) is not dict
+        or set(payload) != _MANIFEST_FIELDS
+        or payload["schema_version"] != MANIFEST_SCHEMA
+        or payload["product"] != "Nexus"
+        or payload["distribution"] != "github-release"
+        or type(payload["version"]) is not str
+        or not _VERSION_RE.fullmatch(payload["version"])
+    ):
         raise ReleaseError("release manifest is unavailable or invalid")
-    files = payload.get("files")
-    if not isinstance(files, dict) or not files:
+    files = payload["files"]
+    if type(files) is not dict or not files or list(files) != sorted(files):
         raise ReleaseError("release manifest is unavailable or invalid")
+    collision_keys: set[str] = set()
     for name, metadata in files.items():
-        if not isinstance(name, str) or safe_member_name(name) != name:
+        if (
+            type(name) is not str
+            or safe_member_name(name) != name
+            or name.casefold() == MANIFEST_NAME.casefold()
+        ):
             raise ReleaseError("release manifest contains an unsafe path")
-        if not isinstance(metadata, dict) or not isinstance(metadata.get("sha256"), str) or not isinstance(metadata.get("size"), int):
+        collision = unicodedata.normalize("NFC", name).casefold()
+        if collision in collision_keys:
+            raise ReleaseError("release manifest contains colliding paths")
+        collision_keys.add(collision)
+        if (
+            type(metadata) is not dict
+            or set(metadata) != _FILE_METADATA_FIELDS
+            or type(metadata["sha256"]) is not str
+            or not _SHA256_RE.fullmatch(metadata["sha256"])
+            or type(metadata["size"]) is not int
+            or not 0 <= metadata["size"] <= 9_223_372_036_854_775_807
+        ):
             raise ReleaseError("release manifest is unavailable or invalid")
     return payload
 
 
 def verify_release_tree(root: Path) -> dict[str, Any]:
     """Verify exact files and hashes before the installer mutates local state."""
-    root = root.resolve(strict=True)
-    if not root.is_dir() or root.is_symlink():
+    root = Path(os.path.abspath(root))
+    if _is_link_or_reparse(root) or not root.is_dir():
         raise ReleaseError("release root must be a real directory")
     manifest = load_manifest(root)
     expected = set(manifest["files"])
     observed: set[str] = set()
     for path in root.rglob("*"):
+        if _is_link_or_reparse(path):
+            raise ReleaseError("release tree must not contain links or reparse points")
         if path.is_dir():
-            if path.is_symlink():
-                raise ReleaseError("release tree must not contain symlinks")
             continue
-        if path.is_symlink():
-            raise ReleaseError("release tree must not contain symlinks")
+        if not path.is_file():
+            raise ReleaseError("release tree must contain only regular files")
         relative = path.relative_to(root).as_posix()
         # Python may create bytecode beside an extracted release after a host
         # starts it. It is never part of the signed payload and cannot replace
@@ -108,7 +257,7 @@ def safe_extract(archive_path: Path, destination: Path) -> Path:
                 raise ReleaseError("release archive is empty")
             roots: set[str] = set()
             for info in archive.infolist():
-                name = safe_member_name(info.filename.rstrip("/")) if not info.is_dir() else info.filename.rstrip("/")
+                name = safe_member_name(info.filename.rstrip("/"))
                 if name:
                     roots.add(PurePosixPath(name).parts[0])
                 # Unix symlink type bits. Windows-created archives use regular files.

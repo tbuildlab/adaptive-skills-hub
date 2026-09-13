@@ -7,6 +7,14 @@
     "bytes": 568,
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
+  "README.md": {
+    "bytes": 11709,
+    "sha256": "44386a297a5fc16a9f3f77be44f44236fd7dfdea449eef9088ec76c57ba09c65"
+  },
+  "SKILL.md": {
+    "bytes": 7941,
+    "sha256": "b4bef894b550f8c7c0e50abd0d95eb2fde02d344653361b742295eaef976e45e"
+  },
   "ash/__init__.py": {
     "bytes": 64,
     "sha256": "ef9d5dfba3ca09358973433bfb0e057a9c68b46e7313c2075c29c4cd21eeb524"
@@ -27,9 +35,37 @@
     "bytes": 12316,
     "sha256": "633443a7d107120fb6900cc2fc3f429e1ff303162b57f6648aa7754a0da0041e"
   },
+  "ash/ecosystem_bridge.py": {
+    "bytes": 101132,
+    "sha256": "7fa53cdeb30f0fedb8268a60ac9b06c25de64f70e8c8ea10715ac0933fb6bee4"
+  },
+  "ash/ecosystem_compare.py": {
+    "bytes": 32778,
+    "sha256": "96f5bb6a35af759f010277f4e40270416e4bcfe29acd8b1f47556be4a039bff9"
+  },
+  "ash/ecosystem_evidence.py": {
+    "bytes": 67535,
+    "sha256": "596a69dec810192058ee4addd1b8b08ddd39e18bb533a08958a151a109e30c8c"
+  },
+  "ash/ecosystem_intake.py": {
+    "bytes": 32719,
+    "sha256": "eee5dd37d73facf0be02abda4ccbc418fe610e25c2344768d44c559434fcd40e"
+  },
+  "ash/ecosystem_models.py": {
+    "bytes": 34183,
+    "sha256": "d9d5df54f5d4f0e02fd6588040b25222476247cb997e2aab4fc39cc8130e0c54"
+  },
+  "ash/ecosystem_policy.py": {
+    "bytes": 32889,
+    "sha256": "74761380276ad772eb3c3077d4cb772b920e9c00bf5bb9b0aa26fe84f23f9c16"
+  },
+  "ash/ecosystem_storage.py": {
+    "bytes": 80506,
+    "sha256": "95f7d919843bdf809912b5b54148b1f11e0fe4afaa155adc5759449c7b7d5900"
+  },
   "ash/evaluation.py": {
-    "bytes": 54870,
-    "sha256": "3ed052a7a8de08fa1630ae3ad70fc6f2e4e1a593c2727073377c3c553c4050da"
+    "bytes": 65193,
+    "sha256": "a3cda1f89526d19311da79d4250c01e258ba4de74c27f9341c9bd62cc10bda17"
   },
   "ash/execution.py": {
     "bytes": 5086,
@@ -115,6 +151,10 @@
     "bytes": 19849,
     "sha256": "a50261d6bd370b9cb91021d0f6d3390cf395f24a16ab48f8f2f694d30c18bdd0"
   },
+  "config/ecosystem-source-policy.json": {
+    "bytes": 29234,
+    "sha256": "21af57051edad2a032e9603b3eedcf17bf2f498d8c29cc042ffa5763b6578b53"
+  },
   "config/nexus-mcp-workspaces.example.json": {
     "bytes": 146,
     "sha256": "bcb0ab2edbd8e230d3e007d7eb5c64223dd8e7d16d8b5b9d379e033bdf4ca3a8"
@@ -132,8 +172,8 @@
     "sha256": "79bf95c58db175cb811ffa0030487f78636b329c5b5af090e7981bde5e2cb0c6"
   },
   "config/validator-registry.json": {
-    "bytes": 3870,
-    "sha256": "4a0c278a16ab08cda4d3ca8416f087d059f8ca5e0079a62525933ebf0381b1b9"
+    "bytes": 8319,
+    "sha256": "950f9de436f48fd8578b1f3fdbb3cf5be901f3843edb3d24a24428689c82ac0f"
   },
   "docs/architecture.md": {
     "bytes": 6059,
@@ -182,6 +222,10 @@
   "docs/nexus-post-r5-runtime-integration-slice3b.md": {
     "bytes": 15692,
     "sha256": "e5d232e04cc00fe4aeecd9fcb0dcd3a95e74b037158950cec3a6de945e483c4e"
+  },
+  "docs/nexus-post-r5-runtime-integration-slice3c-adr-pds.md": {
+    "bytes": 114531,
+    "sha256": "59343099413012d4a974bd5b3c248b88b0f0b8ab176c1d2930368622d9985455"
   },
   "docs/nexus-runtime-integration-architecture.md": {
     "bytes": 28785,
@@ -267,10 +311,6 @@
     "bytes": 21799,
     "sha256": "6b49163caa30bde4bb43d148b192c4a05cbd8475a1cebeedbd3c133dfb082a93"
   },
-  "README.md": {
-    "bytes": 10622,
-    "sha256": "2ce47f8673b086c01ea1f35eddbdca3451a597a37fc9871c098ab0b98eb831e2"
-  },
   "release/VERSION": {
     "bytes": 11,
     "sha256": "11923af84d69a31cc3fce3596cde030a55c88e9ff3da059e9a19b28880f1b8fd"
@@ -291,13 +331,17 @@
     "bytes": 362161,
     "sha256": "ef77cb0e37adb4d844d5f34a07e9f66935e6f5dbfb3970168db906eed513165d"
   },
+  "scripts/Install-Nexus.ps1": {
+    "bytes": 5010,
+    "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
+  },
   "scripts/build_manifest.py": {
-    "bytes": 1947,
-    "sha256": "a23e85f2ad46c20cedb02dba3bf56bebf166041aaf4a31b6ba2c871d05a359ca"
+    "bytes": 7516,
+    "sha256": "dd2ea0372004ba814f2db6ddf9efb901fedb745c257a96f5432de85bf2653770"
   },
   "scripts/build_release.py": {
-    "bytes": 16411,
-    "sha256": "6dcaed71b3e61266b1adc899087bf9efc6a568224570ceb484eaa2434c576287"
+    "bytes": 19879,
+    "sha256": "18f58277c8aa2e8019ac5c0dd1e156ab152155b34b73aed6700b0cf873426aa6"
   },
   "scripts/check_updates.py": {
     "bytes": 2515,
@@ -315,10 +359,6 @@
     "bytes": 14676,
     "sha256": "6da331f1fcfc24597a03bb8892971a1cf1e5ed83b4678ebb702b7cb3c94286f6"
   },
-  "scripts/Install-Nexus.ps1": {
-    "bytes": 5010,
-    "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
-  },
   "scripts/nexus.py": {
     "bytes": 616,
     "sha256": "015ac6de04bd6e1a366e6bce63add3778df307d0c3de087d7592e92cd5a007d4"
@@ -328,20 +368,20 @@
     "sha256": "28debb684067ddbf936df327a2d1c3a78dde5757e4867fd36fddd94e706647ec"
   },
   "scripts/package_nexus.py": {
-    "bytes": 3409,
-    "sha256": "8cf89ca76ecb9c3469aa3b2fd7434a22ccdba5a2c619521ee8c10d5b555cb347"
+    "bytes": 14722,
+    "sha256": "5433a55ae31b91e81684868665f90a2127bbbc5cfcf2ab34f5fcffefc12fec78"
   },
   "scripts/rebase_release.py": {
-    "bytes": 6407,
-    "sha256": "79e8c4c75f01d275719caf980ba0d06dcb0c69a793652b9f834ead9c04d003d7"
+    "bytes": 6629,
+    "sha256": "5fd060a7e1d0ffcbe84a72e088725b1ec2aaebd2681cfe8b071cd6524152aa24"
   },
   "scripts/rebuild_registry.py": {
     "bytes": 1726,
     "sha256": "05c3ff325aabf576e9c4ca49d026a8d8b7d5e410e166bbc6709ac19412080907"
   },
   "scripts/release_common.py": {
-    "bytes": 6176,
-    "sha256": "b5e48a6dbdf4f2c039fb72db8867055949e2bda36c53b733ef1ecd8cc0cc8b22"
+    "bytes": 10649,
+    "sha256": "5f58ef8be70629e21dbe221cfb39c5096f0a37161248de1d5c7a86d1b79e1d25"
   },
   "scripts/release_install.py": {
     "bytes": 12522,
@@ -351,13 +391,13 @@
     "bytes": 13328,
     "sha256": "f0de915950381eedd343f010c5ddd3102393bdc0d5e5928cc22613b750ab93c8"
   },
-  "SKILL.md": {
-    "bytes": 7941,
-    "sha256": "b4bef894b550f8c7c0e50abd0d95eb2fde02d344653361b742295eaef976e45e"
-  },
   "sources.json": {
     "bytes": 7870,
     "sha256": "e9160e803dbb7fd6c445b4c443f4c46da5fc699574bdedd7fd192f8ea32b8e66"
+  },
+  "tests/_windows_junction.py": {
+    "bytes": 2383,
+    "sha256": "931b6fb5c5b022f032dc70c4fbaab1af5b280561d6c156c5fbbf3f2bc650dc88"
   },
   "tests/test_agent_contract.py": {
     "bytes": 3533,
@@ -371,13 +411,37 @@
     "bytes": 19512,
     "sha256": "055ed1e4f0f0896cba40e4454af5621c489282da4886f35c78f8e65b0cc73b89"
   },
+  "tests/test_ecosystem_compare.py": {
+    "bytes": 23723,
+    "sha256": "356a1310ce2a20e1acb6758418f2104f5b66e83de5abae48e3763736a62e48fd"
+  },
+  "tests/test_ecosystem_evaluation_state.py": {
+    "bytes": 80912,
+    "sha256": "676a2ab5b68153f50862879ffa23703c39ac47b257f7b08c86ef936330604ac7"
+  },
+  "tests/test_ecosystem_evidence.py": {
+    "bytes": 58084,
+    "sha256": "a126cb30ba88fa0f172d46347e5d4909bb13328657c2ce1e7d4aac666c00f9e0"
+  },
+  "tests/test_ecosystem_isolation_package.py": {
+    "bytes": 18243,
+    "sha256": "48c6164d556c2397276d15b719be56d88260444ef2fbee9f35f797fe1723cd04"
+  },
+  "tests/test_ecosystem_policy_models.py": {
+    "bytes": 47634,
+    "sha256": "ca9c7c86abb2596b655ae5717e938d21f4cf26a0bfa78e63d07f14b4fb9b17a4"
+  },
+  "tests/test_ecosystem_storage_intake.py": {
+    "bytes": 74670,
+    "sha256": "2e218bb6db06eecf2cc1ff52f95d30df95edd4a326e4c728d56642cce92f8dd0"
+  },
   "tests/test_evaluation_contract.py": {
-    "bytes": 33063,
-    "sha256": "a77296569d9f1e298084a7a63b52f4444b35d742febe075d75146946cf9d62cc"
+    "bytes": 40451,
+    "sha256": "a6b2186766ed15f9483db27df293986168ba61de74b2a775a0b469fd8aba3b8d"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 52710,
-    "sha256": "3691214d6eb8cfdbfaeb378fbd75487fc19343d89e27c0b9fe121ac3e1e16c32"
+    "bytes": 70068,
+    "sha256": "894b4e6120d6f19e222575e46b2abfe649aba549b69c0435a06901be0bb09f7c"
   },
   "tests/test_hub.py": {
     "bytes": 21706,
@@ -408,8 +472,8 @@
     "sha256": "41f73278d88d7b0d173f68d3995ea9dbe1045d6bc4b600b5accd8ac324f2b3b6"
   },
   "tests/test_quality_loop_evaluation.py": {
-    "bytes": 23385,
-    "sha256": "68f73e49b325a31a0cd334687cc7a9f6e5483bc25287efee9ae4ceef2dcf190d"
+    "bytes": 23435,
+    "sha256": "3171c8a3d00a60982aa5c0b64ce3e89542727a1eee8a88ab2940b284170db6d1"
   },
   "tests/test_r4_host_handoff.py": {
     "bytes": 17168,

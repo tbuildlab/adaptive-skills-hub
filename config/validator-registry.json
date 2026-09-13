@@ -129,6 +129,140 @@
       "pass_transition": "validation_passed",
       "availability": "available",
       "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-provenance",
+      "display_name": "Nexus Ecosystem Provenance Integrity",
+      "validator_version": "1",
+      "validator_type": "digest_integrity",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "operators": [
+        "sha256_matches_subject"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-static-security",
+      "display_name": "Nexus Ecosystem Static Security",
+      "validator_version": "1",
+      "validator_type": "bounded_predicate",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "operators": [
+        "equals",
+        "not_equals",
+        "present"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-classification",
+      "display_name": "Nexus Ecosystem Classification",
+      "validator_version": "1",
+      "validator_type": "bounded_predicate",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "operators": [
+        "equals",
+        "present"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-validation-bundle",
+      "display_name": "Nexus Ecosystem Validation Bundle",
+      "validator_version": "1",
+      "validator_type": "receipt_consistency",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "operators": [
+        "receipt_consistent"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-review-bundle",
+      "display_name": "Nexus Ecosystem Review Bundle",
+      "validator_version": "1",
+      "validator_type": "state_consistency",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "operators": [
+        "state_consistent"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-comparison-consistency",
+      "display_name": "Nexus Ecosystem Comparison Consistency",
+      "validator_version": "1",
+      "validator_type": "receipt_consistency",
+      "subject_types": [
+        "ecosystem_revision_comparison"
+      ],
+      "operators": [
+        "receipt_consistent"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
+    },
+    {
+      "validator_id": "nexus.validator.ecosystem-intake-bridge-consistency",
+      "display_name": "Nexus Ecosystem Intake Bridge Consistency",
+      "validator_version": "1",
+      "validator_type": "receipt_consistency",
+      "subject_types": [
+        "ecosystem_intake_bridge"
+      ],
+      "operators": [
+        "receipt_consistent"
+      ],
+      "output_schema_version": "nexus.evaluation-contract.v1",
+      "minimum_checks": 1,
+      "requires_executed_subject": false,
+      "pass_transition": "validation_passed",
+      "availability": "available",
+      "definition_source": "nexus_core"
     }
   ]
 }

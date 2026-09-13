@@ -1,0 +1,908 @@
+{
+  "schema_version": "nexus.ecosystem-source-policy.v1",
+  "policy_id": "nexus.ecosystem-source-policy.default",
+  "policy_version": "1",
+  "mode": "quarantine_only",
+  "provider_policy": {
+    "allowed_providers": [
+      "github"
+    ],
+    "network_acquisition": "disabled",
+    "accepted_intake_kinds": [
+      "pre_supplied_zip"
+    ],
+    "archive_formats": [
+      "zip"
+    ]
+  },
+  "resource_limits": {
+    "max_policy_bytes": 65536,
+    "max_sources": 32,
+    "max_input_bytes": 134217728,
+    "max_expanded_bytes": 536870912,
+    "max_entries": 20000,
+    "max_directories": 5000,
+    "max_file_bytes": 33554432,
+    "max_path_utf8_bytes": 512,
+    "max_path_segment_utf8_bytes": 128,
+    "max_path_depth": 32,
+    "max_components": 128,
+    "max_component_entries": 10000,
+    "max_component_bytes": 268435456,
+    "max_archive_nesting": 1,
+    "max_entry_compression_ratio": 100,
+    "max_aggregate_compression_ratio": 20,
+    "max_findings_per_subject": 1024,
+    "max_license_files": 32,
+    "max_dependency_manifests": 64,
+    "max_instruction_file_bytes": 262144,
+    "max_license_or_dependency_file_bytes": 1048576,
+    "max_record_bytes": 2097152,
+    "max_text_evidence_bytes": 65536,
+    "max_ingest_seconds": 60,
+    "max_cas_bytes": 2147483648,
+    "max_quarantined_revisions_per_source": 8
+  },
+  "analysis_profiles": {
+    "static_analyzer_profile": {
+      "schema_version": "nexus.ecosystem-static-analyzer-profile.v1",
+      "analyzer_id": "nexus.ecosystem-static",
+      "analyzer_version": "1",
+      "rules": [
+        {
+          "rule_id": "archive.nested",
+          "rule_version": "1",
+          "predicate_id": "magic-prefix-set",
+          "parameters": {
+            "magic_hex": [
+              "1f8b",
+              "377abcaf271c",
+              "504b0304",
+              "526172211a07",
+              "7573746172"
+            ]
+          },
+          "category": "ARCHIVE_SAFETY",
+          "severity": "MEDIUM",
+          "disposition": "REQUIRES_REVIEW"
+        },
+        {
+          "rule_id": "automation.workflow",
+          "rule_version": "1",
+          "predicate_id": "path-set-or-prefix",
+          "parameters": {
+            "exact_paths": [
+              ".circleci/config.yml",
+              ".gitlab-ci.yml",
+              "Jenkinsfile"
+            ],
+            "prefixes": [
+              ".github/workflows/"
+            ]
+          },
+          "category": "HOOK_OR_AUTOMATION",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "binary.executable-magic",
+          "rule_version": "1",
+          "predicate_id": "executable-magic-prefix",
+          "parameters": {
+            "magic_hex": [
+              "0061736d",
+              "4d5a",
+              "7f454c46",
+              "cafebabe",
+              "cefaedfe",
+              "cffaedfe",
+              "feedface",
+              "feedfacf"
+            ]
+          },
+          "category": "EXECUTABLE_OR_BINARY",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "content.bidi-control",
+          "rule_version": "1",
+          "predicate_id": "unicode-codepoint-set",
+          "parameters": {
+            "codepoints": [
+              "061c",
+              "200e",
+              "200f",
+              "202a",
+              "202b",
+              "202c",
+              "202d",
+              "202e",
+              "2066",
+              "2067",
+              "2068",
+              "2069"
+            ]
+          },
+          "category": "OBFUSCATION",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "content.invalid-role-text",
+          "rule_version": "1",
+          "predicate_id": "role-text-valid",
+          "parameters": {
+            "encoding": "utf-8-strict",
+            "forbid_nul": true
+          },
+          "category": "UNSUPPORTED_CONTENT",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "credential.content",
+          "rule_version": "1",
+          "predicate_id": "slice3b-secret-detector",
+          "parameters": {
+            "detector_version": "slice3b.v1",
+            "maximum_match_bytes": 4096,
+            "stream_overlap_bytes": 4095
+          },
+          "category": "NETWORK_OR_CREDENTIAL",
+          "severity": "CRITICAL",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "credential.filename",
+          "rule_version": "1",
+          "predicate_id": "filename-secret-shape",
+          "parameters": {
+            "basenames": [
+              ".env",
+              ".npmrc",
+              ".pypirc",
+              "credentials",
+              "credentials.json",
+              "id_ed25519",
+              "id_rsa"
+            ],
+            "suffixes": [
+              ".key",
+              ".p12",
+              ".pem",
+              ".pfx"
+            ]
+          },
+          "category": "NETWORK_OR_CREDENTIAL",
+          "severity": "CRITICAL",
+          "disposition": "REJECTS_CANDIDATE"
+        },
+        {
+          "rule_id": "dependency.manifest",
+          "rule_version": "1",
+          "predicate_id": "exact-basename-set",
+          "parameters": {
+            "basenames": [
+              "Cargo.lock",
+              "Cargo.toml",
+              "Gemfile",
+              "Gemfile.lock",
+              "go.mod",
+              "go.sum",
+              "package-lock.json",
+              "package.json",
+              "pnpm-lock.yaml",
+              "poetry.lock",
+              "pyproject.toml",
+              "requirements.txt",
+              "setup.cfg",
+              "setup.py",
+              "uv.lock",
+              "yarn.lock"
+            ]
+          },
+          "category": "DEPENDENCY_OR_INSTALL",
+          "severity": "MEDIUM",
+          "disposition": "REQUIRES_REVIEW"
+        },
+        {
+          "rule_id": "evidence.license-incomplete",
+          "rule_version": "1",
+          "predicate_id": "license-result-not-equal",
+          "parameters": {
+            "complete_result": "MATCHES_POLICY_DECLARATION"
+          },
+          "category": "LICENSE_CHANGE",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "evidence.provenance-inexact",
+          "rule_version": "1",
+          "predicate_id": "provenance-result-not-equal",
+          "parameters": {
+            "complete_result": "EXACT_SUBJECT_BOUND"
+          },
+          "category": "PROVENANCE_MISMATCH",
+          "severity": "CRITICAL",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "hook.git-control",
+          "rule_version": "1",
+          "predicate_id": "path-set-or-prefix",
+          "parameters": {
+            "exact_paths": [
+              ".gitattributes",
+              ".gitmodules"
+            ],
+            "prefixes": [
+              ".git/hooks/"
+            ]
+          },
+          "category": "HOOK_OR_AUTOMATION",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "install.declaration",
+          "rule_version": "1",
+          "predicate_id": "installer-declaration",
+          "parameters": {
+            "filenames": [
+              "bootstrap.py",
+              "install.py"
+            ],
+            "package_scripts": [
+              "install",
+              "postinstall",
+              "preinstall",
+              "prepare"
+            ],
+            "pyproject_section": "build-system"
+          },
+          "category": "DEPENDENCY_OR_INSTALL",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "instruction.control-claim",
+          "rule_version": "1",
+          "predicate_id": "collapsed-casefolded-phrase-set",
+          "parameters": {
+            "phrases": [
+              "execute without approval",
+              "grant agent authority",
+              "grant host authority",
+              "grant mcp authority",
+              "ignore previous instructions",
+              "ignore system instructions",
+              "install automatically"
+            ]
+          },
+          "category": "INSTRUCTION_INJECTION",
+          "severity": "HIGH",
+          "disposition": "REQUIRES_REVIEW"
+        },
+        {
+          "rule_id": "mode.executable",
+          "rule_version": "1",
+          "predicate_id": "mode-equals",
+          "parameters": {
+            "mode": "regular_executable"
+          },
+          "category": "EXECUTABLE_OR_BINARY",
+          "severity": "HIGH",
+          "disposition": "BLOCKS_REVIEW_COMPLETION"
+        },
+        {
+          "rule_id": "network.declaration",
+          "rule_version": "1",
+          "predicate_id": "uri-or-token-set",
+          "parameters": {
+            "schemes": [
+              "http://",
+              "https://",
+              "ws://",
+              "wss://"
+            ],
+            "tokens": [
+              "fetch",
+              "requests",
+              "socket",
+              "urllib",
+              "webhook"
+            ]
+          },
+          "category": "NETWORK_OR_CREDENTIAL",
+          "severity": "MEDIUM",
+          "disposition": "REQUIRES_REVIEW"
+        },
+        {
+          "rule_id": "permission.declaration",
+          "rule_version": "1",
+          "predicate_id": "whole-token-set",
+          "parameters": {
+            "tokens": [
+              "allowed-tools",
+              "delegate",
+              "mcp",
+              "permissions",
+              "shell",
+              "spawn-agent",
+              "subprocess",
+              "sudo"
+            ]
+          },
+          "category": "PERMISSION_DECLARATION",
+          "severity": "HIGH",
+          "disposition": "REQUIRES_REVIEW"
+        }
+      ]
+    },
+    "component_classifier_profile": {
+      "schema_version": "nexus.ecosystem-component-classifier-profile.v1",
+      "classifier_id": "nexus.ecosystem-component-classifier",
+      "classifier_version": "1",
+      "rules": [
+        {
+          "rule_id": "component.skill-directory",
+          "rule_version": "1",
+          "predicate_id": "nonroot-directory-exact-file",
+          "parameters": {
+            "filename": "SKILL.md",
+            "exclude_nested_roots": true
+          },
+          "component_kind": "GRANULAR_SKILL"
+        },
+        {
+          "rule_id": "component.advisory-agent",
+          "rule_version": "1",
+          "predicate_id": "first-segment-extension",
+          "parameters": {
+            "extensions": [
+              ".md"
+            ],
+            "first_segments": [
+              ".agents",
+              "agents"
+            ]
+          },
+          "component_kind": "ADVISORY_AGENT"
+        },
+        {
+          "rule_id": "component.memory-pattern",
+          "rule_version": "1",
+          "predicate_id": "segment-extension-set",
+          "parameters": {
+            "extensions": [
+              ".json",
+              ".md",
+              ".py",
+              ".txt",
+              ".yaml",
+              ".yml"
+            ],
+            "segments": [
+              "code-graph",
+              "codegraph",
+              "memories",
+              "memory",
+              "wiki"
+            ]
+          },
+          "component_kind": "MEMORY_PATTERN"
+        },
+        {
+          "rule_id": "component.workflow-pattern",
+          "rule_version": "1",
+          "predicate_id": "segment-extension-set",
+          "parameters": {
+            "excluded_prefixes": [
+              ".github/workflows/"
+            ],
+            "extensions": [
+              ".json",
+              ".md",
+              ".py",
+              ".rst",
+              ".ts",
+              ".tsx",
+              ".txt",
+              ".yaml",
+              ".yml"
+            ],
+            "segments": [
+              "example",
+              "examples",
+              "pattern",
+              "patterns",
+              "workflow",
+              "workflows"
+            ]
+          },
+          "component_kind": "WORKFLOW_PATTERN"
+        },
+        {
+          "rule_id": "component.dependency-reference",
+          "rule_version": "1",
+          "predicate_id": "static-rule-basename-set",
+          "parameters": {
+            "static_rule_id": "dependency.manifest"
+          },
+          "component_kind": "LIBRARY_DEPENDENCY_REFERENCE"
+        },
+        {
+          "rule_id": "component.reference-architecture",
+          "rule_version": "1",
+          "predicate_id": "readme-or-docs-text",
+          "parameters": {
+            "extensions": [
+              ".md",
+              ".rst",
+              ".txt"
+            ],
+            "readme": "README.md",
+            "first_segment": "docs"
+          },
+          "component_kind": "REFERENCE_ARCHITECTURE"
+        }
+      ]
+    }
+  },
+  "evaluation_profiles": [
+    {
+      "profile_id": "nexus.profile.ecosystem-classification",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-classification",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "from_review_state": "STATIC_SECURITY_EVIDENCE_COMPLETE",
+      "to_review_state": "SEMANTIC_CLASSIFICATION_COMPLETE",
+      "precondition_set": "classification-report-complete",
+      "required_checks": [
+        {
+          "check_id": "classification-status",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "literal-complete",
+          "observed_source": "classification-report-status",
+          "evidence_id": "classification-status"
+        },
+        {
+          "check_id": "classifier-config",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "policy-classifier-config",
+          "observed_source": "classification-report-classifier-config",
+          "evidence_id": "classification-config"
+        },
+        {
+          "check_id": "unresolved-paths",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "literal-empty-list",
+          "observed_source": "classification-report-unresolved-paths",
+          "evidence_id": "classification-unresolved-paths"
+        }
+      ]
+    },
+    {
+      "profile_id": "nexus.profile.ecosystem-comparison-consistency",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-comparison-consistency",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_revision_comparison"
+      ],
+      "from_review_state": null,
+      "to_review_state": null,
+      "precondition_set": "comparison-exact",
+      "required_checks": [
+        {
+          "check_id": "comparison-record",
+          "operator": "receipt_consistent",
+          "required": true,
+          "expected_source": "revalidated-current-comparison",
+          "observed_source": "supplied-comparison-projection",
+          "evidence_id": "comparison-record"
+        }
+      ]
+    },
+    {
+      "profile_id": "nexus.profile.ecosystem-intake-bridge-consistency",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-intake-bridge-consistency",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_intake_bridge"
+      ],
+      "from_review_state": null,
+      "to_review_state": null,
+      "precondition_set": "bridge-exact",
+      "required_checks": [
+        {
+          "check_id": "bridge-record",
+          "operator": "receipt_consistent",
+          "required": true,
+          "expected_source": "revalidated-current-bridge",
+          "observed_source": "supplied-bridge-projection",
+          "evidence_id": "bridge-record"
+        }
+      ]
+    },
+    {
+      "profile_id": "nexus.profile.ecosystem-provenance",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-provenance",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "from_review_state": "NOT_REVIEWED",
+      "to_review_state": "PROVENANCE_EVIDENCE_COMPLETE",
+      "precondition_set": "provenance-exact",
+      "required_checks": [
+        {
+          "check_id": "subject-digest",
+          "operator": "sha256_matches_subject",
+          "required": true,
+          "expected_source": "none",
+          "observed_source": "subject-sha256",
+          "evidence_id": "provenance-subject"
+        }
+      ]
+    },
+    {
+      "profile_id": "nexus.profile.ecosystem-review-bundle",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-review-bundle",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "from_review_state": "VALIDATION_EVIDENCE_COMPLETE",
+      "to_review_state": "REVIEW_EVIDENCE_COMPLETE",
+      "precondition_set": "review-bundle-exact",
+      "required_checks": [
+        {
+          "check_id": "prior-review-state",
+          "operator": "state_consistent",
+          "required": true,
+          "expected_source": "none",
+          "observed_source": "subject-lifecycle",
+          "evidence_id": "review-prior-state"
+        }
+      ]
+    },
+    {
+      "profile_id": "nexus.profile.ecosystem-static-security",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-static-security",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "from_review_state": "PROVENANCE_EVIDENCE_COMPLETE",
+      "to_review_state": "STATIC_SECURITY_EVIDENCE_COMPLETE",
+      "precondition_set": "static-report-complete-nonblocking",
+      "required_checks": [
+        {
+          "check_id": "analysis-status",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "literal-complete",
+          "observed_source": "static-report-analysis-status",
+          "evidence_id": "static-analysis-status"
+        },
+        {
+          "check_id": "analyzer-config",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "policy-analyzer-config",
+          "observed_source": "static-report-analyzer-config",
+          "evidence_id": "static-analyzer-config"
+        },
+        {
+          "check_id": "blocking-findings",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "literal-zero",
+          "observed_source": "static-report-blocking-count",
+          "evidence_id": "static-blocking-count"
+        },
+        {
+          "check_id": "rejecting-findings",
+          "operator": "equals",
+          "required": true,
+          "expected_source": "literal-zero",
+          "observed_source": "static-report-rejecting-count",
+          "evidence_id": "static-rejecting-count"
+        }
+      ]
+    },
+    {
+      "profile_id": "nexus.profile.ecosystem-validation-bundle",
+      "profile_version": "1",
+      "validator_id": "nexus.validator.ecosystem-validation-bundle",
+      "validator_version": "1",
+      "subject_types": [
+        "ecosystem_component_revision",
+        "ecosystem_source_revision"
+      ],
+      "from_review_state": "SEMANTIC_CLASSIFICATION_COMPLETE",
+      "to_review_state": "VALIDATION_EVIDENCE_COMPLETE",
+      "precondition_set": "validation-bundle-exact",
+      "required_checks": [
+        {
+          "check_id": "required-receipts",
+          "operator": "receipt_consistent",
+          "required": true,
+          "expected_source": "recomputed-required-validation-bundle",
+          "observed_source": "supplied-required-validation-bundle",
+          "evidence_id": "validation-bundle"
+        }
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "source_key": "github/bytedance/deer-flow",
+      "provider": "github",
+      "canonical_repository": "bytedance/deer-flow",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "GRANULAR_SKILL_SOURCE",
+        "LIBRARY_DEPENDENCY_REFERENCE",
+        "REFERENCE_ARCHITECTURE",
+        "WORKFLOW_PATTERN_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "788a890bd022689ef293e6bbfa2c12988173db6c",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "MIT",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/cft0808/edict",
+      "provider": "github",
+      "canonical_repository": "cft0808/edict",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "ADVISORY_AGENT_SOURCE",
+        "REFERENCE_ARCHITECTURE",
+        "WORKFLOW_PATTERN_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "14a207557719c046af0f993a7bff1cc5a5015b33",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "MIT",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/jnmetacode/agency-agents-zh",
+      "provider": "github",
+      "canonical_repository": "jnmetacode/agency-agents-zh",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "ADVISORY_AGENT_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "972452cdedef8d04fed4a8dd1dc10623e33ed412",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "MIT",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/mattpocock/skills",
+      "provider": "github",
+      "canonical_repository": "mattpocock/skills",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "GRANULAR_SKILL_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "UNVERIFIED",
+        "commit_object_format": "none",
+        "commit_oid": null,
+        "license_state": "UNVERIFIED",
+        "spdx_expression": null,
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/msitarzewski/agency-agents",
+      "provider": "github",
+      "canonical_repository": "msitarzewski/agency-agents",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "ADVISORY_AGENT_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "9572c66428bbc8ef475d339b2386eacd8bf540c5",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "MIT",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/openai/codex",
+      "provider": "github",
+      "canonical_repository": "openai/codex",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "LIBRARY_DEPENDENCY_REFERENCE",
+        "REFERENCE_ARCHITECTURE",
+        "WORKFLOW_PATTERN_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "10d5a603aecbd73a38f3a6576cce69a78f8d6f1d",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "Apache-2.0",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/shubhamsaboo/awesome-llm-apps",
+      "provider": "github",
+      "canonical_repository": "shubhamsaboo/awesome-llm-apps",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "GRANULAR_SKILL_SOURCE",
+        "REFERENCE_ARCHITECTURE",
+        "WORKFLOW_PATTERN_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "11a4bc330e4b0b1509577db4581c5cfbcf6ea6a0",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "Apache-2.0",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    },
+    {
+      "source_key": "github/tencentcloud/tencentdb-agent-memory",
+      "provider": "github",
+      "canonical_repository": "tencentcloud/tencentdb-agent-memory",
+      "identity_state": "SOURCE_IDENTITY_ONLY",
+      "source_classifications": [
+        "MEMORY_PATTERN_SOURCE",
+        "REFERENCE_ARCHITECTURE",
+        "WORKFLOW_PATTERN_SOURCE"
+      ],
+      "whole_repository_disposition": "QUARANTINE_UNTIL_REVIEW",
+      "frozen_evidence": {
+        "evidence_state": "VERIFIED_HISTORICAL_SNAPSHOT",
+        "commit_object_format": "git_sha1",
+        "commit_oid": "5299c00aaf65481703c180fd69df066d11254eb7",
+        "license_state": "VERIFIED_DECLARATION",
+        "spdx_expression": "MIT",
+        "evidence_date": null,
+        "evidence_scope": "historical_local_review_only"
+      },
+      "authority": {
+        "approval_authority": "none",
+        "promotion_authority": "none",
+        "activation_authority": "none",
+        "routing_authority": "none",
+        "installation_authority": "none",
+        "execution_authority": "none",
+        "host_mapping_authority": "none",
+        "mcp_connection_authority": "none",
+        "agent_delegation_authority": "none"
+      }
+    }
+  ]
+}

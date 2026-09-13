@@ -4,7 +4,11 @@ import copy
 from pathlib import Path
 import unittest
 
-from ash.evaluation import canonical_sha256, evaluate_contract, load_trusted_validator_registry
+from ash.evaluation import (
+    _load_test_validator_registry as load_trusted_validator_registry,
+    canonical_sha256,
+    evaluate_contract,
+)
 from ash.quality_loop import (
     QUALITY_RECEIPT_SCHEMA_VERSION,
     QualityLoopError,

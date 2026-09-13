@@ -26,10 +26,10 @@ if not __package__:
         sys.path.insert(0, str(_SCRIPT_DIRECTORY))
 
 if __package__:
-    from .build_release import ROOT, source_members, write_manifest
+    from .build_release import ROOT, source_payloads, write_manifest
     from .release_common import MANIFEST_NAME, ReleaseError, safe_extract, sha256_file, verify_release_tree
 else:
-    from build_release import ROOT, source_members, write_manifest
+    from build_release import ROOT, source_payloads, write_manifest
     from release_common import MANIFEST_NAME, ReleaseError, safe_extract, sha256_file, verify_release_tree
 
 
@@ -90,10 +90,15 @@ def build(
             raise ReleaseError("base release manifest is not RC4")
         stage = temp / f"Nexus-{version}"
         base_root.replace(stage)
-        for source in source_members():
+        reviewed_sources = source_payloads()
+        reviewed_source_bytes = {
+            source.relative_to(ROOT).as_posix(): contents
+            for source, contents in reviewed_sources
+        }
+        for source, contents in reviewed_sources:
             destination = stage / source.relative_to(ROOT)
             destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source, destination)
+            destination.write_bytes(contents)
         (stage / "release" / "VERSION").write_text(version + "\n", encoding="utf-8", newline="\n")
         plugin_manifest = stage / "plugins" / "nexus-desktop" / ".codex-plugin" / "plugin.json"
         try:
@@ -112,7 +117,7 @@ def build(
                     bundle.write(member, member.relative_to(stage.parent).as_posix())
     receipt = _write_receipt(target_archive)
     bootstrap = output / f"Install-Nexus-{version}.ps1"
-    shutil.copy2(ROOT / "scripts" / "Install-Nexus.ps1", bootstrap)
+    bootstrap.write_bytes(reviewed_source_bytes["scripts/Install-Nexus.ps1"])
     _write_receipt(bootstrap)
     manifest_asset = output / f"Nexus-{version}.release-manifest.json"
     with zipfile.ZipFile(target_archive) as bundle:
