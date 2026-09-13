@@ -8,8 +8,8 @@
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "README.md": {
-    "bytes": 11709,
-    "sha256": "44386a297a5fc16a9f3f77be44f44236fd7dfdea449eef9088ec76c57ba09c65"
+    "bytes": 12406,
+    "sha256": "cd9ace2ee857c48178a06f27cdb665b47f7e190a06574b4b18e4dba20e2be948"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -176,8 +176,8 @@
     "sha256": "950f9de436f48fd8578b1f3fdbb3cf5be901f3843edb3d24a24428689c82ac0f"
   },
   "docs/architecture.md": {
-    "bytes": 6059,
-    "sha256": "e76900d66ff4b9ca0b505e16d6bcf164ebc31fd14fa5e6b5a6d9f54b2d505962"
+    "bytes": 6380,
+    "sha256": "db10fb1018454110bf8010b1ccba3ba3c7b924e88d7dd4aec6fc5b2d4de9b6e0"
   },
   "docs/github-distribution-architecture.md": {
     "bytes": 10025,
@@ -192,8 +192,8 @@
     "sha256": "10833239e3073a5c50b425edff3aac048f8dfa7303d418c36cf3e2b774a15b3a"
   },
   "docs/nexus-agent-runtime-contract.md": {
-    "bytes": 2410,
-    "sha256": "d72782671c2bd5e831373be98455e249a90948425ac8b0ec61079661024e1db7"
+    "bytes": 2790,
+    "sha256": "6d58f58a5fcf22ca6b84cb1419c6e1867e53e95bcbc2ece8ea33c7fb1fe930c0"
   },
   "docs/nexus-capability-foundation.md": {
     "bytes": 6262,
@@ -204,8 +204,8 @@
     "sha256": "949bb1a6e4dfc90c2dbee2709729e45e2d988605be5e17ddd5b3d6fdfddf5e7f"
   },
   "docs/nexus-ecosystem-gap-scan.md": {
-    "bytes": 95581,
-    "sha256": "95c6b41a7c24a4857fd4114793ff54cf9694369a25fc93b9b1883111de2e84a9"
+    "bytes": 96121,
+    "sha256": "77e99e0b4805ac94f5facb209b4c418e8b11352f43f782258bb83a37daa8f1ac"
   },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
@@ -227,9 +227,13 @@
     "bytes": 114531,
     "sha256": "59343099413012d4a974bd5b3c248b88b0f0b8ab176c1d2930368622d9985455"
   },
+  "docs/nexus-roadmap-v2.md": {
+    "bytes": 67748,
+    "sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8"
+  },
   "docs/nexus-runtime-integration-architecture.md": {
-    "bytes": 28785,
-    "sha256": "8328522830f139badd29e60f269047f353ddf89e66534f88c28107e9fb4d4f20"
+    "bytes": 29236,
+    "sha256": "b36f21b66125099d687895bab952351379cbb8fd1c53ba8d6e060107db72bf65"
   },
   "docs/nexus-runtime-r1-pilot.md": {
     "bytes": 4512,

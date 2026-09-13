@@ -3,6 +3,12 @@
 **Current status:** contract and validation only. No Agent Runtime, Agent
 execution, subagent spawning, swarm, or delegated tool authority is enabled.
 
+> **Roadmap authority notice — 2026-09-13:** [Roadmap V2](nexus-roadmap-v2.md)
+> supersedes the historical assumption below that Nexus should develop a generic
+> Agent Runtime. This v1 contract remains advisory-only. G2 plans a separate
+> bounded executor integration; G5 delegation/concurrency is optional and needs
+> its own enforcement and value gates. Neither has started.
+
 ## Why the contract exists
 
 An Agent definition is a specialist role and process, not an executable Skill.

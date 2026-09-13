@@ -1,5 +1,13 @@
 # Nexus Ecosystem Gap Scan — Extreme Comprehensive Research Pass
 
+> **Roadmap authority notice — 2026-09-13:** This report's research observations,
+> dispositions and old Slice 4/5/6/7/R6 proposals are retained as historical
+> evidence. [Owner-accepted Roadmap V2](nexus-roadmap-v2.md) governs remaining
+> future work and supersedes the old roadmap, including Section 32. Its G5 is
+> optional/conditional; a generic Nexus Agent Runtime is not a default product
+> responsibility. Historical `INTEGRATE` recommendations confer no trust,
+> approval, routability or execution authority. G1 has not started.
+
 **Status:** Research complete; architecture review required before any implementation.
 **Research date:** 2026-08-27
 **Repository:** `TDY0225/adaptive-skills-hub` (Private)

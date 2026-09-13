@@ -1,5 +1,10 @@
 # Nexus architecture
 
+> **Roadmap authority notice — 2026-09-13:** This document describes the existing
+> foundation. [Owner-accepted Roadmap V2](nexus-roadmap-v2.md) governs remaining
+> future work. Frozen completed contracts remain unchanged. G1 is the only
+> recommended next implementation slice and has not started; G5 is conditional.
+
 ## Adaptive AI Capability Hub
 
 Nexus is the user-facing name of the Adaptive Skills Hub system. The existing

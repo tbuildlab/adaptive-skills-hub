@@ -5,6 +5,13 @@
 **Core baseline:** `v1.2-final` at `44458d13a7f4240d34fa58c32e92640e7291a14a`
 **Last platform review:** 2026-08-21
 
+> **Roadmap authority notice — 2026-09-13:** The feasibility findings and
+> implementation recommendations below are a historical record. Frozen
+> completed milestones retain their accepted contracts. [Roadmap V2](nexus-roadmap-v2.md)
+> is the current remaining plan; its sole recommended next implementation slice
+> is G1, which has not started. This notice does not re-certify historical Host
+> observations or alter any frozen runtime boundary.
+
 ## 1. Executive Summary
 
 Nexus V1.2 already makes a bounded, auditable decision: it discovers local

@@ -2,6 +2,19 @@
 
 ## Adaptive AI Capability Hub
 
+## Current remaining roadmap — owner accepted
+
+[Nexus Roadmap V2](docs/nexus-roadmap-v2.md) is the authoritative future plan
+after frozen Post-R5 Slice 3C. It defines five required slices and optional/
+conditional G5. G1 — Capability Profiles and Executor Conformance is the only
+recommended next implementation slice and has **NOT STARTED**. A sequential
+Nexus can graduate without G5 when delegation/concurrency does not pass its
+enforcement and value gates.
+
+Roadmap V2 targets a model-agnostic capability control plane. The sections below
+describe the existing foundation and its historical contracts; accepting the
+roadmap does not implement future capabilities or change frozen authority.
+
 Nexus is the user-facing name of the Adaptive Skills Hub system. It is a
 Codex-first meta-skill for discovering, selecting, loading, chaining, and
 executing relevant Skills instead of merely recommending them. V1.1 remains
@@ -216,8 +229,8 @@ coverage and the R5 `HOST_EVIDENCE_REQUIRED` path never invoke Scout. See
 
 Slice 3A adds bounded semantic routing without expanding execution authority.
 Slice 3B adds deterministic evaluation and quality-loop contracts whose
-receipts remain evidence rather than Host authority. The Slice 3C implementation
-candidate accepts only a validated Slice 2 bridge plus a stable, pre-supplied
+receipts remain evidence rather than Host authority. The frozen Slice 3C
+implementation accepts only a validated Slice 2 bridge plus a stable, pre-supplied
 ZIP, streams inert bytes into a repository-external immutable quarantine/CAS,
 and produces subject-bound provenance, license, static-analysis,
 classification, comparison, and lifecycle evidence.
