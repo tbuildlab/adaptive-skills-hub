@@ -71,6 +71,14 @@
     "bytes": 5086,
     "sha256": "e7c488521cb2b0ea9ff81f91f8be908b79018fa34e2442c3bf37bb6dfa0091bc"
   },
+  "ash/g1_profiles.py": {
+    "bytes": 15573,
+    "sha256": "22ed153288cadd7b9a9c7e8219db0bcfe8b337509585209445954e02e30b449e"
+  },
+  "ash/g1_selection.py": {
+    "bytes": 17049,
+    "sha256": "c1702bcf0a2fd751cf7b48879736eefccf9c98c23b0dfe231a80346f0974658b"
+  },
   "ash/mcp/__init__.py": {
     "bytes": 154,
     "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
@@ -271,6 +279,10 @@
     "bytes": 13151,
     "sha256": "ffef98d9e4afb678912152b536aae7b6251b60f6db8d82bae30c918556f3135a"
   },
+  "docs/nexus-v2-g1.md": {
+    "bytes": 18443,
+    "sha256": "fa51f6d36ae7afb9431d092f5d3fe4f1d1ee378f7b5adea8ebf10fe72495cede"
+  },
   "docs/portable-installation.md": {
     "bytes": 2133,
     "sha256": "ae6131e86045c0db6813307c744031d92d3dcecd94c94fc0157f6507c8a2bd11"
@@ -372,8 +384,12 @@
     "sha256": "28debb684067ddbf936df327a2d1c3a78dde5757e4867fd36fddd94e706647ec"
   },
   "scripts/package_nexus.py": {
-    "bytes": 14722,
-    "sha256": "5433a55ae31b91e81684868665f90a2127bbbc5cfcf2ab34f5fcffefc12fec78"
+    "bytes": 14749,
+    "sha256": "cecb2f048c3ac492ad16629f83f3c5b88cc72a8f74fbb0ef3a291f170e3b9b7c"
+  },
+  "scripts/probe_g1_conformance.py": {
+    "bytes": 11777,
+    "sha256": "fd0d2ced6643b75bc811115fc8eb82b7aaeb97d3efa56ce4dfd0738c6cb845f6"
   },
   "scripts/rebase_release.py": {
     "bytes": 6629,
@@ -402,6 +418,10 @@
   "tests/_windows_junction.py": {
     "bytes": 2383,
     "sha256": "931b6fb5c5b022f032dc70c4fbaab1af5b280561d6c156c5fbbf3f2bc650dc88"
+  },
+  "tests/g1_fixtures.py": {
+    "bytes": 7146,
+    "sha256": "99305855782e8de5384bfdab28bba44b3a4fdf0b91a794b098e80b45a9c5f8e9"
   },
   "tests/test_agent_contract.py": {
     "bytes": 3533,
@@ -442,6 +462,18 @@
   "tests/test_evaluation_contract.py": {
     "bytes": 40451,
     "sha256": "a6b2186766ed15f9483db27df293986168ba61de74b2a775a0b469fd8aba3b8d"
+  },
+  "tests/test_g1_pilot.py": {
+    "bytes": 2768,
+    "sha256": "35fe865785f11844dea0bc8219e3e7df733ebf6db0228b838ad61502f3788a64"
+  },
+  "tests/test_g1_profiles.py": {
+    "bytes": 5567,
+    "sha256": "f8ed8e4f65ac9a529439a922a80efb1cfb3ec0867e2f7424d27dfa3b84542385"
+  },
+  "tests/test_g1_selection.py": {
+    "bytes": 17151,
+    "sha256": "e86b13e70f8616f43775922d03228a1b279314fc5fcf8853e5a5f42541aa1d61"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70068,

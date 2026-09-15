@@ -91,6 +91,7 @@ ALLOWED_ROOT_FILES = {"SKILL.md", "sources.json", "requirements-r2-mcp.txt", "re
 ALLOWED_RESEARCH = {"research/nexus-ecosystem-gap-scan.json"}
 ALLOWED_DIRECTORIES = {"ash", "config", "plugins", "scripts", "tests", ".agents"}
 ALLOWED_DOCS = {
+    "docs/nexus-v2-g1.md",
     "docs/nexus-desktop-plugin-pilot.md",
     "docs/nexus-runtime-r5-adaptive-enhancement.md",
     "docs/nexus-runtime-r5-host-capability-inventory.md",
