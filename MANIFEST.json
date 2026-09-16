@@ -235,6 +235,14 @@
     "bytes": 114531,
     "sha256": "59343099413012d4a974bd5b3c248b88b0f0b8ab176c1d2930368622d9985455"
   },
+  "docs/nexus-pre-g2-architecture-acceptance-v1.md": {
+    "bytes": 12247,
+    "sha256": "c8b2fe28f9e2b6250288b736b8741824cd1fc750299aadce07ab72c9479e782b"
+  },
+  "docs/nexus-pre-g2-architecture-addendum-v1.md": {
+    "bytes": 11442,
+    "sha256": "b6680c710dda8fb7808e06cc2569fd1bb6a4aeed47b2223f9626e411e298be14"
+  },
   "docs/nexus-roadmap-v2.md": {
     "bytes": 67748,
     "sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8"
