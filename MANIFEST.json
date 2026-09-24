@@ -211,6 +211,10 @@
     "bytes": 5179,
     "sha256": "949bb1a6e4dfc90c2dbee2709729e45e2d988605be5e17ddd5b3d6fdfddf5e7f"
   },
+  "docs/nexus-e2b-appcontainer-protocol-successor-proposal-v1.md": {
+    "bytes": 13449,
+    "sha256": "b6b232efc03f93007dd5040eab67901fe168460bf1453ac3cad290b7f100e810"
+  },
   "docs/nexus-ecosystem-gap-scan.md": {
     "bytes": 96121,
     "sha256": "77e99e0b4805ac94f5facb209b4c418e8b11352f43f782258bb83a37daa8f1ac"
@@ -234,6 +238,14 @@
   "docs/nexus-post-r5-runtime-integration-slice3c-adr-pds.md": {
     "bytes": 114531,
     "sha256": "59343099413012d4a974bd5b3c248b88b0f0b8ab176c1d2930368622d9985455"
+  },
+  "docs/nexus-pre-g2-appcontainer-architecture-acceptance-v1.md": {
+    "bytes": 4451,
+    "sha256": "6d5c96fe917c09f3123d9024e24866fbd5f65373e1f826e9a45015536aad6357"
+  },
+  "docs/nexus-pre-g2-appcontainer-architecture-alternative-v1.md": {
+    "bytes": 26790,
+    "sha256": "e50da530463b20d0b19b26c75d859f52f3f24e332dee975374e9ad5a38e9ec4b"
   },
   "docs/nexus-pre-g2-architecture-acceptance-v1.md": {
     "bytes": 12247,
