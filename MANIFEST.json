@@ -255,6 +255,18 @@
     "bytes": 11442,
     "sha256": "b6680c710dda8fb7808e06cc2569fd1bb6a4aeed47b2223f9626e411e298be14"
   },
+  "docs/nexus-pre-g2-lpac-package-delivery-boundary-acceptance-v1.md": {
+    "bytes": 2737,
+    "sha256": "1d460a49bc3df6a01326078f761b9e514843cb25b05ffa5f7d45a0b6108b0b1d"
+  },
+  "docs/nexus-pre-g2-lpac-package-delivery-boundary-decision-v1.md": {
+    "bytes": 18762,
+    "sha256": "26d39ecd492352b294e354cda25386c877ced09e13d57f16235d7e2b0fb545cf"
+  },
+  "docs/nexus-pre-g2-lpac-package-delivery-boundary-review-v1.md": {
+    "bytes": 6492,
+    "sha256": "8d586f76dacec75c716bf205cc2eba94455bd3ba06605bd924a19a1cbaebe3e2"
+  },
   "docs/nexus-pre-g2-trusted-launch-architecture-acceptance-v1.md": {
     "bytes": 3518,
     "sha256": "5f5eb1f24221eafe6802f697f226b707e864832f5c5cc95d62626d8221466964"
