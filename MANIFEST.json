@@ -219,6 +219,18 @@
     "bytes": 96121,
     "sha256": "77e99e0b4805ac94f5facb209b4c418e8b11352f43f782258bb83a37daa8f1ac"
   },
+  "docs/nexus-g2-host-qualification-scope-and-exit-acceptance-v1.md": {
+    "bytes": 2809,
+    "sha256": "a3b47db405b30896a92f50b7e6ef018813980461fa3fef315ec7af3cf85f53f1"
+  },
+  "docs/nexus-g2-host-qualification-scope-and-exit-decision-v1.md": {
+    "bytes": 29767,
+    "sha256": "6cf3ab004b66580531185e7e0ce7394aa349ecb3e1e3905f224ed0259bbfcd69"
+  },
+  "docs/nexus-g2-host-qualification-scope-and-exit-review-v1.md": {
+    "bytes": 8387,
+    "sha256": "9d37d862f0a599ce309e3d31e5d03e35d6ddb59774f46a5bb8cab8deaa1df47c"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
