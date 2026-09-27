@@ -219,6 +219,18 @@
     "bytes": 96121,
     "sha256": "77e99e0b4805ac94f5facb209b4c418e8b11352f43f782258bb83a37daa8f1ac"
   },
+  "docs/nexus-g2-host-qualification-evidence-successor-acceptance-v1.md": {
+    "bytes": 3128,
+    "sha256": "0aff074a4097d66286e0ec126cf18ec21de712f1f5397f0ecdf578ee0d614ec6"
+  },
+  "docs/nexus-g2-host-qualification-evidence-successor-protocol-v1.md": {
+    "bytes": 28048,
+    "sha256": "e8fa13931355e562a83cfb4c40444a11c1245fc5140440871903a6d4c1e37843"
+  },
+  "docs/nexus-g2-host-qualification-evidence-successor-review-v1.md": {
+    "bytes": 10202,
+    "sha256": "98a74c90ba046251ff4ca4d8eddd8a84fca082eb21376ef5b5d04d434616df2e"
+  },
   "docs/nexus-g2-host-qualification-scope-and-exit-acceptance-v1.md": {
     "bytes": 2809,
     "sha256": "a3b47db405b30896a92f50b7e6ef018813980461fa3fef315ec7af3cf85f53f1"
@@ -278,6 +290,18 @@
   "docs/nexus-pre-g2-lpac-owner-release-boundary-amendment-v1.md": {
     "bytes": 11129,
     "sha256": "bb47ba854f5322238b2d78e274f264b1653855cb26aa91ee375baa7fce05bf67"
+  },
+  "docs/nexus-pre-g2-lpac-owner-release-system-module-provenance-acceptance-v1.md": {
+    "bytes": 3323,
+    "sha256": "e8e1f7c848d0134707967ea020a2e0139de17f47b50838a073622f5986f63e18"
+  },
+  "docs/nexus-pre-g2-lpac-owner-release-system-module-provenance-amendment-v1.md": {
+    "bytes": 6657,
+    "sha256": "49ec2911fb19498a7c797622991eba919b3a52871916371588f59ade23473297"
+  },
+  "docs/nexus-pre-g2-lpac-owner-release-system-module-provenance-review-v1.md": {
+    "bytes": 5194,
+    "sha256": "b1a7ebe16b30e0991bbb2bd0be685a881e12dfb43d979917fadba0065cf3db02"
   },
   "docs/nexus-pre-g2-lpac-owner-release-verifier-implementation-spec-v1.md": {
     "bytes": 10716,
