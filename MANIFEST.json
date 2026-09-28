@@ -243,6 +243,10 @@
     "bytes": 8387,
     "sha256": "9d37d862f0a599ce309e3d31e5d03e35d6ddb59774f46a5bb8cab8deaa1df47c"
   },
+  "docs/nexus-g2-next-host-route-decision-v1.md": {
+    "bytes": 28842,
+    "sha256": "37abd280fef34a29c0b864002eeaa3bfdb08f13abfda4d65ec669191da2833cd"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
@@ -278,6 +282,18 @@
   "docs/nexus-pre-g2-architecture-addendum-v1.md": {
     "bytes": 11442,
     "sha256": "b6680c710dda8fb7808e06cc2569fd1bb6a4aeed47b2223f9626e411e298be14"
+  },
+  "docs/nexus-pre-g2-current-lpac-host-exit-and-next-route-acceptance-v1.md": {
+    "bytes": 4541,
+    "sha256": "c2b912a316114b0ac1797db07f45b54fbc0a2d57ad2b16db1515f80a5eeef8bd"
+  },
+  "docs/nexus-pre-g2-current-lpac-host-exit-decision-v1.md": {
+    "bytes": 11520,
+    "sha256": "6fd4d2d615ea976795dad1b1cb7355dc9334cc29a725c17dc87008e83d4722d1"
+  },
+  "docs/nexus-pre-g2-current-lpac-host-exit-review-v1.md": {
+    "bytes": 5794,
+    "sha256": "3e55b4314d5c78c2cf460ed41c3a41babeb2cb00d23fd9d76b494d3a0bdb2d3f"
   },
   "docs/nexus-pre-g2-lpac-code-integrity-evidence-acceptance-v1.md": {
     "bytes": 4399,
