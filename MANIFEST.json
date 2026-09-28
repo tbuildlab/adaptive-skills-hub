@@ -319,6 +319,18 @@
     "bytes": 6492,
     "sha256": "8d586f76dacec75c716bf205cc2eba94455bd3ba06605bd924a19a1cbaebe3e2"
   },
+  "docs/nexus-pre-g2-lpac-verifier-watchdog-responsibility-acceptance-v1.md": {
+    "bytes": 3929,
+    "sha256": "d214dadbf6f6048b70244f88855ae04ff0240b9b36a3d6c345df3a9f51797b5c"
+  },
+  "docs/nexus-pre-g2-lpac-verifier-watchdog-responsibility-amendment-v1.md": {
+    "bytes": 26452,
+    "sha256": "4c49754a1e25db097cbb2d17bec1611a9306b971b75795c17b98b14902d821b3"
+  },
+  "docs/nexus-pre-g2-lpac-verifier-watchdog-responsibility-review-v1.md": {
+    "bytes": 14226,
+    "sha256": "586c5aac40f591ef4cb957004f38812c1931bb8375e2762cece20a0f332561ab"
+  },
   "docs/nexus-pre-g2-trusted-launch-architecture-acceptance-v1.md": {
     "bytes": 3518,
     "sha256": "5f5eb1f24221eafe6802f697f226b707e864832f5c5cc95d62626d8221466964"
