@@ -279,6 +279,18 @@
     "bytes": 11442,
     "sha256": "b6680c710dda8fb7808e06cc2569fd1bb6a4aeed47b2223f9626e411e298be14"
   },
+  "docs/nexus-pre-g2-lpac-code-integrity-evidence-acceptance-v1.md": {
+    "bytes": 4399,
+    "sha256": "259c3f67a4115fe83b68828ed7e8a8bd08d8a179ea7429a46c8e529e454cbcfb"
+  },
+  "docs/nexus-pre-g2-lpac-code-integrity-evidence-amendment-v1.md": {
+    "bytes": 25239,
+    "sha256": "c9e53a54610b0818b3efebfe07ef408fc35985dac12fe4721433a6439b6349f9"
+  },
+  "docs/nexus-pre-g2-lpac-code-integrity-evidence-review-v1.md": {
+    "bytes": 10385,
+    "sha256": "b84ca4f00b40ca6f4b327fadff5d3ed853f62e5ba284b98dceb688d8b3df969d"
+  },
   "docs/nexus-pre-g2-lpac-owner-release-acceptance-v1.md": {
     "bytes": 4454,
     "sha256": "c50062e63ba01152c34127fdc0a656ed17d0f95ffb56133e4bbb9c709119790b"
