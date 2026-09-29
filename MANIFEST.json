@@ -247,6 +247,18 @@
     "bytes": 28842,
     "sha256": "37abd280fef34a29c0b864002eeaa3bfdb08f13abfda4d65ec669191da2833cd"
   },
+  "docs/nexus-g2-responsibility-rebaseline-acceptance-v1.md": {
+    "bytes": 3419,
+    "sha256": "f2cd2fe306f065d1a97e4edad50098ed73ec82c5ef4e93e378511b318948a942"
+  },
+  "docs/nexus-g2-responsibility-rebaseline-adversarial-review-v1.md": {
+    "bytes": 6989,
+    "sha256": "71730ae6026af38bba610697bbfc63d041d649ce36582c992f93053c13a17235"
+  },
+  "docs/nexus-g2-responsibility-rebaseline-review-v1.md": {
+    "bytes": 19171,
+    "sha256": "8220287eddc1dfe653394e29d53a53b7413168598336907f61493dd65e751b93"
+  },
   "docs/nexus-g2-route-b-provider-documentation-fact-matrix-v1.md": {
     "bytes": 25881,
     "sha256": "e3fd62c26b0768e831e80d191453adc2a02d892b31a30541f04e3fb9bd432481"
