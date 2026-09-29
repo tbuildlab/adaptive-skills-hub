@@ -275,6 +275,18 @@
     "bytes": 18629,
     "sha256": "e97ecf70bfb1d0082e7de8e7c8100e321174062e15f9c2ec62cdac4bb97befe0"
   },
+  "docs/nexus-g2-route-b-unknown-resolution-acceptance-v1.md": {
+    "bytes": 3089,
+    "sha256": "69cf5d6a2aa3e49c339a9bac1981e449f27452a9a6e6a5d966bc567aba014a61"
+  },
+  "docs/nexus-g2-route-b-unknown-resolution-adversarial-review-v1.md": {
+    "bytes": 8734,
+    "sha256": "ece05ae6d731a17fbf776666abb2dae42178d07454e3ef6bc75efabb30771828"
+  },
+  "docs/nexus-g2-route-b-unknown-resolution-matrix-v1.md": {
+    "bytes": 31541,
+    "sha256": "6fd8bde5d2aca64301d280bed050c957ec40f8c767ea41b9cf60b8877cd7197e"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
