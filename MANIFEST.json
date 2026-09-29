@@ -247,6 +247,22 @@
     "bytes": 28842,
     "sha256": "37abd280fef34a29c0b864002eeaa3bfdb08f13abfda4d65ec669191da2833cd"
   },
+  "docs/nexus-g2-route-b-provider-documentation-fact-matrix-v1.md": {
+    "bytes": 25881,
+    "sha256": "e3fd62c26b0768e831e80d191453adc2a02d892b31a30541f04e3fb9bd432481"
+  },
+  "docs/nexus-g2-route-b-provider-interface-acceptance-v1.md": {
+    "bytes": 3106,
+    "sha256": "ba45c5223212df59a287a51fb0966c18d6c1d7c004c6e86acaa68d878b3936df"
+  },
+  "docs/nexus-g2-route-b-provider-interface-adversarial-review-v1.md": {
+    "bytes": 12694,
+    "sha256": "d048f8971acc4bf8e9d181d324b2ee48bee9758bfb5e13f5bd61b8191c6e0365"
+  },
+  "docs/nexus-g2-route-b-provider-neutral-host-contract-v1.md": {
+    "bytes": 18629,
+    "sha256": "e97ecf70bfb1d0082e7de8e7c8100e321174062e15f9c2ec62cdac4bb97befe0"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
