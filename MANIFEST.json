@@ -207,6 +207,10 @@
     "bytes": 6262,
     "sha256": "ea32d6aedce8da188029dd5a64a346614c69d3e8633b163894a59cab295f61a8"
   },
+  "docs/nexus-capability-state-model-v1.md": {
+    "bytes": 8071,
+    "sha256": "636af91f0f2bae536cfbaf784d791e73d0e97610d31a2d2beae2a12b7354cbe1"
+  },
   "docs/nexus-desktop-plugin-pilot.md": {
     "bytes": 5179,
     "sha256": "949bb1a6e4dfc90c2dbee2709729e45e2d988605be5e17ddd5b3d6fdfddf5e7f"
@@ -395,6 +399,18 @@
     "bytes": 31541,
     "sha256": "6fd8bde5d2aca64301d280bed050c957ec40f8c767ea41b9cf60b8877cd7197e"
   },
+  "docs/nexus-northstar-demo2-learned-knowledge-v1.md": {
+    "bytes": 12289,
+    "sha256": "5a216152512a58de51bbfadcb4994331360dedba23de24a7e30f2ee2c8121151"
+  },
+  "docs/nexus-northstar-demo2-project-memory-v1.md": {
+    "bytes": 54137,
+    "sha256": "3a26415a27447e4ab442f461bc861d58b7f166b1ef727ce4c0bcbbf5cd794ad3"
+  },
+  "docs/nexus-northstar-knowledge-integration-adversarial-review-v1.md": {
+    "bytes": 10012,
+    "sha256": "ad1ee6e07642497aa0fc26e2a9707501f75dbb7663db56e6630848f659a4e00a"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
@@ -514,6 +530,10 @@
   "docs/nexus-pre-g2-trusted-launch-architecture-decision-v1.md": {
     "bytes": 20900,
     "sha256": "c672d58d56de3aedff9189ecc2df0bce1936095e214dc3f659cee1604732d41e"
+  },
+  "docs/nexus-reusable-project-gates-v1.md": {
+    "bytes": 12670,
+    "sha256": "062e8ce94683bcd0a43f591a5636bbc938cfd06e130ecc202e2074c5049328fb"
   },
   "docs/nexus-roadmap-v2.md": {
     "bytes": 67748,
