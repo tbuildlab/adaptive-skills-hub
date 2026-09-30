@@ -427,6 +427,10 @@
     "bytes": 57375,
     "sha256": "81f8b4c8c4d531f6a49f9413918119dd06b4c0233c24c432fa60f9d7c4a10608"
   },
+  "docs/nexus-minimal-executable-representation-design-v1.md": {
+    "bytes": 71942,
+    "sha256": "532b147bca2d1684ca27eca85136ef54a6ef51ebd4d544b316604aff7de938d1"
+  },
   "docs/nexus-northstar-demo2-learned-knowledge-v1.md": {
     "bytes": 12289,
     "sha256": "5a216152512a58de51bbfadcb4994331360dedba23de24a7e30f2ee2c8121151"
