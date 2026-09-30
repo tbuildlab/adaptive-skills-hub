@@ -247,6 +247,26 @@
     "bytes": 28842,
     "sha256": "37abd280fef34a29c0b864002eeaa3bfdb08f13abfda4d65ec669191da2833cd"
   },
+  "docs/nexus-g2-openai-first-compatibility-adversarial-review-v1.md": {
+    "bytes": 7917,
+    "sha256": "06bb4f52f56d71d3b3c1c1aefe17c3d400686d4f04f0192d79e901bd6819bdea"
+  },
+  "docs/nexus-g2-openai-first-compatibility-rebaseline-acceptance-v1.md": {
+    "bytes": 6383,
+    "sha256": "873bb2135002cf975fcd58aa839469b73f1d10f4538548b3ea682a85a0a580e7"
+  },
+  "docs/nexus-g2-openai-first-compatibility-rebaseline-review-v1.md": {
+    "bytes": 15867,
+    "sha256": "cca9c25d833a1423b026f72c7ee459218d79151a9f23dda86e078bdf192d6471"
+  },
+  "docs/nexus-g2-openai-first-contract-minimization-matrix-v1.md": {
+    "bytes": 13785,
+    "sha256": "8a291a4a8afb1644f473368813c13f443af1650680e1f6c5dfada014956d2a5e"
+  },
+  "docs/nexus-g2-openai-first-proposed-clarification-pack-v1.md": {
+    "bytes": 3858,
+    "sha256": "82da60966f590448ce887519a6819d9577730b13bc7114fdc87e27762b3a5190"
+  },
   "docs/nexus-g2-responsibility-rebaseline-acceptance-v1.md": {
     "bytes": 3419,
     "sha256": "f2cd2fe306f065d1a97e4edad50098ed73ec82c5ef4e93e378511b318948a942"
