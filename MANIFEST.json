@@ -203,6 +203,18 @@
     "bytes": 2790,
     "sha256": "6d58f58a5fcf22ca6b84cb1419c6e1867e53e95bcbc2ece8ea33c7fb1fe930c0"
   },
+  "docs/nexus-apex-aircare-demo3-learned-knowledge-v1.md": {
+    "bytes": 9008,
+    "sha256": "af9cf11d1e4e4d2f5edf2a2264f2bd887f0dccbed91df2a5e842d60555ab133c"
+  },
+  "docs/nexus-apex-aircare-demo3-project-memory-v1.md": {
+    "bytes": 62470,
+    "sha256": "cb173ddd0a744d6386d20a865eca366718bf6ff94990c6c37856df129871daf7"
+  },
+  "docs/nexus-apex-knowledge-integration-adversarial-review-v1.md": {
+    "bytes": 11548,
+    "sha256": "040577ca1907dfd7ecfcc061c5e7975d65fc6b7c767c651e3e3c8c0a6613df6b"
+  },
   "docs/nexus-capability-foundation.md": {
     "bytes": 6262,
     "sha256": "ea32d6aedce8da188029dd5a64a346614c69d3e8633b163894a59cab295f61a8"
@@ -210,6 +222,10 @@
   "docs/nexus-capability-state-model-v1.md": {
     "bytes": 8071,
     "sha256": "636af91f0f2bae536cfbaf784d791e73d0e97610d31a2d2beae2a12b7354cbe1"
+  },
+  "docs/nexus-demo2-demo3-cross-project-synthesis-v1.md": {
+    "bytes": 27534,
+    "sha256": "08a5237e1b55a85e409c8642b44dc31d45737dc62dece0ddadffb9ab75422bf0"
   },
   "docs/nexus-desktop-plugin-pilot.md": {
     "bytes": 5179,
