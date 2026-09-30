@@ -423,6 +423,10 @@
     "bytes": 31541,
     "sha256": "6fd8bde5d2aca64301d280bed050c957ec40f8c767ea41b9cf60b8877cd7197e"
   },
+  "docs/nexus-governance-advisory-integration-design-v1.md": {
+    "bytes": 8712,
+    "sha256": "1cd95f69376f32164cf863a3c514bb4bf87d66e09597d18b2a46b70f7b96e566"
+  },
   "docs/nexus-governance-applicability-validation-v1.md": {
     "bytes": 47594,
     "sha256": "6892414ef1b4070d293153ee7cb24610b36ad205b784c9ba32c8b084e78af45e"
