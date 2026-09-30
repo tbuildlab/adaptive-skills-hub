@@ -271,6 +271,18 @@
     "bytes": 28842,
     "sha256": "37abd280fef34a29c0b864002eeaa3bfdb08f13abfda4d65ec669191da2833cd"
   },
+  "docs/nexus-g2-openai-blocker-resolution-adversarial-review-v1.md": {
+    "bytes": 9290,
+    "sha256": "f57e4cf7249183bb352a4708e4525a9d0562e91bb080b36c3a1db9abded697fe"
+  },
+  "docs/nexus-g2-openai-blocker-resolution-source-matrix-v1.md": {
+    "bytes": 11255,
+    "sha256": "c7cec6c05667863a93129af5c1bca328afc4dfa544fa5e54b5099741c0a6e499"
+  },
+  "docs/nexus-g2-openai-blocker-resolution-v1.md": {
+    "bytes": 13293,
+    "sha256": "ade8331f5a127a9e31390885433fa7605962cec31de811e4a1ab6b0b2f7a5dda"
+  },
   "docs/nexus-g2-openai-first-compatibility-adversarial-review-v1.md": {
     "bytes": 7917,
     "sha256": "06bb4f52f56d71d3b3c1c1aefe17c3d400686d4f04f0192d79e901bd6819bdea"
@@ -290,6 +302,10 @@
   "docs/nexus-g2-openai-first-proposed-clarification-pack-v1.md": {
     "bytes": 3858,
     "sha256": "82da60966f590448ce887519a6819d9577730b13bc7114fdc87e27762b3a5190"
+  },
+  "docs/nexus-g2-openai-minimized-provider-clarification-pack-v1.md": {
+    "bytes": 8319,
+    "sha256": "0ee9425eb8e88ab3ca0ce3e304e2cf0e121cde8ea680fc40d8d0343829df977d"
   },
   "docs/nexus-g2-responsibility-rebaseline-acceptance-v1.md": {
     "bytes": 3419,
