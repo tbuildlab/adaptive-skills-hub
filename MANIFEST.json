@@ -187,6 +187,10 @@
     "bytes": 6380,
     "sha256": "db10fb1018454110bf8010b1ccba3ba3c7b924e88d7dd4aec6fc5b2d4de9b6e0"
   },
+  "docs/fixtures/nexus-governance-assessment-static-v1.json": {
+    "bytes": 137583,
+    "sha256": "8070279464078209cbbfa7e0ca8ad834fbc252078471890c7b635f5e3f652908"
+  },
   "docs/github-distribution-architecture.md": {
     "bytes": 10025,
     "sha256": "dd085121546cd44f39c47d5d2478618e75e4a948668ed7738d1da7261a8af2e2"
@@ -422,6 +426,10 @@
   "docs/nexus-governance-applicability-validation-v1.md": {
     "bytes": 47594,
     "sha256": "6892414ef1b4070d293153ee7cb24610b36ad205b784c9ba32c8b084e78af45e"
+  },
+  "docs/nexus-governance-static-prototype-review-v1.md": {
+    "bytes": 8980,
+    "sha256": "750a02a4e0818b9dc37580d01df6f7d5c026e5276c9ad2c36181ac15b1b6a899"
   },
   "docs/nexus-microsoft-ai-agents-gap-analysis-v1.md": {
     "bytes": 57375,

@@ -1,0 +1,4151 @@
+{
+  "basis": "ILLUSTRATIVE",
+  "cases": [
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "A",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No API or new/material external interpretation boundary exists; local protections remain A01-A04.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Positive scope exclusion, not absence of testing tools.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "local"
+              ],
+              "reason": "A local output write is a mutation even without remote effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Only the fictional exact scope is covered.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated full comparison supports this conditional criterion.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated source/diff coverage only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.A.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "PRESERVE_UNKNOWN",
+      "id": "B",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "boundary"
+              ],
+              "reason": "Future delivery scope/configuration/authority must be established separately.",
+              "state": "DEFERRED"
+            },
+            "criterion": "Later publication has its own release-stage evidence.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not assessed and no publication readiness claimed.",
+              "state": null
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "boundary"
+              ],
+              "reason": "User-facing API claims must be truthful.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Contract describes computation/demo only and no unsupported delivery promise.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated design description supports only declared intent.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "boundary",
+                "parameters"
+              ],
+              "reason": "New external influence boundary applies now.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Exact decoder/format, fields/types and source-interpretation policy are bound.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B03",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required choices missing; no universal format selected.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "boundary",
+                "parameters"
+              ],
+              "reason": "Material malformed/resource consequences.",
+              "state": "REQUIRED"
+            },
+            "criterion": "S/L/R/W and pre-expansion rejection rules have bound evidence.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B04",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No values or implementation evidence.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "boundary"
+              ],
+              "reason": "Arbitrary public input could be sensitive; no database does not prove privacy.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Sanitized error/disclosure and actual input/output/logging/retention paths are verified.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B05",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Intended nonpersistence is not observed data-flow/retention evidence.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "boundary"
+              ],
+              "reason": "Declared demo mode is separate from effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Actual no-provider/no-persistent-effect and repeat behavior are established at the assessed scope.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B07",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No endpoint or effect observations exist.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "testing"
+              ],
+              "reason": "All four accepted harness conditions hold.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Relevant deterministic valid/invalid/malformed/resource/error/repeat cases are verified for the exact implementation.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "B08",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "No harness/implementation was executed.",
+              "state": "UNKNOWN"
+            },
+            "requires": [
+              "B03",
+              "B04",
+              "B05",
+              "B07"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "New public caller-controlled structured input; nonpersistent demo response intended; no UI/session/provider/publication yet.",
+            "id": "boundary",
+            "refs": [
+              "sample"
+            ],
+            "value": "label and copies input"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "Decoder/format and L/R/S/W choices are not supplied.",
+            "id": "parameters",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Machine-testable criteria, material consequences, deterministic secret-free fixtures feasible, small harness proportionate.",
+            "id": "testing",
+            "refs": [
+              "sample"
+            ],
+            "value": "four harness conditions hold"
+          }
+        ],
+        "purpose": "Select early D01 obligations for a proposed anonymous API; no implementation/readiness/live privacy claim.",
+        "record_id": "illustration.B.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:B:criteria",
+            "scope": "Select early D01 obligations for a proposed anonymous API; no implementation/readiness/live privacy claim.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "D01 §§3.1-3.3; accepted conditional evidence semantics",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:B:note",
+            "scope": "Fictional API design and harness proportionality premises only; no actual policy parameters, harness, privacy or effects.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "B.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "B.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "C",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "finding"
+              ],
+              "reason": "Adds decision value; no mandatory access premise is stipulated affected.",
+              "state": "OPTIONAL"
+            },
+            "criterion": "Targeted access/meaning impact receives an additional observation.",
+            "family": "C",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C.access",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not performed; optional coverage remains unassessed.",
+              "state": null
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "scope"
+              ],
+              "reason": "Explicitly optional investigation outside current triage closure.",
+              "state": "DEFERRED"
+            },
+            "criterion": "Further contextual reproduction/cause investigation is completed.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C.further-diagnosis",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Further evidence absent; deferred is not resolved.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempts",
+                "finding"
+              ],
+              "reason": "Honest report, not a confirmed defect inference.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original advisory source, exact criterion and attempted context omissions are retained.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Fictional report/attempt note retains the specified limits.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cause",
+                "scope"
+              ],
+              "reason": "D02 prevents semantic collapse.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Cause uncertainty and scoped optional disposition are separate from fix/false-positive claims.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Six concern notes state uncertainty, deferral and no repair.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "scope"
+              ],
+              "reason": "Current deliverable is the bounded triage record.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Triage-only record preserves six concerns, omissions and no dependent mandatory premise.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional triage completeness only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "C02",
+              "C03"
+            ]
+          }
+        ],
+        "diagnostic": {
+          "cause": {
+            "note": "UNKNOWN, not proof that no defect exists.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "disposition": {
+            "note": "Defer optional further diagnosis; finding/omissions retained; no superior required criterion waived.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "observation": {
+            "note": "Advisory separator clipping report, not a confirmed defect.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "remediation": {
+            "note": "None; no patch or change authority inferred.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "reproduction": {
+            "note": "NOT_REPRODUCED in three stipulated contexts; original context incomplete.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "validation": {
+            "note": "No repair validation; no repair PASS/FAIL or fixed/false-positive claim.",
+            "refs": [
+              "sample"
+            ]
+          }
+        },
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Three stipulated attempts do not reproduce; original context incomplete, intermittence not excluded.",
+            "id": "attempts",
+            "refs": [
+              "sample"
+            ],
+            "value": "NOT_REPRODUCED"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No independent causal support.",
+            "id": "cause",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Advisory decorative clipping, optional in this contract; no required analyzer/security/accessibility premise is waived.",
+            "id": "finding",
+            "refs": [
+              "sample"
+            ],
+            "value": "separator clipping report"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Owner decision is limited triage with optional further diagnosis deferred, no UI change/publication.",
+            "id": "scope",
+            "refs": [
+              "sample"
+            ],
+            "value": "triage only"
+          }
+        ],
+        "purpose": "Conditional completeness of triage only; no defect clearance, fix or product-wide acceptance.",
+        "record_id": "illustration.C.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:C:criteria",
+            "scope": "Conditional completeness of triage only; no defect clearance, fix or product-wide acceptance.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "D02 §§4.1-4.3",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:C:note",
+            "scope": "Fictional source/rule/report, three failed reproductions, incomplete original context and bounded owner triage disposition.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "C.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "C.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "D",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "mismatch",
+                "structure"
+              ],
+              "reason": "This record makes that narrow causal claim.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Final-index omission has causal support within reviewed old behavior.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "D.cause",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Structural review plus mismatch/reproduction, not symptom alone.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "structure"
+              ],
+              "reason": "Corrective closure needs relevant remediation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Exact old/new correction is bound to the final-index issue.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "D.change",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated exact correction link, not validation.",
+              "state": "PASS"
+            },
+            "requires": [
+              "D04"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "mismatch",
+                "structure"
+              ],
+              "reason": "Trusted fixed numeric input and unchanged trust/parser boundary.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "New externally influenced interpretation boundary requires a fresh API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "D.new-boundary",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "D05 regression still required.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "mismatch"
+              ],
+              "reason": "Criterion contradicted in old subject.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Old routine sums all elements of [2,3].",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "D.old.correctness",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated old result 2 != expected 5; not hidden by new validation.",
+              "state": "FAIL"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant"
+              ],
+              "reason": "Patch scope is an independent authority premise.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Valid bounded grant covers the exact local correction.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "D04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Separate stipulated grant, no runtime redesign authority.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "regression"
+              ],
+              "reason": "Declared post-change regression criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "New subject satisfies []=0, [7]=7, [2,3]=5.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "D05",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional three-case evidence, not universal correctness.",
+              "state": "PASS"
+            },
+            "requires": [
+              "D.change",
+              "D04"
+            ]
+          }
+        ],
+        "diagnostic": {
+          "cause": {
+            "note": "Supported for final-index omission by separate structural review plus mismatch.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "disposition": {
+            "note": "Only bounded final-index correction and relevant verification.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "observation": {
+            "note": "Old [2,3] produced 2 instead of 5: scoped defect.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "remediation": {
+            "note": "Stipulated exact old.v1 -> new.v1 correction linked to grant and issue.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "reproduction": {
+            "note": "Deterministic repeat under old subject/criterion, not all inputs.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "validation": {
+            "note": "Stipulated new []/[7]/[2,3] regression PASS only; no real check ran.",
+            "refs": [
+              "sample"
+            ]
+          }
+        },
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate grant covers only final-index correction old.v1 to new.v1.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded correction"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Trusted [2,3] old result 2, required 5; repeated under same subject/criterion.",
+            "id": "mismatch",
+            "refs": [
+              "sample"
+            ],
+            "value": "old behavior fails complete sum"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Stipulated new complete sums: []=0, [7]=7, [2,3]=5; no additional coverage.",
+            "id": "regression",
+            "refs": [
+              "sample"
+            ],
+            "value": "three named cases"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Independent fictional review shows old routine omits final index.",
+            "id": "structure",
+            "refs": [
+              "sample"
+            ],
+            "value": "scoped structural cause"
+          }
+        ],
+        "purpose": "Conditional old/new complete-sum correction chain; not real execution, universal correctness or extra write authority.",
+        "record_id": "illustration.D.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:D:criteria",
+            "scope": "Conditional old/new complete-sum correction chain; not real execution, universal correctness or extra write authority.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "D01 unchanged-trust case; D02 §§4.1-4.3",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:D:note",
+            "scope": "Fictional old/new routine identities, repeated mismatch, independently reviewed omission, narrow grant/diff and listed regression values.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "D.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "D.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "E",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "contract",
+                "input"
+              ],
+              "reason": "Selection within unchanged evidenced local scope; no new parser/trust boundary.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API/path parser requires new boundary verification.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "E.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Existing file identity/integrity remains E01-E04.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "contract"
+              ],
+              "reason": "Prior verification is not inferred from selecting a filename.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Existing reader/operation/configuration and read-only path are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "E01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated bound contract note, not real callability or invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "input"
+              ],
+              "reason": "Read-only still requires input/path identity.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Exact permitted file/provenance and no scope expansion/redirection are established.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "E02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated exact file/path/source support only.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "result"
+              ],
+              "reason": "Bound local result acceptance.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Exact declared summary criterion matches this input/result.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "E03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional deterministic comparison only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "E01",
+              "E02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "result"
+              ],
+              "reason": "No-mutation claims need observation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Operation is read-only and no extra mutation occurred.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "E04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Scoped fictional observation, not read-only configuration alone.",
+              "state": "PASS"
+            },
+            "requires": [
+              "E01",
+              "E02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Unchanged fixed reader/parser and evidenced local contract, read-only/in-memory result; no interpretation/network/PII/publication.",
+            "id": "contract",
+            "refs": [
+              "sample"
+            ],
+            "value": "existing inert reader"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "One predeclared owner-selected ordinary file; trusted source; no includes/path expansion/symlink/reparse redirection.",
+            "id": "input",
+            "refs": [
+              "sample"
+            ],
+            "value": "fixed permitted file"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional exact summary comparison and scoped no-mutation observation.",
+            "id": "result",
+            "refs": [
+              "sample"
+            ],
+            "value": "read-only result"
+          }
+        ],
+        "purpose": "Conditional existing bounded reader assessment; no actual read, scanning or Host qualification.",
+        "record_id": "illustration.E.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:E:criteria",
+            "scope": "Conditional existing bounded reader assessment; no actual read, scanning or Host qualification.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:E:note",
+            "scope": "Fictional existing reader contract, exact permitted source/file, no redirect/expansion and summary/no-mutation observations.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "E.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "E.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "PRESERVE_UNKNOWN",
+      "id": "F",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempt"
+              ],
+              "reason": "Reconciliation needs original identity.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original attempted-operation identity is associated with the scope named by the grant.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.attempt",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated original-attempt association only; not proof of complete safe admission or effect success.",
+              "state": "PASS"
+            },
+            "requires": [
+              "F.authority"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant"
+              ],
+              "reason": "Authority independent of technical availability.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Grant validity covers the original exact action, not a replacement/retry.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.authority",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated independent bounded grant only.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost"
+              ],
+              "reason": "Financial uncertainty separate from effect state.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Applicable final cost/exposure can be settled without treating unknown as zero.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.cost",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required final settlement evidence missing; no zero-cost inference.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "Stream loss/local timeout cannot settle effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Authoritative final state of original operation is bound.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.final",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No authoritative final observation.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "CP4/A2 unresolved effects retained.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original effect uncertainty is reconciled before unsafe retry/completion.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.reconcile",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Original final state unresolved.",
+              "state": "UNKNOWN"
+            },
+            "requires": [
+              "F.attempt",
+              "F.final"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost",
+                "final"
+              ],
+              "reason": "No unsafe repeat or fabricated closure.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Any related retry/completion/settlement claim has resolved required premises.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.retry-closure",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not assessed favorably; mandatory gaps block this claim.",
+              "state": null
+            },
+            "requires": [
+              "F.authority",
+              "F.cost",
+              "F.reconcile"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Stipulated original operation op.original.1 dispatched; response/stream lost.",
+            "id": "attempt",
+            "refs": [
+              "sample"
+            ],
+            "value": "original attempt reported"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "Applicable final cost/exposure remains unsettled; no settlement evidence supplied.",
+            "id": "cost",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No authoritative final-state record for op.original.1.",
+            "id": "final",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Independent fictional authorization is valid for one original bounded operation only.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "one attempt scope"
+          }
+        ],
+        "purpose": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+        "record_id": "illustration.F.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:criteria",
+            "scope": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:note",
+            "scope": "Fictional independent grant and original-attempt identity only; no authoritative remote-final-state/cost evidence.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "F.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "F.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "BOUNDED_CONDITIONAL_REVIEW_ONLY",
+      "expected_offline": "PRESERVE_UNKNOWN",
+      "id": "G",
+      "kind": "ILLUSTRATIVE_BASE",
+      "reason": "Declared conditional PASS never verifies actual evidence, authorization, execution or effects.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "applied"
+              ],
+              "reason": "Attribution needs independent invocation/output/acceptance linkage.",
+              "state": "REQUIRED"
+            },
+            "capability": {
+              "dimension": "APPLIED",
+              "ref": "sample"
+            },
+            "criterion": "APPLIED=YES to the named accepted artifact/state.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "G.applied",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Neither similarity nor availability proves application.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "available"
+              ],
+              "reason": "The scoped capability availability claim is assessed.",
+              "state": "REQUIRED"
+            },
+            "capability": {
+              "dimension": "CALLABLE",
+              "ref": "sample"
+            },
+            "criterion": "CALLABLE=YES for the exact bound renderer operation.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "G.callable",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional availability evidence only.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "invoke"
+              ],
+              "reason": "An execution claim would need an independent trace.",
+              "state": "REQUIRED"
+            },
+            "capability": {
+              "dimension": "EXECUTED",
+              "ref": "sample"
+            },
+            "criterion": "EXECUTED=YES for this particular operation.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "G.executed",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Availability is not invocation evidence.",
+              "state": "UNKNOWN"
+            }
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "UNKNOWN",
+            "claim": "No invocation-output-to-artifact/acceptance association supplied.",
+            "id": "applied",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional availability observation binds exact native renderer/version/environment/operation path.",
+            "id": "available",
+            "refs": [
+              "sample"
+            ],
+            "value": "CALLABLE=YES"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No invocation/receipt/attempt association supplied for this operation.",
+            "id": "invoke",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          }
+        ],
+        "purpose": "Observe capability dimensions independently; no invocation or artifact influence inferred.",
+        "record_id": "illustration.G.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:G:criteria",
+            "scope": "Observe capability dimensions independently; no invocation or artifact influence inferred.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "ES5 / capability state model acceptance",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:G:note",
+            "scope": "Fictional exact renderer/Host/operation/time availability record; invocation and application observations missing.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "G.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "G.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REJECT_RECORD",
+      "id": "N01",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Missing required reason/basis cannot justify REQUIRED selection.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No API or new/material external interpretation boundary exists; local protections remain A01-A04.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Positive scope exclusion, not absence of testing tools.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "local"
+              ],
+              "state": "REQUIRED"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Only the fictional exact scope is covered.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated full comparison supports this conditional criterion.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated source/diff coverage only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.N01.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "N02",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Known conceptual misuse of N/A; an offline structural consumer cannot adjudicate free-text exclusion truth.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No API or new/material external interpretation boundary exists; local protections remain A01-A04.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Positive scope exclusion, not absence of testing tools.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "missing"
+              ],
+              "reason": "Evidence is missing, therefore exclude the write boundary.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No evidence so presumed absent.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated full comparison supports this conditional criterion.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated source/diff coverage only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "Required boundary proof missing.",
+            "id": "missing",
+            "refs": [],
+            "value": null
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.N02.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REJECT_RECORD",
+      "id": "N03",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "PASS contradicts explicitly unresolved mandatory final-effect/cost dependencies.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempt"
+              ],
+              "reason": "Reconciliation needs original identity.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original attempted-operation identity is associated with the scope named by the grant.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.attempt",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated original-attempt association only; not proof of complete safe admission or effect success.",
+              "state": "PASS"
+            },
+            "requires": [
+              "F.authority"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant"
+              ],
+              "reason": "Authority independent of technical availability.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Grant validity covers the original exact action, not a replacement/retry.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.authority",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated independent bounded grant only.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost"
+              ],
+              "reason": "Financial uncertainty separate from effect state.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Applicable final cost/exposure can be settled without treating unknown as zero.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.cost",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required final settlement evidence missing; no zero-cost inference.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "Stream loss/local timeout cannot settle effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Authoritative final state of original operation is bound.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.final",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No authoritative final observation.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "CP4/A2 unresolved effects retained.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original effect uncertainty is reconciled before unsafe retry/completion.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.reconcile",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Original final state unresolved.",
+              "state": "UNKNOWN"
+            },
+            "requires": [
+              "F.attempt",
+              "F.final"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost",
+                "final"
+              ],
+              "reason": "No unsafe repeat or fabricated closure.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Any related retry/completion/settlement claim has resolved required premises.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.retry-closure",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Not assessed favorably; mandatory gaps block this claim.",
+              "state": "PASS"
+            },
+            "requires": [
+              "F.authority",
+              "F.cost",
+              "F.reconcile"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Stipulated original operation op.original.1 dispatched; response/stream lost.",
+            "id": "attempt",
+            "refs": [
+              "sample"
+            ],
+            "value": "original attempt reported"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "Applicable final cost/exposure remains unsettled; no settlement evidence supplied.",
+            "id": "cost",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No authoritative final-state record for op.original.1.",
+            "id": "final",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Independent fictional authorization is valid for one original bounded operation only.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "one attempt scope"
+          }
+        ],
+        "purpose": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+        "record_id": "illustration.N03.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:criteria",
+            "scope": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:note",
+            "scope": "Fictional independent grant and original-attempt identity only; no authoritative remote-final-state/cost evidence.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "F.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "F.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REJECT_RECORD",
+      "id": "N04",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Claimed APPLIED support has no evidence association; callability does not supply it.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "applied"
+              ],
+              "reason": "Attribution needs independent invocation/output/acceptance linkage.",
+              "state": "REQUIRED"
+            },
+            "capability": {
+              "dimension": "APPLIED",
+              "ref": "sample"
+            },
+            "criterion": "APPLIED=YES to the named accepted artifact/state.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "G.applied",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Neither similarity nor availability proves application.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "available"
+              ],
+              "reason": "The scoped capability availability claim is assessed.",
+              "state": "REQUIRED"
+            },
+            "capability": {
+              "dimension": "CALLABLE",
+              "ref": "sample"
+            },
+            "criterion": "CALLABLE=YES for the exact bound renderer operation.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "G.callable",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional availability evidence only.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "invoke"
+              ],
+              "reason": "An execution claim would need an independent trace.",
+              "state": "REQUIRED"
+            },
+            "capability": {
+              "dimension": "EXECUTED",
+              "ref": "sample"
+            },
+            "criterion": "EXECUTED=YES for this particular operation.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "G.executed",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Availability is not invocation evidence.",
+              "state": "UNKNOWN"
+            }
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "UNKNOWN",
+            "claim": "No invocation-output-to-artifact/acceptance association supplied.",
+            "id": "applied",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional availability observation binds exact native renderer/version/environment/operation path.",
+            "id": "available",
+            "refs": [
+              "sample"
+            ],
+            "value": "CALLABLE=YES"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No invocation/receipt/attempt association supplied for this operation.",
+            "id": "invoke",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          }
+        ],
+        "purpose": "Observe capability dimensions independently; no invocation or artifact influence inferred.",
+        "record_id": "illustration.N04.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:G:criteria",
+            "scope": "Observe capability dimensions independently; no invocation or artifact influence inferred.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "ES5 / capability state model acceptance",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:G:note",
+            "scope": "Fictional exact renderer/Host/operation/time availability record; invocation and application observations missing.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "G.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "G.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "N05",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Manual semantic rejection; text is inert and must not be accepted by structure-only inspection.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "finding"
+              ],
+              "reason": "Adds decision value; no mandatory access premise is stipulated affected.",
+              "state": "OPTIONAL"
+            },
+            "criterion": "Targeted access/meaning impact receives an additional observation.",
+            "family": "C",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C.access",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not performed; optional coverage remains unassessed.",
+              "state": null
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "scope"
+              ],
+              "reason": "Explicitly optional investigation outside current triage closure.",
+              "state": "DEFERRED"
+            },
+            "criterion": "Further contextual reproduction/cause investigation is completed.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C.further-diagnosis",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Further evidence absent; deferred is not resolved.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempts",
+                "finding"
+              ],
+              "reason": "Honest report, not a confirmed defect inference.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original advisory source, exact criterion and attempted context omissions are retained.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Fictional report/attempt note retains the specified limits.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cause",
+                "scope"
+              ],
+              "reason": "D02 prevents semantic collapse.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Cause uncertainty and scoped optional disposition are separate from fix/false-positive claims.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Six concern notes state uncertainty, deferral and no repair.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "scope"
+              ],
+              "reason": "Current deliverable is the bounded triage record.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Triage-only record preserves six concerns, omissions and no dependent mandatory premise.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional triage completeness only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "C02",
+              "C03"
+            ]
+          }
+        ],
+        "diagnostic": {
+          "cause": {
+            "note": "UNKNOWN, not proof that no defect exists.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "disposition": {
+            "note": "FALSE_POSITIVE solely because the three attempts did not reproduce.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "observation": {
+            "note": "Advisory separator clipping report, not a confirmed defect.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "remediation": {
+            "note": "None; no patch or change authority inferred.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "reproduction": {
+            "note": "NOT_REPRODUCED in three stipulated contexts; original context incomplete.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "validation": {
+            "note": "No repair validation; no repair PASS/FAIL or fixed/false-positive claim.",
+            "refs": [
+              "sample"
+            ]
+          }
+        },
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Three stipulated attempts do not reproduce; original context incomplete, intermittence not excluded.",
+            "id": "attempts",
+            "refs": [
+              "sample"
+            ],
+            "value": "NOT_REPRODUCED"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No independent causal support.",
+            "id": "cause",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Advisory decorative clipping, optional in this contract; no required analyzer/security/accessibility premise is waived.",
+            "id": "finding",
+            "refs": [
+              "sample"
+            ],
+            "value": "separator clipping report"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Owner decision is limited triage with optional further diagnosis deferred, no UI change/publication.",
+            "id": "scope",
+            "refs": [
+              "sample"
+            ],
+            "value": "triage only"
+          }
+        ],
+        "purpose": "Conditional completeness of triage only; no defect clearance, fix or product-wide acceptance.",
+        "record_id": "illustration.N05.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:C:criteria",
+            "scope": "Conditional completeness of triage only; no defect clearance, fix or product-wide acceptance.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "D02 §§4.1-4.3",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:C:note",
+            "scope": "Fictional source/rule/report, three failed reproductions, incomplete original context and bounded owner triage disposition.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "C.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "C.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REJECT_RECORD",
+      "id": "N06",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Explicit reconciliation dependency F.final remains UNKNOWN.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempt"
+              ],
+              "reason": "Reconciliation needs original identity.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original attempted-operation identity is associated with the scope named by the grant.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.attempt",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated original-attempt association only; not proof of complete safe admission or effect success.",
+              "state": "PASS"
+            },
+            "requires": [
+              "F.authority"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant"
+              ],
+              "reason": "Authority independent of technical availability.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Grant validity covers the original exact action, not a replacement/retry.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.authority",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated independent bounded grant only.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost"
+              ],
+              "reason": "Financial uncertainty separate from effect state.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Applicable final cost/exposure can be settled without treating unknown as zero.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.cost",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required final settlement evidence missing; no zero-cost inference.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "Stream loss/local timeout cannot settle effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Authoritative final state of original operation is bound.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.final",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No authoritative final observation.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "CP4/A2 unresolved effects retained.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original effect uncertainty is reconciled before unsafe retry/completion.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.reconcile",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Reconciled despite final state UNKNOWN.",
+              "state": "PASS"
+            },
+            "requires": [
+              "F.attempt",
+              "F.final"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost",
+                "final"
+              ],
+              "reason": "No unsafe repeat or fabricated closure.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Any related retry/completion/settlement claim has resolved required premises.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.retry-closure",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not assessed favorably; mandatory gaps block this claim.",
+              "state": null
+            },
+            "requires": [
+              "F.authority",
+              "F.cost",
+              "F.reconcile"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Stipulated original operation op.original.1 dispatched; response/stream lost.",
+            "id": "attempt",
+            "refs": [
+              "sample"
+            ],
+            "value": "original attempt reported"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "Applicable final cost/exposure remains unsettled; no settlement evidence supplied.",
+            "id": "cost",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No authoritative final-state record for op.original.1.",
+            "id": "final",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Independent fictional authorization is valid for one original bounded operation only.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "one attempt scope"
+          }
+        ],
+        "purpose": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+        "record_id": "illustration.N06.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:criteria",
+            "scope": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:note",
+            "scope": "Fictional independent grant and original-attempt identity only; no authoritative remote-final-state/cost evidence.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "F.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "F.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "PRESERVE_UNKNOWN",
+      "id": "N07",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Credential possession is not authorization; final-effect/cost gaps remain mechanically unresolved and authority assertion requires manual rejection.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempt"
+              ],
+              "reason": "Reconciliation needs original identity.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original attempted-operation identity is associated with the scope named by the grant.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.attempt",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated original-attempt association only; not proof of complete safe admission or effect success.",
+              "state": "PASS"
+            },
+            "requires": [
+              "F.authority"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant"
+              ],
+              "reason": "Authority independent of technical availability.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Grant validity covers the original exact action, not a replacement/retry.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.authority",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Credential presence alone is asserted sufficient.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost"
+              ],
+              "reason": "Financial uncertainty separate from effect state.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Applicable final cost/exposure can be settled without treating unknown as zero.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.cost",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required final settlement evidence missing; no zero-cost inference.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "Stream loss/local timeout cannot settle effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Authoritative final state of original operation is bound.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.final",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No authoritative final observation.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "final"
+              ],
+              "reason": "CP4/A2 unresolved effects retained.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original effect uncertainty is reconciled before unsafe retry/completion.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.reconcile",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Original final state unresolved.",
+              "state": "UNKNOWN"
+            },
+            "requires": [
+              "F.attempt",
+              "F.final"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cost",
+                "final"
+              ],
+              "reason": "No unsafe repeat or fabricated closure.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Any related retry/completion/settlement claim has resolved required premises.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "F.retry-closure",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not assessed favorably; mandatory gaps block this claim.",
+              "state": null
+            },
+            "requires": [
+              "F.authority",
+              "F.cost",
+              "F.reconcile"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Stipulated original operation op.original.1 dispatched; response/stream lost.",
+            "id": "attempt",
+            "refs": [
+              "sample"
+            ],
+            "value": "original attempt reported"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "Applicable final cost/exposure remains unsettled; no settlement evidence supplied.",
+            "id": "cost",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No authoritative final-state record for op.original.1.",
+            "id": "final",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "A credential is reportedly configured, which is the sole asserted authorization basis.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "presence claim only; no secret value"
+          }
+        ],
+        "purpose": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+        "record_id": "illustration.N07.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:criteria",
+            "scope": "Document one original ambiguous external attempt; no provider contacted, retry or settlement authorized.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:F:note",
+            "scope": "Fictional independent grant and original-attempt identity only; no authoritative remote-final-state/cost evidence.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "F.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "F.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REJECT_RECORD",
+      "id": "N08",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Unsupported version is not silently coerced.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No API or new/material external interpretation boundary exists; local protections remain A01-A04.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Positive scope exclusion, not absence of testing tools.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "local"
+              ],
+              "reason": "A local output write is a mutation even without remote effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Only the fictional exact scope is covered.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated full comparison supports this conditional criterion.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated source/diff coverage only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.N08.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "9.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REJECT_RECORD",
+      "expected_offline": "REJECT_RECORD",
+      "id": "N09",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Duplicate contradictory check identity; no last-wins merge.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No API or new/material external interpretation boundary exists; local protections remain A01-A04.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Positive scope exclusion, not absence of testing tools.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "local"
+              ],
+              "reason": "A local output write is a mutation even without remote effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Only the fictional exact scope is covered.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated full comparison supports this conditional criterion.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Contradictory duplicate identity.",
+              "state": "FAIL"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated source/diff coverage only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.N09.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "PRESERVE_UNKNOWN",
+      "expected_offline": "PRESERVE_UNKNOWN",
+      "id": "U01",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "A coherent missing-evidence record remains unresolved; dependencies never become PASS.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No API or new/material external interpretation boundary exists; local protections remain A01-A04.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Positive scope exclusion, not absence of testing tools.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "local"
+              ],
+              "reason": "A local output write is a mutation even without remote effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required source/grant/mutation evidence not supplied.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required source/grant/mutation evidence not supplied.",
+              "state": "UNKNOWN"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Required source/grant/mutation evidence not supplied.",
+              "state": "UNKNOWN"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.U01.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REQUIRE_REVIEW",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "U02",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Unresolved applicability stays explicit; classification is not defaulted to OPTIONAL/N/A.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Interpretation boundary classification unresolved.",
+              "state": null
+            },
+            "criterion": "A newly introduced API boundary requires an API harness.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.api-harness",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No safe classification supplied.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "No publication stage is in this task.",
+              "state": "NOT_APPLICABLE"
+            },
+            "criterion": "Publication/origin/live-stage proof for a published deliverable.",
+            "family": "E",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A.release",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "No deployment claim.",
+              "state": "NOT_APPLICABLE"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "local"
+              ],
+              "reason": "Exact task path prerequisites matter.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Declared input/output identities and usable read/write/comparison paths are bound.",
+            "family": "A",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A01",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated note binds the paths/operations; not a real capability invocation.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "grant",
+                "local"
+              ],
+              "reason": "A local output write is a mutation even without remote effects.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Bound grant covers the separate local write, inert input and source preservation.",
+            "family": "D",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Only the fictional exact scope is covered.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Actual declared output criterion.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Complete two-line output matches the declared replacement criterion.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated full comparison supports this conditional criterion.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "comparison"
+              ],
+              "reason": "Output integrity and bounded mutation.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Input remains unchanged and no undeclared local output changed.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "A04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Stipulated source/diff coverage only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "A01",
+              "A02"
+            ]
+          }
+        ],
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Fictional complete output and mutation observation; source unchanged; only declared output differs.",
+            "id": "comparison",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Reviewed\nKeep this line.\n"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Separate synthetic grant covers exact input read and separate output write, not source overwrite.",
+            "id": "grant",
+            "refs": [
+              "sample"
+            ],
+            "value": "bounded local grant"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Two LF lines; inert reviewed data; no includes/rendering/PII/network/UI/publication; unchanged interpretation boundary.",
+            "id": "local",
+            "refs": [
+              "sample"
+            ],
+            "value": "# Draft\nKeep this line.\n"
+          }
+        ],
+        "purpose": "Conditional review of one local output write; no real transformation or task closure.",
+        "record_id": "illustration.U02.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:criteria",
+            "scope": "Conditional review of one local output write; no real transformation or task closure.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "CP1-CP5, ES1-ES6 and conditional A-F",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:A:note",
+            "scope": "Fictional A input/output identities, bounded grant, complete two-line comparison and source-only preservation note.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "A.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "A.task.v1"
+        }
+      }
+    },
+    {
+      "expected_manual": "REQUIRE_REVIEW",
+      "expected_offline": "REQUIRE_REVIEW",
+      "id": "U03",
+      "kind": "ILLUSTRATIVE_CHALLENGE",
+      "reason": "Conflicting free-text source claims cannot be resolved mechanically without trusted adjudication.",
+      "record": {
+        "basis": "ILLUSTRATIVE",
+        "checks": [
+          {
+            "applicability": {
+              "fact_refs": [
+                "finding"
+              ],
+              "reason": "Adds decision value; no mandatory access premise is stipulated affected.",
+              "state": "OPTIONAL"
+            },
+            "criterion": "Targeted access/meaning impact receives an additional observation.",
+            "family": "C",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C.access",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Not performed; optional coverage remains unassessed.",
+              "state": null
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "scope"
+              ],
+              "reason": "Explicitly optional investigation outside current triage closure.",
+              "state": "DEFERRED"
+            },
+            "criterion": "Further contextual reproduction/cause investigation is completed.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C.further-diagnosis",
+            "outcome": {
+              "evidence_refs": [],
+              "reason": "Further evidence absent; deferred is not resolved.",
+              "state": "UNKNOWN"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "attempts",
+                "finding"
+              ],
+              "reason": "Honest report, not a confirmed defect inference.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Original advisory source, exact criterion and attempted context omissions are retained.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C02",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Fictional report/attempt note retains the specified limits.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "cause",
+                "scope"
+              ],
+              "reason": "D02 prevents semantic collapse.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Cause uncertainty and scoped optional disposition are separate from fix/false-positive claims.",
+            "family": "B",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C03",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Six concern notes state uncertainty, deferral and no repair.",
+              "state": "PASS"
+            }
+          },
+          {
+            "applicability": {
+              "fact_refs": [
+                "scope"
+              ],
+              "reason": "Current deliverable is the bounded triage record.",
+              "state": "REQUIRED"
+            },
+            "criterion": "Triage-only record preserves six concerns, omissions and no dependent mandatory premise.",
+            "family": "F",
+            "governing_refs": [
+              "gov"
+            ],
+            "id": "C04",
+            "outcome": {
+              "evidence_refs": [
+                "sample"
+              ],
+              "reason": "Conditional triage completeness only.",
+              "state": "PASS"
+            },
+            "requires": [
+              "C02",
+              "C03"
+            ]
+          }
+        ],
+        "diagnostic": {
+          "cause": {
+            "note": "UNKNOWN, not proof that no defect exists.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "disposition": {
+            "note": "Conflicting reported evidence requires manual review; no waiver or fix claim.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "observation": {
+            "note": "Advisory separator clipping report, not a confirmed defect.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "remediation": {
+            "note": "None; no patch or change authority inferred.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "reproduction": {
+            "note": "NOT_REPRODUCED in three stipulated contexts; original context incomplete.",
+            "refs": [
+              "sample"
+            ]
+          },
+          "validation": {
+            "note": "No repair validation; no repair PASS/FAIL or fixed/false-positive claim.",
+            "refs": [
+              "sample"
+            ]
+          }
+        },
+        "governance_refs": [
+          "gov"
+        ],
+        "profile": [
+          {
+            "basis": "PROVIDED",
+            "claim": "Three stipulated attempts do not reproduce; original context incomplete, intermittence not excluded.",
+            "id": "attempts",
+            "refs": [
+              "sample"
+            ],
+            "value": "NOT_REPRODUCED"
+          },
+          {
+            "basis": "UNKNOWN",
+            "claim": "No independent causal support.",
+            "id": "cause",
+            "refs": [
+              "sample"
+            ],
+            "value": null
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "A separate reported context contradicts the advisory scope; not adjudicated.",
+            "id": "counter-source",
+            "refs": [
+              "sample"
+            ],
+            "value": "reported conflict"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Advisory decorative clipping, optional in this contract; no required analyzer/security/accessibility premise is waived.",
+            "id": "finding",
+            "refs": [
+              "sample"
+            ],
+            "value": "separator clipping report"
+          },
+          {
+            "basis": "PROVIDED",
+            "claim": "Owner decision is limited triage with optional further diagnosis deferred, no UI change/publication.",
+            "id": "scope",
+            "refs": [
+              "sample"
+            ],
+            "value": "triage only"
+          }
+        ],
+        "purpose": "Conditional completeness of triage only; no defect clearance, fix or product-wide acceptance.",
+        "record_id": "illustration.U03.1",
+        "references": [
+          {
+            "id": "criteria",
+            "kind": "EVIDENCE",
+            "locator": "illustration:C:criteria",
+            "scope": "Conditional completeness of triage only; no defect clearance, fix or product-wide acceptance.",
+            "source": "STIPULATED fictional note; no real observation"
+          },
+          {
+            "id": "gov",
+            "kind": "GOVERNANCE",
+            "locator": "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md",
+            "revision": "bbc13a9d32f7ce0d65cfbe5da8d02b1cd05764e5",
+            "scope": "D02 §§4.1-4.3",
+            "source": "Accepted Nexus source at starting HEAD; not an illustration"
+          },
+          {
+            "id": "sample",
+            "kind": "EVIDENCE",
+            "locator": "illustration:C:note",
+            "scope": "Fictional source/rule/report, three failed reproductions, incomplete original context and bounded owner triage disposition.",
+            "source": "STIPULATED fictional note; no real observation"
+          }
+        ],
+        "schema_version": "1.0",
+        "subject": {
+          "configuration_id": "C.profile.v1",
+          "criteria_refs": [
+            "criteria"
+          ],
+          "id": "C.task.v1"
+        }
+      }
+    }
+  ],
+  "prototype_version": "1.0",
+  "source": {
+    "commit": "7289ac334390f245f0e272b17d78f2e67c38d464",
+    "path": "docs/nexus-minimal-executable-representation-design-v1.md",
+    "sha256": "532B147BCA2D1684CA27ECA85136EF54A6EF51EBD4D544B316604AFF7DE938D1"
+  }
+}
