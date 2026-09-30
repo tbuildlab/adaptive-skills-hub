@@ -411,6 +411,10 @@
     "bytes": 10012,
     "sha256": "ad1ee6e07642497aa0fc26e2a9707501f75dbb7663db56e6630848f659a4e00a"
   },
+  "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md": {
+    "bytes": 28762,
+    "sha256": "ff0e2b082948034cbb45e37cd331a36055117057dd1d6c25bfc295b1ff712d73"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
