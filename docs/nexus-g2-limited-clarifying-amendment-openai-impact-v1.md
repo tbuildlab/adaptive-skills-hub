@@ -1,0 +1,54 @@
+# Nexus G2 Limited Clarifying Amendment OpenAI Impact v1
+
+Document ID: `nexus.g2.limited-clarifying-amendment.openai-impact.v1`
+
+Version: `1.0.0`
+
+Date: 30 September 2026
+
+Status: **PROPOSED APPLICATION ANALYSIS — NO NEW PROVIDER EVIDENCE; PRE-EXPERIMENT SAFETY BLOCKED; G2 HOLD**
+
+## 1. Exact scope and evidence boundary
+
+This analysis applies the proposed [limited amendment](nexus-g2-limited-clarifying-amendment-v1.md) and [P1–P12 mapping](nexus-g2-limited-clarifying-amendment-p1-p12-mapping-v1.md) to the already accepted [OpenAI-hosted evaluation](nexus-g2-route-b-openai-hosted-authoritative-evaluation-v1.md) and its [acceptance](nexus-g2-route-b-openai-hosted-authoritative-evaluation-acceptance-v1.md), [adversarial review](nexus-g2-route-b-openai-hosted-adversarial-review-v1.md), [24-question historical pack](nexus-g2-route-b-openai-hosted-support-question-pack-v1.md), [compatibility review](nexus-g2-openai-first-compatibility-rebaseline-review-v1.md), [minimization matrix](nexus-g2-openai-first-contract-minimization-matrix-v1.md), [compatibility review binding](nexus-g2-openai-first-compatibility-adversarial-review-v1.md), [six-question derivative](nexus-g2-openai-first-proposed-clarification-pack-v1.md) and [compatibility acceptance](nexus-g2-openai-first-compatibility-rebaseline-acceptance-v1.md).
+
+No new web/provider research, account observation, support answer or runtime evidence is added. Accepted classifications stay **SUPPORTED 0 / PARTIAL 11** over P1–P6/P8–P12; P7 stays **EXPERIMENT-RESOLVABLE / NOT PASS**. Interpretation eligibility is distinct from documentary support and measured PASS; this document performs no historical reclassification.
+
+The exact candidate remains OpenAI Agents API / managed Codex harness / `openai_hosted`, one proposed `small` network-disabled session, fixed model/configuration/inputs, no multi-agent, MCP, function tools, skills, plugins, vaults, template, setup commands or extra packages. The managed harness retains intrinsic shell/model-loop behavior: omitting optional tools is not zero tool execution or a hard loop bound. This is a conditional primary adapter candidate, not Host selection or an approved experiment profile.
+
+## 2. Six-question impact and necessary split
+
+Class labels concern **what must be known before a safe experiment**, not whether a property is currently proven. A compound question inherits PRE-EXPERIMENT BLOCKER whenever any necessary safety premise is missing. Its measured remainder may be an experiment item only after the blocker closes; this avoids downgrading the whole question because one subpart is measurable.
+
+| # / accepted minimized question | Primary classification now | Accepted facts; mandatory unresolved safety premise | What may be measured later / what may be deferred |
+| --- | --- | --- | --- |
+| 1 Security-relevant configuration mutation boundary | **PRE-EXPERIMENT BLOCKER** | O14 identifies some active-turn settings and later-turn changes; O3/O4 do not close customer/project mutation of the exact environment, network, input/capability/credential surface or a justified no-change interval. Nexus can freeze its own requests, not another actor's provider permissions. P2/P3/P4 require authoritative relevant mutation/actor semantics and actual controlled custody before release. | Exact unauthorized mutation negatives, account/config binding and fresh no-change observation are qualification items. Exhaustive internal provider-personnel enumeration is not required by the bounded managed-service TCB. No prompt or local lock substitutes for permission enforcement. |
+| 2 `network.access: disabled` scope and exceptions | **PRE-EXPERIMENT BLOCKER** | O3 documents disabled request semantics; complete enforcement for descendants, IPv4/IPv6/DNS/internal/metadata/alternate paths and relevant exceptions remains unresolved. P3/P4 require that scope to justify the no-external-effect profile. | Controlled external negative tests may corroborate the declared scope after safe authorization. Finite probes cannot discover exhaustive exceptions or prove that an otherwise reachable secret/effect path is absent. |
+| 3 Whole-unit hard resource/active-lifetime/controller-loss bounds | **PRE-EXPERIMENT BLOCKER** | O3 sizes/file limits and permissive inactivity deletion do not establish a nonrelaxable maximum active whole-unit lifetime/descendant/resource bound under continuous activity or controller loss. O7 allows asynchronous physical cleanup. P5 and P7 require a provider-enforced ultimate fallback before creating work. | Limit/descendant/deadline/controller-loss behavior and exact cessation observations are test items after the hard semantics close. A controller timeout, account alert or best-effort deletion cannot fill the premise. |
+| 4 Managed agent/model-loop/retry/token/tool-step bounds | **PRE-EXPERIMENT BLOCKER** | The proposed no-optional-feature profile does not hard-bound intrinsic root-agent calls/retries/tokens/shell steps. P5/P6 need finite applicable drivers or an equivalent enforceable all-in envelope that also contains dangerous ongoing work. Nexus single dispatch does not bound provider-internal loops. | Within an independently finite envelope, actual loop/usage observations and bound rejection can be tested. No hard per-dimension knob is mandatory if an explicitly proven equivalent covers that dimension; accepted evidence provides neither path yet. |
+| 5 Complete billing/cutoff/overshoot/finite financial exposure | **PRE-EXPERIMENT BLOCKER** | O1/O3/O15 list rates/categories; O9 usage is best effort and not the final bill. Complete dimensions/minimums, hard drivers/cutoff, overshoot and residual/cleanup accrual do not compose into an accepted finite maximum. P6 cannot use an invoice sample or credits to manufacture the ceiling. | Fresh safe account/rate/headroom readback and pre/post/delayed settlement reconciliation are qualification items. Pricing/cutoff universality and unbounded tails cannot be learned safely by spending first. |
+| 6 Post-cancellation physical cleanup/continued work/billing tail | **PRE-EXPERIMENT BLOCKER** for the safety envelope; **QUALIFICATION-EXPERIMENT ITEM** for exact bounded outcome/coverage after that envelope closes | O5 cancel/terminal interfaces and O7 delete/public-removal semantics make tests meaningful, but no accepted ultimate bound on continued remote work, residual resource/effect channels or charge tail exists. P5/P6/P7 safety premises overlap Q3/Q5 and must close before the experiment. A delete acknowledgement is not cleanup. | **Split, not deletion:** authoritative ultimate cessation/resource and finite accrual/tail bounds stay pre-experiment. Exact cancel latency, physical cleanup/zero-live observations, late items/effects and settlement behavior may be measured under that envelope. Unobservable mandatory cleanup remains UNKNOWN/STOP. Indefinite post-delete transcript/record retention is unnecessary when original evidence is protected and ambiguous retry permanently refused. |
+
+Primary totals: six compound questions remain **PRE-EXPERIMENT BLOCKER**; none is wholly **QUALIFICATION-EXPERIMENT ITEM** or **PRODUCTION-HARDENING / DEFERRED**. Q6 contains an explicit experimental remainder. This count follows the missing hard premises, not a target. Q1/Q2 protect the effect boundary; Q3/Q4/Q5 and Q6's safety half protect hard exposure and ultimate termination.
+
+The questions overlap and may be answered by one supported equivalent composition. Overlap is not six independent new requirements: for example, a supported ultimate termination/accrual contract could answer relevant portions of Q3/Q5/Q6. No current accepted fact supplies that contract. The six-question pack remains unchanged, proposed and UNSENT; a future separately authorized derivative must retain this distinction.
+
+## 3. What the clarification removes from blanket advance prerequisites
+
+The proposal does not universally require managed internal image/harness/dependency hashes, an enforcement revision API, a distinct shell-operation API, one monolithic policy/security receipt, native create/input idempotency, permanent post-delete records, complete active-session key-revocation propagation or a push drift feed. Their safety outcomes remain P1–P12 requirements:
+
+- P1/P12 use sufficient stable public unit/operation/config identity, admitted-input/result association, qualification scope/expiry and observed-change invalidation; hidden provider drift is explicit residual trust, never independently proven stable.
+- P3 uses authoritative enforcement/no-change semantics, immutable admitted configuration and source-external exact-profile proof. Removing a receipt format does not resolve Q1/Q2.
+- P8/P10 use a protected Nexus bundle of sufficiently authenticated scoped provider observations plus task validation; actual coverage is measured, missing required facts STOP.
+- P9 preserves one original attempt, effects/exposure and retry refusal on ambiguity; this sacrifices availability without asserting provider exactly-once or no effect.
+- P11 keeps actual credential/actor custody and immediate Nexus invalidation mandatory. Detailed propagation can be deferred only if the experiment does not rely on it and P5/P7 independently contain live authority/work.
+
+These are prospective evidence paths, not ready or verified controller implementations. Route-specific controller custody and evidence preparation remain unsatisfied prerequisites; the closed local LPAC route is not a positive controller proof. A supported semantics path, reviewed controller/protocol and separate owner account/cost/exact experiment authorization would still be needed even after six answers arrive.
+
+## 4. Readiness and preserved conclusions
+
+**OpenAI pre-experiment safety readiness remains BLOCKED.** No qualification experiment is justified or authorized by this package. No provider/Host is selected. OpenAI remains **SUPPORTED 0 / PARTIAL 11**; P7 **NOT PASS**. E2B/Modal/Daytona findings are unchanged and not reopened. No questions were sent or provider contacted; no account, credential, API, resource, cost, model call or experiment was used.
+
+The proposal changes the general interpretation of what evidence belongs before testing; it does not make this exact candidate safe now. Architecture acceptance would be followed first by separately authorized authoritative clarification/controller-protocol review, not immediate creation. G2 implementation requires a complete positive Host binding and separate authority.
+
+Scenario 01–04 **NOT RUN**; HQ1–HQ5 **NOT PASS**; HQ6 **NOT STARTED**; Positive Host Binding **ABSENT**; G2 **HOLD**. Sealed V4 and historical STOP evidence remain preserved. No amendment of A0–A6, implementation, MANIFEST integration, acceptance record, commit, merge, push, tag or freeze occurs in this draft phase.

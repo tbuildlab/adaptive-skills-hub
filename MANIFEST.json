@@ -243,6 +243,30 @@
     "bytes": 8387,
     "sha256": "9d37d862f0a599ce309e3d31e5d03e35d6ddb59774f46a5bb8cab8deaa1df47c"
   },
+  "docs/nexus-g2-limited-clarifying-amendment-acceptance-v1.md": {
+    "bytes": 12818,
+    "sha256": "0ae283239132f08c5ab851d7e0dc3bebdfee1ae2c9f92538db2ae1c7d9a0a280"
+  },
+  "docs/nexus-g2-limited-clarifying-amendment-adversarial-review-v1.md": {
+    "bytes": 13166,
+    "sha256": "57e38410db151463da04d7a89f369f8b5bcfa904eb82060e8fd61c3ef94f049a"
+  },
+  "docs/nexus-g2-limited-clarifying-amendment-cross-reference-v1.md": {
+    "bytes": 7408,
+    "sha256": "dfe76994773640801ba37f05a24d4e95b1c2dcf4971abd6694cc8771104addb4"
+  },
+  "docs/nexus-g2-limited-clarifying-amendment-openai-impact-v1.md": {
+    "bytes": 10865,
+    "sha256": "840345b95b2f816a69d7c84df138dbbb4a2a35eafeb875b33cfdccab11291142"
+  },
+  "docs/nexus-g2-limited-clarifying-amendment-p1-p12-mapping-v1.md": {
+    "bytes": 27099,
+    "sha256": "49a00e43c253939c0733b8a84a83b22846a21914eee02df3fecbe66a8f2a9cca"
+  },
+  "docs/nexus-g2-limited-clarifying-amendment-v1.md": {
+    "bytes": 30881,
+    "sha256": "0760f2d37bf87f8f6042fa87787acfda7eb5899db61e0f5c1517c048f19d1320"
+  },
   "docs/nexus-g2-next-host-route-decision-v1.md": {
     "bytes": 28842,
     "sha256": "37abd280fef34a29c0b864002eeaa3bfdb08f13abfda4d65ec669191da2833cd"
