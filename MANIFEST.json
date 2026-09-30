@@ -259,6 +259,18 @@
     "bytes": 19171,
     "sha256": "8220287eddc1dfe653394e29d53a53b7413168598336907f61493dd65e751b93"
   },
+  "docs/nexus-g2-route-b-authoritative-evidence-acceptance-v1.md": {
+    "bytes": 3763,
+    "sha256": "1210577f16299c400a05d5f18ef102ebcde3c66132bb5b2e78c3248a9dc0e568"
+  },
+  "docs/nexus-g2-route-b-authoritative-evidence-acquisition-v1.md": {
+    "bytes": 27836,
+    "sha256": "c7a9c60f1bdfdd3ad5e13dbcd347a51f82c4b0bee1bd8c18ec6d4308f28528ae"
+  },
+  "docs/nexus-g2-route-b-authoritative-evidence-adversarial-review-v1.md": {
+    "bytes": 8841,
+    "sha256": "63e599612af9f2654b004431f533a8fd97f4a2b8e9813b9067b17631fcdf24fc"
+  },
   "docs/nexus-g2-route-b-provider-documentation-fact-matrix-v1.md": {
     "bytes": 25881,
     "sha256": "e3fd62c26b0768e831e80d191453adc2a02d892b31a30541f04e3fb9bd432481"
@@ -274,6 +286,10 @@
   "docs/nexus-g2-route-b-provider-neutral-host-contract-v1.md": {
     "bytes": 18629,
     "sha256": "e97ecf70bfb1d0082e7de8e7c8100e321174062e15f9c2ec62cdac4bb97befe0"
+  },
+  "docs/nexus-g2-route-b-provider-support-question-pack-v1.md": {
+    "bytes": 11387,
+    "sha256": "d7fc17b5ec014c604f8ba6df0653b853951eccac9a77f9c6e2f98f9d1fe338f9"
   },
   "docs/nexus-g2-route-b-unknown-resolution-acceptance-v1.md": {
     "bytes": 3089,
