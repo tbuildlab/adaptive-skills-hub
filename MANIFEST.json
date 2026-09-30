@@ -223,6 +223,10 @@
     "bytes": 8071,
     "sha256": "636af91f0f2bae536cfbaf784d791e73d0e97610d31a2d2beae2a12b7354cbe1"
   },
+  "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md": {
+    "bytes": 36657,
+    "sha256": "62b529e81f8a28f842f304427ccdd411c61abb56a936eadb9614d90d796b72dd"
+  },
   "docs/nexus-demo2-demo3-cross-project-synthesis-v1.md": {
     "bytes": 27534,
     "sha256": "08a5237e1b55a85e409c8642b44dc31d45737dc62dece0ddadffb9ab75422bf0"
