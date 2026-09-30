@@ -431,6 +431,10 @@
     "bytes": 9779,
     "sha256": "c1f4dc49364f66a2f43e2817cdfe311f95ea72ec393831432706094744a23e61"
   },
+  "docs/nexus-governance-offline-prototype-review-v1.md": {
+    "bytes": 7385,
+    "sha256": "cd410231863bafdf1ce3ce121d08d519fba445a8f55794b355d6e268ee537938"
+  },
   "docs/nexus-governance-static-prototype-review-v1.md": {
     "bytes": 8980,
     "sha256": "750a02a4e0818b9dc37580d01df6f7d5c026e5276c9ad2c36181ac15b1b6a899"
@@ -675,6 +679,10 @@
     "bytes": 21799,
     "sha256": "6b49163caa30bde4bb43d148b192c4a05cbd8475a1cebeedbd3c133dfb082a93"
   },
+  "prototypes/governance_assessment_offline_v1.py": {
+    "bytes": 11398,
+    "sha256": "388dd5752eb85595036a0399f4bf3c6fd9d56f8e03db24e7d55abcb6f24bd80e"
+  },
   "release/VERSION": {
     "bytes": 11,
     "sha256": "11923af84d69a31cc3fce3596cde030a55c88e9ff3da059e9a19b28880f1b8fd"
@@ -826,6 +834,10 @@
   "tests/test_github_distribution.py": {
     "bytes": 70068,
     "sha256": "894b4e6120d6f19e222575e46b2abfe649aba549b69c0435a06901be0bb09f7c"
+  },
+  "tests/test_governance_assessment_offline.py": {
+    "bytes": 11930,
+    "sha256": "bd0b051d2f20d0bb8ce790c2d5fd7f0440a22b8b1134cd9f172a94385ffd99d6"
   },
   "tests/test_hub.py": {
     "bytes": 21706,
