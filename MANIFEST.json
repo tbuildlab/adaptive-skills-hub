@@ -303,9 +303,25 @@
     "bytes": 3858,
     "sha256": "82da60966f590448ce887519a6819d9577730b13bc7114fdc87e27762b3a5190"
   },
+  "docs/nexus-g2-openai-human-escalation-request-v1.md": {
+    "bytes": 6333,
+    "sha256": "b1d760ac4a038903a8ba2255779d2b653e5529fbde3b8415ac7ad9d20727deaf"
+  },
   "docs/nexus-g2-openai-minimized-provider-clarification-pack-v1.md": {
     "bytes": 8319,
     "sha256": "0ee9425eb8e88ab3ca0ce3e304e2cf0e121cde8ea680fc40d8d0343829df977d"
+  },
+  "docs/nexus-g2-openai-support-reply-adjudication-v1.md": {
+    "bytes": 26665,
+    "sha256": "abcfac35985e174768e8d50995b61684ef3ab309d8591869d73c4109b1d81041"
+  },
+  "docs/nexus-g2-openai-support-reply-adversarial-review-v1.md": {
+    "bytes": 8549,
+    "sha256": "df368b6059fae4cbdc683b5a1a60504359725592e7092292eba9e5d38ea65a17"
+  },
+  "docs/nexus-g2-openai-support-reply-evidence-v1.md": {
+    "bytes": 7694,
+    "sha256": "e6a3c653623c8dc0f3afdd746d0dabc2e094883a408af814c1fa95ba98a63577"
   },
   "docs/nexus-g2-responsibility-rebaseline-acceptance-v1.md": {
     "bytes": 3419,
