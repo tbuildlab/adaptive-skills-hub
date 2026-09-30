@@ -439,6 +439,10 @@
     "bytes": 7245,
     "sha256": "5fa9115123878d344233ea50d78be2f1ea5f2501564abdf62c0838fecd285bbe"
   },
+  "docs/nexus-governance-advisory-traceability-review-v1.md": {
+    "bytes": 5897,
+    "sha256": "4fe458ecba153d08b8764942e0b3ed1a23de92657c62fe6a54d650aa8db9b60f"
+  },
   "docs/nexus-governance-applicability-validation-v1.md": {
     "bytes": 47594,
     "sha256": "6892414ef1b4070d293153ee7cb24610b36ad205b784c9ba32c8b084e78af45e"
@@ -695,6 +699,10 @@
     "bytes": 21799,
     "sha256": "6b49163caa30bde4bb43d148b192c4a05cbd8475a1cebeedbd3c133dfb082a93"
   },
+  "prototypes/governance_advisory_traceability_v1.py": {
+    "bytes": 1359,
+    "sha256": "adad30173158604f1c8f262d5ccd483e1023778149e1a790798dd09ae5b04f84"
+  },
   "prototypes/governance_assessment_offline_v1.py": {
     "bytes": 11398,
     "sha256": "388dd5752eb85595036a0399f4bf3c6fd9d56f8e03db24e7d55abcb6f24bd80e"
@@ -854,6 +862,10 @@
   "tests/test_governance_advisory_compatibility.py": {
     "bytes": 8686,
     "sha256": "92713c6483fd0797efa5de2846776b5ee6610b8151c64d3505058bc20a3c6296"
+  },
+  "tests/test_governance_advisory_traceability.py": {
+    "bytes": 8457,
+    "sha256": "a92bb8dd404a6c77a0a48e643ccc02a69801e680b621eb38697f05a540729b19"
   },
   "tests/test_governance_assessment_offline.py": {
     "bytes": 11930,
