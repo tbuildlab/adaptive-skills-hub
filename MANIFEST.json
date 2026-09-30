@@ -427,6 +427,10 @@
     "bytes": 47594,
     "sha256": "6892414ef1b4070d293153ee7cb24610b36ad205b784c9ba32c8b084e78af45e"
   },
+  "docs/nexus-governance-offline-evaluator-design-v1.md": {
+    "bytes": 9779,
+    "sha256": "c1f4dc49364f66a2f43e2817cdfe311f95ea72ec393831432706094744a23e61"
+  },
   "docs/nexus-governance-static-prototype-review-v1.md": {
     "bytes": 8980,
     "sha256": "750a02a4e0818b9dc37580d01df6f7d5c026e5276c9ad2c36181ac15b1b6a899"
