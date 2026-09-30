@@ -423,9 +423,13 @@
     "bytes": 31541,
     "sha256": "6fd8bde5d2aca64301d280bed050c957ec40f8c767ea41b9cf60b8877cd7197e"
   },
+  "docs/nexus-governance-advisory-compatibility-review-v1.md": {
+    "bytes": 7321,
+    "sha256": "e73c39a482003570ccd5ffedbcf3a07a27c9482d1414f69272ddb90828b58802"
+  },
   "docs/nexus-governance-advisory-integration-design-v1.md": {
-    "bytes": 8712,
-    "sha256": "1cd95f69376f32164cf863a3c514bb4bf87d66e09597d18b2a46b70f7b96e566"
+    "bytes": 8927,
+    "sha256": "e85ea44b70ff752e054332e04a80cf0ba9c7489e2138a9c81e326ca7db8bff51"
   },
   "docs/nexus-governance-applicability-validation-v1.md": {
     "bytes": 47594,
@@ -838,6 +842,10 @@
   "tests/test_github_distribution.py": {
     "bytes": 70068,
     "sha256": "894b4e6120d6f19e222575e46b2abfe649aba549b69c0435a06901be0bb09f7c"
+  },
+  "tests/test_governance_advisory_compatibility.py": {
+    "bytes": 8686,
+    "sha256": "92713c6483fd0797efa5de2846776b5ee6610b8151c64d3505058bc20a3c6296"
   },
   "tests/test_governance_assessment_offline.py": {
     "bytes": 11930,
