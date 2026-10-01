@@ -631,6 +631,22 @@
     "bytes": 20900,
     "sha256": "c672d58d56de3aedff9189ecc2df0bce1936095e214dc3f659cee1604732d41e"
   },
+  "docs/nexus-pre-g3-pre-g4-contract-and-qualification-design-v1.md": {
+    "bytes": 24131,
+    "sha256": "093542e62596c518eeee1bd323c2c37a480482145cc7894ac5d5c1b1c6843c2e"
+  },
+  "docs/nexus-pre-g3-pre-g4-readiness-matrix-v1.md": {
+    "bytes": 13894,
+    "sha256": "a3a5eb30e6256b1e2948e689467f06ddfae2828292a53cb5a95056aa32e19197"
+  },
+  "docs/nexus-pre-g3-pre-g4-readiness-review-v1.md": {
+    "bytes": 10857,
+    "sha256": "0ec65d665989e429c7dceb7d359710555a485d9bbc9769dded41ecb1d3e8a430"
+  },
+  "docs/nexus-pre-g3-pre-g4-roadmap-reconstruction-v1.md": {
+    "bytes": 12473,
+    "sha256": "62069f181610840407527ccaab08792050440791eec5b9abecac4000c18513cb"
+  },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
     "sha256": "062e8ce94683bcd0a43f591a5636bbc938cfd06e130ecc202e2074c5049328fb"
