@@ -1,0 +1,175 @@
+{
+  "basis": "REAL",
+  "checks": [
+    {
+      "applicability": {
+        "fact_refs": [
+          "document"
+        ],
+        "reason": "Required within this bounded documentary interpretation; not a new universal qualification gate",
+        "state": "REQUIRED"
+      },
+      "criterion": "The historical acceptance record is bound to its exact repository bytes and accepted commit.",
+      "family": "A",
+      "governing_refs": [
+        "gov"
+      ],
+      "id": "R01",
+      "outcome": {
+        "evidence_refs": [
+          "source",
+          "selection"
+        ],
+        "reason": "Local Git ancestry, acceptance/current bytes and three referenced digest rows were independently inspected before this interpretation.",
+        "state": "PASS"
+      }
+    },
+    {
+      "applicability": {
+        "fact_refs": [
+          "prerequisites",
+          "current"
+        ],
+        "reason": "Required within this bounded documentary interpretation; not a new universal qualification gate",
+        "state": "REQUIRED"
+      },
+      "criterion": "Complete independent provider prerequisites needed for a qualification proposal are established.",
+      "family": "D",
+      "governing_refs": [
+        "gov"
+      ],
+      "id": "R02",
+      "outcome": {
+        "evidence_refs": [
+          "source",
+          "selection"
+        ],
+        "reason": "The source retains INCOMPLETE/partial prerequisites; no current account/runtime verification supplied. Historical supported semantics alone cannot close this obligation.",
+        "state": "UNKNOWN"
+      }
+    },
+    {
+      "applicability": {
+        "fact_refs": [
+          "current"
+        ],
+        "reason": "Required within this bounded documentary interpretation; not a new universal qualification gate",
+        "state": "REQUIRED"
+      },
+      "criterion": "A current provider qualification proposal can close its required evidence premises.",
+      "family": "F",
+      "governing_refs": [
+        "gov"
+      ],
+      "id": "R03",
+      "outcome": {
+        "evidence_refs": [
+          "source",
+          "selection"
+        ],
+        "reason": "Required premise R02 remains UNKNOWN. This documentary application neither proposes nor authorizes an experiment.",
+        "state": "UNKNOWN"
+      },
+      "requires": [
+        "R02"
+      ]
+    },
+    {
+      "applicability": {
+        "fact_refs": [
+          "document"
+        ],
+        "reason": "Required within this bounded documentary interpretation; not a new universal qualification gate",
+        "state": "REQUIRED"
+      },
+      "criterion": "This historical documentation acceptance supplies no provider-dispatch or experiment grant.",
+      "family": "D",
+      "governing_refs": [
+        "gov"
+      ],
+      "id": "R04",
+      "outcome": {
+        "evidence_refs": [
+          "source",
+          "selection"
+        ],
+        "reason": "Explicit no-experiment/no-outreach/no-execution acceptance scope inspected. This PASS is a documentary negative-authority statement, not a grant.",
+        "state": "PASS"
+      }
+    }
+  ],
+  "governance_refs": [
+    "gov"
+  ],
+  "profile": [
+    {
+      "basis": "OBSERVED",
+      "claim": "One existing accepted repository record, byte-identical to its acceptance commit and starting HEAD.",
+      "id": "document",
+      "refs": [
+        "selection",
+        "source"
+      ],
+      "value": "docs/nexus-g2-route-b-authoritative-evidence-acceptance-v1.md"
+    },
+    {
+      "basis": "PROVIDED",
+      "claim": "Historical source reports all three providers INCOMPLETE; SUPPORTED counts are not qualification.",
+      "id": "prerequisites",
+      "refs": [
+        "source"
+      ],
+      "value": "E2B 2/9; Modal 0/11; Daytona 0/11 SUPPORTED/PARTIAL"
+    },
+    {
+      "basis": "UNKNOWN",
+      "claim": "Current independent account/runtime/property completeness is not established by this historical documentary application.",
+      "id": "current",
+      "refs": [
+        "source",
+        "selection"
+      ],
+      "value": null
+    }
+  ],
+  "purpose": "Four scoped historical documentary checks only; no current provider enforcement, complete Host coverage, authority or effect adjudication.",
+  "record_id": "real.route-b-documentary-acceptance.2026-10-01.v1",
+  "references": [
+    {
+      "id": "gov",
+      "integrity_sha256": "41D07CA912906AF70BE3541FF23428FEEEF49251CC7F0B01F6057DC92FE1D966",
+      "kind": "GOVERNANCE",
+      "locator": "docs/nexus-governance-advisory-integration-acceptance-v1.md",
+      "revision": "1.0.0",
+      "scope": "Accepted advisory-only interpretation, \u00a73 evidence responsibility and \u00a74 unknown preservation",
+      "source": "Local Nexus repository; independently inspected by the same assistant, not provider attestation"
+    },
+    {
+      "id": "source",
+      "integrity_sha256": "1210577F16299C400A05D5F18EF102EBCDE3C66132BB5B2E78C3248A9DC0E568",
+      "kind": "EVIDENCE",
+      "locator": "docs/nexus-g2-route-b-authoritative-evidence-acceptance-v1.md",
+      "revision": "97dfe170310f699c906e93bb4c683507cfa6ece6",
+      "scope": "Historical acceptance only: byte identity, provider table, no-experiment and unchanged gate statements",
+      "source": "Local Nexus repository; independently inspected by the same assistant, not provider attestation"
+    },
+    {
+      "id": "selection",
+      "integrity_sha256": "4A896E829E249E3FECF05DDA3B40E2D86CA6073D89685ECF0829F9CF32630B26",
+      "kind": "EVIDENCE",
+      "locator": "docs/nexus-governance-real-evidence-subject-v1.md",
+      "revision": "1",
+      "scope": "Pre-application local source/provenance inspection and four-check coverage selection",
+      "source": "Local Nexus repository; independently inspected by the same assistant, not provider attestation"
+    }
+  ],
+  "schema_version": "1.0",
+  "subject": {
+    "configuration_id": "55b5c5f14fa2dfc328791c1a814b445f6069ae5f",
+    "criteria_refs": [
+      "gov",
+      "selection"
+    ],
+    "id": "nexus.g2.route-b.authoritative-evidence-acceptance.v1"
+  }
+}

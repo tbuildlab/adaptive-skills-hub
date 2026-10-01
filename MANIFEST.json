@@ -191,6 +191,14 @@
     "bytes": 137583,
     "sha256": "8070279464078209cbbfa7e0ca8ad834fbc252078471890c7b635f5e3f652908"
   },
+  "docs/fixtures/nexus-governance-real-evidence-assessment-v1.json": {
+    "bytes": 6032,
+    "sha256": "7a4e38e2dd41af20f9417677dee4cdfa284b7e37a21105297f4b9b7a60c749c1"
+  },
+  "docs/fixtures/nexus-governance-real-evidence-observation-v1.json": {
+    "bytes": 4964,
+    "sha256": "e09531cd6477ec24ffa5bffb2e815f603e1e22d4105e968c3262aed9c43914e6"
+  },
   "docs/github-distribution-architecture.md": {
     "bytes": 10025,
     "sha256": "dd085121546cd44f39c47d5d2478618e75e4a948668ed7738d1da7261a8af2e2"
@@ -466,6 +474,14 @@
   "docs/nexus-governance-offline-prototype-review-v1.md": {
     "bytes": 7385,
     "sha256": "cd410231863bafdf1ce3ce121d08d519fba445a8f55794b355d6e268ee537938"
+  },
+  "docs/nexus-governance-real-evidence-application-review-v1.md": {
+    "bytes": 15084,
+    "sha256": "dc5db6f99c2e99312f469ef8e4adf054ffbc641f36d3d7fb3b13743346de45d1"
+  },
+  "docs/nexus-governance-real-evidence-subject-v1.md": {
+    "bytes": 5341,
+    "sha256": "4a896e829e249e3fecf05dda3b40e2d86ca6073d89685ecf0829f9cf32630b26"
   },
   "docs/nexus-governance-static-prototype-review-v1.md": {
     "bytes": 8980,
@@ -886,6 +902,10 @@
   "tests/test_governance_assessment_offline.py": {
     "bytes": 11930,
     "sha256": "bd0b051d2f20d0bb8ce790c2d5fd7f0440a22b8b1134cd9f172a94385ffd99d6"
+  },
+  "tests/test_governance_real_evidence_application.py": {
+    "bytes": 13539,
+    "sha256": "d2695866fab8865d63e21894baafc5afcae0d56eaf031be6e4b7f54ba811953e"
   },
   "tests/test_hub.py": {
     "bytes": 21706,

@@ -1,0 +1,165 @@
+{
+  "assessment_sha256": "7A4E38E2DD41AF20F9417677DEE4CDFA284B7E37A21105297F4B9B7A60C749C1",
+  "command": [
+    "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\python.exe",
+    "-B",
+    "D:\\chatgpt\\\u5b89\u88c5skills\\adaptive-skills-hub\\scripts\\hub.py",
+    "plan",
+    "Read-only documentary review fixtures/nexus-governance-real-evidence-assessment-v1.json and nexus-g2-route-b-authoritative-evidence-acceptance-v1.md",
+    "--project",
+    "D:\\chatgpt\\\u5b89\u88c5skills\\adaptive-skills-hub\\docs",
+    "--handoff",
+    "--governance-advisory-context",
+    "fixtures/nexus-governance-real-evidence-assessment-v1.json"
+  ],
+  "disabled_advisory_present": false,
+  "enabled_advisory": {
+    "authority": "none",
+    "binding_scope": "captured_project_context_bytes_only",
+    "consumer": "governance_assessment_offline_v1",
+    "diagnostic": "DERIVED_ADVISORY_ONLY",
+    "dispatch_requested": false,
+    "freshness": "UNKNOWN",
+    "handling": "PRESERVE_UNKNOWN",
+    "report": {
+      "authority": "none",
+      "declared_checks": [
+        {
+          "applicability": "REQUIRED",
+          "outcome": "PASS",
+          "position": 0
+        },
+        {
+          "applicability": "REQUIRED",
+          "outcome": "UNKNOWN",
+          "position": 1
+        },
+        {
+          "applicability": "REQUIRED",
+          "outcome": "UNKNOWN",
+          "position": 2
+        },
+        {
+          "applicability": "REQUIRED",
+          "outcome": "PASS",
+          "position": 3
+        }
+      ],
+      "declared_fail_checks": [],
+      "diagnostics": [],
+      "dispatch_requested": false,
+      "handling": "PRESERVE_UNKNOWN",
+      "input_sha256": "7a4e38e2dd41af20f9417677dee4cdfa284b7e37a21105297f4b9b7a60c749c1",
+      "structure": "CONSISTENT",
+      "unknown_profile_facts": [
+        2
+      ],
+      "unresolved_applicability_checks": [],
+      "unresolved_required_checks": [
+        1,
+        2
+      ],
+      "unverified_pass_claims": [
+        0,
+        3
+      ]
+    },
+    "selection_completeness": "UNVERIFIED",
+    "source_context_position": 0,
+    "source_evidence_status": "UNVERIFIED",
+    "source_sha256": "7a4e38e2dd41af20f9417677dee4cdfa284b7e37a21105297f4b9b7a60c749c1",
+    "subject_scope_binding": "UNVERIFIED"
+  },
+  "exit_codes": {
+    "disabled": 0,
+    "enabled": 0,
+    "repeated": 0
+  },
+  "legacy_handoff_equal_when_disabled": true,
+  "observation_scope": "Actual unmocked local CLI invocation; selected assessment computation and legacy handoff comparison only, not source authentication or Host qualification",
+  "pair_comparison": {
+    "authority": "none",
+    "comparison": "MATCH",
+    "declared_check_count": 4,
+    "dispatch_requested": false,
+    "proof_scope": "recomputed_offline_report_matches_supplied_bytes_only",
+    "recomputed_report": {
+      "authority": "none",
+      "declared_checks": [
+        {
+          "applicability": "REQUIRED",
+          "outcome": "PASS",
+          "position": 0
+        },
+        {
+          "applicability": "REQUIRED",
+          "outcome": "UNKNOWN",
+          "position": 1
+        },
+        {
+          "applicability": "REQUIRED",
+          "outcome": "UNKNOWN",
+          "position": 2
+        },
+        {
+          "applicability": "REQUIRED",
+          "outcome": "PASS",
+          "position": 3
+        }
+      ],
+      "declared_fail_checks": [],
+      "diagnostics": [],
+      "dispatch_requested": false,
+      "handling": "PRESERVE_UNKNOWN",
+      "input_sha256": "7a4e38e2dd41af20f9417677dee4cdfa284b7e37a21105297f4b9b7a60c749c1",
+      "structure": "CONSISTENT",
+      "unknown_profile_facts": [
+        2
+      ],
+      "unresolved_applicability_checks": [],
+      "unresolved_required_checks": [
+        1,
+        2
+      ],
+      "unverified_pass_claims": [
+        0,
+        3
+      ]
+    },
+    "selection_completeness": "UNVERIFIED",
+    "source_evidence_status": "UNVERIFIED"
+  },
+  "plan_validation": {
+    "checks": [
+      {
+        "kind": "no_duplicate_selected_resource",
+        "passed": true
+      },
+      {
+        "kind": "required_capability_coverage",
+        "missing": [],
+        "passed": true
+      },
+      {
+        "kind": "required_semantic_domain_coverage",
+        "missing": [],
+        "passed": true
+      },
+      {
+        "kind": "selected_skill_load",
+        "load_errors": [],
+        "missing_loads": [],
+        "passed": true
+      }
+    ],
+    "status": "passed"
+  },
+  "producer": "Same assistant via subprocess of existing CLI; capture/comparison not independent attestation",
+  "raw_stdout_sha256": {
+    "disabled": "5DEDE8A41227E9A370EC95999FB94762A9D491C253092C130F7727DC43D71302",
+    "enabled": "603673A780B8E3482188EED482CD93AB12371AE97292BD68F25CC1BE91E7BD17",
+    "repeated": "603673A780B8E3482188EED482CD93AB12371AE97292BD68F25CC1BE91E7BD17"
+  },
+  "repeat_advisory_equal": true,
+  "source_sha256_lf": "1210577F16299C400A05D5F18EF102EBCDE3C66132BB5B2E78C3248A9DC0E568"
+}
