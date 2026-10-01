@@ -19,7 +19,7 @@ sys.path.insert(0, str(ROOT))
 PRODUCT_NAME = "Nexus"
 PRODUCT_SUBTITLE = "Adaptive AI Capability Hub"
 
-from ash.common import read_json, write_json  # noqa: E402
+from ash.common import read_json, sha256_text, write_json  # noqa: E402
 from ash.discovery import build_index  # noqa: E402
 from ash.execution import execute_route, write_packet  # noqa: E402
 from ash.router import route_task  # noqa: E402
@@ -74,7 +74,97 @@ def _normalized_skill_path(path: str) -> str:
     return os.path.normcase(str(Path(path).resolve(strict=False)))
 
 
-def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path) -> dict:
+def _governance_advisory(plan, context_path: str) -> dict:
+    """Review only an explicitly selected, already captured non-secret record.
+
+    No file read or evidence adjudication happens here. Even a coherent source
+    retains unknown freshness and unverified provenance, coverage and scope.
+    """
+    result = {
+        "authority": "none",
+        "dispatch_requested": False,
+        "handling": "PRESERVE_UNKNOWN",
+        "source_evidence_status": "UNVERIFIED",
+        "selection_completeness": "UNVERIFIED",
+        "freshness": "UNKNOWN",
+        "subject_scope_binding": "UNVERIFIED",
+        "binding_scope": "captured_project_context_bytes_only",
+        "consumer": "governance_assessment_offline_v1",
+        "source_context_position": None,
+        "source_sha256": None,
+        "report": None,
+        "diagnostic": "SOURCE_SELECTION_INVALID",
+    }
+    if (
+        type(context_path) is not str or not context_path or len(context_path) > 512
+        or "\\" in context_path or ":" in context_path
+        or any(part in {"", ".", ".."} for part in context_path.split("/"))
+        or any(ord(char) < 32 or ord(char) == 127 for char in context_path)
+    ):
+        return result
+    matches = [
+        (position, item) for position, item in enumerate(plan.project_context.items)
+        if item.path.replace("\\", "/") == context_path
+    ]
+    if len(matches) != 1:
+        result["diagnostic"] = "SOURCE_MISSING_OR_AMBIGUOUS"
+        return result
+    position, item = matches[0]
+    if item.kind != "explicit_task_file" or item.trust != "project_evidence":
+        result["diagnostic"] = "SOURCE_NOT_EXPLICIT_PROJECT_EVIDENCE"
+        return result
+    if type(item.content) is not str:
+        result["diagnostic"] = "SOURCE_CAPTURE_INVALID"
+        return result
+    try:
+        data = item.content.encode("utf-8")
+    except UnicodeEncodeError:
+        result["diagnostic"] = "SOURCE_CAPTURE_INVALID"
+        return result
+    if (
+        len(data) > 1_048_576 or type(item.bytes) is not int
+        or len(data) != item.bytes or sha256_text(item.content) != item.sha256
+    ):
+        result["diagnostic"] = "SOURCE_CAPTURE_BINDING_MISMATCH"
+        return result
+    result.update(source_context_position=position, source_sha256=item.sha256)
+    try:
+        from prototypes.governance_assessment_offline_v1 import review_bytes
+    except ImportError:
+        result["diagnostic"] = "EVALUATOR_UNAVAILABLE"
+        return result
+    except Exception:
+        result["diagnostic"] = "EVALUATOR_FAILED"
+        return result
+    try:
+        report = review_bytes(data)
+        # Fixed v1 output envelope: future/additional fields must not silently
+        # enter the redacted handoff. This checks compatibility, not truth.
+        fields = {"input_sha256", "authority", "dispatch_requested", "handling", "structure", "diagnostics"}
+        if type(report) is dict and report.get("structure") == "CONSISTENT":
+            fields.update({
+                "declared_checks", "unresolved_required_checks", "declared_fail_checks",
+                "unresolved_applicability_checks", "unknown_profile_facts", "unverified_pass_claims",
+            })
+        if (
+            type(report) is not dict or set(report) != fields
+            or report.get("structure") not in {"CONSISTENT", "INVALID"}
+            or report.get("authority") != "none"
+            or report.get("dispatch_requested") is not False
+            or report.get("handling") not in {"REJECT_RECORD", "PRESERVE_UNKNOWN", "REQUIRE_REVIEW"}
+            or report.get("input_sha256") != item.sha256
+        ):
+            result["diagnostic"] = "EVALUATOR_RESULT_INVALID"
+            return result
+    except Exception:
+        # Optional advice must not print exception/source values or fail open.
+        result["diagnostic"] = "EVALUATOR_FAILED"
+        return result
+    result.update(report=report, diagnostic="DERIVED_ADVISORY_ONLY")
+    return result
+
+
+def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path, *, governance_advisory_context: str | None = None) -> dict:
     """Return a redacted, stdout-safe R1 host handoff.
 
     Full plan packets retain selected Skill instructions for a same-user local
@@ -122,7 +212,7 @@ def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path) -> 
             "source_scope": resource.provenance.get("source_scope", resource.trust),
             "runtime_compatibility": resource.runtime_compatibility,
         })
-    return {
+    result = {
         "schema_version": "nexus.plan-handoff.v1",
         "product": {"name": PRODUCT_NAME, "subtitle": PRODUCT_SUBTITLE},
         "project_root": str(project),
@@ -154,6 +244,9 @@ def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path) -> 
         ],
         "plan_validation": validation,
     }
+    if governance_advisory_context is not None:
+        result["governance_advisory"] = _governance_advisory(plan, governance_advisory_context)
+    return result
 
 
 def _v2_catalog(project: Path, extra_roots: list[str]) -> dict:
@@ -204,6 +297,7 @@ def parser() -> argparse.ArgumentParser:
     plan.add_argument("--project", help="Project root for bounded V1.2 context discovery; defaults to the current directory")
     plan.add_argument("--packet", help="Write the V1.2 plan/evidence packet to this JSON path; incompatible with --handoff")
     plan.add_argument("--handoff", action="store_true", help="Print a redacted, strictly stateless host handoff JSON; no packets or persistent plan state are written")
+    plan.add_argument("--governance-advisory-context", help="Optional non-authoritative review of one non-secret project-relative file already named in the task and captured in context; requires --handoff")
     plan.add_argument("--no-state", action="store_true", help="Do not write state/last-plan.json; implied by --handoff")
     plan.add_argument("--soft-context-files", type=int, default=8, help="Initial soft project-context file budget")
     plan.add_argument("--soft-context-kib", type=int, default=64, help="Initial soft project-context byte budget in KiB")
@@ -232,6 +326,8 @@ def main() -> int:
     if args.command == "plan":
         if args.handoff and args.packet:
             cli.error("--handoff is strictly stateless and cannot be combined with --packet")
+        if args.governance_advisory_context is not None and not args.handoff:
+            cli.error("--governance-advisory-context requires the stateless --handoff view")
         project = Path(args.project).resolve() if args.project else Path.cwd().resolve()
         index = _v2_catalog(project, args.extra_root)
         context_options = {
@@ -274,7 +370,7 @@ def main() -> int:
         print(f"Status: {validation['status']}")
         if args.handoff:
             print("Handoff:")
-            print(json.dumps(_plan_handoff(v2_plan, loaded, validation, project), ensure_ascii=False, sort_keys=True))
+            print(json.dumps(_plan_handoff(v2_plan, loaded, validation, project, governance_advisory_context=args.governance_advisory_context), ensure_ascii=False, sort_keys=True))
         return 0
     index = load_index(workspace, args.extra_root, refresh=False)
     route = route_task(args.task, index, _sources(), args.max_skills)
