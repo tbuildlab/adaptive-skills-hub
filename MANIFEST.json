@@ -475,9 +475,33 @@
     "bytes": 31541,
     "sha256": "6fd8bde5d2aca64301d280bed050c957ec40f8c767ea41b9cf60b8877cd7197e"
   },
+  "docs/nexus-g2-route-d-d0-d2-input-package-v1.md": {
+    "bytes": 11498,
+    "sha256": "9bd18a4989a3db5529a0278cfdc39c2b415885e0e7a13393702e90f6623e877d"
+  },
+  "docs/nexus-g2-route-d-external-reference-survey-v1.md": {
+    "bytes": 19616,
+    "sha256": "808b8a1b262bb30fd2df5d6e7fc9d6a7209361cc2259da6ffdf1a7ad796445ff"
+  },
   "docs/nexus-g2-route-d-owned-host-feasibility-v1.md": {
     "bytes": 26286,
     "sha256": "5efe02270a9edf04bdbfaac26875b34db94d5477063191f80a50a7bead52bc24"
+  },
+  "docs/nexus-g2-route-d-reference-adversarial-review-v1.md": {
+    "bytes": 10322,
+    "sha256": "12a67542702e8da4e210d98c670550e7460d36a6e19d4d9a5ab961b293298623"
+  },
+  "docs/nexus-g2-route-d-reference-p1-p12-hq-mapping-v1.md": {
+    "bytes": 17160,
+    "sha256": "e0468fe483508c3dca040902caf202d2fad3a410e821cb6e3b25b8de9b25f83d"
+  },
+  "docs/nexus-g2-route-d-reference-source-register-v1.md": {
+    "bytes": 27429,
+    "sha256": "76edceff09c42cc02c71ebba5ed1425e0071a71278cd8d9f3d39c2a38850d541"
+  },
+  "docs/nexus-g2-route-d-reuse-adapt-reject-matrix-v1.md": {
+    "bytes": 14040,
+    "sha256": "69201874c2497b18a5cc00f0920cb9828c9f6ff49f88262e74ff80b9fd5dfd9b"
   },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
