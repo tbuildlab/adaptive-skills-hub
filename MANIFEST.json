@@ -383,6 +383,22 @@
     "bytes": 8841,
     "sha256": "63e599612af9f2654b004431f533a8fd97f4a2b8e9813b9067b17631fcdf24fc"
   },
+  "docs/nexus-g2-route-b-fresh-evidence-adversarial-review-v1.md": {
+    "bytes": 7491,
+    "sha256": "812ea2d183339658e7b0327e82eb6a4bd8741d9ee46f822a19b20a0b5d081857"
+  },
+  "docs/nexus-g2-route-b-fresh-evidence-delta-v1.md": {
+    "bytes": 14221,
+    "sha256": "ed65c2f0bca7626937e581192f16cbdcaf1fa1937ca9ba0236f92279267c07bd"
+  },
+  "docs/nexus-g2-route-b-fresh-provider-adjudication-v1.md": {
+    "bytes": 23171,
+    "sha256": "29b45a6bffad7f9dd50acc7bbc0181f694be0b42880a6f2ed828c2e5b7e5f022"
+  },
+  "docs/nexus-g2-route-b-fresh-source-register-v1.md": {
+    "bytes": 15796,
+    "sha256": "e84c3ce74d25bf4f20f4067786bf4ef16cb7f68d5611e5ffca533b7e0a364806"
+  },
   "docs/nexus-g2-route-b-openai-hosted-adversarial-review-v1.md": {
     "bytes": 8449,
     "sha256": "7384fc571c81bfae8a681b1bb442dbeed356e286ba2cceac9af3675d2fa2f239"
