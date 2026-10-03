@@ -383,6 +383,26 @@
     "bytes": 8841,
     "sha256": "63e599612af9f2654b004431f533a8fd97f4a2b8e9813b9067b17631fcdf24fc"
   },
+  "docs/nexus-g2-route-b-expansion-adversarial-review-v1.md": {
+    "bytes": 7347,
+    "sha256": "b1b511c10d008c6fd4ec1692fdcfa2af0dfadd7cde7b54ece4adbee4c9373252"
+  },
+  "docs/nexus-g2-route-b-expansion-factual-checkpoint-v1.md": {
+    "bytes": 5284,
+    "sha256": "c1377cba16d7f0aec81a3873377d7618565012b3dfd08341a00911a39714bb44"
+  },
+  "docs/nexus-g2-route-b-expansion-p5-p6-p7-review-v1.md": {
+    "bytes": 26990,
+    "sha256": "e7eabf71c81b71ae5774e9dd154ebfe84b79835994f594962865e326af73153c"
+  },
+  "docs/nexus-g2-route-b-expansion-screening-matrix-v1.md": {
+    "bytes": 19344,
+    "sha256": "1409bc7d127e0ad40675aa80318cd5e3413e88d45349d92d936b23e7bd8f761a"
+  },
+  "docs/nexus-g2-route-b-expansion-source-register-v1.md": {
+    "bytes": 27505,
+    "sha256": "6aae2355dfe56dbc6617b3c13735c34f8e5e7a93cd878ecbb9b45eb856078564"
+  },
   "docs/nexus-g2-route-b-fresh-evidence-adversarial-review-v1.md": {
     "bytes": 7491,
     "sha256": "812ea2d183339658e7b0327e82eb6a4bd8741d9ee46f822a19b20a0b5d081857"
