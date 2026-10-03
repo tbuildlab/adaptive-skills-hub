@@ -523,6 +523,26 @@
     "bytes": 14040,
     "sha256": "69201874c2497b18a5cc00f0920cb9828c9f6ff49f88262e74ff80b9fd5dfd9b"
   },
+  "docs/nexus-g2-route-d-u01-u04-adversarial-review-v1.md": {
+    "bytes": 9993,
+    "sha256": "9d95442d74228b569c4b7bf613940fa9e0b72d961844ccc0704339c132cfd8e5"
+  },
+  "docs/nexus-g2-route-d-u01-u04-closure-v1.md": {
+    "bytes": 28675,
+    "sha256": "7d79f700bec99fad03542d88f889b6eac814cbbb79f4f46100240caa3c7484b5"
+  },
+  "docs/nexus-g2-route-d-u02-ultimate-fence-analysis-v1.md": {
+    "bytes": 18910,
+    "sha256": "de1232a0c7484ab2c804432b5ccf190ffe787e5568b47e299ff77447765d7fcb"
+  },
+  "docs/nexus-g2-route-d-u03-custody-analysis-v1.md": {
+    "bytes": 14746,
+    "sha256": "eb5e6a6b8860b02fcdea1e28f475d47da647faf35023394d64a4c0d7e63d13fe"
+  },
+  "docs/nexus-g2-route-d-u04-cost-bound-analysis-v1.md": {
+    "bytes": 12539,
+    "sha256": "5d921eef87cabacc9e6f00f8773d4ac06f77a654dc641aaa427c41348f45dcc6"
+  },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
     "sha256": "dcf9582db59547bd3f5605b63ddb0964e8ea615676f908b02c9507b8bafc912d"
