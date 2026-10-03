@@ -767,6 +767,18 @@
     "bytes": 67748,
     "sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8"
   },
+  "docs/nexus-route-d-engineering-only-governance-acceptance-v1.md": {
+    "bytes": 7728,
+    "sha256": "238a449bd311194f9349120fbcc571e46047851ea7b578090a5773ea6ae30d7b"
+  },
+  "docs/nexus-route-d-engineering-only-governance-adversarial-review-v1.md": {
+    "bytes": 8006,
+    "sha256": "4bbe63e4120f12e6342472485a7c4dfb2f74562f58362ba6748d3bd641a1b937"
+  },
+  "docs/nexus-route-d-engineering-only-governance-applicability-decision-v1.md": {
+    "bytes": 27762,
+    "sha256": "a57ddf51141813c5736f6323f6bf1ddca57af84d1d2fa2f8355034cafc5b0f73"
+  },
   "docs/nexus-runtime-integration-architecture.md": {
     "bytes": 29236,
     "sha256": "b36f21b66125099d687895bab952351379cbb8fd1c53ba8d6e060107db72bf65"
