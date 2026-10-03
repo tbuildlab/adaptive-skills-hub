@@ -1,0 +1,882 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:nexus:route-d:lab:bounded-autonomy:authority-envelope:v1",
+  "$comment": "DOCUMENTARY SCHEMA ONLY. No grant or implementation. Structural conformance cannot prove independent acceptance, exact bindings, numerical conservation, supported enforcement or admission. Main report section 3 semantic checks are mandatory.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "const": "1.0.0"
+    },
+    "authority": {
+      "$ref": "#/$defs/authority"
+    },
+    "origin": {
+      "$ref": "#/$defs/origin"
+    },
+    "original": {
+      "$ref": "#/$defs/original"
+    },
+    "binding": {
+      "$ref": "#/$defs/binding"
+    },
+    "actor": {
+      "$ref": "#/$defs/actor"
+    },
+    "operation": {
+      "$ref": "#/$defs/operation"
+    },
+    "validity": {
+      "$ref": "#/$defs/validity"
+    },
+    "budget": {
+      "$ref": "#/$defs/budget"
+    },
+    "attendance": {
+      "$ref": "#/$defs/attendance"
+    },
+    "recovery": {
+      "$ref": "#/$defs/recovery"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    }
+  },
+  "required": [
+    "version",
+    "authority",
+    "origin",
+    "original",
+    "binding",
+    "actor",
+    "operation",
+    "validity",
+    "budget",
+    "attendance",
+    "recovery",
+    "evidence"
+  ],
+  "$defs": {
+    "bound_string": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{64}$"
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "grant_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "independent_owner_issuer": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "accepted_record_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "accepted_policy_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "accepted_exception_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "accepted_amendment_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "explicit_risk_acceptance_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        }
+      },
+      "required": [
+        "grant_id",
+        "independent_owner_issuer",
+        "accepted_record_ref",
+        "accepted_policy_sha256",
+        "accepted_exception_sha256",
+        "accepted_amendment_sha256",
+        "explicit_risk_acceptance_ref"
+      ]
+    },
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "purpose": {
+          "const": "LAB_ONLY"
+        },
+        "qualification": {
+          "const": false
+        },
+        "positive_host_binding": {
+          "const": false
+        },
+        "production_g2_admissible": {
+          "const": false
+        },
+        "hq_pass_admissible": {
+          "const": false
+        },
+        "engineering_exception_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "evidence_class": {
+          "const": "ENGINEERING_ONLY_NON_QUALIFYING"
+        },
+        "production_qualification_binding_id": {
+          "type": "null"
+        },
+        "trusted_lineage_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "effective_firewall_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        }
+      },
+      "required": [
+        "purpose",
+        "qualification",
+        "positive_host_binding",
+        "production_g2_admissible",
+        "hq_pass_admissible",
+        "engineering_exception_id",
+        "evidence_class",
+        "production_qualification_binding_id",
+        "trusted_lineage_ref",
+        "effective_firewall_readback_ref"
+      ]
+    },
+    "original": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "session_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "original_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "journal_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "reservation_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "original_slots": {
+          "const": 1
+        },
+        "effect_retries": {
+          "const": 0
+        },
+        "prior_effects_and_exposure_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        }
+      },
+      "required": [
+        "session_id",
+        "original_id",
+        "journal_ref",
+        "reservation_ref",
+        "original_slots",
+        "effect_retries",
+        "prior_effects_and_exposure_ref"
+      ]
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vm_name": {
+          "const": "NexusRouteDHost"
+        },
+        "vm_uuid": {
+          "const": "3a3ee22f-87e2-490d-90ee-2321365c1604"
+        },
+        "vm_config_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "disk_metadata_binding_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "guest_boot_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "held_host_process_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "held_guest_process_or_no_process_proof_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "capture_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "freshness_max_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "scope": {
+          "enum": [
+            "HOST_DIAGNOSTIC_ONLY",
+            "GUEST_BOOT_BOUND"
+          ]
+        }
+      },
+      "required": [
+        "vm_name",
+        "vm_uuid",
+        "vm_config_sha256",
+        "disk_metadata_binding_ref",
+        "guest_boot_id",
+        "held_host_process_ref",
+        "held_guest_process_or_no_process_proof_ref",
+        "capture_readback_ref",
+        "freshness_max_ms",
+        "scope"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "realm": {
+          "enum": [
+            "WINDOWS",
+            "GUEST"
+          ]
+        },
+        "principal_id": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "token_or_native_credential_fingerprint": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "privilege_scope_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "supported_exact_executor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "actor_rights_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "password_use": {
+          "const": false
+        },
+        "privilege_expansion": {
+          "const": false
+        }
+      },
+      "required": [
+        "realm",
+        "principal_id",
+        "token_or_native_credential_fingerprint",
+        "privilege_scope_ref",
+        "supported_exact_executor_ref",
+        "actor_rights_readback_ref",
+        "password_use",
+        "privilege_expansion"
+      ]
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "locator": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "binding_kind": {
+          "enum": [
+            "KNOWN_ABSENCE_PROOF",
+            "HELD_EXISTING_IDENTITY"
+          ]
+        },
+        "physical_identity_or_absence_proof_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "parent_chain_and_alias_proof_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "expected_before_sha256_or_native_fields_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "effective_rights_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        }
+      },
+      "required": [
+        "locator",
+        "binding_kind",
+        "physical_identity_or_absence_proof_ref",
+        "parent_chain_and_alias_proof_ref",
+        "expected_before_sha256_or_native_fields_ref",
+        "effective_rights_ref"
+      ]
+    },
+    "operation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "enum": [
+            "A01",
+            "A02",
+            "A03",
+            "A04",
+            "A05",
+            "A06",
+            "A07",
+            "E01",
+            "E02",
+            "E03",
+            "E04",
+            "E05",
+            "E06",
+            "E07",
+            "E08",
+            "E09"
+          ]
+        },
+        "immutable_operation_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "operation_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{64}$"
+        },
+        "exact_closed_arguments_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "dependency_readback_refs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+          }
+        },
+        "objects": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/object"
+          }
+        },
+        "reviewed_bytes_dependencies_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "expected_postcondition_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "collateral_effect_denylist_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "dispatches_max": {
+          "const": 1
+        }
+      },
+      "required": [
+        "action_id",
+        "immutable_operation_ref",
+        "operation_sha256",
+        "exact_closed_arguments_ref",
+        "dependency_readback_refs",
+        "objects",
+        "reviewed_bytes_dependencies_ref",
+        "expected_postcondition_ref",
+        "collateral_effect_denylist_ref",
+        "dispatches_max"
+      ]
+    },
+    "validity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "not_before_epoch_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "expires_epoch_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "original_monotonic_origin_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "original_monotonic_deadline_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "action_elapsed_ms_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "phase_elapsed_ms_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "session_elapsed_ms_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "no_renewal": {
+          "const": true
+        },
+        "clock_consistency_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        }
+      },
+      "required": [
+        "not_before_epoch_ms",
+        "expires_epoch_ms",
+        "original_monotonic_origin_ms",
+        "original_monotonic_deadline_ms",
+        "action_elapsed_ms_max",
+        "phase_elapsed_ms_max",
+        "session_elapsed_ms_max",
+        "no_renewal",
+        "clock_consistency_readback_ref"
+      ]
+    },
+    "budget": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "actual_numeric_u04_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "applicable_issuer_ceiling_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "prior_reservation_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "ceiling_applicability_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "memory_bytes_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "host_vm_helper_overhead_memory_bytes_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "tasks_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cpu_percent_of_one_cpu_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 100
+        },
+        "cpu_period_ms": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "cpu_burst_us_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "swap_bytes_max": {
+          "const": 0
+        },
+        "scratch_bytes_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inodes_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "input_bytes_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "output_bytes_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "log_bytes_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "evidence_capture_copy_metadata_bytes_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "new_objects_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "helper_instances_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "query_samples_max": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retention_ms_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "owner_labor_ms_max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "reserved_cost_minor_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "remaining_absolute_cost_minor_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_rate_and_zero_components_basis_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "healthy_assumptions_and_full_fault_disclosure_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "all_fault_exposure": {
+          "const": "UNKNOWN_NOT_BOUNDED"
+        }
+      },
+      "required": [
+        "actual_numeric_u04_ref",
+        "applicable_issuer_ceiling_ref",
+        "prior_reservation_ref",
+        "ceiling_applicability_readback_ref",
+        "memory_bytes_max",
+        "host_vm_helper_overhead_memory_bytes_max",
+        "tasks_max",
+        "cpu_percent_of_one_cpu_max",
+        "cpu_period_ms",
+        "cpu_burst_us_max",
+        "swap_bytes_max",
+        "scratch_bytes_max",
+        "inodes_max",
+        "input_bytes_max",
+        "output_bytes_max",
+        "log_bytes_max",
+        "evidence_capture_copy_metadata_bytes_max",
+        "new_objects_max",
+        "helper_instances_max",
+        "query_samples_max",
+        "retention_ms_max",
+        "owner_labor_ms_max",
+        "currency",
+        "reserved_cost_minor_units",
+        "remaining_absolute_cost_minor_units",
+        "cost_rate_and_zero_components_basis_ref",
+        "healthy_assumptions_and_full_fault_disclosure_ref",
+        "all_fault_exposure"
+      ]
+    },
+    "attendance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "owner_identity_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "local_attended_session_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "supported_observation_mechanism_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "last_attendance_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "check_interval_ms_max": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5000
+        }
+      },
+      "required": [
+        "owner_identity_ref",
+        "local_attended_session_ref",
+        "supported_observation_mechanism_ref",
+        "last_attendance_readback_ref",
+        "check_interval_ms_max"
+      ]
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowed_original_status_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "independent_still_valid_stop_grant_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "independent_still_valid_cleanup_grant_or_no_cleanup_permission_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "exact_inverse_before_and_safety_predicates_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "destructive_cleanup_owner_only": {
+          "const": true
+        },
+        "unknown_recovery_lifecycle_allowed": {
+          "const": false
+        },
+        "retry_creates_new_original": {
+          "const": false
+        }
+      },
+      "required": [
+        "allowed_original_status_ref",
+        "independent_still_valid_stop_grant_ref",
+        "independent_still_valid_cleanup_grant_or_no_cleanup_permission_ref",
+        "exact_inverse_before_and_safety_predicates_ref",
+        "destructive_cleanup_owner_only",
+        "unknown_recovery_lifecycle_allowed",
+        "retry_creates_new_original"
+      ]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "protected_intent_store_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "protected_receipt_store_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "trusted_writer_and_source_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "capacity_durability_readback_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "delivery_and_sequence_binding_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        },
+        "mandatory_decisive_readbacks_ref": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+          }
+        },
+        "nondecisive_omissions_policy_ref": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?!.*(?:UNKNOWN|TBD|UNRESOLVED|<|>)).+$"
+        }
+      },
+      "required": [
+        "protected_intent_store_ref",
+        "protected_receipt_store_ref",
+        "trusted_writer_and_source_ref",
+        "capacity_durability_readback_ref",
+        "delivery_and_sequence_binding_ref",
+        "mandatory_decisive_readbacks_ref",
+        "nondecisive_omissions_policy_ref"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "binding": {
+            "properties": {
+              "scope": {
+                "const": "HOST_DIAGNOSTIC_ONLY"
+              }
+            },
+            "required": [
+              "scope"
+            ]
+          }
+        },
+        "required": [
+          "binding"
+        ]
+      },
+      "then": {
+        "properties": {
+          "binding": {
+            "properties": {
+              "guest_boot_id": {
+                "const": null
+              }
+            }
+          },
+          "actor": {
+            "properties": {
+              "realm": {
+                "const": "WINDOWS"
+              }
+            }
+          },
+          "operation": {
+            "properties": {
+              "action_id": {
+                "enum": [
+                  "A01",
+                  "A03",
+                  "A04",
+                  "A06",
+                  "A07"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": {
+          "binding": {
+            "properties": {
+              "guest_boot_id": {
+                "$ref": "#/$defs/bound_string"
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

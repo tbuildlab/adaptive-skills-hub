@@ -767,6 +767,26 @@
     "bytes": 67748,
     "sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8"
   },
+  "docs/nexus-route-d-autonomous-lab-action-envelope-register-v1.json": {
+    "bytes": 32337,
+    "sha256": "5ada099cc5d8a1167b20ccac2167a6e1458bea644b1d120e305071780e191e2a"
+  },
+  "docs/nexus-route-d-autonomous-lab-authority-envelope-schema-v1.json": {
+    "bytes": 24106,
+    "sha256": "a4f32f84eb20a93e52240a0e90ffbcf94a61846762c9e8be606a2a52f9803ecb"
+  },
+  "docs/nexus-route-d-autonomous-lab-documentary-review-v1.md": {
+    "bytes": 8742,
+    "sha256": "54ba96037b4b1e00d386008e2a0209fb71bf9239568c93d2417b5488fda51bc7"
+  },
+  "docs/nexus-route-d-autonomous-lab-governance-acceptance-v1.md": {
+    "bytes": 13163,
+    "sha256": "eb1edbefbaeef35b5727c006e07765c721c08f6cf309b71ac1db67e311b6b53f"
+  },
+  "docs/nexus-route-d-autonomous-lab-orchestration-v1.md": {
+    "bytes": 37525,
+    "sha256": "6b0a7256b73090c272e4d996f7d88c107d9948499991f07ce654336d088ad3ec"
+  },
   "docs/nexus-route-d-engineering-only-governance-acceptance-v1.md": {
     "bytes": 7728,
     "sha256": "238a449bd311194f9349120fbcc571e46047851ea7b578090a5773ea6ae30d7b"

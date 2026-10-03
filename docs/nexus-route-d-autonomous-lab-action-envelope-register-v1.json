@@ -1,0 +1,674 @@
+{
+  "schema": "NEXUS_ROUTE_D_AUTONOMY_ACTION_REGISTER_V1",
+  "runtime_input": false,
+  "authority_grant": false,
+  "all_values": "PROPOSED_UNACCEPTED; null/UNKNOWN fields block admission; no default/carry-forward authority",
+  "shared_rules": {
+    "original_slots_max": 1,
+    "effect_retries": 0,
+    "Owner_attendance_required": true,
+    "all_fault_exposure": "UNKNOWN_NOT_BOUNDED",
+    "production_admissible": false,
+    "current_workstream": "P1",
+    "current_Section3": "PARTIAL",
+    "current_boot": "UNKNOWN",
+    "Section4": "NOT_STARTED",
+    "P2": "NOT_READY",
+    "D3_D3_lab": "NOT_AUTHORIZED"
+  },
+  "numeric_provenance": {
+    "inherited_unaccepted_targets": "S07: RAM/tasks/CPU/tmpfs/payloads/phase windows",
+    "new_unaccepted_design_targets": "directory/object/file/helper counts; deployment bytes; pipe frame/cumulative caps; assessment caps in main report",
+    "not_complete_U04": "Null storage, dependency, buffer, helper and all actual Host/VM/rate/labor/retention amounts must be resolved independently; no zero inferred"
+  },
+  "AUTO_actions": {
+    "ids": [
+      "A01",
+      "A02",
+      "A03",
+      "A04",
+      "A05",
+      "A06",
+      "A07"
+    ],
+    "required_scope": "Main report sections 2,3,5,6,7,11; exact allowlist, accepted enclosing grant, numeric actual reserve, no current P1 resumption"
+  },
+  "OWNER_ONLY_actions": [
+    "O01",
+    "O02",
+    "O03",
+    "O04",
+    "O05"
+  ],
+  "effects": [
+    {
+      "id": "E01",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O2",
+      "actor": {
+        "realm": "WINDOWS",
+        "name": "DESKTOP-MEQBS2G/De Yong",
+        "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+        "integrity": "MEDIUM_NON_ELEVATED",
+        "current_token_binding": "UNKNOWN",
+        "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+      },
+      "objects": [
+        "C:/Users/De Yong/NexusRouteDLabControl-v1",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/authority",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/authority/lab-v1-a0001",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/bin",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/config",
+        "C:/Users/De Yong/NexusRouteDLabEvidence",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/observations",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/observations/lab-v1-a0001",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/owner-review",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/owner-review/lab-v1-a0001"
+      ],
+      "exact_operation": "Create each enumerated positively absent directory once under verified physical parents; never merge/overwrite",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "new_directories_max": 10,
+        "new_regular_files_max": 0,
+        "record_payload_bytes_max": 2097152,
+        "actual_filesystem_metadata_headroom_bytes": null
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Preserve records; removal of positively new empty exact objects requires Owner-only destructive cleanup decision",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Full parent/path/file IDs, volume/reparse state, writer rights, absence before and exact new identity after",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Unexpected existing object",
+        "Parent repair/elevation needed"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E02",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O2/O3",
+      "actor": {
+        "windows": {
+          "realm": "WINDOWS",
+          "name": "DESKTOP-MEQBS2G/De Yong",
+          "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+          "integrity": "MEDIUM_NON_ELEVATED",
+          "current_token_binding": "UNKNOWN",
+          "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+        },
+        "guest": {
+          "realm": "GUEST",
+          "name": "root",
+          "uid": 0,
+          "gid": 0,
+          "executor": "OWNER_CONSOLE_ONLY_UNTIL_SUPPORTED_EXACT_EXECUTOR_SEPARATELY_REVIEWED",
+          "boot_and_rights_binding": "UNKNOWN",
+          "sudo_or_password_allowed": false
+        }
+      },
+      "objects": [
+        "C:/Users/De Yong/NexusRouteDLabControl-v1",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/authority",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/authority/lab-v1-a0001",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/bin",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/config",
+        "C:/Users/De Yong/NexusRouteDLabEvidence",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/observations",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/observations/lab-v1-a0001",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/owner-review",
+        "C:/Users/De Yong/NexusRouteDLabEvidence/owner-review/lab-v1-a0001",
+        "/etc/nexus-route-d-lab-v1",
+        "/var/lib/nexus-route-d-lab-v1/sealed/lab-v1-a0001/input",
+        "/var/lib/nexus-route-d-lab-v1/observations/lab-v1-a0001"
+      ],
+      "exact_operation": "Apply the reviewed exact fixed DACL/mode vector only to explicitly admitted new objects; ACE bytes/masks UNKNOWN",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "objects_max": 13,
+        "applications_per_object_max": 1,
+        "unexpected_principals_max": 0,
+        "parent_ACL_mutations_max": 0
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Restore exact recorded ACL/mode on held touched originals only if separately admitted; never widen unrelated parents",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Full effective DACL/ACL/masks/owner/inheritance/DELETE_CHILD/open-writer chain and supported AccessCheck",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "ACE vector or guest actor IDs unresolved",
+        "Boundary widening or unrelated original affected"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E03",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O3",
+      "actor": {
+        "realm": "GUEST",
+        "name": "root",
+        "uid": 0,
+        "gid": 0,
+        "executor": "OWNER_CONSOLE_ONLY_UNTIL_SUPPORTED_EXACT_EXECUTOR_SEPARATELY_REVIEWED",
+        "boot_and_rights_binding": "UNKNOWN",
+        "sudo_or_password_allowed": false
+      },
+      "objects": [
+        "nexuslab",
+        "nexuslabctl",
+        "group:nexuslab",
+        "group:nexuslabctl"
+      ],
+      "exact_operation": "Create exactly two locked non-login accounts and two dedicated primary groups using individually frozen unused UID/GIDs; all four numeric assignments UNKNOWN",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "new_users_max": 2,
+        "new_groups_max": 2,
+        "supplementary_groups_max": 0,
+        "interactive_homes_max": 0,
+        "capabilities_max": 0
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Keep/lock unused new identities within exact authority; deletion is Owner-only after zero-live/no-owned-file proof; no UID reuse",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Fresh NSS name/number availability, non-secret lock/login status, exact IDs/groups/rights and no inherited privileged FD/cap",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Existing name/number",
+        "Default allocation",
+        "Unsupported exact root executor",
+        "Credential contents required"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E04",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O4",
+      "actor": {
+        "windows": {
+          "realm": "WINDOWS",
+          "name": "DESKTOP-MEQBS2G/De Yong",
+          "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+          "integrity": "MEDIUM_NON_ELEVATED",
+          "current_token_binding": "UNKNOWN",
+          "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+        },
+        "guest": {
+          "realm": "GUEST",
+          "name": "root",
+          "uid": 0,
+          "gid": 0,
+          "executor": "OWNER_CONSOLE_ONLY_UNTIL_SUPPORTED_EXACT_EXECUTOR_SEPARATELY_REVIEWED",
+          "boot_and_rights_binding": "UNKNOWN",
+          "sudo_or_password_allowed": false
+        }
+      },
+      "objects": [
+        "/etc/systemd/system/nexus-route-d-lab-v1.slice",
+        "/etc/systemd/system/nexus-route-d-lab-v1-receiver.service",
+        "/etc/systemd/system/nexus-route-d-lab-v1-workload.service",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/bin/nexus-route-d-lab-adapter.exe",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/config/lab-profile-v1.json",
+        "/usr/local/libexec/nexus-route-d-lab-v1/receiver",
+        "/usr/local/libexec/nexus-route-d-lab-v1/fixture"
+      ],
+      "exact_operation": "Deploy exactly reviewed byte/dependency manifest and inert native files once; no enable/start/compilation/install; any reload separately fixed in grant",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "primary_files_max": 7,
+        "aggregate_deployment_bytes_max": 1048576,
+        "automatic_activation_max": 0,
+        "dependency_files_max": null
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Close admission; deactivate exact new inactive rights within valid scope; removal remains Owner-only",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Manifest/dependencies/owners/aliases/loaded properties, zero autostart; supported narrow unit/verb authorization and prerelease same-process barrier",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Any executable/dependency bytes UNKNOWN",
+        "Rights or release barrier unsupported",
+        "Dynamic arguments/code or new package needed"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E05",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O5",
+      "actor": {
+        "realm": "GUEST",
+        "name": "root",
+        "uid": 0,
+        "gid": 0,
+        "executor": "OWNER_CONSOLE_ONLY_UNTIL_SUPPORTED_EXACT_EXECUTOR_SEPARATELY_REVIEWED",
+        "boot_and_rights_binding": "UNKNOWN",
+        "sudo_or_password_allowed": false
+      },
+      "objects": [
+        "/run/nexus-route-d-lab-v1/attempts/lab-v1-a0001",
+        "/work",
+        "/work/tmp",
+        "/work/out",
+        "/work/log",
+        "native:nexus-route-d-lab-v1.slice/original-subtree-id-UNKNOWN"
+      ],
+      "exact_operation": "Allocate one original tmpfs and one exact native attempt subtree on separately approved fresh boot; no prior allocation or remount",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "tmpfs_mounts_max": 1,
+        "tmpfs_bytes_max": 16777216,
+        "tmpfs_inodes_max": 256,
+        "attempt_memory_bytes_max": 536870912,
+        "workload_memory_bytes_max": 134217728,
+        "swap_bytes_max": 0,
+        "aggregate_tasks_max": 32,
+        "cpu_percent_of_one_CPU_max": 25,
+        "cpu_period_ms": 100,
+        "cpu_burst_us_max": 0
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Normal exact unmount only after original zero-tasks proof and separate cleanup grant; no forced/lazy unmount or recreation",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Actual mount ID/options/writers/aliases/inodes/charging/swap, native ancestry/helper membership and resolved effective limits",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Old/unknown boot",
+        "Uncovered helper/Host memory",
+        "Unsupported quotas/noswap",
+        "Extra writable alias"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E06",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O6a",
+      "actor": {
+        "windows": {
+          "realm": "WINDOWS",
+          "name": "DESKTOP-MEQBS2G/De Yong",
+          "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+          "integrity": "MEDIUM_NON_ELEVATED",
+          "current_token_binding": "UNKNOWN",
+          "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+        },
+        "guest": {
+          "realm": "GUEST",
+          "name": "root",
+          "uid": 0,
+          "gid": 0,
+          "executor": "OWNER_CONSOLE_ONLY_UNTIL_SUPPORTED_EXACT_EXECUTOR_SEPARATELY_REVIEWED",
+          "boot_and_rights_binding": "UNKNOWN",
+          "sudo_or_password_allowed": false
+        }
+      },
+      "objects": [
+        "D:/NexusRouteDHost/VM/NexusRouteDHost/NexusRouteDHost.vbox:UART1",
+        "/etc/udev/rules.d/70-nexus-route-d-lab-serial.rules",
+        "/dev/ttyS0",
+        "native:serial-getty@ttyS0"
+      ],
+      "exact_operation": "While positively powered off apply only exact supported UART1 enable/COM1 base0x3F8 IRQ4 local-pipe CLIENT fields; separately admitted dedicated tty/getty/udev vector; no raw XML rewrite",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "UARTs_changed_max": 1,
+        "IRQ": 4,
+        "IO_base_decimal": 1016,
+        "guest_policy_files_max": 1,
+        "unrelated_VM_fields_changed_max": 0,
+        "network_changes_max": 0
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Restore exact original UART1-off/native fields only while positively off; exact dedicated tty policy inverse; never power off to make rollback possible",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Before/after field diff, unchanged UART2-4/NIC/storage, tty driver/root:nexuslabctl 0660/ACL, no getty/kernel-console consumer",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Not positively off",
+        "UART used by kernel console",
+        "Native field support UNKNOWN",
+        "Wrong/nonexclusive tty"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E07",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O7a",
+      "actor": {
+        "realm": "WINDOWS",
+        "name": "DESKTOP-MEQBS2G/De Yong",
+        "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+        "integrity": "MEDIUM_NON_ELEVATED",
+        "current_token_binding": "UNKNOWN",
+        "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+      },
+      "objects": [
+        "\\\\.\\pipe\\NexusRouteDLab-v1-a0001",
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/bin/nexus-route-d-lab-adapter.exe"
+      ],
+      "exact_operation": "Create one local held first-instance server before approved cold boot; reviewed peer/DACL/client masks; no impersonation/replacement/reconnect",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "pipe_instances_max": 1,
+        "peer_connections_max": 1,
+        "frame_bytes_max": 2048,
+        "aggregate_frame_bytes_max": 65536,
+        "reconnects_max": 0,
+        "actual_native_pipe_buffer_bytes": null
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Close exact held endpoint under separate valid stop scope; unknown server/peer retained as UNKNOWN, no recreation",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Held server handle/start/token/image, exact VBox PID/start/token/image/VM peer and effective local DACL/frame bounds",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Pipe preexists",
+        "First-instance or peer validation unsupported",
+        "Mask/buffer accounting unknown",
+        "Remote/other client"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E08",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O7a/O7b",
+      "actor": {
+        "windows": {
+          "realm": "WINDOWS",
+          "name": "DESKTOP-MEQBS2G/De Yong",
+          "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+          "integrity": "MEDIUM_NON_ELEVATED",
+          "current_token_binding": "UNKNOWN",
+          "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+        },
+        "guest_receiver": {
+          "name": "nexuslabctl",
+          "uid": null,
+          "gid": null,
+          "privilege": "UNPRIVILEGED_WITH_SEPARATELY_PROVED_EXACT_NATIVE_UNIT_VERB_RIGHTS"
+        }
+      },
+      "objects": [
+        "C:/Users/De Yong/NexusRouteDLabControl-v1/bin/nexus-route-d-lab-adapter.exe",
+        "native:nexus-route-d-lab-v1-receiver.service"
+      ],
+      "exact_operation": "Start exactly original reviewed adapter once and receiver once; stop each only using independently valid held-original stop grant; never fixture start",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "helpers_max": 2,
+        "starts_per_helper_max": 1,
+        "stop_submissions_per_helper_max": 1,
+        "aggregate_tasks_with_attempt_max": 32,
+        "aggregate_attempt_memory_bytes_max": 536870912,
+        "frame_bytes_max": 2048,
+        "aggregate_frame_bytes_max": 65536,
+        "actual_Windows_helper_memory_bytes": null
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Original exact permitted stop, reconcile zero-live and retain decisive evidence/residue; no restart",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Exact bytes/boot/process start/token/unit instance and native rights, effective limits, source capture and zero-live after stop",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Unknown start/stop delivery",
+        "Loaded bytes or rights mismatch",
+        "Stop scope expired",
+        "Fixture starts or generic manager rights"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    },
+    {
+      "id": "E09",
+      "class": "PRE-AUTHORIZABLE",
+      "approval_scope": "O6a/O6b",
+      "actor": {
+        "realm": "WINDOWS",
+        "name": "DESKTOP-MEQBS2G/De Yong",
+        "sid": "S-1-5-21-3218463879-272414157-1910845735-1001",
+        "integrity": "MEDIUM_NON_ELEVATED",
+        "current_token_binding": "UNKNOWN",
+        "source_status": "HISTORICAL_CANDIDATE_REQUIRES_FRESH_READBACK"
+      },
+      "objects": [
+        "VM:NexusRouteDHost UUID 3a3ee22f-87e2-490d-90ee-2321365c1604"
+      ],
+      "exact_operation": "One preplanned orderly shutdown and one cold boot of original VM, held server ready before boot; never unknown-stall repair; exact resulting boot grant required before dependent effects",
+      "operation_bytes_or_native_verb_binding": "UNKNOWN",
+      "candidate_numeric_ceiling": {
+        "orderly_shutdown_submissions_max": 1,
+        "cold_boot_submissions_max": 1,
+        "original_slots_max": 1,
+        "automatic_retries_max": 0,
+        "unplanned_lifecycle_actions_max": 0
+      },
+      "expiry": {
+        "absolute_not_before_epoch_ms": null,
+        "absolute_expires_epoch_ms": null,
+        "original_monotonic_origin_ms": null,
+        "original_monotonic_deadline_ms": null,
+        "action_elapsed_ms_max": 5000,
+        "shared_setup_elapsed_ms_max": 5000,
+        "new_attempt_slots": 0,
+        "effect_retries": 0,
+        "status": "REFUSE_UNTIL_EXACT_INDEPENDENT_OWNER_VALUES_AND_ACTUAL_U04_COMPLETE",
+        "rule": "Earliest original issuer/policy/action/phase deadline, revocation, attendance/observer loss or drift; no renewal; 5000ms is the shared unaccepted blueprint setup target, not per-action entitlement"
+      },
+      "rollback": {
+        "inverse": "Preserve original VM/disk/state and reconcile; no automatic reverse shutdown/reboot/reset/snapshot; field inverse only separately authorized while positively off",
+        "authority": "SEPARATE_VALID_EXACT_CLEANUP_OR_STOP_SCOPE_REQUIRED; DESTRUCTIVE_INVERSE_OWNER_ONLY",
+        "provenance": "Exact before existence/physical ID/bytes/ACL/mode/native values must precede dispatch",
+        "on_ambiguity": "PRESERVE_ORIGINAL_RESERVATION_AND_LAB_UNKNOWN; NO_AUTOMATIC_RETRY"
+      },
+      "required_readback": "Exact native VM/config/disk association, positive orderly off/server-ready then actual new boot/process/channel binding and retained cumulative reservation",
+      "invalidation_conditions": [
+        "Missing policy/independent action authority",
+        "Unknown current actor/object/boot/bytes/rights",
+        "Unenforced firewall or unsafe evidence custody",
+        "Incomplete numeric U04 or original reservation",
+        "Expiry/revocation/attendance or observer loss",
+        "Drift/contradiction/ambiguous submission",
+        "Applicable absolute cap conflicts with UNKNOWN outer tails",
+        "Guest cannot shut down reliably",
+        "Ambiguous lifecycle delivery",
+        "Missing held server",
+        "Cannot independently bind resulting boot",
+        "Stall recovery substituted for planned lifecycle"
+      ],
+      "admission": "REFUSED",
+      "current_action_authorized": false
+    }
+  ],
+  "documentary_origin": {
+    "purpose": "LAB_ONLY",
+    "qualification": false,
+    "positive_host_binding": false,
+    "production_g2_admissible": false,
+    "hq_pass_admissible": false,
+    "engineering_exception_id": "nexus.route-d.engineering-only-governance-applicability.v1; accepted exact subject SHA256 A57DDF51141813C5736F6323F6BF1DDCA57AF84D1D2FA2F8355034CAFC5B0F73",
+    "evidence_class": "ENGINEERING_ONLY_NON_QUALIFYING",
+    "production_qualification_binding_id": null,
+    "artifact_stage": "DOCUMENTARY_DESIGN_NOT_RUNTIME",
+    "runtime_firewall_enforcement_proven": false
+  }
+}
