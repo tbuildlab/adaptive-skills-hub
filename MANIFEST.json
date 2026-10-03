@@ -479,6 +479,26 @@
     "bytes": 11498,
     "sha256": "9bd18a4989a3db5529a0278cfdc39c2b415885e0e7a13393702e90f6623e877d"
   },
+  "docs/nexus-g2-route-d-d0-requirements-v1.md": {
+    "bytes": 30115,
+    "sha256": "be26e444bfaf23891a7be34c149be0fac9ffe7152ee9acabafb473ca336543c3"
+  },
+  "docs/nexus-g2-route-d-d1-threat-model-v1.md": {
+    "bytes": 24001,
+    "sha256": "d3d7e270b545f15cfbc9848b2b048b3939f43c425c7253ea0e42aff74b03205c"
+  },
+  "docs/nexus-g2-route-d-d2-adversarial-review-v1.md": {
+    "bytes": 13732,
+    "sha256": "5516482eb27e5818e6e9b584f5c58de35fe5f38b86e24d893e592a5d01e88908"
+  },
+  "docs/nexus-g2-route-d-d2-architecture-analysis-v1.md": {
+    "bytes": 31716,
+    "sha256": "fe3ea6440ddc3563c7c2791e7daa34166ffa959b3eaec0847882869422d1fd48"
+  },
+  "docs/nexus-g2-route-d-d2-lifecycle-and-evidence-design-v1.md": {
+    "bytes": 15610,
+    "sha256": "41f82971c417ce41a11bd90e149670a79f8886a106427d7da1012dfa86f44845"
+  },
   "docs/nexus-g2-route-d-external-reference-survey-v1.md": {
     "bytes": 19616,
     "sha256": "808b8a1b262bb30fd2df5d6e7fc9d6a7209361cc2259da6ffdf1a7ad796445ff"
