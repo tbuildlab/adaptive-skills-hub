@@ -359,6 +359,14 @@
     "bytes": 7694,
     "sha256": "e6a3c653623c8dc0f3afdd746d0dabc2e094883a408af814c1fa95ba98a63577"
   },
+  "docs/nexus-g2-p5-p6-safety-rebaseline-adversarial-review-v1.md": {
+    "bytes": 10719,
+    "sha256": "3c234a1e595b96edb582a2df8f8a6a659d8bf4306b62f3fcf597e3f4e690e618"
+  },
+  "docs/nexus-g2-p5-p6-safety-rebaseline-study-v1.md": {
+    "bytes": 40606,
+    "sha256": "f362fba74a40867c4472021aa4a8f71d5bd3e8805636210dc3ec3ee38e807e2d"
+  },
   "docs/nexus-g2-responsibility-rebaseline-acceptance-v1.md": {
     "bytes": 3419,
     "sha256": "f2cd2fe306f065d1a97e4edad50098ed73ec82c5ef4e93e378511b318948a942"
@@ -466,6 +474,10 @@
   "docs/nexus-g2-route-b-unknown-resolution-matrix-v1.md": {
     "bytes": 31541,
     "sha256": "6fd8bde5d2aca64301d280bed050c957ec40f8c767ea41b9cf60b8877cd7197e"
+  },
+  "docs/nexus-g2-route-d-owned-host-feasibility-v1.md": {
+    "bytes": 26286,
+    "sha256": "5efe02270a9edf04bdbfaac26875b34db94d5477063191f80a50a7bead52bc24"
   },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
