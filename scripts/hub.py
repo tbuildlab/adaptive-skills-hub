@@ -304,6 +304,14 @@ def parser() -> argparse.ArgumentParser:
     plan.add_argument("--hard-context-files", type=int, default=50, help="Hard project-context file ceiling")
     plan.add_argument("--hard-context-kib", type=int, default=512, help="Hard project-context byte ceiling in KiB")
     sub.add_parser("status", help="Show current local index counts")
+    project_core = sub.add_parser("core", help="Prepare a reusable local project profile; explicit approval required")
+    project_core.add_argument("task")
+    project_core.add_argument("--project", required=True)
+    project_core.add_argument("--profile", choices=("python", "static-web", "evidence"))
+    project_core.add_argument("--task-dir", help="New task package root; defaults to project .nexus/tasks/<id>")
+    project_core.add_argument("--json", action="store_true", help="Machine-readable approval/state view")
+    project_core.add_argument("--total-seconds", type=float, default=600)
+    project_core.add_argument("--step-seconds", type=float, default=30)
     core = sub.add_parser("core-plan", help="Prepare an internal-alpha local hook plan; no execution")
     core.add_argument("task")
     core.add_argument("--project", required=True)
@@ -316,6 +324,7 @@ def parser() -> argparse.ArgumentParser:
     resume.add_argument("task_dir")
     resume.add_argument("--approve", help="Exact approval SHA-256 printed by core-plan")
     resume.add_argument("--max-steps", type=int, help="Pause after this many verified steps")
+    resume.add_argument("--progress", action="store_true", help="Bounded progress on stderr; final JSON stays compatible")
     for name in ("core-status", "core-cancel"):
         command = sub.add_parser(name, help="Inspect/cancel a Core internal-alpha task")
         command.add_argument("task_dir")
@@ -325,18 +334,31 @@ def parser() -> argparse.ArgumentParser:
 def main() -> int:
     cli = parser()
     args = cli.parse_args()
-    if args.command.startswith("core-"):
+    if args.command == "core" or args.command.startswith("core-"):
         from ash.core import CoreBudget, CoreError, prepare_task, read_task, request_cancel, run_task
         from ash.core_host import LocalHookError
+        from ash.core_profiles import approval_summary, disposition, prepare_project, progress_line
         try:
-            if args.command == "core-plan":
+            if args.command == "core":
+                state, directory = prepare_project(args.task, Path(args.project),
+                    directory=Path(args.task_dir) if args.task_dir else None, profile=args.profile,
+                    budget=CoreBudget(total_seconds=args.total_seconds, step_seconds=args.step_seconds))
+                if not args.json:
+                    print(approval_summary(state, directory))
+                    return 0 if state["status"] == "prepared" else 1
+            elif args.command == "core-plan":
                 state = prepare_task(args.task, Path(args.project), Path(args.catalog), Path(args.task_dir),
                                      CoreBudget(max_commands=args.max_commands, total_seconds=args.total_seconds,
                                                 step_seconds=args.step_seconds))
             elif args.command == "core-run":
                 if args.max_steps is not None and args.max_steps < 1:
                     cli.error("--max-steps must be positive")
-                state = run_task(Path(args.task_dir), approval=args.approve, max_steps=args.max_steps)
+                def progress(event):
+                    line = progress_line(event)
+                    if line:
+                        print(line, file=sys.stderr, flush=True)
+                state = run_task(Path(args.task_dir), approval=args.approve, max_steps=args.max_steps,
+                                 progress=progress if args.progress else None)
             else:
                 if args.command == "core-cancel":
                     request_cancel(Path(args.task_dir))
@@ -347,10 +369,18 @@ def main() -> int:
             view["steps"] = [{key: step[key] for key in ("id", "name", "status", "attempts")} for step in state["steps"]]
             view["current_step"] = state["inflight"] or next((step["id"] for step in state["steps"] if step["status"] != "completed"), None)
             view["plan_id"] = state["plan"]["plan_id"]
+            view["operator_action"] = disposition(state)
+            execution_directory = directory if args.command == "core" else Path(args.task_dir)
+            view["cancel_requested"] = (execution_directory / "cancel.request").exists()
+            if view["cancel_requested"] and state["status"] != "completed":
+                view["operator_action"] = "MANUAL REVIEW REQUIRED"
+            if args.command == "core":
+                view["task_directory"] = str(directory)
+                view["approval_summary"] = approval_summary(state, directory)
             print(json.dumps(view, ensure_ascii=False, indent=2))
             if args.command in {"core-status", "core-cancel"}:
                 return 0
-            successful = {"prepared"} if args.command == "core-plan" else {"paused", "completed"}
+            successful = {"prepared"} if args.command in {"core", "core-plan"} else {"paused", "completed"}
             return 0 if state["status"] in successful else 1
         except (CoreError, LocalHookError, OSError, ValueError, KeyError, TypeError) as exc:
             cli.error(str(exc))

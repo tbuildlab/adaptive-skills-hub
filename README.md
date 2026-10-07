@@ -4,6 +4,12 @@
 
 ## Core internal alpha — 2026-10-07
 
+[Core Alpha 2 project guide](docs/nexus-core-alpha2-local-use-v1.md) adds
+`python scripts/nexus.py core "<task>" --project "<project>"` preparation with
+reusable fixed Python, static-web and evidence profiles. Review the printed
+scope/hash, then explicitly approve `core-run`; preparation does not execute.
+Local checkpoints, progress and receipts support bounded trusted project work.
+
 [Core MVP scope and local usage](docs/nexus-core-internal-alpha-v1.md) documents
 the opt-in `python scripts/nexus.py core-plan` / `core-run` path for reviewed,
 byte-bound local Python Skill hooks. It supports sequential execution, verified

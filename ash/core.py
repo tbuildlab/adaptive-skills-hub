@@ -14,6 +14,7 @@ import re
 import sys
 import tempfile
 import time
+from contextvars import ContextVar
 from dataclasses import asdict, dataclass
 from datetime import datetime
 from pathlib import Path
@@ -31,6 +32,7 @@ SCHEMA = "nexus.core.task.v1"
 CATALOG_SCHEMA = "nexus.core.catalog.v1"
 FINAL = {"completed", "failed", "blocked", "cancelled", "budget_exhausted", "ambiguous"}
 HASH = re.compile(r"^[0-9a-f]{64}$")
+_PROGRESS = ContextVar("core_progress", default=None)
 
 
 class CoreError(ValueError):
@@ -111,6 +113,12 @@ def read_task(directory: Path) -> dict:
 
 def _event(state: dict, kind: str, **details: Any) -> None:
     state["events"].append({"sequence": len(state["events"]) + 1, "at_utc": utc_now(), "kind": kind, **details})
+    observer = _PROGRESS.get()
+    if observer is not None:
+        step = next((s for s in state["steps"] if s["id"] == details.get("step")), {})
+        observer({"kind": kind, "step": details.get("step"), "phase": details.get("phase"),
+                  "status": state["status"], "commands_used": state["commands_used"],
+                  "capability": step.get("name"), "attempt": step.get("attempts")})
 
 
 def _bound(root: Path, relative: str) -> Path:
@@ -203,7 +211,7 @@ def _steps(plan: Any, index: dict) -> list[dict]:
 
 
 def prepare_task(task: str, project: Path, catalog: Path, directory: Path,
-                 budget: CoreBudget | None = None) -> dict:
+                 budget: CoreBudget | None = None, *, approval_context: dict | None = None) -> dict:
     budget = budget or CoreBudget()
     budget.validate()
     project, catalog = project.resolve(strict=True), catalog.resolve(strict=True)
@@ -227,8 +235,11 @@ def prepare_task(task: str, project: Path, catalog: Path, directory: Path,
              "loaded_skills": [{k: v for k, v in item.items() if k != "instructions"} for item in loaded],
              "steps": steps, "completed_steps": [], "artifacts": [], "events": [],
              "blocker": None, "inflight": None, "receipt": None}
+    if approval_context is not None:
+        state["approval_context"] = approval_context
     state["approval_sha256"] = hashlib.sha256(_bytes({k: state[k] for k in (
-        "task", "project", "catalog_sha256", "interpreter_sha256", "budget", "created_at_utc", "steps")})).hexdigest()
+        "task", "project", "catalog_sha256", "interpreter_sha256", "budget", "created_at_utc", "steps",
+        *(["approval_context"] if approval_context is not None else []) )})).hexdigest()
     _event(state, "prepared", selected=[item["name"] for item in steps])
     if hook_boundary:
         _stop(state, "blocked", hook_boundary)
@@ -315,6 +326,9 @@ def _dispatch(directory: Path, state: dict, step: dict, phase: str, command: lis
     if _digest(Path(state["catalog"])) != state["catalog_sha256"]:
         raise CoreError("approved catalog changed")
     _catalog(Path(state["catalog"]))
+    if state.get("approval_context", {}).get("schema") == "nexus.core.project-scope.v1":
+        from .core_profiles import verify_scope
+        verify_scope(Path(state["project"]), state["approval_context"])
     if sys.executable != state["interpreter"] or _digest(Path(sys.executable)) != state["interpreter_sha256"]:
         raise CoreError("approved interpreter changed")
     state["commands_used"] += 1  # Charge BEFORE dispatch; interruption never refunds it.
@@ -354,7 +368,17 @@ def _receipt(state: dict) -> dict:
             "g2": "HOLD"}
 
 
-def run_task(directory: Path, *, approval: str | None, max_steps: int | None = None) -> dict:
+def run_task(directory: Path, *, approval: str | None, max_steps: int | None = None,
+             progress=None) -> dict:
+    """Optional progress only publishes bounded lifecycle metadata, never raw hook output."""
+    token = _PROGRESS.set(progress)
+    try:
+        return _run_task(directory, approval=approval, max_steps=max_steps)
+    finally:
+        _PROGRESS.reset(token)
+
+
+def _run_task(directory: Path, *, approval: str | None, max_steps: int | None = None) -> dict:
     """Resume completed checkpoints; unresolved dispatch intents STOP without re-execution."""
     if max_steps is not None and (type(max_steps) is not int or max_steps < 1):
         raise CoreError("max_steps must be a positive integer")
