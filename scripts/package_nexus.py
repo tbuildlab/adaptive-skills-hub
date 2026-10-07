@@ -91,6 +91,7 @@ ALLOWED_ROOT_FILES = {"SKILL.md", "sources.json", "requirements-r2-mcp.txt", "re
 ALLOWED_RESEARCH = {"research/nexus-ecosystem-gap-scan.json"}
 ALLOWED_DIRECTORIES = {"ash", "config", "plugins", "scripts", "tests", ".agents"}
 ALLOWED_DOCS = {
+    "docs/nexus-g2-openai-structured-v3.md",
     "docs/nexus-g2-openai-hosted-adapter-v1.md",
     "docs/nexus-core-internal-alpha-v1.md",
     "docs/nexus-core-alpha2-local-use-v1.md",

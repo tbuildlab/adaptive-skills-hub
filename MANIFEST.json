@@ -8,8 +8,8 @@
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "README.md": {
-    "bytes": 14560,
-    "sha256": "98a720314b68241462d5db29c8ba41608aaee4c0dd7d53f9a455c4a5208fb6fc"
+    "bytes": 15141,
+    "sha256": "081bb6f9887c2f473b550a921f60a308393183eede686ab026d71294af36dbb0"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -156,8 +156,8 @@
     "sha256": "e0d9e4d0f378ddf9867d31cdef59e01eca544aa75efd8215bcfcc0d349d1f689"
   },
   "ash/openai_hosted.py": {
-    "bytes": 37982,
-    "sha256": "6e7ebc95a665c2173bb86c3a1794b099c613c6ceb0abbf332e107e553146a9e4"
+    "bytes": 39391,
+    "sha256": "874ad67c73609df8dbc4371424760d13bd35f06cd7120cfb134b85d9281e07f3"
   },
   "ash/openai_import.py": {
     "bytes": 3617,
@@ -170,6 +170,10 @@
   "ash/openai_staging.py": {
     "bytes": 6129,
     "sha256": "7ab01855568c7c3b7c87e002d41098b1922b8dffb005a7ba9d3200b5291042d1"
+  },
+  "ash/openai_structured.py": {
+    "bytes": 17270,
+    "sha256": "d3d0e32c372949bf534b691053276f760ee8cc88fd46e6a89aaf9e4945616d56"
   },
   "ash/quality_loop.py": {
     "bytes": 27880,
@@ -414,6 +418,10 @@
   "docs/nexus-g2-openai-minimized-provider-clarification-pack-v1.md": {
     "bytes": 8319,
     "sha256": "0ee9425eb8e88ab3ca0ce3e304e2cf0e121cde8ea680fc40d8d0343829df977d"
+  },
+  "docs/nexus-g2-openai-structured-v3.md": {
+    "bytes": 8338,
+    "sha256": "d565bffb9a40e1a8a790b4489bf022e5d042dd037ec2c32b2a153cb434d3a0dd"
   },
   "docs/nexus-g2-openai-support-reply-adjudication-v1.md": {
     "bytes": 26665,
@@ -1072,12 +1080,12 @@
     "sha256": "28debb684067ddbf936df327a2d1c3a78dde5757e4867fd36fddd94e706647ec"
   },
   "scripts/openai_live_fixture.py": {
-    "bytes": 2037,
-    "sha256": "36661e1dbfd3502d66a1655a1d5ca17afb7e977de3a10029e55ad1b513398915"
+    "bytes": 2458,
+    "sha256": "3bd2590b8561ef9c0398a4552719d5a031a461bc3565246ba4d624ad7ec63184"
   },
   "scripts/package_nexus.py": {
-    "bytes": 15042,
-    "sha256": "7e8473d24baac60a57911b400b42386d26f746f086b0afb569ad24f9a1149e3b"
+    "bytes": 15087,
+    "sha256": "f8749bf180f18d34069cacde49c1edd07675a1eb0de6c94c028ed6ed7280b348"
   },
   "scripts/probe_g1_conformance.py": {
     "bytes": 11777,
@@ -1238,6 +1246,10 @@
   "tests/test_openai_import.py": {
     "bytes": 11123,
     "sha256": "60276aeb80decdd6d85cfee797585c58f918de5b73924967232d1b6447b29283"
+  },
+  "tests/test_openai_structured.py": {
+    "bytes": 14879,
+    "sha256": "dc4b4023dcd58bf2bf3704084abcdde847b9fe18f94c66e0e68aee4d218034a8"
   },
   "tests/test_quality_loop.py": {
     "bytes": 2944,

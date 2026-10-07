@@ -2,9 +2,9 @@
 
 ## Adaptive AI Capability Hub
 
-## Active product direction — 2026-10-07
+## Active product direction — 2026-10-08
 
-Core Alpha 2 is the accepted practical local engine. The next layer is
+Core Alpha 2 is the accepted practical local engine. The verified managed layer is
 [G2-OPENAI — Managed Execution](docs/nexus-g2-openai-managed-execution-v1.md),
 with an opt-in [offline handoff CLI](docs/nexus-g2-openai-managed-use-v1.md) and
 [Responses hosted shell adapter](docs/nexus-g2-openai-hosted-adapter-v1.md).
@@ -15,6 +15,13 @@ artifact verification. Live credentials, account access and spend approval remai
 required; deterministic HTTP fixtures are not managed-cloud execution evidence.
 
 Active roadmap: Core Alpha 2 → G2-OPENAI → G3 → G4 → G6; G5 optional.
+The [2026-10-08 structured delivery v3 direction](docs/nexus-g2-openai-structured-v3.md)
+reuses Hosted Shell for execution and strict Responses JSON for patch delivery,
+with existing Nexus staging and independent verification. Reuse first, build only
+the gap; routine implementation proceeds within existing authority. G2-OPENAI is
+complete for this declared managed coding configuration: strict original-response
+patch delivery, isolated staging and unchanged independent local tests passed.
+Next: G3 — Separate Capability Authorization, under the reuse-first rule.
 G3 remains Separate Capability Authorization. Self-hosted high-assurance G2
 (Route D/Root R and related Host proof) is DEFERRED and its evidence is preserved.
 Production Positive Host Binding remains ABSENT. Earlier G2 HOLD records below

@@ -14,6 +14,7 @@ from ash.openai_cli import summary
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("directory", help="New disposable directory outside a Git repository")
+    parser.add_argument("--structured-v3", action="store_true", help="Prepare strict Responses patch delivery; no dispatch")
     args = parser.parse_args()
     root = _directory(Path(args.directory))
     if root.exists():
@@ -24,11 +25,12 @@ def main():
     (project / "test_calculator.py").write_bytes(TESTS)
     spec = {"schema": SPEC, "category": "coding", "files": ["calculator.py", "test_calculator.py"],
         "effects": ["output_artifacts"], "artifacts": [{"path": "calculator.py", "verification": "owner_review", "expected_sha256": None}],
-        "ttl_seconds": 3600, "verification": "python_add_fixture_v1",
-        "provider": {"model": MODEL, "reasoning": "high", "max_polls": 10, "max_output_tokens": 2048,
+        "ttl_seconds": 3600, "verification": "python_add_structured_v3" if args.structured_v3 else "python_add_fixture_v1",
+        "provider": {"model": MODEL, "reasoning": "high", "max_polls": 20 if args.structured_v3 else 10, "max_output_tokens": 3072 if args.structured_v3 else 2048,
                      "max_tool_calls": 6, "soft_spend_usd": 0.10}}
     (root / "spec.json").write_text(json.dumps(spec, indent=2) + "\n", encoding="utf-8")
-    state = prepare_openai("Fix calculator.py so existing tests pass. Do not change tests. Return corrected source and shell evidence.",
+    task = "Fix calculator.py so existing tests pass. Do not change tests. Return a strict structured unified patch after real Hosted Shell tests." if args.structured_v3 else "Fix calculator.py so existing tests pass. Do not change tests. Return corrected source and shell evidence."
+    state = prepare_openai(task,
                            project, spec, root / "execution")
     body = serialize_request(state)
     (root / "prepared-request.json").write_text(json.dumps(body, indent=2) + "\n", encoding="utf-8")

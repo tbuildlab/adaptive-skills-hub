@@ -123,7 +123,7 @@ class OpenAIHTTPS:
 
 def _source_digest():
     return sha(_bytes({name: sha((Path(__file__).parent / name).read_bytes())
-                      for name in ("openai_hosted.py", "openai_staging.py", "openai_import.py", "openai_reconciliation.py", "managed_execution.py",
+                      for name in ("openai_hosted.py", "openai_structured.py", "openai_staging.py", "openai_import.py", "openai_reconciliation.py", "managed_execution.py",
                                    "core.py", "core_host.py", "core_capabilities.py")}))
 
 
@@ -141,14 +141,14 @@ def prepare_openai(task: str, project: Path, spec: dict, directory: Path) -> dic
     cost = config["soft_spend_usd"]
     if type(cost) not in {int, float} or not math.isfinite(cost) or not 0 < cost <= 5:
         raise ExecutionError("finite positive soft USD allowance required; not a hard cap")
-    if spec["verification"] not in {"artifact_contract", "python_add_fixture_v1"}:
+    if spec["verification"] not in {"artifact_contract", "python_add_fixture_v1", "python_add_structured_v3"}:
         raise ExecutionError("unsupported independent verifier")
     # Refuse private-looking payloads before writing the provider plan.
     _clean(task.encode("utf-8"))
     if spec["effects"] == ["output_artifacts"]:
         for name in spec["files"]:
             _clean(read_bytes(project, name))
-    if spec["verification"] == "python_add_fixture_v1":
+    if spec["verification"] in {"python_add_fixture_v1", "python_add_structured_v3"}:
         if (spec["files"] != ["calculator.py", "test_calculator.py"] or
                 read_bytes(project, "calculator.py") != BUG or read_bytes(project, "test_calculator.py") != TESTS or
                 spec["artifacts"] != [{"path": "calculator.py", "verification": "owner_review", "expected_sha256": None}]):
@@ -169,6 +169,8 @@ def prepare_openai(task: str, project: Path, spec: dict, directory: Path) -> dic
     request["provider"] = config
     request["network_policy"] = {"type": "disabled"}
     request["verification_contract"] = spec["verification"]
+    if spec["verification"] == "python_add_structured_v3":
+        request["capability"].update(capability_id="hosted-shell-structured-patch", version="3")
     request["adapter_baseline_commit"] = _baseline(Path(__file__).resolve().parents[1])
     package = input_package(state)
     request["input_package_sha256"] = sha(_bytes(package))
@@ -201,6 +203,9 @@ def input_package(state):
 
 
 def serialize_request(state):
+    if state["request"]["verification_contract"] == "python_add_structured_v3":
+        from .openai_structured import structured_request
+        return structured_request(state)
     req = state["request"]
     if req["backend_id"] != BACKEND or req["network_policy"] != {"type": "disabled"}:
         raise ExecutionError("backend/network contract mismatch")
@@ -295,7 +300,11 @@ def _parse_response(raw: bytes, state) -> dict:
 
 def parse_response(raw: bytes, state) -> dict:
     try:
-        return _parse_response(raw, state)
+        view = _parse_response(raw, state)
+        if state["request"]["verification_contract"] == "python_add_structured_v3":
+            from .openai_structured import structured_observation
+            view.update(structured_observation(raw, view))
+        return view
     except ProviderError:
         raise
     except Exception:
@@ -380,7 +389,10 @@ class OpenAIHostedExecutionBackend:
             _save(self.directory, state)  # Crash here means UNKNOWN; no replay.
             try:
                 return self._observe(self._call("POST", "/responses", body), state)
-            except Exception:
+            except Exception as error:
+                state["provider"]["dispatch_failure"] = {
+                    "code": error.kind if isinstance(error, ProviderError) else "LOCAL_RESPONSE_PROCESSING_FAILED",
+                    "http_status": error.http_status if isinstance(error, ProviderError) else None}
                 state["provider"]["last_error"] = "DISPATCH_OUTCOME_UNKNOWN"
                 state["ambiguity"] = "DISPATCH_OUTCOME_UNKNOWN"
                 _event(state, "OUTCOME_UNKNOWN")
@@ -401,7 +413,10 @@ class OpenAIHostedExecutionBackend:
             _save(self.directory, state)
             try:
                 return self._observe(self._call("GET", "/responses/" + ref), state)
-            except Exception:
+            except Exception as error:
+                state["provider"]["retrieval_failure"] = {
+                    "code": error.kind if isinstance(error, ProviderError) else "LOCAL_RESPONSE_PROCESSING_FAILED",
+                    "http_status": error.http_status if isinstance(error, ProviderError) else None}
                 state["provider"]["last_error"] = "RETRIEVAL_UNKNOWN"
                 state["ambiguity"] = "RETRIEVAL_UNKNOWN"
                 _save(self.directory, state)
@@ -434,6 +449,9 @@ class OpenAIHostedExecutionBackend:
                 raise ProviderError("CANCEL_OUTCOME_UNKNOWN") from None
 
     def import_result(self):
+        if self._state()["request"]["verification_contract"] == "python_add_structured_v3":
+            from .openai_structured import import_structured
+            return import_structured(self)
         """Persist every refusal separately, including failures before/after staging."""
         self._import_context = {"stage": "admission", "subject": None, "expected": {}, "observed": {}}
         state = None
