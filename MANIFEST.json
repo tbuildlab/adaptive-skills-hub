@@ -787,6 +787,10 @@
     "bytes": 37525,
     "sha256": "6b0a7256b73090c272e4d996f7d88c107d9948499991f07ce654336d088ad3ec"
   },
+  "docs/nexus-route-d-cryptographic-attendance-prototype-v1.md": {
+    "bytes": 6816,
+    "sha256": "2de9fb07f7defc2c9392539aeb50651dd8b7fff9773235964089e98bc4b1fcb8"
+  },
   "docs/nexus-route-d-engineering-only-governance-acceptance-v1.md": {
     "bytes": 7728,
     "sha256": "238a449bd311194f9349120fbcc571e46047851ea7b578090a5773ea6ae30d7b"
@@ -798,6 +802,30 @@
   "docs/nexus-route-d-engineering-only-governance-applicability-decision-v1.md": {
     "bytes": 27762,
     "sha256": "a57ddf51141813c5736f6323f6bf1ddca57af84d1d2fa2f8355034cafc5b0f73"
+  },
+  "docs/nexus-route-d-sd05-v2-e10-reconciliation-v1.md": {
+    "bytes": 5729,
+    "sha256": "fcbaba85d580cafb4fc12cbb76eaa7de8b7da31c80382adc43eccee92a1eb349"
+  },
+  "docs/nexus-route-d-sd05-v2-governance-acceptance-v1.md": {
+    "bytes": 6600,
+    "sha256": "654c2755396f6c546d4779ca95e381221a8b6a4fab32cd2cd8abd12f98280b38"
+  },
+  "docs/nexus-route-d-sd05-v2-governance-adversarial-review-v1.md": {
+    "bytes": 4855,
+    "sha256": "c237166dbeb0944ea40511ff4fff131c748ae7e578a27045c01b2d866997b50f"
+  },
+  "docs/nexus-route-d-sd05-v2-governance-amendment-v1.md": {
+    "bytes": 8155,
+    "sha256": "109be79a8be3a11c06564cb42b74055be909315ffbc4b8c70bf532d1d0722653"
+  },
+  "docs/nexus-route-d-sd05-v2-normative-text-v1.md": {
+    "bytes": 9130,
+    "sha256": "c91db84642ac92b969350de1c9a397edb68c3d16bfcf07c9f663ac3f8fcdecf0"
+  },
+  "docs/nexus-route-d-vm-free-closure-sprint-v1.md": {
+    "bytes": 7428,
+    "sha256": "9efcec7a24547241b7b6d056738e01ba88659d55cd133cfb42c6acc37d870b9f"
   },
   "docs/nexus-runtime-integration-architecture.md": {
     "bytes": 29236,
@@ -887,6 +915,10 @@
     "bytes": 21799,
     "sha256": "6b49163caa30bde4bb43d148b192c4a05cbd8475a1cebeedbd3c133dfb082a93"
   },
+  "prototypes/cryptographic_attendance_v1.py": {
+    "bytes": 19407,
+    "sha256": "699c1d70d93db1496bc5ba482adbfa80e687556223052f9ff6f412809d9ad476"
+  },
   "prototypes/governance_advisory_traceability_v1.py": {
     "bytes": 1359,
     "sha256": "adad30173158604f1c8f262d5ccd483e1023778149e1a790798dd09ae5b04f84"
@@ -894,6 +926,10 @@
   "prototypes/governance_assessment_offline_v1.py": {
     "bytes": 11398,
     "sha256": "388dd5752eb85595036a0399f4bf3c6fd9d56f8e03db24e7d55abcb6f24bd80e"
+  },
+  "prototypes/recovery_admission_lab_v1.py": {
+    "bytes": 15327,
+    "sha256": "dcaded885b83cfea87926ec8b80557a1928dc4ea64afb3d0d828a0d8dc479fe2"
   },
   "release/VERSION": {
     "bytes": 11,
@@ -998,6 +1034,10 @@
   "tests/test_capability_foundation.py": {
     "bytes": 11436,
     "sha256": "a858d85e18ac3e5f1488c952a60f09b12243ab2afed7ca7a87c93fe474d3d3a8"
+  },
+  "tests/test_cryptographic_attendance_v1.py": {
+    "bytes": 16170,
+    "sha256": "b4d0c665b5353ce93ff6ac45605831683e0bf166419a8d11a515e014f4cffc4e"
   },
   "tests/test_desktop_plugin_pilot.py": {
     "bytes": 19512,
@@ -1110,6 +1150,10 @@
   "tests/test_r5_host_capability_inventory.py": {
     "bytes": 51645,
     "sha256": "36a5f6e0945841461f582b991de60628f73595cb14315510845d08096b186d8f"
+  },
+  "tests/test_recovery_admission_lab_v1.py": {
+    "bytes": 13812,
+    "sha256": "a5c2ce7fd5c63d338f48f81d517e88e01238de4551c169823d7c1c738ca7b20c"
   },
   "tests/test_runtime_decision.py": {
     "bytes": 24446,
