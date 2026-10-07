@@ -1,4 +1,4 @@
-"""Opt-in offline G2-OPENAI CLI, separate from the accepted Core commands."""
+"""Opt-in handoff and admitted provider CLI, separate from accepted Core commands."""
 from pathlib import Path
 import json
 
@@ -8,6 +8,8 @@ from .managed_execution import (cancel_execution, execution_summary, export_hand
 
 
 def add_commands(sub):
+    from .openai_cli import add_commands as add_openai_commands
+    add_openai_commands(sub)
     prepare = sub.add_parser("managed-plan", help="Prepare an offline bounded provider/Host handoff; no execution")
     prepare.add_argument("task")
     prepare.add_argument("--project", required=True)
@@ -24,6 +26,9 @@ def add_commands(sub):
 
 
 def run_command(args):
+    if args.command.startswith("managed-openai-"):
+        from .openai_cli import run_command as run_openai_command
+        return run_openai_command(args)
     directory = Path(args.task_dir)
     if args.command == "managed-plan":
         state = prepare_execution(args.task, Path(args.project), load_json(Path(args.request)), directory)

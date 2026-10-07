@@ -6,10 +6,13 @@
 
 Core Alpha 2 is the accepted practical local engine. The next layer is
 [G2-OPENAI — Managed Execution](docs/nexus-g2-openai-managed-execution-v1.md),
-with an opt-in [offline handoff CLI](docs/nexus-g2-openai-managed-use-v1.md).
+with an opt-in [offline handoff CLI](docs/nexus-g2-openai-managed-use-v1.md) and
+[Responses hosted shell adapter](docs/nexus-g2-openai-hosted-adapter-v1.md).
 Nexus retains orchestration, task authority and independent completion checks.
-The first source slice prepares/imports bounded artifact handoffs; direct
-provider dispatch remains unavailable. It is not a managed-cloud execution claim.
+The first source slice prepares/imports bounded artifact handoffs. The additive
+adapter supports separately admitted dispatch/retrieval/cancellation and isolated
+artifact verification. Live credentials, account access and spend approval remain
+required; deterministic HTTP fixtures are not managed-cloud execution evidence.
 
 Active roadmap: Core Alpha 2 → G2-OPENAI → G3 → G4 → G6; G5 optional.
 G3 remains Separate Capability Authorization. Self-hosted high-assurance G2

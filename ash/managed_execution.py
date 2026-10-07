@@ -33,6 +33,12 @@ class ExecutionError(ValueError):
 
 
 class ExecutionStatus(str, Enum):
+    DISPATCH_INTENT = "DISPATCH_INTENT"
+    DISPATCH_CONFIRMED = "DISPATCH_CONFIRMED"
+    RUNNING = "RUNNING"
+    PROVIDER_TERMINAL = "PROVIDER_TERMINAL"
+    CANCEL_API_ACCEPTED = "CANCEL_API_ACCEPTED"
+    OUTCOME_UNKNOWN = "OUTCOME_UNKNOWN"
     PREPARED = "PREPARED"
     HANDOFF_INTENT = "HANDOFF_INTENT"
     HANDOFF_PREPARED = "HANDOFF_PREPARED"
@@ -349,7 +355,7 @@ def parse_receipt(value: dict, request: dict, digest: str) -> ExecutionReceipt:
             raise ExecutionError("invalid usage evidence")
     if value["failure"] is not None:
         _closed(value["failure"], {"kind", "no_effects_confirmed"})
-        if value["failure"]["kind"] not in {"transient_provider", "implementation", "wrong_capability", "missing_capability", "owner_boundary", "provider_unavailable", "verification"} or type(value["failure"]["no_effects_confirmed"]) is not bool:
+        if value["failure"]["kind"] not in {"transient_provider", "provider_failure", "implementation", "wrong_capability", "missing_capability", "owner_boundary", "provider_unavailable", "verification"} or type(value["failure"]["no_effects_confirmed"]) is not bool:
             raise ExecutionError("invalid failure classification")
     if (value["end_status"] == "failed") != (value["failure"] is not None):
         raise ExecutionError("inconsistent failure receipt")
@@ -484,6 +490,6 @@ def execution_summary(state: dict) -> dict:
             "FINAL_RESULT": "TASK_VERIFIED_COMPLETE" if state["status"] == "TASK_VERIFIED_COMPLETE" else "NOT_COMPLETE",
             "provider_reference": state["provider_reference"], "retry_eligible": state["retry_eligible"],
             "cancel_requested": state["cancel_requested"], "attempts": state["attempts"],
-            "direct_provider_execution": "UNAVAILABLE",
-            "provider_provenance": "HOST_REPORTED_UNAUTHENTICATED" if state["receipt"] else "NOT_OBSERVED",
+            "direct_provider_execution": "AVAILABLE_WITH_SEPARATE_LIVE_AUTHORITY" if "provider" in state else "UNAVAILABLE",
+            "provider_provenance": state.get("provider", {}).get("provenance", "HOST_REPORTED_UNAUTHENTICATED" if state["receipt"] else "NOT_OBSERVED"),
             "hard_financial_cap": False, "production_positive_host_binding": "ABSENT"}

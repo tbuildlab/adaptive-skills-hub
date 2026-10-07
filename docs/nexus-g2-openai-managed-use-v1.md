@@ -1,5 +1,9 @@
 # G2-OPENAI offline handoff usage v1
 
+This v1 guide describes the checkpointed offline handoff. The separately admitted
+[Responses hosted shell adapter](nexus-g2-openai-hosted-adapter-v1.md) supplies the
+new direct-provider commands; the handoff commands below remain offline.
+
 This source-only slice prepares real bounded handoffs. It makes no provider API
 calls, uploads, account/credential changes or paid requests. Existing `core`
 commands remain the reviewed local execution path. Installation is separate.
