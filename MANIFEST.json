@@ -8,8 +8,8 @@
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "README.md": {
-    "bytes": 13388,
-    "sha256": "d17f89cc6e05d5a78abf977dd022c899cf7f4db368a8efe82fccebcfae6aa612"
+    "bytes": 14312,
+    "sha256": "0d98b73e2b8469ced54ef7c1874a2a571a0b2ce10b58b0918f37377fb6d287e0"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -94,6 +94,14 @@
   "ash/g1_selection.py": {
     "bytes": 17049,
     "sha256": "c1702bcf0a2fd751cf7b48879736eefccf9c98c23b0dfe231a80346f0974658b"
+  },
+  "ash/managed_cli.py": {
+    "bytes": 2523,
+    "sha256": "438e7514ff12fcad3c63dd6125d3030e567341c49289938b15e70860e11cfbec"
+  },
+  "ash/managed_execution.py": {
+    "bytes": 24481,
+    "sha256": "28602554d61418135a682d9f02b9fab1cca4608f63139b42465415b1abff0279"
   },
   "ash/mcp/__init__.py": {
     "bytes": 154,
@@ -366,6 +374,18 @@
   "docs/nexus-g2-openai-human-escalation-request-v1.md": {
     "bytes": 6333,
     "sha256": "b1d760ac4a038903a8ba2255779d2b653e5529fbde3b8415ac7ad9d20727deaf"
+  },
+  "docs/nexus-g2-openai-managed-execution-v1.md": {
+    "bytes": 10274,
+    "sha256": "97bc8f93e7860b8ce671bce12a1a6dcac8e5bf2c25b44afdad5aab3b15f5a1e3"
+  },
+  "docs/nexus-g2-openai-managed-sprint-report-v1.md": {
+    "bytes": 4359,
+    "sha256": "b9c74100176d2cc3ef7c1b607e5e84fec75083cfb543f09810710bc7fe69700e"
+  },
+  "docs/nexus-g2-openai-managed-use-v1.md": {
+    "bytes": 4433,
+    "sha256": "e54e38134c14093c190ff6058025685e6c54a929e4fe401c027cfe005254dd45"
   },
   "docs/nexus-g2-openai-minimized-provider-clarification-pack-v1.md": {
     "bytes": 8319,
@@ -1012,8 +1032,12 @@
     "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
   },
   "scripts/hub.py": {
-    "bytes": 24585,
-    "sha256": "49d2580f8fb5b35516d83864e0cec85b0184d756b1259a87ad033333226002fc"
+    "bytes": 24957,
+    "sha256": "f18b618ae4b836d12f1085021e8a2cc66f59e2ef1ece8e482efea1d32bceeb03"
+  },
+  "scripts/managed_handoff_demo.py": {
+    "bytes": 1990,
+    "sha256": "d383902efcae3d7a79f193fcbd4ae400e04f82b2ce3bf29d0c6148c3cede052f"
   },
   "scripts/nexus.py": {
     "bytes": 616,
@@ -1024,8 +1048,8 @@
     "sha256": "28debb684067ddbf936df327a2d1c3a78dde5757e4867fd36fddd94e706647ec"
   },
   "scripts/package_nexus.py": {
-    "bytes": 14839,
-    "sha256": "cf0572b9b559e9392c94ec1a3e932a3b2eccee398c2f27c3dc38cdb8d7a52383"
+    "bytes": 14993,
+    "sha256": "fab144826880425d0f7687a91554a5d9e3b3773fe003887e825cd7564891e485"
   },
   "scripts/probe_g1_conformance.py": {
     "bytes": 11777,
@@ -1154,6 +1178,10 @@
   "tests/test_hub.py": {
     "bytes": 21706,
     "sha256": "df8b5b28299f2a78e551572aea13c00957cf8da10946963cadfffa0f69a6dc2c"
+  },
+  "tests/test_managed_execution.py": {
+    "bytes": 20084,
+    "sha256": "95e5012caf7fd9e6c476a610d6f17ceeb00722f7cc8476f22ce8ca6cc8586208"
   },
   "tests/test_mcp_authorization.py": {
     "bytes": 4777,

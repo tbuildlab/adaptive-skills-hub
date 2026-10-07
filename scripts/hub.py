@@ -328,12 +328,21 @@ def parser() -> argparse.ArgumentParser:
     for name in ("core-status", "core-cancel"):
         command = sub.add_parser(name, help="Inspect/cancel a Core internal-alpha task")
         command.add_argument("task_dir")
+    from ash.managed_cli import add_commands
+    add_commands(sub)
     return cli
 
 
 def main() -> int:
     cli = parser()
     args = cli.parse_args()
+    if args.command.startswith("managed-"):
+        from ash.managed_cli import run_command
+        from ash.core_host import LocalHookError
+        try:
+            return run_command(args)
+        except (ValueError, LocalHookError, OSError, KeyError, TypeError) as exc:
+            cli.error(str(exc))
     if args.command == "core" or args.command.startswith("core-"):
         from ash.core import CoreBudget, CoreError, prepare_task, read_task, request_cancel, run_task
         from ash.core_host import LocalHookError

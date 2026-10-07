@@ -2,6 +2,21 @@
 
 ## Adaptive AI Capability Hub
 
+## Active product direction — 2026-10-07
+
+Core Alpha 2 is the accepted practical local engine. The next layer is
+[G2-OPENAI — Managed Execution](docs/nexus-g2-openai-managed-execution-v1.md),
+with an opt-in [offline handoff CLI](docs/nexus-g2-openai-managed-use-v1.md).
+Nexus retains orchestration, task authority and independent completion checks.
+The first source slice prepares/imports bounded artifact handoffs; direct
+provider dispatch remains unavailable. It is not a managed-cloud execution claim.
+
+Active roadmap: Core Alpha 2 → G2-OPENAI → G3 → G4 → G6; G5 optional.
+G3 remains Separate Capability Authorization. Self-hosted high-assurance G2
+(Route D/Root R and related Host proof) is DEFERRED and its evidence is preserved.
+Production Positive Host Binding remains ABSENT. Earlier G2 HOLD records below
+remain historical self-hosted evidence, not active managed-execution blockers.
+
 ## Core internal alpha — 2026-10-07
 
 [Core Alpha 2 project guide](docs/nexus-core-alpha2-local-use-v1.md) adds
@@ -18,9 +33,9 @@ The existing planning/advisory/MCP interfaces remain non-executing. This is
 internal product-core capability: production G2 remains **HOLD** and Positive
 Host Binding remains **ABSENT**. The roadmap text below is a historical baseline.
 
-## Current remaining roadmap — owner accepted
+## Historical remaining roadmap — owner accepted 2026-09-13
 
-[Nexus Roadmap V2](docs/nexus-roadmap-v2.md) is the authoritative future plan
+[Nexus Roadmap V2](docs/nexus-roadmap-v2.md) records the accepted historical plan
 after frozen Post-R5 Slice 3C. It defines five required slices and optional/
 conditional G5. G1 — Capability Profiles and Executor Conformance is the only
 recommended next implementation slice and has **NOT STARTED**. A sequential
