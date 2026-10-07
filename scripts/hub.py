@@ -304,12 +304,56 @@ def parser() -> argparse.ArgumentParser:
     plan.add_argument("--hard-context-files", type=int, default=50, help="Hard project-context file ceiling")
     plan.add_argument("--hard-context-kib", type=int, default=512, help="Hard project-context byte ceiling in KiB")
     sub.add_parser("status", help="Show current local index counts")
+    core = sub.add_parser("core-plan", help="Prepare an internal-alpha local hook plan; no execution")
+    core.add_argument("task")
+    core.add_argument("--project", required=True)
+    core.add_argument("--catalog", required=True, help="Reviewed, hash-bound local hook catalog")
+    core.add_argument("--task-dir", required=True, help="New local task-state directory")
+    core.add_argument("--max-commands", type=int, default=12)
+    core.add_argument("--total-seconds", type=float, default=120)
+    core.add_argument("--step-seconds", type=float, default=20)
+    resume = sub.add_parser("core-run", help="Execute/resume the explicitly approved local hook plan")
+    resume.add_argument("task_dir")
+    resume.add_argument("--approve", help="Exact approval SHA-256 printed by core-plan")
+    resume.add_argument("--max-steps", type=int, help="Pause after this many verified steps")
+    for name in ("core-status", "core-cancel"):
+        command = sub.add_parser(name, help="Inspect/cancel a Core internal-alpha task")
+        command.add_argument("task_dir")
     return cli
 
 
 def main() -> int:
     cli = parser()
     args = cli.parse_args()
+    if args.command.startswith("core-"):
+        from ash.core import CoreBudget, CoreError, prepare_task, read_task, request_cancel, run_task
+        from ash.core_host import LocalHookError
+        try:
+            if args.command == "core-plan":
+                state = prepare_task(args.task, Path(args.project), Path(args.catalog), Path(args.task_dir),
+                                     CoreBudget(max_commands=args.max_commands, total_seconds=args.total_seconds,
+                                                step_seconds=args.step_seconds))
+            elif args.command == "core-run":
+                if args.max_steps is not None and args.max_steps < 1:
+                    cli.error("--max-steps must be positive")
+                state = run_task(Path(args.task_dir), approval=args.approve, max_steps=args.max_steps)
+            else:
+                if args.command == "core-cancel":
+                    request_cancel(Path(args.task_dir))
+                state = read_task(Path(args.task_dir))
+            view = {key: state[key] for key in (
+                "task_id", "task", "status", "approval_sha256", "commands_used", "budget",
+                "replans", "completed_steps", "blocker", "artifacts", "receipt")}
+            view["steps"] = [{key: step[key] for key in ("id", "name", "status", "attempts")} for step in state["steps"]]
+            view["current_step"] = state["inflight"] or next((step["id"] for step in state["steps"] if step["status"] != "completed"), None)
+            view["plan_id"] = state["plan"]["plan_id"]
+            print(json.dumps(view, ensure_ascii=False, indent=2))
+            if args.command in {"core-status", "core-cancel"}:
+                return 0
+            successful = {"prepared"} if args.command == "core-plan" else {"paused", "completed"}
+            return 0 if state["status"] in successful else 1
+        except (CoreError, LocalHookError, OSError, ValueError, KeyError, TypeError) as exc:
+            cli.error(str(exc))
     workspace = _workspace(args.workspace)
     if args.command == "rescan":
         index = rescan(workspace, args.extra_root)

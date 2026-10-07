@@ -2,6 +2,16 @@
 
 ## Adaptive AI Capability Hub
 
+## Core internal alpha — 2026-10-07
+
+[Core MVP scope and local usage](docs/nexus-core-internal-alpha-v1.md) documents
+the opt-in `python scripts/nexus.py core-plan` / `core-run` path for reviewed,
+byte-bound local Python Skill hooks. It supports sequential execution, verified
+output handoff, bounded repair/re-selection, persisted checkpoints and resume.
+The existing planning/advisory/MCP interfaces remain non-executing. This is
+internal product-core capability: production G2 remains **HOLD** and Positive
+Host Binding remains **ABSENT**. The roadmap text below is a historical baseline.
+
 ## Current remaining roadmap — owner accepted
 
 [Nexus Roadmap V2](docs/nexus-roadmap-v2.md) is the authoritative future plan
