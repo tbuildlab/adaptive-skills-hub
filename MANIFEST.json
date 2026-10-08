@@ -243,6 +243,14 @@
     "bytes": 161,
     "sha256": "41f14d1805d8779b0173fef2f497db8dd98389bf204bedb682afa3b86eafa970"
   },
+  "diagnostics/g3-d01-rp/future-owner-ui/index.html": {
+    "bytes": 681,
+    "sha256": "fb98931c062979fb62151942c936164bf319b7e87eaf2b75798e503ca7993354"
+  },
+  "diagnostics/g3-d01-rp/future-owner-ui/totp-transient.js": {
+    "bytes": 5281,
+    "sha256": "5ac4b6209727ff2c8308857129f16d21735020bfdf3f2f797c758b8daf33a2be"
+  },
   "diagnostics/g3-d01-rp/lib/adapter.js": {
     "bytes": 1132,
     "sha256": "5aece3c908071e7088c8a63ce86de3ba8a387cf3fb3c867283a90a3a5eb47782"
@@ -258,6 +266,18 @@
   "diagnostics/g3-d01-rp/lib/policy.js": {
     "bytes": 3661,
     "sha256": "d8175e9b8674a84db1c4d54e98ec0028799b4cead09b8614f56bd7ef7e1811c2"
+  },
+  "diagnostics/g3-d01-rp/lib/server/pre-secret-policy.js": {
+    "bytes": 2487,
+    "sha256": "4bed55b4f50fe0290d8db0990b2e14c9956d08ea9119b4ed29af9638f54afa47"
+  },
+  "diagnostics/g3-d01-rp/lib/server/provider-registration.js": {
+    "bytes": 2912,
+    "sha256": "7c130c0cfb0b458730cda08acdd85cc594814d10d171b9b63d3a932c07dbbdd5"
+  },
+  "diagnostics/g3-d01-rp/lib/server/stytch-transport.js": {
+    "bytes": 13407,
+    "sha256": "9ffd7aecb2f003ca77d17696907efe1518e78fd95546f5c9a72eea79c71dd2f5"
   },
   "diagnostics/g3-d01-rp/lib/stytch-identity.js": {
     "bytes": 2920,
@@ -298,6 +318,10 @@
   "diagnostics/g3-d01-rp/tests/model.test.js": {
     "bytes": 10567,
     "sha256": "df49f01f4b0e94c15415385be59c31283425342ca3c1763502f833f8cb0a2b13"
+  },
+  "diagnostics/g3-d01-rp/tests/pre-secret.test.js": {
+    "bytes": 20794,
+    "sha256": "119a9e8e8c222d860803b8ab0b1a78309d72f1020df82affb3c778d3af70deec"
   },
   "diagnostics/g3-d01-rp/tests/stytch-adapter.test.js": {
     "bytes": 22476,
@@ -714,6 +738,14 @@
   "docs/nexus-g3-d01-owner-reported-disabled-deployment-v1.md": {
     "bytes": 1712,
     "sha256": "d72295b473d0612e6dd4675e6acbd18e060c924f24b57b779c40118d8536f19d"
+  },
+  "docs/nexus-g3-d01-pre-secret-readiness-closure-v1.md": {
+    "bytes": 15572,
+    "sha256": "c70ae4e466345aaaa26ee1693d0370f5b811ccc50f72ff2a95c114f0f661e1d6"
+  },
+  "docs/nexus-g3-d01-vercel-secret-custody-runbook-v1.md": {
+    "bytes": 6453,
+    "sha256": "519d13a821a7a663b65743829e7130c695b916152987577169caa1126b1d4a9a"
   },
   "docs/nexus-g3-host-approval-bridge-contract-v1.md": {
     "bytes": 12031,
