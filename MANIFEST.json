@@ -259,6 +259,18 @@
     "bytes": 3661,
     "sha256": "d8175e9b8674a84db1c4d54e98ec0028799b4cead09b8614f56bd7ef7e1811c2"
   },
+  "diagnostics/g3-d01-rp/lib/stytch-identity.js": {
+    "bytes": 2920,
+    "sha256": "6b711b0232b3890c7ad56a4db8265a55a752b191545fcdd8cbb00c784c7c0047"
+  },
+  "diagnostics/g3-d01-rp/lib/stytch-live-adapter.js": {
+    "bytes": 12681,
+    "sha256": "1d5eb800daf393d5cb7c05f7ed1f2dc2883cd8b8e7f50dfca31bb070de243478"
+  },
+  "diagnostics/g3-d01-rp/lib/stytch-projection.js": {
+    "bytes": 4586,
+    "sha256": "637e48f727706bc498f4ceb8abafc4103a3a79ee8efb609fe1901e0d2bea0d42"
+  },
   "diagnostics/g3-d01-rp/package.json": {
     "bytes": 217,
     "sha256": "12f6af3f89d6079dcc7d835f7d13ac6f53030fb6d2a5dc2ac136b2f556b4e35b"
@@ -286,6 +298,14 @@
   "diagnostics/g3-d01-rp/tests/model.test.js": {
     "bytes": 10567,
     "sha256": "df49f01f4b0e94c15415385be59c31283425342ca3c1763502f833f8cb0a2b13"
+  },
+  "diagnostics/g3-d01-rp/tests/stytch-adapter.test.js": {
+    "bytes": 22476,
+    "sha256": "c1233fee4884c374d3a786da94f88c09b479cd8fca5354ff4664759b568c2bf7"
+  },
+  "diagnostics/g3-d01-rp/tests/stytch-boundary.test.js": {
+    "bytes": 3656,
+    "sha256": "a72822580e166837a4b0691ed7f05af13f8248d6e3853e357cdcbb0ddac37997"
   },
   "diagnostics/g3-d01-rp/vercel.json": {
     "bytes": 724,
@@ -686,6 +706,14 @@
   "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
     "bytes": 20284,
     "sha256": "b8b5b4d9f4d339fa8f301b3f1121ebe1fb76339f54ce01066993fc4a78209323"
+  },
+  "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
+    "bytes": 19430,
+    "sha256": "540364d0bd776b7b8a5d0dcfbb46af39af89199124b6bcc313ca54f67fb2e72f"
+  },
+  "docs/nexus-g3-d01-owner-reported-disabled-deployment-v1.md": {
+    "bytes": 1712,
+    "sha256": "d72295b473d0612e6dd4675e6acbd18e060c924f24b57b779c40118d8536f19d"
   },
   "docs/nexus-g3-host-approval-bridge-contract-v1.md": {
     "bytes": 12031,
