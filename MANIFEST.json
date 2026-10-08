@@ -619,6 +619,10 @@
     "bytes": 12539,
     "sha256": "5d921eef87cabacc9e6f00f8773d4ac06f77a654dc641aaa427c41348f45dcc6"
   },
+  "docs/nexus-g3-reuse-survey-v1.md": {
+    "bytes": 59772,
+    "sha256": "551791adac2516cad2acc318d7d28fa19a4b859d2c1cf99dab19b803c9ca372c"
+  },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
     "sha256": "dcf9582db59547bd3f5605b63ddb0964e8ea615676f908b02c9507b8bafc912d"
