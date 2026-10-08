@@ -635,6 +635,10 @@
     "bytes": 12031,
     "sha256": "d685b42f1bebb4d7fc9902f07c091c2ba1e747fc769b8bf74ac83d71c887ca1c"
   },
+  "docs/nexus-g3-live-qualification-setup-plan-v1.md": {
+    "bytes": 46921,
+    "sha256": "6ff9dcfdf9ae65da634fa0aa0b2cbc150e2e6c2eab9993afdac4eb301136f7a7"
+  },
   "docs/nexus-g3-reuse-survey-v1.md": {
     "bytes": 59772,
     "sha256": "551791adac2516cad2acc318d7d28fa19a4b859d2c1cf99dab19b803c9ca372c"
