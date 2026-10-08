@@ -655,6 +655,10 @@
     "bytes": 33190,
     "sha256": "738aab972ede0e9127e116d81beaf72c68cd48efcaa62380027b5d08467f5558"
   },
+  "docs/nexus-g3-u1-d03-offline-semantic-closure-v1.md": {
+    "bytes": 7075,
+    "sha256": "3ef9699f2e5fe83674808baeb04496649b167b688c10e6406ec8a0e0d6ad0d2e"
+  },
   "docs/nexus-g3-u1-d03-recovery-fence-qualification-v1.md": {
     "bytes": 11489,
     "sha256": "c3947d8b78f1bc3d2da0e942f1bf38243dca94fd7cbea30776f1ef5f8d0bc9e9"
@@ -683,6 +687,10 @@
     "bytes": 47507,
     "sha256": "4d0f7b791882fe9618c97c6b744270292a020dbacad6b24863a9896e8e742b9c"
   },
+  "docs/nexus-g3-u1-n01-protected-control-state-v1.md": {
+    "bytes": 18245,
+    "sha256": "df1358f4480c8eadde4330678e78b41d252cd3eda32646961901a181c5cb596d"
+  },
   "docs/nexus-g3-u1-n02-minimal-confirmation-architecture-amendment-v1.md": {
     "bytes": 43353,
     "sha256": "dbbaa1982e851b1ef21f99f5bd1d038a9156f157fb503f547ece316ae172735c"
@@ -699,9 +707,21 @@
     "bytes": 14156,
     "sha256": "c57791bfc99a0ba94479edabea6f03839f85e4e1658d63a43bc2d44fc8d63056"
   },
+  "docs/nexus-g3-u1-second-offline-closure-status-v1.md": {
+    "bytes": 10290,
+    "sha256": "b2c5eee4b5641e180b9e35f948268684606dd1b7a85a49e000f4604f811f6dac"
+  },
   "docs/nexus-g3-u1-stytch-d05-compatibility-review-v1.md": {
     "bytes": 5112,
     "sha256": "c8431c9cb782be8a72e10e6edfc03b7083e055e94997a5357011140f0ea4565a"
+  },
+  "docs/nexus-g3-u1-stytch-principal-closure-v1.md": {
+    "bytes": 7071,
+    "sha256": "bc28f1e8a8bea9f2edecd036641a24cf761222a0f1bf43fdeadd667dac39830e"
+  },
+  "docs/nexus-g3-u1-target-dispatch-contracts-v1.md": {
+    "bytes": 6705,
+    "sha256": "57da4278b37b3448588fcf16166ea7569aacf8958b50a26bb70b8c16ea0173e8"
   },
   "docs/nexus-g3-u1-trusted-admission-architecture-v1.md": {
     "bytes": 26568,
@@ -1151,6 +1171,10 @@
     "bytes": 4261,
     "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
   },
+  "scripts/g3_offline_control.py": {
+    "bytes": 26489,
+    "sha256": "28e414dc70cf2a0fce32e6a7eeab48459010bc19d6c4cf0f00eb1d3f3013962e"
+  },
   "scripts/g3_production_metadata.py": {
     "bytes": 19947,
     "sha256": "e7c6753aef2c6ea308372666ca81f62ff66dda5718e2fe70ec3f396b66f4ef67"
@@ -1290,6 +1314,10 @@
   "tests/test_g3_host_approval_bridge.py": {
     "bytes": 20770,
     "sha256": "61f732562fa982f2b71776092dc91bdb9cf27f250cec0f55adcc1c78277d12d9"
+  },
+  "tests/test_g3_offline_control.py": {
+    "bytes": 19333,
+    "sha256": "93ca0a9a46588932a741f0bb018db28a5d61961b92c2c918f485ffcf7f379f27"
   },
   "tests/test_g3_production_metadata.py": {
     "bytes": 19911,
