@@ -639,9 +639,73 @@
     "bytes": 59772,
     "sha256": "551791adac2516cad2acc318d7d28fa19a4b859d2c1cf99dab19b803c9ca372c"
   },
+  "docs/nexus-g3-u1-architecture-consistency-review-v1.md": {
+    "bytes": 8040,
+    "sha256": "ce6591c4726f7b8376c937f1198d3b8bd7a3f9055fd52c4c99dbf36bc0d1bd26"
+  },
+  "docs/nexus-g3-u1-d01-bounded-owner-context-amendment-v1.md": {
+    "bytes": 8807,
+    "sha256": "120f061aea8de04432d5c89c4c137dc0cfbf3cf2ad31a11f4b0e3c031e33c17c"
+  },
+  "docs/nexus-g3-u1-d01-identity-lifecycle-qualification-v1.md": {
+    "bytes": 50596,
+    "sha256": "15bcdcf5dc9307ebc78a509bfb01ec70efad3ff80ffa1089c1ba427737bf7b8d"
+  },
+  "docs/nexus-g3-u1-d02-host-confirmation-qualification-v1.md": {
+    "bytes": 33190,
+    "sha256": "738aab972ede0e9127e116d81beaf72c68cd48efcaa62380027b5d08467f5558"
+  },
+  "docs/nexus-g3-u1-d03-recovery-fence-qualification-v1.md": {
+    "bytes": 11489,
+    "sha256": "c3947d8b78f1bc3d2da0e942f1bf38243dca94fd7cbea30776f1ef5f8d0bc9e9"
+  },
+  "docs/nexus-g3-u1-d04-executor-exclusion-and-mediated-dispatch-v1.md": {
+    "bytes": 11057,
+    "sha256": "e6d5d67b9263d7b727893c311c2feb95774f602ed7b7f24fd2b39f48e8d64f5e"
+  },
+  "docs/nexus-g3-u1-d05-production-authority-contracts-v1.md": {
+    "bytes": 52841,
+    "sha256": "a85b8f02324fe02eabe1117a103a37da359b8f613f84969367216a38953f1a97"
+  },
+  "docs/nexus-g3-u1-host-authority-qualification-v1.md": {
+    "bytes": 33587,
+    "sha256": "d1d567b0c9e3014213b4e3294424f468bf38ddb83ed49629952d7dae80428377"
+  },
+  "docs/nexus-g3-u1-implementation-readiness-plan-v1.md": {
+    "bytes": 7134,
+    "sha256": "d1f5a4e2c13a6c8feaab2a7441aca5485d8d774edefe1cbedd2eae942765b047"
+  },
+  "docs/nexus-g3-u1-manifest-path-rule-review-v1.md": {
+    "bytes": 2575,
+    "sha256": "aed53a6d14a2f924dc6c7efcb06eed4e482c1a4f0739b91ef9955272a0859fa1"
+  },
+  "docs/nexus-g3-u1-minimal-authority-architecture-v1.md": {
+    "bytes": 47507,
+    "sha256": "4d0f7b791882fe9618c97c6b744270292a020dbacad6b24863a9896e8e742b9c"
+  },
+  "docs/nexus-g3-u1-n02-minimal-confirmation-architecture-amendment-v1.md": {
+    "bytes": 43353,
+    "sha256": "dbbaa1982e851b1ef21f99f5bd1d038a9156f157fb503f547ece316ae172735c"
+  },
   "docs/nexus-g3-u1-openai-host-reuse-probe-v1.md": {
     "bytes": 12321,
     "sha256": "ab58af652f29d643e21be13c0d2806de1d7d08cf0c2ac5c5f8ddfd018eeea43b"
+  },
+  "docs/nexus-g3-u1-option-c-deployment-qualification-v1.md": {
+    "bytes": 54626,
+    "sha256": "3e7a0d754874281c93ef8a12ac8e6a1f8f7d5150582e0334883d2a1b0353001c"
+  },
+  "docs/nexus-g3-u1-overnight-consolidated-status-v1.md": {
+    "bytes": 14156,
+    "sha256": "c57791bfc99a0ba94479edabea6f03839f85e4e1658d63a43bc2d44fc8d63056"
+  },
+  "docs/nexus-g3-u1-stytch-d05-compatibility-review-v1.md": {
+    "bytes": 5112,
+    "sha256": "c8431c9cb782be8a72e10e6edfc03b7083e055e94997a5357011140f0ea4565a"
+  },
+  "docs/nexus-g3-u1-trusted-admission-architecture-v1.md": {
+    "bytes": 26568,
+    "sha256": "7b859255dee665b64376302e2910023fe8f45bb464335c426c61ccb69e31ed29"
   },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
@@ -1087,6 +1151,10 @@
     "bytes": 4261,
     "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
   },
+  "scripts/g3_production_metadata.py": {
+    "bytes": 19947,
+    "sha256": "e7c6753aef2c6ea308372666ca81f62ff66dda5718e2fe70ec3f396b66f4ef67"
+  },
   "scripts/hub.py": {
     "bytes": 24957,
     "sha256": "f18b618ae4b836d12f1085021e8a2cc66f59e2ef1ece8e482efea1d32bceeb03"
@@ -1222,6 +1290,10 @@
   "tests/test_g3_host_approval_bridge.py": {
     "bytes": 20770,
     "sha256": "61f732562fa982f2b71776092dc91bdb9cf27f250cec0f55adcc1c78277d12d9"
+  },
+  "tests/test_g3_production_metadata.py": {
+    "bytes": 19911,
+    "sha256": "62a8ff584c8fc2f61c687097a08aa6fd7332f37345fad3c660699668e6484ee9"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70068,
