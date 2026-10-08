@@ -95,6 +95,10 @@
     "bytes": 17049,
     "sha256": "c1702bcf0a2fd751cf7b48879736eefccf9c98c23b0dfe231a80346f0974658b"
   },
+  "ash/g3_authorization.py": {
+    "bytes": 15700,
+    "sha256": "d581c7b996c5f9d2c178f2a75a1e7d94f5ac1f3c21131aa8dc13d28dce2f7005"
+  },
   "ash/managed_cli.py": {
     "bytes": 2781,
     "sha256": "8b9621be5bedaf5a90e957a0fc876f14d88fe2698426a17aff663c0de60c74a3"
@@ -619,9 +623,17 @@
     "bytes": 12539,
     "sha256": "5d921eef87cabacc9e6f00f8773d4ac06f77a654dc641aaa427c41348f45dcc6"
   },
+  "docs/nexus-g3-authorization-contracts-v1.md": {
+    "bytes": 13051,
+    "sha256": "eab09a8438c3bb2aa76ba22e941513c177032c608d4183a8051598c8d02f8d51"
+  },
   "docs/nexus-g3-reuse-survey-v1.md": {
     "bytes": 59772,
     "sha256": "551791adac2516cad2acc318d7d28fa19a4b859d2c1cf99dab19b803c9ca372c"
+  },
+  "docs/nexus-g3-u1-openai-host-reuse-probe-v1.md": {
+    "bytes": 12321,
+    "sha256": "ab58af652f29d643e21be13c0d2806de1d7d08cf0c2ac5c5f8ddfd018eeea43b"
   },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
@@ -1127,6 +1139,10 @@
     "bytes": 7146,
     "sha256": "99305855782e8de5384bfdab28bba44b3a4fdf0b91a794b098e80b45a9c5f8e9"
   },
+  "tests/g3_fixtures.py": {
+    "bytes": 3759,
+    "sha256": "2cc66562dadb2dd7078889fe48a71008c37db96e31b68e554a9c1eebf5c97a8e"
+  },
   "tests/test_agent_contract.py": {
     "bytes": 3533,
     "sha256": "6147cb58047919de7091866a0bdba0c349c48039e35d971819ecf840ed56d21f"
@@ -1190,6 +1206,10 @@
   "tests/test_g1_selection.py": {
     "bytes": 17151,
     "sha256": "e86b13e70f8616f43775922d03228a1b279314fc5fcf8853e5a5f42541aa1d61"
+  },
+  "tests/test_g3_authorization.py": {
+    "bytes": 17647,
+    "sha256": "6993b2d8225d3610e2a4b9b0787868110cd53fb43c4b4ecadeca2c3b252fae9e"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70068,
