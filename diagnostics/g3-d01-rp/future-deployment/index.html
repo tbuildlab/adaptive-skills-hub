@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="referrer" content="no-referrer">
+<title>Nexus D01 diagnostic — disabled by default</title><main>
+<h1>NEXUS_G3_D01_DIAGNOSTIC_ONLY</h1><p>AUTHORITY = NONE · REAL_ADMISSION = DISABLED</p>
+<p id="status">FAKE_DISABLED · No live action authorized</p>
+<fieldset id="operations" disabled><legend>Disposable Owner qualification only</legend>
+<button data-action="EMAIL_OTP_SEND">Send registered Owner email OTP</button>
+<input id="email-code" type="text" inputmode="numeric" maxlength="6" autocomplete="off" aria-label="Disposable email OTP">
+<button data-action="EMAIL_OTP_AUTHENTICATE">Authenticate OTP</button>
+<button data-action="TOTP_CREATE">Prepare transient TOTP</button>
+<button id="show-owner">Display transient Owner channel</button>
+<button data-action="PAGE">PAGE observation</button><button data-action="DECISION_POST_SIMULATION">Decision simulation</button>
+<button data-action="RECEIPT_SIMULATION">Receipt simulation</button><button data-action="INTENT_SIMULATION">Intent simulation</button>
+<button data-action="CLAIM_SIMULATION">Claim simulation</button><button data-action="SESSION_REVOKE_EXACT">Revoke exact disposable session</button>
+</fieldset><button data-action="LOCAL_LOGOUT">Local logout</button><button data-action="ACCOUNT_SWITCH">Retire on switch</button>
+<pre id="evidence"></pre></main><script type="module" src="/app.js"></script></html>

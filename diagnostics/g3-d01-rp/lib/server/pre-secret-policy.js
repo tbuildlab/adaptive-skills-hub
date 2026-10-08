@@ -39,7 +39,10 @@ export function disabledOperations() {
 export function liveSelectionAllowed(configuration, registration) {
   // Do not inspect arguments, getters or environment while either build gate is off.
   if (!CODE_REVIEWED_LIVE_ENABLED || !DEPLOYMENT_REGISTRATION_ENABLED) return false;
-  return configuration?.mode === 'OWNER_REVIEWED_TEST_DIAGNOSTIC'
+  return configuration?.mode === 'D01_DIAGNOSTIC_LIVE_STYTCH'
+    && configuration?.deployment_tier === 'PRODUCTION'
+    && configuration?.origin === 'https://nexus-g3-qual.vercel.app'
+    && configuration?.registration_generation === registration?.application_generation
     && configuration?.deployment_revision === registration?.deployment_revision
     && registration?.source === 'OWNER_REVIEWED';
 }

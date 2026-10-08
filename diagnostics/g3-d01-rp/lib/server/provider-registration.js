@@ -20,6 +20,19 @@ function valid(v, source) {
     && /^[^\s@]+@[^\s@]+$/.test(v.delivery_email);
 }
 export function validateReviewedRegistration(value) { return valid(value, 'OWNER_REVIEWED'); }
+export function registerReviewedDeployment(value) {
+  if (!validateReviewedRegistration(value)) return null;
+  const copy = structuredClone(value); Object.freeze(copy.factors); Object.freeze(copy);
+  const handle = Object.freeze({ kind: 'REVIEWED_REGISTRATION', toJSON() { return { authority: 'NONE' }; } });
+  records.set(handle, copy); return handle;
+}
+export function createReviewedCurrentControl(handle) {
+  const r = records.get(handle);
+  if (!r || r.source !== 'OWNER_REVIEWED') return null;
+  const current = Object.freeze(Object.fromEntries(CONTROL_KEYS.map(k => [k, r[k]])));
+  const control = Object.freeze({ kind: 'REVIEWED_DEPLOYMENT_CONTROL', toJSON() { return { authority: 'NONE' }; } });
+  controls.set(control, current); return control;
+}
 export function createOfflineRegistration(value) {
   if (!valid(value, 'OFFLINE_SYNTHETIC') || !value.owner_user_id.startsWith('fixture-')
       || !value.delivery_email.endsWith('@example.invalid')) return null;

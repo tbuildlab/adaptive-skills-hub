@@ -31,6 +31,10 @@ export function offlineCustodyMatches(handle, registration) {
   const value = custody.get(handle); const r = registrationRecord(registration);
   return !!value && value.fixture === true && value.project === r?.project_id;
 }
+export function protectedCustodyMatches(handle, registration) {
+  const value = custody.get(handle); const r = registrationRecord(registration);
+  return !!value && value.fixture === false && r?.source === 'OWNER_REVIEWED' && value.project === r.project_id;
+}
 export function authorizeFixedRequest(handle, request) {
   const value = custody.get(handle);
   if (!value || request.hostname !== 'test.stytch.com' || request.protocol !== 'https:'

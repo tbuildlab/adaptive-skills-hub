@@ -1,0 +1,7 @@
+{
+  "name": "nexus-g3-d01-disabled-assembly",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "24.x" },
+  "dependencies": {}
+}

@@ -243,6 +243,30 @@
     "bytes": 161,
     "sha256": "41f14d1805d8779b0173fef2f497db8dd98389bf204bedb682afa3b86eafa970"
   },
+  "diagnostics/g3-d01-rp/future-deployment/app.js": {
+    "bytes": 2081,
+    "sha256": "340bbe76f15af98a9a07903a4a2e4aa3b22d71c6e2c1604170568f09334f99df"
+  },
+  "diagnostics/g3-d01-rp/future-deployment/diagnostic-entry.js": {
+    "bytes": 121,
+    "sha256": "cae0802c8bd2e1e62a73ad3c9ddc2ce23ab7bc28420abb2f209171a65e4466d4"
+  },
+  "diagnostics/g3-d01-rp/future-deployment/index.html": {
+    "bytes": 1433,
+    "sha256": "899839c32d1fca98997f4a890846de35189e472ef06994c7ffbb99a26095c9d9"
+  },
+  "diagnostics/g3-d01-rp/future-deployment/owner-transient.js": {
+    "bytes": 1568,
+    "sha256": "21968c6a5eb1a55cb784dc23526039a9379202c63fd78bc02a2a32f9fa1ff7c6"
+  },
+  "diagnostics/g3-d01-rp/future-deployment/package.json": {
+    "bytes": 141,
+    "sha256": "e4e6a7e8176f0138e2b31954b29ea77026b7629ba359af110fcfab0807fcc4ce"
+  },
+  "diagnostics/g3-d01-rp/future-deployment/vercel.json": {
+    "bytes": 611,
+    "sha256": "cbd5fb25d6a43d674d243ddd45e4eb890aca136f0f5405d43be244be3963a272"
+  },
   "diagnostics/g3-d01-rp/future-owner-ui/index.html": {
     "bytes": 681,
     "sha256": "fb98931c062979fb62151942c936164bf319b7e87eaf2b75798e503ca7993354"
@@ -267,17 +291,37 @@
     "bytes": 3661,
     "sha256": "d8175e9b8674a84db1c4d54e98ec0028799b4cead09b8614f56bd7ef7e1811c2"
   },
+  "diagnostics/g3-d01-rp/lib/server/custody-dry-run.js": {
+    "bytes": 1310,
+    "sha256": "e7211721bdfb36acc793ca59deda1d17f54465b272b22cb59dfe5d97bb2eda51"
+  },
+  "diagnostics/g3-d01-rp/lib/server/deployment-input.js": {
+    "bytes": 477,
+    "sha256": "51312beebfee500860a30c9524e656408926dba8a3487d60dffa0578df8b6db3"
+  },
+  "diagnostics/g3-d01-rp/lib/server/diagnostic-service.js": {
+    "bytes": 9081,
+    "sha256": "c156c25d4eb0b489b3ea432f383704d2f48e0f1ef710f6c99a4d654a9e6affa7"
+  },
+  "diagnostics/g3-d01-rp/lib/server/owner-channel.js": {
+    "bytes": 2274,
+    "sha256": "1a0653105efc39cf799bffce176e557349db911037aa6c2305d5402a7ba27542"
+  },
+  "diagnostics/g3-d01-rp/lib/server/pinned-identity.js": {
+    "bytes": 1865,
+    "sha256": "2a2380ae8ec58dc8f251e99c9fd1e943fda96d8f6358a2bd0263739aefad0480"
+  },
   "diagnostics/g3-d01-rp/lib/server/pre-secret-policy.js": {
-    "bytes": 2487,
-    "sha256": "4bed55b4f50fe0290d8db0990b2e14c9956d08ea9119b4ed29af9638f54afa47"
+    "bytes": 2693,
+    "sha256": "622fe03874769aba054510fb6639be28427cc402550f4bd459978cbf80e6e415"
   },
   "diagnostics/g3-d01-rp/lib/server/provider-registration.js": {
-    "bytes": 2912,
-    "sha256": "7c130c0cfb0b458730cda08acdd85cc594814d10d171b9b63d3a932c07dbbdd5"
+    "bytes": 3668,
+    "sha256": "dc783be4c6e6f0cd2b54132c9663021c44b2207ff2d925a63e79a72f3a606604"
   },
   "diagnostics/g3-d01-rp/lib/server/stytch-transport.js": {
-    "bytes": 13407,
-    "sha256": "9ffd7aecb2f003ca77d17696907efe1518e78fd95546f5c9a72eea79c71dd2f5"
+    "bytes": 18849,
+    "sha256": "bd7486c3b4ff5731b9c7b9b091aa2eb7d2a15bd41772fa5441441d155cbc2620"
   },
   "diagnostics/g3-d01-rp/lib/stytch-identity.js": {
     "bytes": 2920,
@@ -307,6 +351,10 @@
     "bytes": 2334,
     "sha256": "a0f122906be1399747d303197eb7959c12ec485d81dc42a3572b276e06fc4592"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_deployment.py": {
+    "bytes": 7701,
+    "sha256": "1721cf7a2b830915fa0c1b5fb9f7ac736448aadea746837440333720f64eab72"
+  },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
     "sha256": "8502fadc6eb37d50f9e8e0a04d92430c0b19aa896235d216a83d94247d6e785d"
@@ -314,6 +362,10 @@
   "diagnostics/g3-d01-rp/tests/http.test.js": {
     "bytes": 6815,
     "sha256": "b178810930df2ec339b71891e56ec263fe6e36c236e116ab7727513f1bc9a1a6"
+  },
+  "diagnostics/g3-d01-rp/tests/integration.test.js": {
+    "bytes": 22361,
+    "sha256": "38aa1404a2ecad3a392e23708baec07c31328751b0bcc0c00912826077aa3d63"
   },
   "diagnostics/g3-d01-rp/tests/model.test.js": {
     "bytes": 10567,
@@ -739,9 +791,17 @@
     "bytes": 1712,
     "sha256": "d72295b473d0612e6dd4675e6acbd18e060c924f24b57b779c40118d8536f19d"
   },
+  "docs/nexus-g3-d01-pre-secret-integration-closure-v1.md": {
+    "bytes": 22081,
+    "sha256": "29a902372b00b8cc345a793e5a6aa2111bf7384bfba079f02c47f134d6d712d7"
+  },
   "docs/nexus-g3-d01-pre-secret-readiness-closure-v1.md": {
     "bytes": 15572,
     "sha256": "c70ae4e466345aaaa26ee1693d0370f5b811ccc50f72ff2a95c114f0f661e1d6"
+  },
+  "docs/nexus-g3-d01-secret-custody-integration-runbook-addendum-v1.md": {
+    "bytes": 6563,
+    "sha256": "af38f0d0f3b2df83d6fac56efd46fd82715547e4bfdcd8c635372f3e5909c66e"
   },
   "docs/nexus-g3-d01-vercel-secret-custody-runbook-v1.md": {
     "bytes": 6453,
