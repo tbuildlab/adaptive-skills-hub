@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEXUS_G3_D01_DIAGNOSTIC_ONLY</title>
+  <link rel="stylesheet" href="/app.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+<main>
+  <h1>NEXUS_G3_D01_DIAGNOSTIC_ONLY</h1>
+  <p class="notice">LIVE_DIAGNOSTIC_EVIDENCE_ONLY · AUTHORITY = NONE · REAL_ADMISSION = DISABLED</p>
+  <p>Offline preparation. Live login and provider calls are disabled. No Owner authority is created.</p>
+  <p id="status" role="status">Loading disabled diagnostic status…</p>
+  <section aria-labelledby="factors"><h2 id="factors">Future factor workflow</h2>
+    <fieldset disabled><legend>Email OTP → same user/session → TOTP</legend>
+      <label>Email (future protected flow only)<input type="email" autocomplete="off"></label>
+      <button type="button">Send email OTP — disabled</button>
+      <label>Email OTP<input type="text" autocomplete="off"></label>
+      <button type="button">Verify primary factor — disabled</button>
+      <button type="button">Start TOTP enrollment — disabled</button>
+      <label>TOTP code<input type="text" autocomplete="off"></label>
+      <button type="button">Verify TOTP in same session — disabled</button>
+    </fieldset>
+    <p>No QR, seed, recovery code or real OTP is generated or collected. Factor freshness: UNVERIFIED.</p>
+  </section>
+  <section aria-labelledby="observations"><h2 id="observations">Diagnostic observation points</h2>
+    <p>PAGE → DECISION_POST_SIMULATION → RECEIPT_SIMULATION → INTENT_SIMULATION → CLAIM_SIMULATION</p>
+    <p>These are labels only. No receipt, grant, revocation, intent, attempt or effect is issued.</p>
+    <button id="recheck" type="button">Check disabled adapter gate</button>
+    <button id="logout" type="button">Retire local diagnostic page context</button>
+    <button id="switch" type="button">Simulate local account-switch invalidation</button>
+    <pre id="result" aria-label="Sanitized diagnostic observation"></pre>
+  </section>
+  <p>Five-minute absolute bound · no refresh · no restart reuse · one challenge/terminal lineage in offline model.</p>
+  <noscript>NEXUS_G3_D01_DIAGNOSTIC_ONLY: JavaScript unavailable. All provider paths remain disabled.</noscript>
+</main>
+</body>
+</html>

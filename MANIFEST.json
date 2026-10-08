@@ -239,6 +239,58 @@
     "bytes": 8319,
     "sha256": "950f9de436f48fd8578b1f3fdbb3cf5be901f3843edb3d24a24428689c82ac0f"
   },
+  "diagnostics/g3-d01-rp/api/diagnostic.js": {
+    "bytes": 161,
+    "sha256": "41f14d1805d8779b0173fef2f497db8dd98389bf204bedb682afa3b86eafa970"
+  },
+  "diagnostics/g3-d01-rp/lib/adapter.js": {
+    "bytes": 1132,
+    "sha256": "5aece3c908071e7088c8a63ce86de3ba8a387cf3fb3c867283a90a3a5eb47782"
+  },
+  "diagnostics/g3-d01-rp/lib/http.js": {
+    "bytes": 5082,
+    "sha256": "befe3d2574ca0b4ba1e1c615771c27021f14d57b9b7744d35fcc13960393d5bc"
+  },
+  "diagnostics/g3-d01-rp/lib/model.js": {
+    "bytes": 10199,
+    "sha256": "eb64b93aa2e73af38e1642bf5b3c2fdce7679c406de8584b879fb043b90867b5"
+  },
+  "diagnostics/g3-d01-rp/lib/policy.js": {
+    "bytes": 3661,
+    "sha256": "d8175e9b8674a84db1c4d54e98ec0028799b4cead09b8614f56bd7ef7e1811c2"
+  },
+  "diagnostics/g3-d01-rp/package.json": {
+    "bytes": 217,
+    "sha256": "12f6af3f89d6079dcc7d835f7d13ac6f53030fb6d2a5dc2ac136b2f556b4e35b"
+  },
+  "diagnostics/g3-d01-rp/public/app.css": {
+    "bytes": 802,
+    "sha256": "e270132f53373b86d21cef8bc474be3b9716b1a7a3e9bdae762c245ae3feaa77"
+  },
+  "diagnostics/g3-d01-rp/public/app.js": {
+    "bytes": 2182,
+    "sha256": "115c3802329cfb61498f559611de9015241df6892941a2fcedd65a05900f2245"
+  },
+  "diagnostics/g3-d01-rp/public/index.html": {
+    "bytes": 2334,
+    "sha256": "a0f122906be1399747d303197eb7959c12ec485d81dc42a3572b276e06fc4592"
+  },
+  "diagnostics/g3-d01-rp/tests/boundary.test.js": {
+    "bytes": 4493,
+    "sha256": "8502fadc6eb37d50f9e8e0a04d92430c0b19aa896235d216a83d94247d6e785d"
+  },
+  "diagnostics/g3-d01-rp/tests/http.test.js": {
+    "bytes": 6815,
+    "sha256": "b178810930df2ec339b71891e56ec263fe6e36c236e116ab7727513f1bc9a1a6"
+  },
+  "diagnostics/g3-d01-rp/tests/model.test.js": {
+    "bytes": 10567,
+    "sha256": "df49f01f4b0e94c15415385be59c31283425342ca3c1763502f833f8cb0a2b13"
+  },
+  "diagnostics/g3-d01-rp/vercel.json": {
+    "bytes": 724,
+    "sha256": "6a820f3b95847900367c964aa65c8e3e0983bbf8c985e01280fdef413593bfad"
+  },
   "docs/architecture.md": {
     "bytes": 6380,
     "sha256": "db10fb1018454110bf8010b1ccba3ba3c7b924e88d7dd4aec6fc5b2d4de9b6e0"
@@ -630,6 +682,10 @@
   "docs/nexus-g3-authorization-contracts-v1.md": {
     "bytes": 13051,
     "sha256": "eab09a8438c3bb2aa76ba22e941513c177032c608d4183a8051598c8d02f8d51"
+  },
+  "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
+    "bytes": 20284,
+    "sha256": "b8b5b4d9f4d339fa8f301b3f1121ebe1fb76339f54ce01066993fc4a78209323"
   },
   "docs/nexus-g3-host-approval-bridge-contract-v1.md": {
     "bytes": 12031,

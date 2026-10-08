@@ -1,0 +1,9 @@
+{
+  "name": "nexus-g3-d01-diagnostic-only",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": "24.x" },
+  "scripts": { "test": "node --test tests/*.test.js" },
+  "dependencies": {}
+}
