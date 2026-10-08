@@ -233,6 +233,7 @@ class OfflineProtocol {
   EMAIL_OTP_SEND(input) { return this.#run(async () => {
     if (input !== undefined || this.#method || this.#session) throw new ClosedFailure('REQUEST');
     const r = registrationRecord(this.#registration);
+    if (typeof r.delivery_email !== 'string' || !/^[^\s@]+@[^\s@]+$/.test(r.delivery_email)) throw new ClosedFailure('REGISTRATION');
     const b = await this.#exchange('EMAIL_OTP_SEND', { email: r.delivery_email, expiration_minutes: 5, locale: 'en' });
     if (b.user_id !== r.owner_user_id || !identifier(b.email_id)) throw new ClosedFailure('IDENTITY');
     this.#method = b.email_id;

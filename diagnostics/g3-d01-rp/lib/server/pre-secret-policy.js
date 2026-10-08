@@ -44,5 +44,7 @@ export function liveSelectionAllowed(configuration, registration) {
     && configuration?.origin === 'https://nexus-g3-qual.vercel.app'
     && configuration?.registration_generation === registration?.application_generation
     && configuration?.deployment_revision === registration?.deployment_revision
-    && registration?.source === 'OWNER_REVIEWED';
+    && registration?.source === 'OWNER_REVIEWED'
+    && typeof registration?.delivery_email === 'string'
+    && /^[^\s@]+@[^\s@]+$/.test(registration.delivery_email);
 }

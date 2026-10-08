@@ -72,7 +72,16 @@ def build(output):
     policy=blobs['lib/server/pre-secret-policy.js'].decode()
     require('CODE_REVIEWED_LIVE_ENABLED = false' in policy and 'DEPLOYMENT_REGISTRATION_ENABLED = false' in policy, 'hard gates')
     require("mode: 'FAKE_DISABLED'" in blobs['lib/server/deployment-input.js'].decode(), 'default mode')
-    require('provider: null, keyset: null' in blobs['lib/server/deployment-input.js'].decode(), 'unregistered default')
+    require('registration_generation: 1, provider, keyset' in blobs['lib/server/deployment-input.js'].decode(), 'reviewed disabled registration')
+    registration_hash=hashlib.sha256(blobs['lib/server/deployment-input.js']).hexdigest()
+    # Exact native identifiers/public pin belong only to server-side input, never
+    # public assets or sanitized diagnostic evidence. Only match in memory.
+    registration_text=blobs['lib/server/deployment-input.js'].decode()
+    native_ids=re.findall(r'(?:project|user)-test-[a-f0-9-]{36}',registration_text)
+    for name,blob in blobs.items():
+        if name.startswith('public/'):
+            require(not any(value.encode() in blob for value in native_ids), 'public native identifier')
+            require(b'OWNER_REVIEWED_STYTCH_TEST_PROJECT_KEYSET' not in blob, 'public key provenance')
     for member in blobs:
         require(not any(p in {'.env','.vercel','state','ash','docs','tests'} for p in member.split('/')), 'forbidden artifact member')
     require('lib/server/credential-custody.js' in blobs, 'credential source required')
@@ -95,14 +104,23 @@ def build(output):
     report={'classification':'VERIFIED_OFFLINE_SOURCE_CLOSURE_ONLY','files':metadata,
             'deployment_requires_repository_manifest':False,'credential_loader_source_included':True,
             'mode':'FAKE_DISABLED','authority':'NONE','provider_build':'NOT_RUN','deployment':'NOT_RUN',
-            'network_calls':0,'credential_access':'NONE','zip_sha256':hashlib.sha256(zip_path.read_bytes()).hexdigest()}
+            'network_calls':0,'credential_access':'NONE','owner_input_sha256':registration_hash,
+            'zip_sha256':hashlib.sha256(zip_path.read_bytes()).hexdigest()}
     (output/'artifact-metadata.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     # Run the composed entrypoint with a native-network trap; no build/deploy/login.
     script="""import https from 'node:https';import {syncBuiltinESMExports} from 'node:module';
 import {pathToFileURL} from 'node:url';let calls=0;https.request=()=>{calls++;throw Error('NETWORK_FORBIDDEN');};syncBuiltinESMExports();
-const {default:handler}=await import(pathToFileURL(process.argv[1]));const res={setHeader(){},end(body){this.body=JSON.parse(body);}};
+const {default:handler}=await import(pathToFileURL(process.argv[1]));
+const {DEPLOYMENT:d}=await import(new URL('../lib/server/deployment-input.js',pathToFileURL(process.argv[1])));
+const {validateReviewedRegistration}=await import(new URL('../lib/server/provider-registration.js',pathToFileURL(process.argv[1])));
+const {pinnedKeys}=await import(new URL('../lib/server/pinned-identity.js',pathToFileURL(process.argv[1])));
+if(!validateReviewedRegistration(d.provider)||d.registration_generation!==d.provider.application_generation
+  ||d.keyset.project_id!==d.provider.project_id||!pinnedKeys(d.keyset,d.provider,d.keyset.valid_from)
+  ||d.provider.delivery_email!==null)throw Error('STATIC_OWNER_BINDING');
+const res={setHeader(){},end(body){this.body=JSON.parse(body);}};
 await handler({method:'GET',url:'/api/diagnostic',headers:{host:'nexus-g3-qual.vercel.app'}},res);
 if(calls!==0||res.body.adapter_mode!=='FAKE_DISABLED'||res.body.real_admission!=='DISABLED')throw Error('BOUNDARY');
+if(JSON.stringify(res.body).includes(d.provider.owner_user_id)||JSON.stringify(res.body).includes(d.provider.project_id))throw Error('EVIDENCE_ID_LEAK');
 process.stdout.write('ARTIFACT_ENTRY_PASS: FAKE_DISABLED; NETWORK_CALL_COUNT=0\\n');"""
     subprocess.run(['node','--input-type=module','-e',script,str(artifact/'api/diagnostic.js')],check=True)
     print(f'ARTIFACT_PASS: files={len(blobs)}; credential_source=INCLUDED; repository_manifest=NOT_REQUIRED; provider_build=NOT_RUN')

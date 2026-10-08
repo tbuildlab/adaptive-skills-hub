@@ -296,8 +296,8 @@
     "sha256": "e7211721bdfb36acc793ca59deda1d17f54465b272b22cb59dfe5d97bb2eda51"
   },
   "diagnostics/g3-d01-rp/lib/server/deployment-input.js": {
-    "bytes": 477,
-    "sha256": "51312beebfee500860a30c9524e656408926dba8a3487d60dffa0578df8b6db3"
+    "bytes": 2317,
+    "sha256": "67cedb5d52c4f5523252c864c08d48f752f522036e40719eaf6fc8d5addaabeb"
   },
   "diagnostics/g3-d01-rp/lib/server/diagnostic-service.js": {
     "bytes": 9081,
@@ -308,20 +308,20 @@
     "sha256": "1a0653105efc39cf799bffce176e557349db911037aa6c2305d5402a7ba27542"
   },
   "diagnostics/g3-d01-rp/lib/server/pinned-identity.js": {
-    "bytes": 1865,
-    "sha256": "2a2380ae8ec58dc8f251e99c9fd1e943fda96d8f6358a2bd0263739aefad0480"
+    "bytes": 4834,
+    "sha256": "2ca7402f71c1c54aba84bb1a60e15c5ffce332f4857e40d35e913f6da2d88d50"
   },
   "diagnostics/g3-d01-rp/lib/server/pre-secret-policy.js": {
-    "bytes": 2693,
-    "sha256": "622fe03874769aba054510fb6639be28427cc402550f4bd459978cbf80e6e415"
+    "bytes": 2810,
+    "sha256": "b39432303e0b9079b3bb188107466afacbce7bdffc00bf8318cf6275c13297e7"
   },
   "diagnostics/g3-d01-rp/lib/server/provider-registration.js": {
-    "bytes": 3668,
-    "sha256": "dc783be4c6e6f0cd2b54132c9663021c44b2207ff2d925a63e79a72f3a606604"
+    "bytes": 3744,
+    "sha256": "22d3197240beee0e8a42f09559c88f348ceda04c075655c165cea04eeb9cda9a"
   },
   "diagnostics/g3-d01-rp/lib/server/stytch-transport.js": {
-    "bytes": 18849,
-    "sha256": "bd7486c3b4ff5731b9c7b9b091aa2eb7d2a15bd41772fa5441441d155cbc2620"
+    "bytes": 18983,
+    "sha256": "3508ef7aea6618018dc08f0712f2bb4ff6f95b9ab8211e7ee51f1566ae80e94b"
   },
   "diagnostics/g3-d01-rp/lib/stytch-identity.js": {
     "bytes": 2920,
@@ -352,8 +352,8 @@
     "sha256": "a0f122906be1399747d303197eb7959c12ec485d81dc42a3572b276e06fc4592"
   },
   "diagnostics/g3-d01-rp/scripts/verify_deployment.py": {
-    "bytes": 7701,
-    "sha256": "1721cf7a2b830915fa0c1b5fb9f7ac736448aadea746837440333720f64eab72"
+    "bytes": 9258,
+    "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
   },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
@@ -370,6 +370,10 @@
   "diagnostics/g3-d01-rp/tests/model.test.js": {
     "bytes": 10567,
     "sha256": "df49f01f4b0e94c15415385be59c31283425342ca3c1763502f833f8cb0a2b13"
+  },
+  "diagnostics/g3-d01-rp/tests/owner-pinning.test.js": {
+    "bytes": 13244,
+    "sha256": "bcac691b187f35603b7d2345e27c66d399c443fa3d9a3404d279c756d4750faf"
   },
   "diagnostics/g3-d01-rp/tests/pre-secret.test.js": {
     "bytes": 20794,
@@ -786,6 +790,10 @@
   "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
     "bytes": 19430,
     "sha256": "540364d0bd776b7b8a5d0dcfbb46af39af89199124b6bcc313ca54f67fb2e72f"
+  },
+  "docs/nexus-g3-d01-owner-registration-jwks-pinning-v1.md": {
+    "bytes": 15901,
+    "sha256": "7c46fe26ee7a70daaae4738c1ff25ec969087de3a3b20490a6e57ea57c06c155"
   },
   "docs/nexus-g3-d01-owner-reported-disabled-deployment-v1.md": {
     "bytes": 1712,

@@ -16,8 +16,9 @@ function valid(v, source) {
     && v.session_max_minutes === 15 && v.context_max_ms === 300000
     && v.issuer === `stytch.com/${v.project_id}` && v.audience === v.project_id
     && identifier(v.deployment_revision) && v.source === source && identifier(v.review_id)
-    && typeof v.delivery_email === 'string' && v.delivery_email.length <= 254
-    && /^[^\s@]+@[^\s@]+$/.test(v.delivery_email);
+    && ((source === 'OWNER_REVIEWED' && v.delivery_email === null)
+      || (typeof v.delivery_email === 'string' && v.delivery_email.length <= 254
+        && /^[^\s@]+@[^\s@]+$/.test(v.delivery_email)));
 }
 export function validateReviewedRegistration(value) { return valid(value, 'OWNER_REVIEWED'); }
 export function registerReviewedDeployment(value) {
