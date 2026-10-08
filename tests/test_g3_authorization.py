@@ -273,14 +273,18 @@ class G3AuthorizationTests(unittest.TestCase):
 
     def test_no_runtime_consumer_or_test_issuer_import(self):
         root = Path(g3.__file__).resolve().parent
+        # Phase 2B permits one pure offline consumer, never an execution consumer.
         for path in root.rglob("*.py"):
-            if path.name == "g3_authorization.py":
+            if path.name in {"g3_authorization.py", "g3_host_approval_bridge.py"}:
                 continue
-            self.assertNotIn("g3_authorization", path.read_text(encoding="utf-8"), path)
-        tree = ast.parse(Path(g3.__file__).read_text(encoding="utf-8"))
-        imports = [node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)]
-        self.assertFalse(any(name.startswith("tests") for name in imports))
-        self.assertFalse(any(name in {"core", "openai_hosted", "managed_execution", "execution"} for name in imports))
+            contents = path.read_text(encoding="utf-8")
+            self.assertNotIn("g3_authorization", contents, path)
+            self.assertNotIn("g3_host_approval_bridge", contents, path)
+        for name in ("g3_authorization.py", "g3_host_approval_bridge.py"):
+            tree = ast.parse((root / name).read_text(encoding="utf-8"))
+            imports = [node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)]
+            self.assertFalse(any(name.startswith("tests") for name in imports))
+            self.assertFalse(any(name in {"core", "openai_hosted", "managed_execution", "execution"} for name in imports))
 
 
 if __name__ == "__main__":

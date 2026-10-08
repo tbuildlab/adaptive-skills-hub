@@ -99,6 +99,10 @@
     "bytes": 15700,
     "sha256": "d581c7b996c5f9d2c178f2a75a1e7d94f5ac1f3c21131aa8dc13d28dce2f7005"
   },
+  "ash/g3_host_approval_bridge.py": {
+    "bytes": 15632,
+    "sha256": "2c1ceefdab90c5f6be5510bc44853f8c46a7b5557e17e6864e3ebabef0645274"
+  },
   "ash/managed_cli.py": {
     "bytes": 2781,
     "sha256": "8b9621be5bedaf5a90e957a0fc876f14d88fe2698426a17aff663c0de60c74a3"
@@ -626,6 +630,10 @@
   "docs/nexus-g3-authorization-contracts-v1.md": {
     "bytes": 13051,
     "sha256": "eab09a8438c3bb2aa76ba22e941513c177032c608d4183a8051598c8d02f8d51"
+  },
+  "docs/nexus-g3-host-approval-bridge-contract-v1.md": {
+    "bytes": 12031,
+    "sha256": "d685b42f1bebb4d7fc9902f07c091c2ba1e747fc769b8bf74ac83d71c887ca1c"
   },
   "docs/nexus-g3-reuse-survey-v1.md": {
     "bytes": 59772,
@@ -1208,8 +1216,12 @@
     "sha256": "e86b13e70f8616f43775922d03228a1b279314fc5fcf8853e5a5f42541aa1d61"
   },
   "tests/test_g3_authorization.py": {
-    "bytes": 17647,
-    "sha256": "6993b2d8225d3610e2a4b9b0787868110cd53fb43c4b4ecadeca2c3b252fae9e"
+    "bytes": 17953,
+    "sha256": "fa2e8a52b6e266711354f98e219f8e6c1e2e75a5082bb897eb3c285778169887"
+  },
+  "tests/test_g3_host_approval_bridge.py": {
+    "bytes": 20770,
+    "sha256": "61f732562fa982f2b71776092dc91bdb9cf27f250cec0f55adcc1c78277d12d9"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70068,
