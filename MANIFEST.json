@@ -351,6 +351,14 @@
     "bytes": 2334,
     "sha256": "a0f122906be1399747d303197eb7959c12ec485d81dc42a3572b276e06fc4592"
   },
+  "diagnostics/g3-d01-rp/scripts/prepare_owner_handoff.py": {
+    "bytes": 11296,
+    "sha256": "2760d30fe7d0323cd98c4dbbf0e5ae406de63753936b7d148b61a3a7fb97984b"
+  },
+  "diagnostics/g3-d01-rp/scripts/prove_disabled_startup.mjs": {
+    "bytes": 6709,
+    "sha256": "bd2f725eaf5c5d8d5d2c11ea7ec6da53906c704d3c8cad01ca44556ead5bff29"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_deployment.py": {
     "bytes": 9258,
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
@@ -358,6 +366,10 @@
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
     "sha256": "8502fadc6eb37d50f9e8e0a04d92430c0b19aa896235d216a83d94247d6e785d"
+  },
+  "diagnostics/g3-d01-rp/tests/deployment-prep.test.js": {
+    "bytes": 3501,
+    "sha256": "0ca0ef9c1b7e14819224814a186f9b7ea4d54ccee8745913d541d0c6f219b3eb"
   },
   "diagnostics/g3-d01-rp/tests/http.test.js": {
     "bytes": 6815,
@@ -386,6 +398,10 @@
   "diagnostics/g3-d01-rp/tests/stytch-boundary.test.js": {
     "bytes": 3656,
     "sha256": "a72822580e166837a4b0691ed7f05af13f8248d6e3853e357cdcbb0ddac37997"
+  },
+  "diagnostics/g3-d01-rp/tests/test_deployment_prep.py": {
+    "bytes": 6712,
+    "sha256": "b2957b12e0ebf6967a057090bc40f8df0196150048c459b2925e15d7f82f06df"
   },
   "diagnostics/g3-d01-rp/vercel.json": {
     "bytes": 724,
@@ -786,6 +802,14 @@
   "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
     "bytes": 20284,
     "sha256": "b8b5b4d9f4d339fa8f301b3f1121ebe1fb76339f54ce01066993fc4a78209323"
+  },
+  "docs/nexus-g3-d01-disabled-production-deployment-owner-runbook-v1.md": {
+    "bytes": 8832,
+    "sha256": "a5b5f168e07466556a3178a543a557c71aeae07be6889c7afba96299f66b3658"
+  },
+  "docs/nexus-g3-d01-disabled-production-deployment-review-prep-v1.md": {
+    "bytes": 18077,
+    "sha256": "bb56a710ce9cecc336127d547bbbbb34d63b9b44b2d597f6785608a718b7399e"
   },
   "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
     "bytes": 19430,
