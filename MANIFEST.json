@@ -372,8 +372,8 @@
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
   },
   "diagnostics/g3-d01-rp/scripts/verify_generation2.py": {
-    "bytes": 7154,
-    "sha256": "e7aaebf386e76fef0845fb9c281ebd4a8b40500b4162dee4891b390269eed2cd"
+    "bytes": 8778,
+    "sha256": "c006ea748526373238f1ed45810fc6e01aad971706f49ff933c272b1250cbe2d"
   },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
@@ -424,8 +424,8 @@
     "sha256": "b2957b12e0ebf6967a057090bc40f8df0196150048c459b2925e15d7f82f06df"
   },
   "diagnostics/g3-d01-rp/tests/test_generation2_artifact.py": {
-    "bytes": 4112,
-    "sha256": "5dbd3fd86ace12cfd3682e7c2d7aaa256c9f583c48916a1d14fb8477a9ce07bc"
+    "bytes": 8283,
+    "sha256": "db822ebaad83ca414970fcc63101e3a5acc831f91122f3a8a585a94daec9946d"
   },
   "diagnostics/g3-d01-rp/vercel.json": {
     "bytes": 724,
@@ -822,6 +822,10 @@
   "docs/nexus-g3-authorization-contracts-v1.md": {
     "bytes": 13051,
     "sha256": "eab09a8438c3bb2aa76ba22e941513c177032c608d4183a8051598c8d02f8d51"
+  },
+  "docs/nexus-g3-d01-bootstrap-status-review-v1.md": {
+    "bytes": 5906,
+    "sha256": "22d6bb0671d000bb8b8dc609952c99659da2ec85a91cf435acc707f005fccf75"
   },
   "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
     "bytes": 20284,
