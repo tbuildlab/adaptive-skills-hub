@@ -372,8 +372,8 @@
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
   },
   "diagnostics/g3-d01-rp/scripts/verify_generation2.py": {
-    "bytes": 9704,
-    "sha256": "cc63d13f61fb8d2728039f6e6a6ae56c0d710998c665184e4996c1ca35260c30"
+    "bytes": 10546,
+    "sha256": "ce5cab7d53d9f06b623187bbae9bcda18cd5e06c670c60bcb9ba82fc843d0327"
   },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
@@ -426,6 +426,10 @@
   "diagnostics/g3-d01-rp/tests/test_generation2_artifact.py": {
     "bytes": 8283,
     "sha256": "db822ebaad83ca414970fcc63101e3a5acc831f91122f3a8a585a94daec9946d"
+  },
+  "diagnostics/g3-d01-rp/tests/test_protocol_status_artifact.py": {
+    "bytes": 5714,
+    "sha256": "ee66a258022521259c6e1997f11a5763936beb8d9a73dd7d00ebf2808715d2cc"
   },
   "diagnostics/g3-d01-rp/vercel.json": {
     "bytes": 724,

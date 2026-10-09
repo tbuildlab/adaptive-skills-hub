@@ -9,14 +9,22 @@ ROOT = HERE.parents[1]
 SPEC = importlib.util.spec_from_file_location('historical_handoff', HERE/'scripts/prepare_owner_handoff.py')
 HISTORICAL = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(HISTORICAL)
-PROFILES = ('DISABLED', 'LIVE_DIAGNOSTIC', 'LIVE_DIAGNOSTIC_READINESS', 'LIVE_DIAGNOSTIC_PROTOCOL_STATUS')
+PROFILES = ('DISABLED', 'LIVE_DIAGNOSTIC', 'LIVE_DIAGNOSTIC_READINESS', 'LIVE_DIAGNOSTIC_PROTOCOL_STATUS', 'LIVE_DIAGNOSTIC_CREDENTIAL_FORMAT')
 REVISION = {'DISABLED':'g3-d01-owner-delivery-v2', 'LIVE_DIAGNOSTIC':'g3-d01-owner-live-v2',
             'LIVE_DIAGNOSTIC_READINESS':'g3-d01-owner-live-readiness-v2',
-            'LIVE_DIAGNOSTIC_PROTOCOL_STATUS':'g3-d01-owner-live-protocol-status-v2'}
+            'LIVE_DIAGNOSTIC_PROTOCOL_STATUS':'g3-d01-owner-live-protocol-status-v2',
+            'LIVE_DIAGNOSTIC_CREDENTIAL_FORMAT':'g3-d01-owner-live-credential-format-v2'}
 INPUT = 'lib/server/deployment-input.js'
 POLICY = 'lib/server/pre-secret-policy.js'
 CUSTODY = 'lib/server/credential-custody.js'
 SERVICE = 'lib/server/diagnostic-service.js'
+
+def credential_format_only(blobs):
+    # Documented padded public-example grammar, never transform a credential.
+    original=b"if (!/^secret-test-[A-Za-z0-9_-]{16,256}$/.test(secret)) throw new ClosedFailure('SECRET_CONFIG_FORMAT');"
+    replacement=b"if (secret.length > 268 || /\\s/.test(secret) || !/^secret-test-[A-Za-z0-9_-]{16,256}={0,2}$/.test(secret)) throw new ClosedFailure('SECRET_CONFIG_FORMAT');"
+    need(blobs[CUSTODY].count(original)==1,'exact credential format correction')
+    blobs[CUSTODY]=blobs[CUSTODY].replace(original,replacement)
 
 def protocol_status_only(blobs):
     # Preserve the existing closed enum after mandatory retirement. No raw
@@ -100,8 +108,9 @@ def compose(profile, data):
             old=(name+' = false').encode();new=(name+' = true').encode()
             need(blobs[POLICY].count(old)==1,'exact reviewed gate')
             blobs[POLICY]=blobs[POLICY].replace(old,new)
-    if profile in ('LIVE_DIAGNOSTIC_READINESS','LIVE_DIAGNOSTIC_PROTOCOL_STATUS'):readiness_only(blobs)
-    if profile=='LIVE_DIAGNOSTIC_PROTOCOL_STATUS':protocol_status_only(blobs)
+    if profile in ('LIVE_DIAGNOSTIC_READINESS','LIVE_DIAGNOSTIC_PROTOCOL_STATUS','LIVE_DIAGNOSTIC_CREDENTIAL_FORMAT'):readiness_only(blobs)
+    if profile in ('LIVE_DIAGNOSTIC_PROTOCOL_STATUS','LIVE_DIAGNOSTIC_CREDENTIAL_FORMAT'):protocol_status_only(blobs)
+    if profile=='LIVE_DIAGNOSTIC_CREDENTIAL_FORMAT':credential_format_only(blobs)
     return blobs
 
 def validate(blobs, profile, data):
