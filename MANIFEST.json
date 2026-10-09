@@ -372,8 +372,8 @@
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
   },
   "diagnostics/g3-d01-rp/scripts/verify_generation2.py": {
-    "bytes": 8778,
-    "sha256": "c006ea748526373238f1ed45810fc6e01aad971706f49ff933c272b1250cbe2d"
+    "bytes": 9704,
+    "sha256": "cc63d13f61fb8d2728039f6e6a6ae56c0d710998c665184e4996c1ca35260c30"
   },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
@@ -874,6 +874,10 @@
   "docs/nexus-g3-d01-pre-secret-readiness-closure-v1.md": {
     "bytes": 15572,
     "sha256": "c70ae4e466345aaaa26ee1693d0370f5b811ccc50f72ff2a95c114f0f661e1d6"
+  },
+  "docs/nexus-g3-d01-protocol-failure-status-review-v1.md": {
+    "bytes": 4753,
+    "sha256": "129909179bf2b0eb5c371379653d0e311c166aa5b86862a3ab447902c0d4e6ba"
   },
   "docs/nexus-g3-d01-secret-custody-integration-runbook-addendum-v1.md": {
     "bytes": 6563,

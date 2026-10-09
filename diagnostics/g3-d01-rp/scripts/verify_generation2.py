@@ -9,12 +9,22 @@ ROOT = HERE.parents[1]
 SPEC = importlib.util.spec_from_file_location('historical_handoff', HERE/'scripts/prepare_owner_handoff.py')
 HISTORICAL = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(HISTORICAL)
-PROFILES = ('DISABLED', 'LIVE_DIAGNOSTIC', 'LIVE_DIAGNOSTIC_READINESS')
+PROFILES = ('DISABLED', 'LIVE_DIAGNOSTIC', 'LIVE_DIAGNOSTIC_READINESS', 'LIVE_DIAGNOSTIC_PROTOCOL_STATUS')
 REVISION = {'DISABLED':'g3-d01-owner-delivery-v2', 'LIVE_DIAGNOSTIC':'g3-d01-owner-live-v2',
-            'LIVE_DIAGNOSTIC_READINESS':'g3-d01-owner-live-readiness-v2'}
+            'LIVE_DIAGNOSTIC_READINESS':'g3-d01-owner-live-readiness-v2',
+            'LIVE_DIAGNOSTIC_PROTOCOL_STATUS':'g3-d01-owner-live-protocol-status-v2'}
 INPUT = 'lib/server/deployment-input.js'
 POLICY = 'lib/server/pre-secret-policy.js'
 CUSTODY = 'lib/server/credential-custody.js'
+SERVICE = 'lib/server/diagnostic-service.js'
+
+def protocol_status_only(blobs):
+    # Preserve the existing closed enum after mandatory retirement. No raw
+    # provider response, new positive path, state restoration or retry.
+    original=b"retire(key); page=null; return reply(403,safeResult('RETIRED',false,fixture));"
+    replacement=b"retire(key); page=null; return reply(403,safeResult(result.result==='PASS'?'RETIRED':result.error_class,false,fixture));"
+    need(blobs[SERVICE].count(original)==1,'exact protocol failure projection')
+    blobs[SERVICE]=blobs[SERVICE].replace(original,replacement)
 
 def readiness_only(blobs):
     # Fixed status enums only, never values/lengths/digests/provider free text.
@@ -90,7 +100,8 @@ def compose(profile, data):
             old=(name+' = false').encode();new=(name+' = true').encode()
             need(blobs[POLICY].count(old)==1,'exact reviewed gate')
             blobs[POLICY]=blobs[POLICY].replace(old,new)
-    if profile=='LIVE_DIAGNOSTIC_READINESS':readiness_only(blobs)
+    if profile in ('LIVE_DIAGNOSTIC_READINESS','LIVE_DIAGNOSTIC_PROTOCOL_STATUS'):readiness_only(blobs)
+    if profile=='LIVE_DIAGNOSTIC_PROTOCOL_STATUS':protocol_status_only(blobs)
     return blobs
 
 def validate(blobs, profile, data):
@@ -123,7 +134,8 @@ def validate(blobs, profile, data):
       'authority':'NONE','real_admission_enabled':'NO','zip_sha256':hashlib.sha256(HISTORICAL.frozen_zip(blobs)).hexdigest(),
       'baseline_sha256':HISTORICAL.SOURCE_SHA256,
       'changed_runtime_files':([INPUT] if profile=='DISABLED' else [INPUT,POLICY]
-        if profile=='LIVE_DIAGNOSTIC' else [INPUT,POLICY,CUSTODY]),
+        if profile=='LIVE_DIAGNOSTIC' else [INPUT,POLICY,CUSTODY]
+        if profile=='LIVE_DIAGNOSTIC_READINESS' else [INPUT,POLICY,CUSTODY,SERVICE]),
       'public_review_valid_from':data['keyset']['valid_from'],'public_review_valid_until':data['keyset']['valid_until'],
       'files_sha256':{n:{'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest(),'source_uid':hashlib.sha1(b).hexdigest()} for n,b in sorted(blobs.items())},
       'provider_calls_performed_by_builder':0,'credential_access_by_builder':'NONE','deployment_performed':False}
