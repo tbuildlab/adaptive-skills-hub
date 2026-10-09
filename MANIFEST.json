@@ -839,6 +839,10 @@
     "bytes": 6453,
     "sha256": "519d13a821a7a663b65743829e7130c695b916152987577169caa1126b1d4a9a"
   },
+  "docs/nexus-g3-delegated-executor-authority-policy-v1.md": {
+    "bytes": 11312,
+    "sha256": "6e731c24c4f7fa1c29eec324c811a3efba496cf29b182152170f00853f1cfa37"
+  },
   "docs/nexus-g3-host-approval-bridge-contract-v1.md": {
     "bytes": 12031,
     "sha256": "d685b42f1bebb4d7fc9902f07c091c2ba1e747fc769b8bf74ac83d71c887ca1c"
