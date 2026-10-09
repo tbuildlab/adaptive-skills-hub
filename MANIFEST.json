@@ -883,6 +883,10 @@
     "bytes": 4753,
     "sha256": "129909179bf2b0eb5c371379653d0e311c166aa5b86862a3ab447902c0d4e6ba"
   },
+  "docs/nexus-g3-d01-secret-correction-followup-status-v1.md": {
+    "bytes": 9194,
+    "sha256": "6bfdbca6e7bd212bc025f2b35a9cfa4cff9581cd502389018b46b5e712da1295"
+  },
   "docs/nexus-g3-d01-secret-custody-integration-runbook-addendum-v1.md": {
     "bytes": 6563,
     "sha256": "af38f0d0f3b2df83d6fac56efd46fd82715547e4bfdcd8c635372f3e5909c66e"
