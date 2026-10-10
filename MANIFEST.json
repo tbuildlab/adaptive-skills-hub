@@ -959,6 +959,10 @@
     "bytes": 7080,
     "sha256": "1fc2ef2293c36e1afdc56619d4f6cf3e20aab9fa8c3d3c87e9c488738454f056"
   },
+  "docs/nexus-g3-d01-owner-form-parser-hosted-continuity-v1.md": {
+    "bytes": 3947,
+    "sha256": "91775a19ff516ab1daf386aa5b2abb3de2311f8682807b16ff0b809dbd63efd7"
+  },
   "docs/nexus-g3-d01-owner-form-parser-review-v1.md": {
     "bytes": 7613,
     "sha256": "54a9ff0d553880bcb22628bf3c07d52a8781ef697a1ca1dcfc5693b56e148c4d"
