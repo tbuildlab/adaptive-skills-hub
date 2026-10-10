@@ -1199,6 +1199,10 @@
     "bytes": 6293,
     "sha256": "af996b4bb46831dcce08586bb92543487119073ebf4d726cb707231f3ed3700f"
   },
+  "docs/nexus-g3-d03-minimal-scope-and-autonomy-amendment-v1.md": {
+    "bytes": 10274,
+    "sha256": "74ff7ee6911907ce28e6e09ac6fc967be89355afd4e5bd7423b6baf0ed17c132"
+  },
   "docs/nexus-g3-delegated-executor-authority-policy-v1.md": {
     "bytes": 11312,
     "sha256": "6e731c24c4f7fa1c29eec324c811a3efba496cf29b182152170f00853f1cfa37"
