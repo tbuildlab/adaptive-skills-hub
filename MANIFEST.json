@@ -951,6 +951,10 @@
     "bytes": 4965,
     "sha256": "fc9eaaf5a4f221f8755ea7199df06f3ddfafe963874f3e20aa6f7dd770292373"
   },
+  "docs/nexus-g3-d01-fresh-owner-qr-after-cleanup-v1.md": {
+    "bytes": 2993,
+    "sha256": "e73903dcf9223ea39cea1c6a0f4e1c2ab2464e09b0e8ecfca623819324167244"
+  },
   "docs/nexus-g3-d01-generation2-deployment-qualification-v1.md": {
     "bytes": 7438,
     "sha256": "9dd4589440cebd420a066d2b388b82cfc4acbc73455ace3bfb2be042106cd8ea"
