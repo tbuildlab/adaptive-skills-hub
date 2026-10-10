@@ -407,6 +407,10 @@
     "bytes": 6709,
     "sha256": "bd2f725eaf5c5d8d5d2c11ea7ec6da53906c704d3c8cad01ca44556ead5bff29"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_ceremony_stage.py": {
+    "bytes": 6967,
+    "sha256": "c38c1eb22e08a7774c637b7df1f04e802d7c45235058e5d0b97cb5473a5baee7"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_deployment.py": {
     "bytes": 9258,
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
@@ -518,6 +522,10 @@
   "diagnostics/g3-d01-rp/tests/stytch-boundary.test.js": {
     "bytes": 3656,
     "sha256": "a72822580e166837a4b0691ed7f05af13f8248d6e3853e357cdcbb0ddac37997"
+  },
+  "diagnostics/g3-d01-rp/tests/test_ceremony_stage_artifact.py": {
+    "bytes": 9943,
+    "sha256": "e77081ca5197d89c59a398499c0283f2315a3cedc023e09c180c15d0d73bea75"
   },
   "diagnostics/g3-d01-rp/tests/test_deployment_prep.py": {
     "bytes": 6712,
@@ -986,6 +994,10 @@
   "docs/nexus-g3-d01-bootstrap-status-review-v1.md": {
     "bytes": 5906,
     "sha256": "22d6bb0671d000bb8b8dc609952c99659da2ec85a91cf435acc707f005fccf75"
+  },
+  "docs/nexus-g3-d01-closed-ceremony-stage-review-v1.md": {
+    "bytes": 8145,
+    "sha256": "d19c6d1034a3331c8f5e9b03029eafeb6e4f7e4a1ede9863bb81aa32b55bc821"
   },
   "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
     "bytes": 20284,
