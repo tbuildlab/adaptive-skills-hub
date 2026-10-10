@@ -411,6 +411,10 @@
     "bytes": 6967,
     "sha256": "c38c1eb22e08a7774c637b7df1f04e802d7c45235058e5d0b97cb5473a5baee7"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_completion_sequence.py": {
+    "bytes": 6336,
+    "sha256": "2d0fb95df705ee4d040e7848dc42cd8372a46e1fbfcb6655d08fa298f84b4d2d"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_deployment.py": {
     "bytes": 9258,
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
@@ -534,6 +538,10 @@
   "diagnostics/g3-d01-rp/tests/test_ceremony_stage_artifact.py": {
     "bytes": 9943,
     "sha256": "e77081ca5197d89c59a398499c0283f2315a3cedc023e09c180c15d0d73bea75"
+  },
+  "diagnostics/g3-d01-rp/tests/test_completion_sequence_artifact.py": {
+    "bytes": 9450,
+    "sha256": "44b3dc0c6946e7f126e43421e1b63d0bf6de53846866953971a37ce3f120b694"
   },
   "diagnostics/g3-d01-rp/tests/test_deployment_prep.py": {
     "bytes": 6712,
@@ -1014,6 +1022,10 @@
   "docs/nexus-g3-d01-closed-ceremony-stage-review-v1.md": {
     "bytes": 8145,
     "sha256": "d19c6d1034a3331c8f5e9b03029eafeb6e4f7e4a1ede9863bb81aa32b55bc821"
+  },
+  "docs/nexus-g3-d01-completion-sequence-review-v1.md": {
+    "bytes": 6041,
+    "sha256": "a5f681be58e0cde1dd3fa3310a34564092395009d80147412318eb860bbfb3c2"
   },
   "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
     "bytes": 20284,
