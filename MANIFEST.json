@@ -943,6 +943,10 @@
     "bytes": 18077,
     "sha256": "bb56a710ce9cecc336127d547bbbbb34d63b9b44b2d597f6785608a718b7399e"
   },
+  "docs/nexus-g3-d01-exposed-factor-cleanup-result-v1.md": {
+    "bytes": 3849,
+    "sha256": "30d1346a36bb1edeb5a6bdcdf11e0c61ed7794507373a518a9f5aee865e31951"
+  },
   "docs/nexus-g3-d01-exposed-factor-cleanup-v1.md": {
     "bytes": 4965,
     "sha256": "fc9eaaf5a4f221f8755ea7199df06f3ddfafe963874f3e20aa6f7dd770292373"
