@@ -1,0 +1,9 @@
+{
+  "classification": "OWNER_AUTHORIZED_EXPOSED_FACTOR_CLEANUP_ONLY",
+  "project_id": "project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+  "owner_user_id": "user-test-9da3c5e0-6828-4dfe-8d6d-6ee5dde17a8e",
+  "exposed_totp_id": "totp-test-a86c4042-a400-4c93-bb64-4b4f122b2b7e",
+  "vercel_project_id": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+  "application_generation": 3,
+  "source_checkpoint": "87014040f612e3ca43aaa23c4f4e54eae5a97fb9"
+}

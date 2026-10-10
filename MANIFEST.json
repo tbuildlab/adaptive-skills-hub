@@ -243,6 +243,18 @@
     "bytes": 161,
     "sha256": "41f14d1805d8779b0173fef2f497db8dd98389bf204bedb682afa3b86eafa970"
   },
+  "diagnostics/g3-d01-rp/factor-cleanup/cleanup.js": {
+    "bytes": 11401,
+    "sha256": "1c65f6397a72c678ce9b6a7de71bdb6b00e1e75b4e131978a5e8c5c5afa0709b"
+  },
+  "diagnostics/g3-d01-rp/factor-cleanup/endpoint.js": {
+    "bytes": 2102,
+    "sha256": "c1ad78002421ff49f57d8dd56cd8328f3373b5f52cfd274bd5a66c249bfc0ca2"
+  },
+  "diagnostics/g3-d01-rp/factor-cleanup/reviewed-scope.json": {
+    "bytes": 437,
+    "sha256": "3c181cbe52393b58dcca64fd5b381875dadfcaeefa02a4fa30e1ff7195fe6cdc"
+  },
   "diagnostics/g3-d01-rp/future-deployment/app.js": {
     "bytes": 2081,
     "sha256": "340bbe76f15af98a9a07903a4a2e4aa3b22d71c6e2c1604170568f09334f99df"
@@ -383,6 +395,10 @@
     "bytes": 9258,
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_factor_cleanup.py": {
+    "bytes": 4750,
+    "sha256": "d8b08765279ef6ee23728e31e47e62147a3a51ada6c3a41122f4132ab868d556"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_generation2.py": {
     "bytes": 10546,
     "sha256": "ce5cab7d53d9f06b623187bbae9bcda18cd5e06c670c60bcb9ba82fc843d0327"
@@ -418,6 +434,10 @@
   "diagnostics/g3-d01-rp/tests/deployment-prep.test.js": {
     "bytes": 3501,
     "sha256": "0ca0ef9c1b7e14819224814a186f9b7ea4d54ccee8745913d541d0c6f219b3eb"
+  },
+  "diagnostics/g3-d01-rp/tests/factor-cleanup.test.js": {
+    "bytes": 7994,
+    "sha256": "cb8570237d290c1dc182a09cf08f9f815268851799bbf3cac8ae51c1083950ae"
   },
   "diagnostics/g3-d01-rp/tests/http.test.js": {
     "bytes": 6815,
@@ -466,6 +486,10 @@
   "diagnostics/g3-d01-rp/tests/test_deployment_prep.py": {
     "bytes": 6712,
     "sha256": "b2957b12e0ebf6967a057090bc40f8df0196150048c459b2925e15d7f82f06df"
+  },
+  "diagnostics/g3-d01-rp/tests/test_factor_cleanup_artifact.py": {
+    "bytes": 2177,
+    "sha256": "3e025b55c2aa53fa7fdd75bbcf4d2158bf464f5ac2c20f379eb96c6f11e9691e"
   },
   "diagnostics/g3-d01-rp/tests/test_generation2_artifact.py": {
     "bytes": 8283,
@@ -918,6 +942,10 @@
   "docs/nexus-g3-d01-disabled-production-deployment-review-prep-v1.md": {
     "bytes": 18077,
     "sha256": "bb56a710ce9cecc336127d547bbbbb34d63b9b44b2d597f6785608a718b7399e"
+  },
+  "docs/nexus-g3-d01-exposed-factor-cleanup-v1.md": {
+    "bytes": 4965,
+    "sha256": "fc9eaaf5a4f221f8755ea7199df06f3ddfafe963874f3e20aa6f7dd770292373"
   },
   "docs/nexus-g3-d01-generation2-deployment-qualification-v1.md": {
     "bytes": 7438,
