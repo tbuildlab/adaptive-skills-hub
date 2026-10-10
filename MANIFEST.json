@@ -391,6 +391,10 @@
     "bytes": 6270,
     "sha256": "4bdcf7c299845cc6b6bf76ad08523c3ef9c37f9dbc3358bf99ca2bb35241f434"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_owner_form_parser.py": {
+    "bytes": 4963,
+    "sha256": "fcae30548214c68bc5f51d9a9e2af1f20d7465425abe72ddbc6901337f19ab64"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_owner_origin.py": {
     "bytes": 2665,
     "sha256": "d28fc593ce244626fc26e3d31b1c850fb96896ab17dfed23ab87cb5f399558d4"
@@ -466,6 +470,10 @@
   "diagnostics/g3-d01-rp/tests/test_owner_form_artifact.py": {
     "bytes": 9809,
     "sha256": "0914c04a0bd4ba074a1878fb1c9fd34890a1cacc5de52c6aee6471c530703c85"
+  },
+  "diagnostics/g3-d01-rp/tests/test_owner_form_parser_artifact.py": {
+    "bytes": 7298,
+    "sha256": "fe3121ccaf9c549c7b68dfd251fca0caa67fe8690489983d1393285cedb4df42"
   },
   "diagnostics/g3-d01-rp/tests/test_owner_origin_artifact.py": {
     "bytes": 4219,
@@ -950,6 +958,10 @@
   "docs/nexus-g3-d01-owner-delivery-readiness-v1.md": {
     "bytes": 7080,
     "sha256": "1fc2ef2293c36e1afdc56619d4f6cf3e20aab9fa8c3d3c87e9c488738454f056"
+  },
+  "docs/nexus-g3-d01-owner-form-parser-review-v1.md": {
+    "bytes": 7613,
+    "sha256": "54a9ff0d553880bcb22628bf3c07d52a8781ef697a1ca1dcfc5693b56e148c4d"
   },
   "docs/nexus-g3-d01-owner-registration-jwks-pinning-v1.md": {
     "bytes": 15901,
