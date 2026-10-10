@@ -939,6 +939,10 @@
     "bytes": 7524,
     "sha256": "11b9a5cb5d18cdf80f71e77c14f60daaebdc811c2e00a34630b4d8f2162b5e3e"
   },
+  "docs/nexus-g3-d01-request-stage-hosted-evidence-v1.md": {
+    "bytes": 5391,
+    "sha256": "fd425e5011712421fe4e7ebbc2454df24e7ba3e4bf5ac4c476d6ec3ad4759f11"
+  },
   "docs/nexus-g3-d01-secret-correction-followup-status-v1.md": {
     "bytes": 9194,
     "sha256": "6bfdbca6e7bd212bc025f2b35a9cfa4cff9581cd502389018b46b5e712da1295"
