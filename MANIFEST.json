@@ -255,6 +255,10 @@
     "bytes": 1433,
     "sha256": "899839c32d1fca98997f4a890846de35189e472ef06994c7ffbb99a26095c9d9"
   },
+  "diagnostics/g3-d01-rp/future-deployment/owner-transient-qr.js": {
+    "bytes": 3803,
+    "sha256": "24f440ae3e43518716a68560301898bc2979dc71013b832ec182aca9ee228b3f"
+  },
   "diagnostics/g3-d01-rp/future-deployment/owner-transient.js": {
     "bytes": 1568,
     "sha256": "21968c6a5eb1a55cb784dc23526039a9379202c63fd78bc02a2a32f9fa1ff7c6"
@@ -399,6 +403,10 @@
     "bytes": 2665,
     "sha256": "d28fc593ce244626fc26e3d31b1c850fb96896ab17dfed23ab87cb5f399558d4"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_owner_qr.py": {
+    "bytes": 5888,
+    "sha256": "b9eff16e1a4b050fc9aa28bb1f8629ec0596b2800c529211a4cf9b76eba3b1df"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_request_stage.py": {
     "bytes": 9381,
     "sha256": "f504e5194062f8db885fc679995faee2d3af04fa85f865f133b96a894460f751"
@@ -479,6 +487,10 @@
     "bytes": 4219,
     "sha256": "8808b946eef812904c29c5fff91faaea7b7071eb220594545371a437176ed3cd"
   },
+  "diagnostics/g3-d01-rp/tests/test_owner_qr_artifact.py": {
+    "bytes": 10051,
+    "sha256": "42264020bb78b8aecfaee8f347c272643013899bdc383a073675b185a57890ec"
+  },
   "diagnostics/g3-d01-rp/tests/test_protocol_status_artifact.py": {
     "bytes": 5714,
     "sha256": "ee66a258022521259c6e1997f11a5763936beb8d9a73dd7d00ebf2808715d2cc"
@@ -486,6 +498,10 @@
   "diagnostics/g3-d01-rp/tests/test_request_stage_artifact.py": {
     "bytes": 13979,
     "sha256": "5eb7707556453e5b485bf5f7f36cca89a4eafa780bc929805ba5d3c2891373e6"
+  },
+  "diagnostics/g3-d01-rp/vendor/qrcodegen-v1.8.0-es6.js": {
+    "bytes": 45331,
+    "sha256": "5d65f10cbda9bc5f61df20e4dfb716ef3203b19f7daedb6cc7c0ae51193f033f"
   },
   "diagnostics/g3-d01-rp/vercel.json": {
     "bytes": 724,
@@ -966,6 +982,10 @@
   "docs/nexus-g3-d01-owner-form-parser-review-v1.md": {
     "bytes": 7613,
     "sha256": "54a9ff0d553880bcb22628bf3c07d52a8781ef697a1ca1dcfc5693b56e148c4d"
+  },
+  "docs/nexus-g3-d01-owner-local-qr-exposure-containment-v1.md": {
+    "bytes": 8799,
+    "sha256": "b278e5f563230fe81a47994ffc6474c1ebe9a96930bd24f8aafa653dd5a8c111"
   },
   "docs/nexus-g3-d01-owner-registration-jwks-pinning-v1.md": {
     "bytes": 15901,
