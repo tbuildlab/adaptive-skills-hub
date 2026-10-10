@@ -987,6 +987,10 @@
     "bytes": 8799,
     "sha256": "b278e5f563230fe81a47994ffc6474c1ebe9a96930bd24f8aafa653dd5a8c111"
   },
+  "docs/nexus-g3-d01-owner-local-qr-hosted-continuity-v1.md": {
+    "bytes": 4801,
+    "sha256": "3232850f640715b093a155852c3aa4db115f78dc673450b27944b193bd36d1bf"
+  },
   "docs/nexus-g3-d01-owner-registration-jwks-pinning-v1.md": {
     "bytes": 15901,
     "sha256": "7c46fe26ee7a70daaae4738c1ff25ec969087de3a3b20490a6e57ea57c06c155"
