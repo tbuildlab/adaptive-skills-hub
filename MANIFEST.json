@@ -387,6 +387,10 @@
     "bytes": 7429,
     "sha256": "53c9251e2bd1588b6c2e095e93331c54e2c283a950c7aa712f51759a460ad485"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_request_stage.py": {
+    "bytes": 9381,
+    "sha256": "f504e5194062f8db885fc679995faee2d3af04fa85f865f133b96a894460f751"
+  },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
     "sha256": "8502fadc6eb37d50f9e8e0a04d92430c0b19aa896235d216a83d94247d6e785d"
@@ -454,6 +458,10 @@
   "diagnostics/g3-d01-rp/tests/test_protocol_status_artifact.py": {
     "bytes": 5714,
     "sha256": "ee66a258022521259c6e1997f11a5763936beb8d9a73dd7d00ebf2808715d2cc"
+  },
+  "diagnostics/g3-d01-rp/tests/test_request_stage_artifact.py": {
+    "bytes": 13979,
+    "sha256": "5eb7707556453e5b485bf5f7f36cca89a4eafa780bc929805ba5d3c2891373e6"
   },
   "diagnostics/g3-d01-rp/vercel.json": {
     "bytes": 724,
@@ -926,6 +934,10 @@
   "docs/nexus-g3-d01-protocol-failure-status-review-v1.md": {
     "bytes": 4753,
     "sha256": "129909179bf2b0eb5c371379653d0e311c166aa5b86862a3ab447902c0d4e6ba"
+  },
+  "docs/nexus-g3-d01-request-stage-diagnostic-review-v1.md": {
+    "bytes": 7524,
+    "sha256": "11b9a5cb5d18cdf80f71e77c14f60daaebdc811c2e00a34630b4d8f2162b5e3e"
   },
   "docs/nexus-g3-d01-secret-correction-followup-status-v1.md": {
     "bytes": 9194,
