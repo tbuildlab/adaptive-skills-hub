@@ -273,9 +273,9 @@ class G3AuthorizationTests(unittest.TestCase):
 
     def test_no_runtime_consumer_or_test_issuer_import(self):
         root = Path(g3.__file__).resolve().parent
-        # Phase 2B permits one pure offline consumer, never an execution consumer.
+        # G4 adds a pure deny-only typed consumer; neither consumer executes.
         for path in root.rglob("*.py"):
-            if path.name in {"g3_authorization.py", "g3_host_approval_bridge.py"}:
+            if path.name in {"g3_authorization.py", "g3_host_approval_bridge.py", "g4_host_adapter.py"}:
                 continue
             contents = path.read_text(encoding="utf-8")
             self.assertNotIn("g3_authorization", contents, path)
@@ -285,6 +285,21 @@ class G3AuthorizationTests(unittest.TestCase):
             imports = [node.module or "" for node in ast.walk(tree) if isinstance(node, ast.ImportFrom)]
             self.assertFalse(any(name.startswith("tests") for name in imports))
             self.assertFalse(any(name in {"core", "openai_hosted", "managed_execution", "execution"} for name in imports))
+        from ash import g4_host_adapter
+        from tests.g4_fixtures import request as structural_request
+        # This explicit extension retains the meaningful isolation oracle:
+        # actual production checks reject typed positive fixtures and never
+        # expose a dispatcher or a test issuer imported from tests.
+        adapter_tree = ast.parse((root / "g4_host_adapter.py").read_text(encoding="utf-8"))
+        imports = [node.module or "" for node in ast.walk(adapter_tree) if isinstance(node, ast.ImportFrom)]
+        self.assertFalse(any(name.startswith("tests") for name in imports))
+        self.assertFalse(any(name in {"openai", "openai_hosted", "execution", "subprocess", "requests", "socket"} for name in imports))
+        for authority in (None, evaluate_fixture(self.s, (self.g,))):
+            verdict = g4_host_adapter.pre_execution_gate(structural_request(), authority, now=1000)
+            self.assertEqual(verdict["status"], "DENY")
+            self.assertEqual(verdict["dispatch_authority"], "none")
+            self.assertFalse(verdict["real_admission_enabled"])
+        self.assertFalse(hasattr(g4_host_adapter, "dispatch"))
 
 
 if __name__ == "__main__":

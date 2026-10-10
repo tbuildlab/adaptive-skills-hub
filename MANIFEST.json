@@ -103,6 +103,14 @@
     "bytes": 15632,
     "sha256": "2c1ceefdab90c5f6be5510bc44853f8c46a7b5557e17e6864e3ebabef0645274"
   },
+  "ash/g4_contracts.py": {
+    "bytes": 15588,
+    "sha256": "020c35d9b1f942e40ee3e42458e21c1755a4eb46f6abfeadcb5fa4b17dd2cebb"
+  },
+  "ash/g4_host_adapter.py": {
+    "bytes": 12089,
+    "sha256": "cd0e0fbd180bd7302b227c6f3f3edcb05e99a74d13aad633780ea77cbb60e5b8"
+  },
   "ash/managed_cli.py": {
     "bytes": 2781,
     "sha256": "8b9621be5bedaf5a90e957a0fc876f14d88fe2698426a17aff663c0de60c74a3"
@@ -1307,6 +1315,18 @@
     "bytes": 26568,
     "sha256": "7b859255dee665b64376302e2910023fe8f45bb464335c426c61ccb69e31ed29"
   },
+  "docs/nexus-g4-contracts-and-preparation-v1.md": {
+    "bytes": 11542,
+    "sha256": "a4a7f719a92cee0cfb3071715d114a8c083d03694d2c3c7befbb56e41ebbf731"
+  },
+  "docs/nexus-g4-preparation-checkpoint-v1.md": {
+    "bytes": 6223,
+    "sha256": "2f9e4460b08b5a017f84803207d4afa5fc3dde8592be483cabfbe03744c7f753"
+  },
+  "docs/nexus-g4-reuse-survey-v1.md": {
+    "bytes": 6866,
+    "sha256": "4af6bdb647ca2fd930c508c7e7f899f590ddc2e9eaa970abb9c8056502cdaae1"
+  },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
     "sha256": "dcf9582db59547bd3f5605b63ddb0964e8ea615676f908b02c9507b8bafc912d"
@@ -1823,6 +1843,10 @@
     "bytes": 3759,
     "sha256": "2cc66562dadb2dd7078889fe48a71008c37db96e31b68e554a9c1eebf5c97a8e"
   },
+  "tests/g4_fixtures.py": {
+    "bytes": 4437,
+    "sha256": "67988ff4363d72b0f6ca27a9d884b40749be305fc843c4adc8183bc276372ab3"
+  },
   "tests/test_agent_contract.py": {
     "bytes": 3533,
     "sha256": "6147cb58047919de7091866a0bdba0c349c48039e35d971819ecf840ed56d21f"
@@ -1888,8 +1912,8 @@
     "sha256": "e86b13e70f8616f43775922d03228a1b279314fc5fcf8853e5a5f42541aa1d61"
   },
   "tests/test_g3_authorization.py": {
-    "bytes": 17953,
-    "sha256": "fa2e8a52b6e266711354f98e219f8e6c1e2e75a5082bb897eb3c285778169887"
+    "bytes": 19131,
+    "sha256": "395769db7286f3f7e97954be7997f690cbe042a5c39f1757792a60a2f2701e25"
   },
   "tests/test_g3_host_approval_bridge.py": {
     "bytes": 20770,
@@ -1903,9 +1927,17 @@
     "bytes": 19911,
     "sha256": "62a8ff584c8fc2f61c687097a08aa6fd7332f37345fad3c660699668e6484ee9"
   },
+  "tests/test_g4_contracts.py": {
+    "bytes": 10261,
+    "sha256": "5c9f60e1d6d5742c49dbf049d9260bde867361f014fbb6ba1d479f106e8fb6c7"
+  },
+  "tests/test_g4_host_adapter.py": {
+    "bytes": 10452,
+    "sha256": "41fa800302bcdfb18489846be87fce61908277f6da60f9a8667e66037fe956d6"
+  },
   "tests/test_github_distribution.py": {
-    "bytes": 70068,
-    "sha256": "894b4e6120d6f19e222575e46b2abfe649aba549b69c0435a06901be0bb09f7c"
+    "bytes": 70986,
+    "sha256": "c06b66ff3c08de51ba65f7d5277a96ff4a611ff7384ca28923bae567719feba1"
   },
   "tests/test_governance_advisory_caller.py": {
     "bytes": 15117,

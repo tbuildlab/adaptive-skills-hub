@@ -169,6 +169,7 @@ class GitHubDistributionTests(unittest.TestCase):
                         "sys.path.insert(0,str(root));"
                         "from ash.runtime_decision import RuntimeCapabilityAdapter,parse_runtime_requirements;"
                         "from ash.scout import ScoutRuntimeAdapter,parse_scout_request;"
+                        "from datetime import datetime,timezone;"
                         "adapter=RuntimeCapabilityAdapter(root/'config'/'capability-foundation.json',"
                         "root/'config'/'upstream-source-registry.json',local_roots={});"
                         "request=parse_runtime_requirements({'schema_version':'nexus.runtime-requirements.v1',"
@@ -179,7 +180,10 @@ class GitHubDistributionTests(unittest.TestCase):
                         "'allowed_permissions':['write_artifact'],"
                         "'allowed_execution_mechanisms':['host_native']});"
                         "result=adapter.decide(request);"
-                        "scout=ScoutRuntimeAdapter(adapter,root=root);"
+                        # The packaged catalog is frozen August 2026 evidence.
+                        # Test its fresh branch at an explicit historical clock;
+                        # separately prove that a later clock removes recommendations.
+                        "scout=ScoutRuntimeAdapter(adapter,root=root,clock=lambda:datetime(2026,8,28,tzinfo=timezone.utc));"
                         "scout_request=parse_scout_request({'schema_version':'nexus.candidate-scout-request.v1',"
                         "'runtime_requirements':{'schema_version':'nexus.runtime-requirements.v1',"
                         "'requirements_id':'req:isolated-scout','requirements_version':'1',"
@@ -188,11 +192,15 @@ class GitHubDistributionTests(unittest.TestCase):
                         "'allowed_execution_mechanisms':['nexus_local_read_plan']},"
                         "'source_ids':['ecosystem-gap-scan']},parse_requirements=parse_runtime_requirements);"
                         "scouted=scout.scout(scout_request);"
+                        "expired=ScoutRuntimeAdapter(adapter,root=root,clock=lambda:datetime(2027,8,28,tzinfo=timezone.utc)).scout(scout_request);"
                         "print(json.dumps({'result_code':result['result_code'],"
                         "'selected':result['selected_capabilities'],"
                         "'authority':result['security_result']['mcp_execution_authority'],"
                         "'scout_status':scouted['status'],"
-                        "'scout_authority':scouted['security_result']['execution_authority']}))"
+                        "'scout_authority':scouted['security_result']['execution_authority'],"
+                        "'expired_scout_status':expired['status'],"
+                        "'expired_recommendations':expired['recommended_candidate_ids'],"
+                        "'expired_authority':expired['security_result']['execution_authority']}))"
                     ),
                     str(extracted),
                 ],
@@ -208,6 +216,9 @@ class GitHubDistributionTests(unittest.TestCase):
                 "authority": "none",
                 "scout_status": "recommendation_ready",
                 "scout_authority": "none",
+                "expired_scout_status": "evidence_only",
+                "expired_recommendations": [],
+                "expired_authority": "none",
             })
 
     def test_release_archive_is_byte_reproducible_with_fixed_metadata(self) -> None:
