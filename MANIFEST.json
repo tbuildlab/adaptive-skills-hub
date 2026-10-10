@@ -267,6 +267,10 @@
     "bytes": 1433,
     "sha256": "899839c32d1fca98997f4a890846de35189e472ef06994c7ffbb99a26095c9d9"
   },
+  "diagnostics/g3-d01-rp/future-deployment/owner-transient-qr-result.js": {
+    "bytes": 5599,
+    "sha256": "e41476b9b59037d18f09813c26a61d594d33b6cb19cbeb3088f5c8935fb06e91"
+  },
   "diagnostics/g3-d01-rp/future-deployment/owner-transient-qr.js": {
     "bytes": 3803,
     "sha256": "24f440ae3e43518716a68560301898bc2979dc71013b832ec182aca9ee228b3f"
@@ -423,6 +427,10 @@
     "bytes": 5888,
     "sha256": "b9eff16e1a4b050fc9aa28bb1f8629ec0596b2800c529211a4cf9b76eba3b1df"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_owner_qr_result.py": {
+    "bytes": 3081,
+    "sha256": "8c9e4cf118525d5d1eeae83a7231a9e42436702926b71b0c7e19240667e48265"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_request_stage.py": {
     "bytes": 9381,
     "sha256": "f504e5194062f8db885fc679995faee2d3af04fa85f865f133b96a894460f751"
@@ -514,6 +522,10 @@
   "diagnostics/g3-d01-rp/tests/test_owner_qr_artifact.py": {
     "bytes": 10051,
     "sha256": "42264020bb78b8aecfaee8f347c272643013899bdc383a073675b185a57890ec"
+  },
+  "diagnostics/g3-d01-rp/tests/test_owner_qr_result_artifact.py": {
+    "bytes": 7012,
+    "sha256": "8061fd242856c5a7ef2bcbe740e5423b9b99a1a1f2453e2944102352cc61931d"
   },
   "diagnostics/g3-d01-rp/tests/test_protocol_status_artifact.py": {
     "bytes": 5714,
@@ -1026,6 +1038,10 @@
   "docs/nexus-g3-d01-owner-local-qr-hosted-continuity-v1.md": {
     "bytes": 4801,
     "sha256": "3232850f640715b093a155852c3aa4db115f78dc673450b27944b193bd36d1bf"
+  },
+  "docs/nexus-g3-d01-owner-qr-result-projection-v1.md": {
+    "bytes": 4148,
+    "sha256": "0a2f5e2f19dd90bd93aa4610adfa445de55abe3e0107afa0b02a0b982e707a03"
   },
   "docs/nexus-g3-d01-owner-registration-jwks-pinning-v1.md": {
     "bytes": 15901,
