@@ -311,6 +311,10 @@
     "bytes": 2012,
     "sha256": "27c974996bc5dfef1ed72e63e2c3e2a0aac4ad94b57d767356fabb24b826a984"
   },
+  "diagnostics/g3-d01-rp/lib/server/owner-keyset-generation3.js": {
+    "bytes": 890,
+    "sha256": "30322f35136aa4d64342de829d7353fa90864161fd006b26b9c0f0209b422286"
+  },
   "diagnostics/g3-d01-rp/lib/server/pending-delivery-generation3.js": {
     "bytes": 1799,
     "sha256": "791f85139fb5be934461f78958628ff9d45265e590f91635506cdc0cc155078b"
@@ -379,6 +383,10 @@
     "bytes": 10546,
     "sha256": "ce5cab7d53d9f06b623187bbae9bcda18cd5e06c670c60bcb9ba82fc843d0327"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_generation3.py": {
+    "bytes": 7429,
+    "sha256": "53c9251e2bd1588b6c2e095e93331c54e2c283a950c7aa712f51759a460ad485"
+  },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
     "sha256": "8502fadc6eb37d50f9e8e0a04d92430c0b19aa896235d216a83d94247d6e785d"
@@ -402,6 +410,10 @@
   "diagnostics/g3-d01-rp/tests/owner-keyset-generation2.test.js": {
     "bytes": 8059,
     "sha256": "d17e3031dd75a83b487ed93e0a511d514c4da46612948872f7fecfa97fee653d"
+  },
+  "diagnostics/g3-d01-rp/tests/owner-keyset-generation3.test.js": {
+    "bytes": 4137,
+    "sha256": "277d5244f9e6b93180cd3ca015fbe88455f6219dd2ae43a67bd89dd23f1b3d61"
   },
   "diagnostics/g3-d01-rp/tests/owner-pinning.test.js": {
     "bytes": 13244,
@@ -434,6 +446,10 @@
   "diagnostics/g3-d01-rp/tests/test_generation2_artifact.py": {
     "bytes": 8283,
     "sha256": "db822ebaad83ca414970fcc63101e3a5acc831f91122f3a8a585a94daec9946d"
+  },
+  "diagnostics/g3-d01-rp/tests/test_generation3_artifact.py": {
+    "bytes": 6722,
+    "sha256": "143c4d62a53c7b04fcdc62e9129444f539f4e8cb993d0e4b8277b2cf93d15f22"
   },
   "diagnostics/g3-d01-rp/tests/test_protocol_status_artifact.py": {
     "bytes": 5714,
@@ -862,6 +878,10 @@
   "docs/nexus-g3-d01-generation2-public-key-review-v1.md": {
     "bytes": 6962,
     "sha256": "dba1767eca830bfc5a3b8b6678ff310fde01205b01ff27cefc2991ed195f8dd0"
+  },
+  "docs/nexus-g3-d01-generation3-authorized-rebind-v1.md": {
+    "bytes": 6648,
+    "sha256": "f12656859b8ec933b7034095c9669ebb2378354343c86f420ace3d59e2496486"
   },
   "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
     "bytes": 19430,
