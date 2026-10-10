@@ -1027,6 +1027,10 @@
     "bytes": 6041,
     "sha256": "a5f681be58e0cde1dd3fa3310a34564092395009d80147412318eb860bbfb3c2"
   },
+  "docs/nexus-g3-d01-delegated-live-closure-v1.md": {
+    "bytes": 8808,
+    "sha256": "36b76c1ed70515a3f02c795c63835b72a41d2d3bf9a310d114b9304e6d76346f"
+  },
   "docs/nexus-g3-d01-diagnostic-rp-implementation-review-v1.md": {
     "bytes": 20284,
     "sha256": "b8b5b4d9f4d339fa8f301b3f1121ebe1fb76339f54ce01066993fc4a78209323"
@@ -1190,6 +1194,10 @@
   "docs/nexus-g3-d01-vercel-secret-custody-runbook-v1.md": {
     "bytes": 6453,
     "sha256": "519d13a821a7a663b65743829e7130c695b916152987577169caa1126b1d4a9a"
+  },
+  "docs/nexus-g3-d03-live-entry-preflight-v1.md": {
+    "bytes": 6293,
+    "sha256": "af996b4bb46831dcce08586bb92543487119073ebf4d726cb707231f3ed3700f"
   },
   "docs/nexus-g3-delegated-executor-authority-policy-v1.md": {
     "bytes": 11312,
