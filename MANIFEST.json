@@ -391,6 +391,10 @@
     "bytes": 6270,
     "sha256": "4bdcf7c299845cc6b6bf76ad08523c3ef9c37f9dbc3358bf99ca2bb35241f434"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_owner_origin.py": {
+    "bytes": 2665,
+    "sha256": "d28fc593ce244626fc26e3d31b1c850fb96896ab17dfed23ab87cb5f399558d4"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_request_stage.py": {
     "bytes": 9381,
     "sha256": "f504e5194062f8db885fc679995faee2d3af04fa85f865f133b96a894460f751"
@@ -462,6 +466,10 @@
   "diagnostics/g3-d01-rp/tests/test_owner_form_artifact.py": {
     "bytes": 9809,
     "sha256": "0914c04a0bd4ba074a1878fb1c9fd34890a1cacc5de52c6aee6471c530703c85"
+  },
+  "diagnostics/g3-d01-rp/tests/test_owner_origin_artifact.py": {
+    "bytes": 4219,
+    "sha256": "8808b946eef812904c29c5fff91faaea7b7071eb220594545371a437176ed3cd"
   },
   "diagnostics/g3-d01-rp/tests/test_protocol_status_artifact.py": {
     "bytes": 5714,
@@ -918,6 +926,10 @@
   "docs/nexus-g3-d01-native-owner-form-review-v1.md": {
     "bytes": 7944,
     "sha256": "cbfc0e299377b949b0a9a393230982ee26bf05927216fbfd723b4bf8b049b498"
+  },
+  "docs/nexus-g3-d01-native-owner-origin-review-v1.md": {
+    "bytes": 5861,
+    "sha256": "d2448028b6dd84e2879cbdf1262bbc9ad6d1499634f3fbdc3592c93218741caa"
   },
   "docs/nexus-g3-d01-owner-delivery-association-blocker-v1.md": {
     "bytes": 4208,
