@@ -427,6 +427,10 @@
     "bytes": 7429,
     "sha256": "53c9251e2bd1588b6c2e095e93331c54e2c283a950c7aa712f51759a460ad485"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_identity_stage.py": {
+    "bytes": 6344,
+    "sha256": "1a5ac8712fcc69d3475973403afd32939942ce1cd0ca0923237f38bfe7ca7a21"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_owner_factor_observation.py": {
     "bytes": 4124,
     "sha256": "cfde8099028e217fad917be221639437181b5e35e54c7b2460433f6a4745ec81"
@@ -530,6 +534,10 @@
   "diagnostics/g3-d01-rp/tests/test_generation3_artifact.py": {
     "bytes": 6722,
     "sha256": "143c4d62a53c7b04fcdc62e9129444f539f4e8cb993d0e4b8277b2cf93d15f22"
+  },
+  "diagnostics/g3-d01-rp/tests/test_identity_stage_artifact.py": {
+    "bytes": 5649,
+    "sha256": "d6c85eb1963caae134dc6da7af5b0cc5c5aebadb96017ca2d008089cfcce98bf"
   },
   "diagnostics/g3-d01-rp/tests/test_owner_factor_observation_artifact.py": {
     "bytes": 5263,
@@ -1018,6 +1026,10 @@
   "docs/nexus-g3-d01-generation3-otp-followup-evidence-v1.md": {
     "bytes": 4444,
     "sha256": "e3eb7b8932fb3369ea0648bad13ebed7af0970af07216c4068ecc7f975448f9c"
+  },
+  "docs/nexus-g3-d01-identity-denial-classification-review-v1.md": {
+    "bytes": 5349,
+    "sha256": "7a82a1309ebe697da73f562e6a55c43f0c86e268b89ce84252279deef8a05c48"
   },
   "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
     "bytes": 19430,
