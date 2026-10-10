@@ -431,6 +431,10 @@
     "bytes": 6344,
     "sha256": "1a5ac8712fcc69d3475973403afd32939942ce1cd0ca0923237f38bfe7ca7a21"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_mfa_transition.py": {
+    "bytes": 7885,
+    "sha256": "6fcc2ec8223986f877ecdcf5afdbcc9a76afca77bf7d6c31f0e9ec1fcc7f0321"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_owner_factor_observation.py": {
     "bytes": 4124,
     "sha256": "cfde8099028e217fad917be221639437181b5e35e54c7b2460433f6a4745ec81"
@@ -538,6 +542,10 @@
   "diagnostics/g3-d01-rp/tests/test_identity_stage_artifact.py": {
     "bytes": 5649,
     "sha256": "d6c85eb1963caae134dc6da7af5b0cc5c5aebadb96017ca2d008089cfcce98bf"
+  },
+  "diagnostics/g3-d01-rp/tests/test_mfa_transition_artifact.py": {
+    "bytes": 11213,
+    "sha256": "fd328c7d5b7a159925305d002069b0331f24dd2f3b99c7125545fbc18e97c5a6"
   },
   "diagnostics/g3-d01-rp/tests/test_owner_factor_observation_artifact.py": {
     "bytes": 5263,
@@ -1106,6 +1114,10 @@
   "docs/nexus-g3-d01-pre-secret-readiness-closure-v1.md": {
     "bytes": 15572,
     "sha256": "c70ae4e466345aaaa26ee1693d0370f5b811ccc50f72ff2a95c114f0f661e1d6"
+  },
+  "docs/nexus-g3-d01-precontext-mfa-transition-amendment-v1.md": {
+    "bytes": 10352,
+    "sha256": "2fa84942608708db8f4a375d14e9d1468038dc411b93b6370ce9a9d9c3c49ead"
   },
   "docs/nexus-g3-d01-protocol-failure-status-review-v1.md": {
     "bytes": 4753,
