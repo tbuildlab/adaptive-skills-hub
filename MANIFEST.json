@@ -371,6 +371,14 @@
     "bytes": 4586,
     "sha256": "637e48f727706bc498f4ceb8abafc4103a3a79ee8efb609fe1901e0d2bea0d42"
   },
+  "diagnostics/g3-d01-rp/owner-factor-observation/endpoint.js": {
+    "bytes": 1633,
+    "sha256": "b85c32ca156093b524b26ca87dc3ce1218e26beaa91abf5a2171b95ea71af7b7"
+  },
+  "diagnostics/g3-d01-rp/owner-factor-observation/observation.js": {
+    "bytes": 7672,
+    "sha256": "9a18638429ec95fc9b10136f9527fbd3f5a1ea08bd0594e75b1885811444deda"
+  },
   "diagnostics/g3-d01-rp/package.json": {
     "bytes": 217,
     "sha256": "12f6af3f89d6079dcc7d835f7d13ac6f53030fb6d2a5dc2ac136b2f556b4e35b"
@@ -410,6 +418,10 @@
   "diagnostics/g3-d01-rp/scripts/verify_generation3.py": {
     "bytes": 7429,
     "sha256": "53c9251e2bd1588b6c2e095e93331c54e2c283a950c7aa712f51759a460ad485"
+  },
+  "diagnostics/g3-d01-rp/scripts/verify_owner_factor_observation.py": {
+    "bytes": 4124,
+    "sha256": "cfde8099028e217fad917be221639437181b5e35e54c7b2460433f6a4745ec81"
   },
   "diagnostics/g3-d01-rp/scripts/verify_owner_form.py": {
     "bytes": 6270,
@@ -506,6 +518,10 @@
   "diagnostics/g3-d01-rp/tests/test_generation3_artifact.py": {
     "bytes": 6722,
     "sha256": "143c4d62a53c7b04fcdc62e9129444f539f4e8cb993d0e4b8277b2cf93d15f22"
+  },
+  "diagnostics/g3-d01-rp/tests/test_owner_factor_observation_artifact.py": {
+    "bytes": 5263,
+    "sha256": "5efdbfee4f1c7f46b42080920534c029ed9f0494948c449ddbf5667933c3c6c6"
   },
   "diagnostics/g3-d01-rp/tests/test_owner_form_artifact.py": {
     "bytes": 9809,
@@ -1022,6 +1038,10 @@
   "docs/nexus-g3-d01-owner-delivery-readiness-v1.md": {
     "bytes": 7080,
     "sha256": "1fc2ef2293c36e1afdc56619d4f6cf3e20aab9fa8c3d3c87e9c488738454f056"
+  },
+  "docs/nexus-g3-d01-owner-factor-read-only-observation-v1.md": {
+    "bytes": 5377,
+    "sha256": "df1eb9d968ee4fb0441f8d96aec0558fce7041cfb8bad2f49cdebfef28e11ae6"
   },
   "docs/nexus-g3-d01-owner-form-parser-hosted-continuity-v1.md": {
     "bytes": 3947,
