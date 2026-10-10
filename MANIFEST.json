@@ -887,6 +887,10 @@
     "bytes": 5886,
     "sha256": "9215bded61be3bc66c93f9db2ebb7ad3192236ecd8869fbaed40f9f63d96aa2a"
   },
+  "docs/nexus-g3-d01-generation3-otp-followup-evidence-v1.md": {
+    "bytes": 4444,
+    "sha256": "e3eb7b8932fb3369ea0648bad13ebed7af0970af07216c4068ecc7f975448f9c"
+  },
   "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
     "bytes": 19430,
     "sha256": "540364d0bd776b7b8a5d0dcfbb46af39af89199124b6bcc313ca54f67fb2e72f"
