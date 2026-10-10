@@ -927,6 +927,10 @@
     "bytes": 7944,
     "sha256": "cbfc0e299377b949b0a9a393230982ee26bf05927216fbfd723b4bf8b049b498"
   },
+  "docs/nexus-g3-d01-native-owner-origin-hosted-continuity-v1.md": {
+    "bytes": 4006,
+    "sha256": "f8247eb7fa44717b5b1df06024060898c5a43fa605fca109278bc31a10ffcff5"
+  },
   "docs/nexus-g3-d01-native-owner-origin-review-v1.md": {
     "bytes": 5861,
     "sha256": "d2448028b6dd84e2879cbdf1262bbc9ad6d1499634f3fbdc3592c93218741caa"
