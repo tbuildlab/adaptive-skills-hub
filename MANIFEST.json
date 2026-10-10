@@ -471,6 +471,10 @@
     "bytes": 9381,
     "sha256": "f504e5194062f8db885fc679995faee2d3af04fa85f865f133b96a894460f751"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_retired_context.py": {
+    "bytes": 2979,
+    "sha256": "49f1fa4f320c12f34f9ed00320dedc1c2ec058afef3730a575d1c54c6b5d86e3"
+  },
   "diagnostics/g3-d01-rp/tests/boundary.test.js": {
     "bytes": 4493,
     "sha256": "8502fadc6eb37d50f9e8e0a04d92430c0b19aa896235d216a83d94247d6e785d"
@@ -594,6 +598,10 @@
   "diagnostics/g3-d01-rp/tests/test_request_stage_artifact.py": {
     "bytes": 13979,
     "sha256": "5eb7707556453e5b485bf5f7f36cca89a4eafa780bc929805ba5d3c2891373e6"
+  },
+  "diagnostics/g3-d01-rp/tests/test_retired_context_artifact.py": {
+    "bytes": 5079,
+    "sha256": "d1b19a97952c23c978288b2b8ea9f94fd34f65ca95319833cfd929af1169fdc0"
   },
   "diagnostics/g3-d01-rp/vendor/qrcodegen-v1.8.0-es6.js": {
     "bytes": 45331,
@@ -1154,6 +1162,10 @@
   "docs/nexus-g3-d01-request-stage-hosted-evidence-v1.md": {
     "bytes": 5391,
     "sha256": "fd425e5011712421fe4e7ebbc2454df24e7ba3e4bf5ac4c476d6ec3ad4759f11"
+  },
+  "docs/nexus-g3-d01-retired-context-recovery-review-v1.md": {
+    "bytes": 5014,
+    "sha256": "46a65ef7db63303a74c51845e96030dc2f3025e2b0447614c313212369a1d84e"
   },
   "docs/nexus-g3-d01-secret-correction-followup-status-v1.md": {
     "bytes": 9194,
