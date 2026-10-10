@@ -267,6 +267,10 @@
     "bytes": 1433,
     "sha256": "899839c32d1fca98997f4a890846de35189e472ef06994c7ffbb99a26095c9d9"
   },
+  "diagnostics/g3-d01-rp/future-deployment/owner-existing-totp.js": {
+    "bytes": 3860,
+    "sha256": "2979de984f05d31048a271aa6e273119c42ccec3576d7aa3dee969dfa7c4202b"
+  },
   "diagnostics/g3-d01-rp/future-deployment/owner-transient-qr-result.js": {
     "bytes": 5599,
     "sha256": "e41476b9b59037d18f09813c26a61d594d33b6cb19cbeb3088f5c8935fb06e91"
@@ -407,6 +411,10 @@
     "bytes": 9258,
     "sha256": "e8271e2eb5bdaafc1223a7301bacda37bc767512dc364e944e4d7dd7fdeefc26"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_existing_totp.py": {
+    "bytes": 4028,
+    "sha256": "b62e0444214e9d3ea76076ad5bac3b816714ca621d627736e9374614c8c88e6c"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_factor_cleanup.py": {
     "bytes": 4750,
     "sha256": "d8b08765279ef6ee23728e31e47e62147a3a51ada6c3a41122f4132ab868d556"
@@ -506,6 +514,10 @@
   "diagnostics/g3-d01-rp/tests/test_deployment_prep.py": {
     "bytes": 6712,
     "sha256": "b2957b12e0ebf6967a057090bc40f8df0196150048c459b2925e15d7f82f06df"
+  },
+  "diagnostics/g3-d01-rp/tests/test_existing_totp_artifact.py": {
+    "bytes": 7831,
+    "sha256": "92f7f3ec4596613bcad5531b20a2f84f3b3923ffd0620b098667aa933a08134d"
   },
   "diagnostics/g3-d01-rp/tests/test_factor_cleanup_artifact.py": {
     "bytes": 2177,
@@ -970,6 +982,10 @@
   "docs/nexus-g3-d01-disabled-production-deployment-review-prep-v1.md": {
     "bytes": 18077,
     "sha256": "bb56a710ce9cecc336127d547bbbbb34d63b9b44b2d597f6785608a718b7399e"
+  },
+  "docs/nexus-g3-d01-existing-totp-authentication-review-v1.md": {
+    "bytes": 5347,
+    "sha256": "7e15144adf4d9a4e1e200ea9056584a1aae29da599b28fbf72cb6ec088a38b3e"
   },
   "docs/nexus-g3-d01-exposed-factor-cleanup-result-v1.md": {
     "bytes": 3849,
