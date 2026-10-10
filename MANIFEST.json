@@ -859,6 +859,10 @@
     "bytes": 19430,
     "sha256": "540364d0bd776b7b8a5d0dcfbb46af39af89199124b6bcc313ca54f67fb2e72f"
   },
+  "docs/nexus-g3-d01-owner-delivery-association-blocker-v1.md": {
+    "bytes": 4208,
+    "sha256": "b95ae43d13a4e3eb0511f108d5125ccc5e5a3c37b650b5b47103a11664b42515"
+  },
   "docs/nexus-g3-d01-owner-delivery-readiness-v1.md": {
     "bytes": 7080,
     "sha256": "1fc2ef2293c36e1afdc56619d4f6cf3e20aab9fa8c3d3c87e9c488738454f056"
