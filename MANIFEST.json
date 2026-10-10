@@ -311,6 +311,10 @@
     "bytes": 2012,
     "sha256": "27c974996bc5dfef1ed72e63e2c3e2a0aac4ad94b57d767356fabb24b826a984"
   },
+  "diagnostics/g3-d01-rp/lib/server/pending-delivery-generation3.js": {
+    "bytes": 1799,
+    "sha256": "791f85139fb5be934461f78958628ff9d45265e590f91635506cdc0cc155078b"
+  },
   "diagnostics/g3-d01-rp/lib/server/pending-delivery-review.js": {
     "bytes": 1504,
     "sha256": "d78e62686150b5837847c873e98fb5afcc5d4586a5cfb6e4e8a3e529130845a0"
@@ -402,6 +406,10 @@
   "diagnostics/g3-d01-rp/tests/owner-pinning.test.js": {
     "bytes": 13244,
     "sha256": "bcac691b187f35603b7d2345e27c66d399c443fa3d9a3404d279c756d4750faf"
+  },
+  "diagnostics/g3-d01-rp/tests/pending-delivery-generation3.test.js": {
+    "bytes": 7534,
+    "sha256": "e8ddd86372eda4705568b0b510a0bc54bf5f8bd3e5ca4c2e387338cf357c692b"
   },
   "diagnostics/g3-d01-rp/tests/pending-delivery.test.js": {
     "bytes": 3793,
@@ -862,6 +870,10 @@
   "docs/nexus-g3-d01-owner-delivery-association-blocker-v1.md": {
     "bytes": 4208,
     "sha256": "b95ae43d13a4e3eb0511f108d5125ccc5e5a3c37b650b5b47103a11664b42515"
+  },
+  "docs/nexus-g3-d01-owner-delivery-generation3-preparation-v1.md": {
+    "bytes": 7119,
+    "sha256": "1e3bebd5ba656f8b3388286d168514f5ea7fbf9e599b3c94f3e3af622f9424f8"
   },
   "docs/nexus-g3-d01-owner-delivery-readiness-v1.md": {
     "bytes": 7080,
