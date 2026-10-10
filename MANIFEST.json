@@ -435,6 +435,10 @@
     "bytes": 6344,
     "sha256": "1a5ac8712fcc69d3475973403afd32939942ce1cd0ca0923237f38bfe7ca7a21"
   },
+  "diagnostics/g3-d01-rp/scripts/verify_lifecycle_evidence.py": {
+    "bytes": 8723,
+    "sha256": "de9bdc24f2049d445f5925a1673550be6f7fb02e1b78301612f33576c9fa4e9c"
+  },
   "diagnostics/g3-d01-rp/scripts/verify_mfa_transition.py": {
     "bytes": 7885,
     "sha256": "6fcc2ec8223986f877ecdcf5afdbcc9a76afca77bf7d6c31f0e9ec1fcc7f0321"
@@ -550,6 +554,10 @@
   "diagnostics/g3-d01-rp/tests/test_identity_stage_artifact.py": {
     "bytes": 5649,
     "sha256": "d6c85eb1963caae134dc6da7af5b0cc5c5aebadb96017ca2d008089cfcce98bf"
+  },
+  "diagnostics/g3-d01-rp/tests/test_lifecycle_evidence_artifact.py": {
+    "bytes": 10513,
+    "sha256": "ce61e7044515f6627204f48b68169cc15fbed98bc72408d95cfca00d37514024"
   },
   "diagnostics/g3-d01-rp/tests/test_mfa_transition_artifact.py": {
     "bytes": 11213,
@@ -1050,6 +1058,10 @@
   "docs/nexus-g3-d01-identity-denial-classification-review-v1.md": {
     "bytes": 5349,
     "sha256": "7a82a1309ebe697da73f562e6a55c43f0c86e268b89ce84252279deef8a05c48"
+  },
+  "docs/nexus-g3-d01-lifecycle-evidence-review-v1.md": {
+    "bytes": 8815,
+    "sha256": "68ae9e1be21f4c58d9899d7f8454d4e229db1efda321e4c23ad056e07c405ae7"
   },
   "docs/nexus-g3-d01-live-stytch-adapter-offline-review-v1.md": {
     "bytes": 19430,
