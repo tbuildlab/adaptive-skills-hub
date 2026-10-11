@@ -1684,8 +1684,8 @@
     "sha256": "7545b1b1bb71c33e436fc007d00c44d9a037dfa275a7cc8667bc5d4451a97dfc"
   },
   "docs/nexus-production-n01-vercel-runtime-qualification-v1.md": {
-    "bytes": 4135,
-    "sha256": "02c7e58cb8cd87452f7679ac3bf59f1b49cd07c363572a4f6edcf8e2db391232"
+    "bytes": 5928,
+    "sha256": "866eb24d82d614b156f1aa097560f67ab578acdf717640c3e8a92a4e196acf48"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -2008,8 +2008,8 @@
     "sha256": "b67fd5f7e3a5c0c33312e2ea4411f911d10a7c831dff4e8d3695df57e9a88665"
   },
   "scripts/g3_n01_vercel_probe.py": {
-    "bytes": 7506,
-    "sha256": "9b16e89a73de2dab09e10ac0fc1129e3dd2c3d5f0b586f7cdc635280dd8e720d"
+    "bytes": 7751,
+    "sha256": "61cb4fabb79a99c04eb35234ab7e1e597d89c7cef186b0dd3465483115349404"
   },
   "scripts/g3_offline_control.py": {
     "bytes": 12420,
@@ -2196,8 +2196,8 @@
     "sha256": "94b4b62d6a229282911cfbaefce272593d86d3968bf877540a3af20402e2dc43"
   },
   "tests/test_g3_n01_vercel_probe.py": {
-    "bytes": 3275,
-    "sha256": "13b1ec6b3d3d5a42eb481f82e4c9c7f7247177b6d3f0633f5cc79aae086e70de"
+    "bytes": 3490,
+    "sha256": "4105c02d1ca4f79c9fd945753dfed340fd7c976f1997cbc385fcc6b87352f0b0"
   },
   "tests/test_g3_offline_control.py": {
     "bytes": 19333,

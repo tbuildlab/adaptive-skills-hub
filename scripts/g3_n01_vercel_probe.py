@@ -116,6 +116,9 @@ class handler(BaseHTTPRequestHandler):
                     except Exception:pass
                 result=OUTCOME;status=200 if result['n01_vercel_status'].endswith('_VERIFIED') else 503
         raw=json.dumps(result,sort_keys=True).encode()
+        # Exact sanitized response, not headers or native credential material.
+        # Native browser may execute an API request without displaying its JSON.
+        print(json.dumps({'n01_runtime_readback':result},sort_keys=True),flush=True)
         self.send_response(status)
         for key,value in {'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',
             'Referrer-Policy':'no-referrer','X-Frame-Options':'DENY',

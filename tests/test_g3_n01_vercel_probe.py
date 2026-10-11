@@ -1,6 +1,8 @@
 """Boundary-only simulated HTTP tests; never live runtime qualification."""
 from email.message import Message
-from io import BytesIO
+from io import BytesIO, StringIO
+from contextlib import redirect_stdout
+import json
 import unittest
 from unittest.mock import patch
 from scripts import g3_n01_vercel_probe as p
@@ -20,7 +22,9 @@ class RuntimeProbeTests(unittest.TestCase):
         obj.path=path;obj.command=method;obj.headers=h or headers();obj.wfile=BytesIO()
         obj.send_response=lambda status:setattr(obj,'status',status)
         obj.send_header=lambda *args:None;obj.end_headers=lambda:None
-        with patch.dict(p.os.environ,self.env,clear=True):obj.do_GET()
+        log=StringIO()
+        with patch.dict(p.os.environ,self.env,clear=True),redirect_stdout(log):obj.do_GET()
+        self.assertEqual(json.loads(log.getvalue())['n01_runtime_readback'],json.loads(obj.wfile.getvalue()))
         return obj.status,obj.wfile.getvalue()
     def test_alias_is_denied_before_paid_io(self):
         with patch.object(p,'read_current') as io:

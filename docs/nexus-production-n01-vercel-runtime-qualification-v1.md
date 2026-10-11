@@ -65,3 +65,30 @@ REAL_ADMISSION_ENABLED = NO
 PRODUCTION_AUTHORITY = NONE
 RESOURCE_SCOPE_EXPANDED = NO
 ```
+
+## Native execution observation and response visibility amendment
+
+The first deployed source is commit `dc7210fc3eb5711c2398b596c9bca1ebbe47f6d7`,
+artifact SHA256 `7f7eec31aa03e462d0eacea6c1f546534284747f1d3d44f8107c585900089c8e`,
+deployment `dpl_22bFRPkEd2wSN7NxnsYxjhgsYxmg`. All 40 platform source identities
+match the submitted bytes; 19 prior D01 files remain unchanged. The protected
+generated host is `nexus-g3-qual-oxf3yoia1-tdy0225.vercel.app`. Unauthenticated
+reads reach the native login page. Two explicitly attempted native browser reads
+executed with HTTP 200 at `2026-10-11T14:55:15.260Z` and
+`2026-10-11T14:57:39.696Z`, despite a client display error. Their response bodies
+and exact SDK counts were not observed. HTTP 200 supports the success inference
+from the exact deployed handler, but is not substituted for the missing readback.
+Both invocations consume their full conservative allowances of two DDB and 100 S3
+attempts; they are not recorded as zero calls. No grant or Owner context exists.
+
+The additive visibility amendment logs only the exact sanitized response JSON
+already returned by the probe. It never logs request headers, provider responses,
+native identity material or exception text. Existing negative/redaction tests now
+also compare each log record with its response body. The next explicit read is
+inside the original eight-invocation reservation; no previous storage/recovery
+qualification, configuration mutation or D01 ceremony is repeated.
+
+The installed CLI reports identity `tdy0225`. `vercel curl` was not executed:
+the official implementation can create an automation protection-bypass token.
+No bypass token, trusted-source rule, protection change or environment pull was
+performed. [CLI documented behavior](https://vercel.com/docs/cli/curl).
