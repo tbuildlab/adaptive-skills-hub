@@ -197,3 +197,33 @@ The later live canary change only adds sanitized authentication phase/status
 diagnostics; it passed compilation, current-source package isolation and exact
 package reproduction. The full run's snapshot is retained separately from
 these current-source checks; no exact final release qualification is claimed.
+
+## Actual append stage and independent recovery
+
+[Run 38127720218](https://github.com/TDY0225/adaptive-skills-hub/actions/runs/38127720218)
+at `914513b526e8bb9c4549dd5b230e96a88430a190` passed its first attempt.
+Native GitHub OIDC, exact A temporary caller and exact R AppendRead identities
+were verified. All 298 S3 calls have sanitized provider records: 288 HTTP 200,
+seven HTTP 403 and three HTTP 412. Thirteen object creates succeeded. The exact
+retained registration matched its original protected version and digest.
+Conditional duplicate/conflicting writes returned PreconditionFailed; overwrite,
+deletion, retention shortening, fault/admin-authorization writes and bucket
+administration returned AccessDenied. R recovery-admin assumption was denied.
+Unknown acknowledgment after an actual committed append quarantined without
+retry, then reconciled only its exact version. Concurrent contenders produced
+one 200, one 412 and one version. All seven isolated fault histories quarantined;
+stale head, generation/incarnation and inadequate retention coverage quarantined.
+
+Independent R root then verified all exact journal/object bytes at current
+sequence 3, rechecked complete inventories and original protected registration,
+and created root-only retained recovery authorization plus sequence 4 RECOVER.
+This used 70 S3 calls, six writes and 4045 payload bytes. Exact readback yielded
+RECOVER version `.HLyIDG2CtYV7V7pe7r3PTcTd7rCjd3W` and authorization version
+`QfYTlVH0dMa0UrGM1zI8flinsMTPw_Ic`. No primary history was overwritten and no
+authority was created. Total S3 attempts before restart-read qualification: 475.
+
+The pending fresh restart-read stage also tests actual IAM trust/permission
+mutation rejection and bucket-policy mutation rejection using the unchanged
+exact existing policy bodies. Unexpected acceptance fails qualification and
+cannot widen access. This is custody qualification, not a D04 release gate.
+D03 remains NOT_YET_QUALIFIED until that stage and retirement checks complete.

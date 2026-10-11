@@ -1604,8 +1604,8 @@
     "sha256": "d34e70261a2f13af469b8b4dbbb0b62b68fee68a0526541f4cec78a6411c0331"
   },
   "docs/nexus-production-d03-r-custody-and-canary-preparation-v1.md": {
-    "bytes": 12796,
-    "sha256": "f9990dca22cc4a64094b74ada8cee627ae732dc0e5e10c33c3e075352538d29a"
+    "bytes": 14809,
+    "sha256": "8d9ad5b18ab658cb0cba40bdfe6512656d060e470d58b88e99220c8588738642"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -1820,8 +1820,8 @@
     "sha256": "819d524b7a3b2f42e81a44bf1953b753d5e9b5605bf21373a826163deb3eca52"
   },
   "research/nexus-production-d03-run-request-v1.json": {
-    "bytes": 100,
-    "sha256": "7a360b072c4d977f7aa44d26a5d36d2d5b41200c53d3512c05d7cf7502daea9a"
+    "bytes": 127,
+    "sha256": "41859b61f80c83783e1423fb672602459afec4edaf7cddc8fbfa54d51bbf4dda"
   },
   "research/nexus-production-d03-sdk-requirements-v1.txt": {
     "bytes": 757,
@@ -1876,8 +1876,8 @@
     "sha256": "fd18b478a25369cc55157c60eaf4c595ff94d7190bb6576f8924d939dbce689c"
   },
   "scripts/g3_d03_live_canary.py": {
-    "bytes": 16605,
-    "sha256": "00a2acb8e27c0e50f9daa4b7f8c59469d4d6adb41e17ffd6439c01d430009c7b"
+    "bytes": 18484,
+    "sha256": "1364ea040bfea5b97129d2fbdb55b0ddb1bb5e07218e3e177907f508317fc908"
   },
   "scripts/g3_d03_s3_fence.py": {
     "bytes": 15353,

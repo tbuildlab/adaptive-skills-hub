@@ -110,9 +110,10 @@ def native_session():
         "arn:aws:sts::862902859484:assumed-role/G3QualFenceAppendRead/nexus-d03-qualification")
     emit(dict(native_oidc_a_to_r="VERIFIED", a_account="175880707430", r_account=OWNER))
     sdk = client("s3", r["Credentials"])
+    iam = client("iam", r["Credentials"])
     # Preserve SDK clients, never serialize temporary STS responses/credentials.
     del a, r
-    return sdk, r_sts, client, a_sts
+    return sdk, r_sts, iam, a_sts
 
 
 def must_quarantine(label, action, outcomes):
@@ -131,7 +132,7 @@ def main():
     f.require(request["schema_version"] == "nexus.g3.d03.run-request.v1")
     f.require((request["stage"], request["request_id"]) in (
         ("append", "canary-v1-append-1"), ("recovery-read", "canary-v1-recovery-read-2")))
-    sdk, r_sts, _, _ = native_session()
+    sdk, r_sts, r_iam, _ = native_session()
     PHASE = "PROTECTED_REGISTRATION_AND_HISTORY"
     service = BoundedS3(sdk)
     expected = (ROOT / "research/nexus-production-d03-canary-registration-v1.json").read_bytes()
@@ -257,6 +258,33 @@ def main():
         outcomes["automatic_redispatch"] = v.verify_consumer(history)["automatic_redispatch"]
     else:
         f.require(history.head == f.reference(vector[4][0]))
+        # Prove custody control with unchanged policy bodies: even unexpected
+        # acceptance would not widen access, and would fail qualification.
+        policy = json.loads((ROOT / "research/nexus-production-d03-r-append-policy-v1.json").read_text())
+        f.require(policy["r_account"] == OWNER and policy["bucket"] == BUCKET and
+            policy["role_name"] == "G3QualFenceAppendRead" and
+            policy["recovery_admin_role_name"] == "G3QualRecoveryAdmin")
+        def iam_refusal(label, operation, **arguments):
+            try:
+                getattr(r_iam, operation)(**arguments)
+            except Exception as error:
+                response = getattr(error,"response",{})
+                f.require(response.get("Error",{}).get("Code") == "AccessDenied" and
+                    response.get("ResponseMetadata",{}).get("HTTPStatusCode") == 403)
+                emit(dict(service="IAM",operation=operation,http_status=403,error_code="AccessDenied"))
+                outcomes[label] = "REAL_IAM_403_AccessDenied"
+            else:
+                raise f.FenceError("D03_UNEXPECTED_ADMIN_ACCESS")
+        for role, trust in ((policy["role_name"],policy["trust"]),
+                (policy["recovery_admin_role_name"],policy["recovery_admin_trust"])):
+            iam_refusal("trust_mutation_"+role,"update_assume_role_policy",
+                RoleName=role,PolicyDocument=json.dumps(trust))
+        iam_refusal("append_role_permission_mutation","put_role_policy",
+            RoleName=policy["role_name"],PolicyName="D03ExactCustodyOnly",
+            PolicyDocument=json.dumps(policy["permissions"]))
+        service_refusal("bucket_policy_mutation",lambda:service.put_bucket_policy(
+            Bucket=BUCKET,ExpectedBucketOwner=OWNER,Policy=json.dumps(policy["bucket_policy"])),
+            403,"AccessDenied")
         result=v.verify_consumer(history, incarnation="canary-incarnation-2")
         f.require(result["epoch"]==2 and result["sequence"]==4)
         must_quarantine("restart_old_incarnation", lambda:

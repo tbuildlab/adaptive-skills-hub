@@ -1,1 +1,5 @@
-{"schema_version":"nexus.g3.d03.run-request.v1","stage":"append","request_id":"canary-v1-append-1"}
+{
+  "schema_version": "nexus.g3.d03.run-request.v1",
+  "stage": "recovery-read",
+  "request_id": "canary-v1-recovery-read-2"
+}
