@@ -1591,6 +1591,10 @@
     "bytes": 11598,
     "sha256": "53c769545c4c0582feeab93a54606ace20d4d1bbf8bc8a7fa71695ccf60a56d7"
   },
+  "docs/nexus-production-d03-owner-approval-and-enrollment-checkpoint-v1.md": {
+    "bytes": 5711,
+    "sha256": "d34e70261a2f13af469b8b4dbbb0b62b68fee68a0526541f4cec78a6411c0331"
+  },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
     "sha256": "062e8ce94683bcd0a43f591a5636bbc938cfd06e130ecc202e2074c5049328fb"
