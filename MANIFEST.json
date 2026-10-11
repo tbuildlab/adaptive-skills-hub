@@ -1583,6 +1583,10 @@
     "bytes": 12473,
     "sha256": "62069f181610840407527ccaab08792050440791eec5b9abecac4000c18513cb"
   },
+  "docs/nexus-production-d03-managed-custody-survey-v1.md": {
+    "bytes": 11598,
+    "sha256": "53c769545c4c0582feeab93a54606ace20d4d1bbf8bc8a7fa71695ccf60a56d7"
+  },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
     "sha256": "062e8ce94683bcd0a43f591a5636bbc938cfd06e130ecc202e2074c5049328fb"
