@@ -1,0 +1,24 @@
+name: Bounded D03 custody qualification
+on:
+  push:
+    branches: [nexus-v2-production-qualification]
+    paths: [research/nexus-production-d03-run-request-v1.json]
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: nexus-d03-custody-qualification
+  cancel-in-progress: false
+jobs:
+  canary:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # official v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install bounded diagnostic SDK
+        run: python3 -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r research/nexus-production-d03-sdk-requirements-v1.txt
+      - name: One diagnostic request, no production authority
+        run: python3 -m scripts.g3_d03_live_canary

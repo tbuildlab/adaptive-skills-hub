@@ -1,0 +1,135 @@
+{
+  "classification": "DEPLOYED_EXACT_READBACK_D03_DIAGNOSTIC_CONFIGURATION_NOT_AUTHORITY",
+  "r_account": "862902859484",
+  "bucket": "nexus-d03-custody-862902859484-ap-southeast-1-v1",
+  "region": "ap-southeast-1",
+  "role_name": "G3QualFenceAppendRead",
+  "operations_deadline_utc": "2026-11-10T05:36:46Z",
+  "trust": {
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": {"AWS": "arn:aws:iam::175880707430:role/G3QualD03DiagnosticCaller"},
+      "Action": "sts:AssumeRole",
+      "Condition": {
+        "StringEquals": {"sts:RoleSessionName": "nexus-d03-qualification"},
+        "DateLessThan": {"aws:CurrentTime": "2026-11-10T05:36:46Z"}
+      }
+    }]
+  },
+  "permissions": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "ExactConditionalNormalAppend",
+        "Effect": "Allow",
+        "Action": "s3:PutObject",
+        "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/normal/*",
+        "Condition": {
+          "StringEquals": {"s3:if-none-match": "*"},
+          "DateLessThan": {"aws:CurrentTime": "2026-11-10T05:36:46Z"}
+        }
+      },
+      {
+        "Sid": "CompleteVersionHistoryOnly",
+        "Effect": "Allow",
+        "Action": "s3:ListBucketVersions",
+        "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1",
+        "Condition": {
+          "StringLike": {"s3:prefix": ["qualification/v1/normal/*", "qualification/v1/faults/*"]},
+          "DateLessThan": {"aws:CurrentTime": "2026-11-10T05:36:46Z"}
+        }
+      },
+      {
+        "Sid": "ExactVersionAndRetentionRead",
+        "Effect": "Allow",
+        "Action": ["s3:GetObjectVersion", "s3:GetObjectRetention"],
+        "Resource": [
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/normal/*",
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/faults/*"
+        ],
+        "Condition": {"DateLessThan": {"aws:CurrentTime": "2026-11-10T05:36:46Z"}}
+      }
+    ]
+  },
+  "bucket_policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "TransportMustBeTLS",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:*",
+        "Resource": [
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1",
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/*"
+        ],
+        "Condition": {"Bool": {"aws:SecureTransport": "false"}}
+      },
+      {
+        "Sid": "NormalHistoryAlwaysConditionalCreate",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": "s3:PutObject",
+        "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/normal/*",
+        "Condition": {"StringNotEquals": {"s3:if-none-match": "*"}}
+      },
+      {
+        "Sid": "NormalHistoryHasNoDeleteMarkersOrVersionDeletion",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": ["s3:DeleteObject", "s3:DeleteObjectVersion"],
+        "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/normal/*"
+      },
+      {
+        "Sid": "DiagnosticRoleCannotMutateOutsideNormalHistory",
+        "Effect": "Deny",
+        "Principal": "*",
+        "Action": ["s3:PutObject", "s3:DeleteObject", "s3:DeleteObjectVersion", "s3:PutObjectRetention", "s3:PutObjectLegalHold"],
+        "NotResource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/normal/*",
+        "Condition": {"ArnEquals": {"aws:PrincipalArn": "arn:aws:iam::862902859484:role/G3QualFenceAppendRead"}}
+      }
+    ]
+  },
+  "object_lock_configuration": {
+    "ObjectLockEnabled": "Enabled",
+    "Rule": {"DefaultRetention": {"Mode": "COMPLIANCE", "Days": 7}}
+  },
+  "public_access_block": {
+    "BlockPublicAcls": true,
+    "IgnorePublicAcls": true,
+    "BlockPublicPolicy": true,
+    "RestrictPublicBuckets": true
+  },
+  "ownership_controls": {"Rules": [{"ObjectOwnership": "BucketOwnerEnforced"}]},
+  "default_encryption": {"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]},
+  "recovery_admin_role_name": "G3QualRecoveryAdmin",
+  "recovery_admin_trust": {
+    "Version": "2012-10-17",
+    "Statement": [{
+      "Effect": "Allow",
+      "Principal": {"AWS": "arn:aws:iam::862902859484:root"},
+      "Action": "sts:AssumeRole"
+    }]
+  },
+  "recovery_admin_permissions": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": ["s3:GetBucketPolicy", "s3:PutBucketPolicy", "s3:GetBucketVersioning", "s3:PutBucketVersioning", "s3:GetBucketObjectLockConfiguration", "s3:PutBucketObjectLockConfiguration", "s3:GetBucketPublicAccessBlock", "s3:PutBucketPublicAccessBlock", "s3:GetBucketOwnershipControls", "s3:PutBucketOwnershipControls", "s3:GetEncryptionConfiguration", "s3:PutEncryptionConfiguration", "s3:ListBucketVersions", "s3:GetBucketLocation"],
+        "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1"
+      },
+      {
+        "Effect": "Allow",
+        "Action": ["s3:GetObjectVersion", "s3:GetObjectRetention", "s3:PutObjectRetention"],
+        "Resource": ["arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/normal/*", "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/v1/faults/*"]
+      },
+      {
+        "Effect": "Allow",
+        "Action": ["iam:GetRole", "iam:GetRolePolicy", "iam:UpdateAssumeRolePolicy", "iam:DeleteRolePolicy"],
+        "Resource": "arn:aws:iam::862902859484:role/G3QualFenceAppendRead"
+      }
+    ]
+  }
+}

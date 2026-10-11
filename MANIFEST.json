@@ -3,6 +3,10 @@
     "bytes": 400,
     "sha256": "a655879739182775e0f18e31831d26b481cc2980514e72adeccc4666b7c4e403"
   },
+  ".github/workflows/nexus-d03-custody-qualification.yml": {
+    "bytes": 860,
+    "sha256": "c5fd6568e60b9e1bb77b6ddc2997158719b4ac573cb4cc2ed89dba9ebbf469c6"
+  },
   ".gitignore": {
     "bytes": 568,
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
@@ -1583,6 +1587,10 @@
     "bytes": 12473,
     "sha256": "62069f181610840407527ccaab08792050440791eec5b9abecac4000c18513cb"
   },
+  "docs/nexus-production-d03-a-enrollment-and-caller-checkpoint-v1.md": {
+    "bytes": 11724,
+    "sha256": "b65d877ba6389a6c85ddb879933663f215f462b82fd6dce05ffab521f668abb8"
+  },
   "docs/nexus-production-d03-custody-authorization-package-v1.md": {
     "bytes": 12520,
     "sha256": "820f9d7d2e1f11c99dd25d45d9cd858b454a22aa2d3f2cb47fe8f1611191ba1c"
@@ -1594,6 +1602,10 @@
   "docs/nexus-production-d03-owner-approval-and-enrollment-checkpoint-v1.md": {
     "bytes": 5711,
     "sha256": "d34e70261a2f13af469b8b4dbbb0b62b68fee68a0526541f4cec78a6411c0331"
+  },
+  "docs/nexus-production-d03-r-custody-and-canary-preparation-v1.md": {
+    "bytes": 7746,
+    "sha256": "ffbd11ffdd05a1dd917f8973b9fa7efc2fb94deeb5e726b5d2659ded56348c5b"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -1795,6 +1807,26 @@
     "bytes": 8301,
     "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
   },
+  "research/nexus-production-d03-a-caller-policy-v1.json": {
+    "bytes": 1329,
+    "sha256": "7a7c31f864bb6534062e69a040e560c954cb88786138f001e16a4a68ffd0822c"
+  },
+  "research/nexus-production-d03-canary-registration-v1.json": {
+    "bytes": 991,
+    "sha256": "ac3b890867ded5be576d750b1247021935bf48b9bb45211ef254c969b4d568ec"
+  },
+  "research/nexus-production-d03-r-append-policy-v1.json": {
+    "bytes": 5644,
+    "sha256": "819d524b7a3b2f42e81a44bf1953b753d5e9b5605bf21373a826163deb3eca52"
+  },
+  "research/nexus-production-d03-run-request-v1.json": {
+    "bytes": 113,
+    "sha256": "1b2954ccbe6ce6eb1d849d74f00936da0d04e5d3d66c72bda6d9ddae3b228c22"
+  },
+  "research/nexus-production-d03-sdk-requirements-v1.txt": {
+    "bytes": 757,
+    "sha256": "abf0de7a969b90eeceefb16bdba24b6d5f2a57ae1af5c9b3d0fbbc663d5fd548"
+  },
   "research/nexus-website-experience-pack-v1.json": {
     "bytes": 37685,
     "sha256": "95396c95fd122ddaf69fca34902c4dae162648b0a5fa9de6a8c581d32216a0e5"
@@ -1838,6 +1870,18 @@
   "scripts/final_smoke.py": {
     "bytes": 4261,
     "sha256": "075130c8fd31b2f019c520d641d875021b436770da833755e16f0195a461be2c"
+  },
+  "scripts/g3_d03_canary_vectors.py": {
+    "bytes": 3961,
+    "sha256": "fd18b478a25369cc55157c60eaf4c595ff94d7190bb6576f8924d939dbce689c"
+  },
+  "scripts/g3_d03_live_canary.py": {
+    "bytes": 15623,
+    "sha256": "c47b8516019f6e1b40ea4061d61a16d9babee6d239af972cb447d10baf639dfc"
+  },
+  "scripts/g3_d03_s3_fence.py": {
+    "bytes": 15353,
+    "sha256": "b75d5b575859c1ec89dc80b4ede624cdffc0041a43e139a3f91c56dae273efbb"
   },
   "scripts/g3_offline_control.py": {
     "bytes": 26489,
@@ -1986,6 +2030,10 @@
   "tests/test_g3_authorization.py": {
     "bytes": 19131,
     "sha256": "395769db7286f3f7e97954be7997f690cbe042a5c39f1757792a60a2f2701e25"
+  },
+  "tests/test_g3_d03_s3_fence.py": {
+    "bytes": 11016,
+    "sha256": "f5c32182aa591acdb4358525e02e9e644f2a4d200161aa916410c8f1bb69326b"
   },
   "tests/test_g3_d03_zero_cost.py": {
     "bytes": 9464,

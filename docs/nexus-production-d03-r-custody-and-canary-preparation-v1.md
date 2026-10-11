@@ -1,0 +1,123 @@
+# Production D03 R custody and canary preparation v1
+
+2026-10-11. Baseline `5a1d2720b9a45ddc10cc099ff7604bb25a5ac646`.
+This receipt follows the Owner's renewed Tee login and supersedes the current-state
+interpretation of the earlier A-only enrollment receipt. It is not D03 closure.
+
+## Verified deployment and protected setup
+
+R CloudShell STS returned account `862902859484` and root ARN exactly. R plan is
+FREE / ACTIVE; approved minimal setup succeeded without any agent plan upgrade.
+Complete IAM inventory has zero users, zero groups, zero OIDC providers and four
+roles: the two original Support/TrustedAdvisor service-linked roles and the two
+approved D03 roles. DescribeOrganization returned AWSOrganizationsNotInUseException.
+A is independently authenticated account `175880707430`, PAID / ACTIVE observed
+after Owner enrollment, not upgraded by the agent. Neither account is an Organization
+management path. Trusted setup uses Owner-authenticated R CloudShell; the ordinary
+diagnostic runner has no R root session or root SDK credentials.
+
+The agent created only approved Singapore bucket
+`nexus-d03-custody-862902859484-ap-southeast-1-v1`, R `G3QualFenceAppendRead`
+and `G3QualRecoveryAdmin`. Versioning Enabled, Object Lock Enabled with default
+COMPLIANCE seven days, BucketOwnerEnforced, all four public-access blocks, AES256
+SSE-S3 and exact bucket/role policies passed provider readback equality. No managed
+role policies or extra inline policies were attached. These observations establish
+configuration, not effective ordinary-caller enforcement. The admin role's R-root
+principal is account delegation; root cannot assume it. Actual setup administration
+was authenticated root, not a falsely claimed assumed RecoveryAdmin session.
+
+The initial bucket read was 404 before creation, and the complete initial version
+listing contained zero versions/markers. Setup used 13 S3 attempts. No SDK retries
+are enabled. No paid KMS, runtime, logging, replication, acceleration, Organization
+or N01/N02 resources were created.
+
+Independent R setup then wrote the exact diagnostic registration, normal GENESIS
+and seven isolated fault histories within the two approved prefixes. The registration
+version is `PnyOK3mANH6Y5kZQsgQ1VYqACGr1Xb3M`; SHA256
+`ac3b890867ded5be576d750b1247021935bf48b9bb45211ef254c969b4d568ec`.
+It is TEST_ONLY, fixes the normal origin/generation and exact independent GENESIS/
+RECOVER identities, and explicitly states REAL_ADMISSION NO. All 43 initial objects
+had actual Compliance retention readback exceeding six days 23 hours. An additional
+duplicate fault version and one fault delete marker exercise fork/marker rejection;
+normal history was not corrupted. Seed totals: 44 object writes, 22,689 payload bytes,
+90 S3 attempts. Cumulative actual S3 attempts at this preparation checkpoint: 103.
+No retained version contains a credential, bearer, production grant or site content.
+R root then attempted premature deletion and retention shortening of one retained
+fault-prefix version. Both actual service calls returned 403 AccessDenied under
+Compliance, without relying on the normal-prefix delete deny. The two preceding
+version/retention reads and these two refusals add four requests: cumulative 107.
+
+## Minimal integration and evidence taxonomy
+
+The bounded S3 adapter receives an existing scoped SDK client and independently
+installed diagnostic registration. It validates canonical unchanged R07 bodies,
+complete exact versions, contiguous twenty-digit sequence keys, predecessor IDs/
+hashes, retained ledger descriptor/control/page bytes, epoch/incarnation lineage,
+registered admin transitions and retention coverage. It rechecks both version
+inventories before returning a custody observation. It never returns authority.
+The registration's precomputed RECOVER identity is a candidate, not an approval.
+RECOVER additionally requires an exact separately retained authorization in the
+R-only administration prefix; ordinary append permissions cannot create it.
+Absent, duplicated, mismatched or insufficiently retained authorization quarantines
+even the previously registered candidate. R must authorize the exact current
+predecessor during the independent recovery step.
+Missing, duplicated, marked, changed, unsupported, corrupted or partial evidence
+quarantines. One conditional append is attempted; acknowledgment loss pins that
+exact candidate for read-only reconciliation and prohibits alternative append/retry.
+Malformed candidate artifacts are refused before a journal write.
+
+The diagnostic consumer reuses the existing closed snapshot codec. Its records
+are synthetic NO_AUTHORITY vectors, not production grants or N01 semantic proof.
+Actual S3 responses, injected acknowledgment loss and synthetic consumer predicates
+remain separate evidence classes. Production modules do not import the canary.
+Independent root setup and ordinary temporary role execution are separate contexts;
+account labels alone cannot qualify independence. Actual role and admin-denial
+service tests remain required.
+
+GitHub native OIDC/STS reuses the existing private repository and exact development
+branch, with time-bounded A→R trust. GitHub's authenticated Actions billing panel
+shows zero of 2,000 included minutes and zero of 0.5GB included storage consumed.
+The diagnostic job is bounded to eight minutes, contains no artifact/cache upload,
+uses the verified official checkout v4.2.2 commit and pinned SDK, and aborts workflow
+reruns before credential acquisition. Only the explicit run-request path triggers
+it; documentation pushes do not launch a new diagnostic. No long-lived keys or
+new agent/workflow platform are introduced. Runner cost is within verified free
+allowance; S3 remains metered and all requests count against the approved limits.
+
+Owner USD1.00 inclusive maximum and the exact approved retention/resource window
+remain unchanged. Current small payload/request counts fit the conservative package
+bound; no AWS invoice total or account-wide hard spending cap is claimed. Retention
+is irreversible for each actual protected version. Diagnostic access is to be retired
+after qualification; sustained production custody is not automatically authorized
+by this diagnostic package.
+
+## Preparation regression and next gate
+
+New adapter adversarial regression: 27 passed, 0 skipped, 0 failed. Initial combined adapter,
+existing offline control and zero-cost boundary regressions: 90 passed, 0 skipped,
+0 failed, before the additional independent-recovery-authorization refusal test.
+These are offline tests. The earlier package and full regression totals
+remain historical until rerun for the exact new checkpoint.
+
+```text
+D03_R_CONFIGURATION = DEPLOYED_EXACT_READBACK_VERIFIED
+D03_R_CURRENT_AUTHENTICATION = VERIFIED_ROOT_SETUP_CONTEXT
+D03_SELECTED_MECHANISM = S3_COMPLIANCE_VERSION_HISTORY_WITH_INDEPENDENT_R_CUSTODY
+D03_PROTECTED_DIAGNOSTIC_REGISTRATION = RETAINED_EXACT_VERSION_VERIFIED
+D03_GITHUB_COST = VERIFIED_EXISTING_FREE_ALLOWANCE
+D03_A_TO_R_LIVE_ASSUMPTION = NOT_RUN_AT_THIS_RECEIPT
+D03_BILLABLE_S3_ATTEMPTS = 107
+D03_DIAGNOSTIC_PAYLOAD_BYTES = 22689
+D03_QUALIFICATION_STATUS = NOT_YET_QUALIFIED
+N01_PRODUCTION_LEDGER_QUALIFICATION = NOT_PERFORMED
+D01_STATUS = CLOSED
+G3_STATUS = INCOMPLETE
+G4_STATUS = COMPLETE_PREPARATION_FAIL_CLOSED
+G6_STATUS = COMPLETE_PREPARATION_FAIL_CLOSED
+REAL_ADMISSION_ENABLED = NO
+FAIL_CLOSED_BOUNDARY = PRESERVED
+HUMAN_ACTION_REQUIRED = NONE_AT_THIS_CHECKPOINT
+```
+
+Primary technical references: [S3 conditional-write and racing-writer semantics](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html),
+[GitHub native AWS OIDC](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws).
