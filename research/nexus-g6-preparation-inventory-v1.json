@@ -1,0 +1,249 @@
+{
+  "schema_version": "nexus.g6.preparation-inventory.v1",
+  "basis": "ADVISORY_NON_AUTHORITATIVE",
+  "accepted_baseline": "8e30dd3275b25d049ffa61c557f308224f6d4923",
+  "g6_scope": "Governance Qualification and Production Security Freeze",
+  "source_identities": [
+    {
+      "path": "docs/nexus-roadmap-v2.md",
+      "normalized_sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8"
+    },
+    {
+      "path": "docs/nexus-pre-g2-architecture-addendum-v1.md",
+      "normalized_sha256": "b6680c710dda8fb7808e06cc2569fd1bb6a4aeed47b2223f9626e411e298be14"
+    },
+    {
+      "path": "docs/nexus-pre-g2-architecture-acceptance-v1.md",
+      "normalized_sha256": "c8b2fe28f9e2b6250288b736b8741824cd1fc750299aadce07ab72c9479e782b"
+    },
+    {
+      "path": "docs/nexus-g2-openai-structured-v3.md",
+      "normalized_sha256": "d565bffb9a40e1a8a790b4489bf022e5d042dd037ec2c32b2a153cb434d3a0dd"
+    },
+    {
+      "path": "docs/nexus-g4-preparation-checkpoint-v1.md",
+      "normalized_sha256": "2f9e4460b08b5a017f84803207d4afa5fc3dde8592be483cabfbe03744c7f753"
+    },
+    {
+      "path": "research/nexus-website-experience-pack-v1.json",
+      "normalized_sha256": "95396c95fd122ddaf69fca34902c4dae162648b0a5fa9de6a8c581d32216a0e5"
+    }
+  ],
+  "g5_required": "NO",
+  "delegation_mode": "DISABLED",
+  "real_admission_enabled": false,
+  "g3_status": "INCOMPLETE",
+  "d01_status": "CLOSED",
+  "d03_status": "DEFERRED",
+  "g4_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "historical_memory": "ADVISORY_CONTEXT_ONLY",
+  "protocol_registration": "DRAFT",
+  "pilot": "NOT_RUN",
+  "thresholds": "UNKNOWN_NOT_INVENTED",
+  "metrics": {
+    "policy_violations": "COUNT",
+    "evidence_completeness": "SCORE_UNITS",
+    "recovery_accuracy": "SCORE_UNITS",
+    "acceptance": "SCORE_UNITS",
+    "retries": "COUNT",
+    "cost": "MICROCURRENCY",
+    "latency": "MILLISECONDS",
+    "human_intervention": "COUNT",
+    "transparency": "SCORE_UNITS"
+  },
+  "release_checks": [
+    "artifact_integrity",
+    "installer_integrity",
+    "package_integrity",
+    "portable_paths",
+    "private_data_exclusion",
+    "provenance",
+    "revocation_update"
+  ],
+  "support_matrix": [
+    {
+      "case_id": "cancellation_late_effect",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "compaction_loss",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "configuration_drift",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "configuration_substitution",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "BLOCKED_BY_G3"
+    },
+    {
+      "case_id": "deferred_tool_admission",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "delegation_disabled",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "deterministic_governance",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "indirect_tool_admission",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "interrupted_recovery",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "BLOCKED_BY_D03"
+    },
+    {
+      "case_id": "observation_gap",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "public_release",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "BLOCKED_BY_G3"
+    },
+    {
+      "case_id": "quarantined_candidate",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "BLOCKED_BY_G3"
+    },
+    {
+      "case_id": "repository_change",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "BLOCKED_BY_G3"
+    },
+    {
+      "case_id": "revoked_resume",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "source_backed_artifact",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "BLOCKED_BY_G3"
+    },
+    {
+      "case_id": "transitive_delegation",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "unknown_revised_cost",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    },
+    {
+      "case_id": "whole_path_privacy",
+      "test_module": "tests.test_g6_contracts",
+      "contract_preparation": "IMPLEMENTED",
+      "actual_workflow_qualification": "NOT_ESTABLISHED",
+      "disposition": "STRUCTURAL_ONLY"
+    }
+  ],
+  "substitution_requirement": {
+    "minimum_material_configurations": 2,
+    "useful_local_private_success_required": true,
+    "combined_restrictions": [
+      "no_frontier",
+      "local_private",
+      "no_agents",
+      "no_remote_mcp"
+    ],
+    "actual_qualified_configurations": 0,
+    "synthetic_profiles_are_not_support_evidence": true
+  },
+  "reused_nexus": [
+    "G1 bounded closed validation",
+    "G4 canonical binding/domain contracts and typed G3 deny gate",
+    "G2 managed lifecycle and recovery contracts",
+    "manifest/package/release tooling",
+    "bounded advisory project/reference lessons"
+  ],
+  "reused_openai_host": [
+    "reasoning",
+    "planning",
+    "tool selection",
+    "coding",
+    "authorized execution",
+    "context management"
+  ],
+  "new_components": [
+    {
+      "path": "ash/g6_contracts.py",
+      "deterministic_property": "closed qualification records, binding, coverage, integrity, fair protocol, non-authority"
+    },
+    {
+      "path": "ash/g6_host_adapter.py",
+      "deterministic_property": "same-bound G4 composition and permanent production denial"
+    }
+  ],
+  "not_built": [
+    "G5 platform",
+    "planner",
+    "agent framework",
+    "orchestrator",
+    "memory engine",
+    "database",
+    "browser runtime",
+    "paid infrastructure"
+  ],
+  "remaining_live_gates": [
+    "G3 positive authority qualification",
+    "D03 qualified recovery where required",
+    "two material qualified configurations and useful local/private workflow",
+    "pilot-locked fair comparative value experiment",
+    "actual independent security review",
+    "owner acceptance",
+    "exact artifact approval and qualified publication"
+  ],
+  "production_freeze": "DENY",
+  "production_tag_created": false
+}

@@ -111,6 +111,14 @@
     "bytes": 12089,
     "sha256": "cd0e0fbd180bd7302b227c6f3f3edcb05e99a74d13aad633780ea77cbb60e5b8"
   },
+  "ash/g6_contracts.py": {
+    "bytes": 23518,
+    "sha256": "5a2f60d6f6b43a89f42e09cd333279b89fc7a0aa564762c629a4f6b54c7b653e"
+  },
+  "ash/g6_host_adapter.py": {
+    "bytes": 3113,
+    "sha256": "cc404479d43fa52f3832f27b349a2ea66dee1bdc57481d11bf10ea5cb3f52311"
+  },
   "ash/managed_cli.py": {
     "bytes": 2781,
     "sha256": "8b9621be5bedaf5a90e957a0fc876f14d88fe2698426a17aff663c0de60c74a3"
@@ -1327,6 +1335,18 @@
     "bytes": 6866,
     "sha256": "4af6bdb647ca2fd930c508c7e7f899f590ddc2e9eaa970abb9c8056502cdaae1"
   },
+  "docs/nexus-g6-contracts-and-preparation-v1.md": {
+    "bytes": 8193,
+    "sha256": "ae320cdf9902b15932016553b0c6116e81ee4c7fc2578d5ea5c243d0a727ad29"
+  },
+  "docs/nexus-g6-preparation-checkpoint-v1.md": {
+    "bytes": 7201,
+    "sha256": "0735f28fd2fcf548c14d9ddf2cd8e06a26ace2b35be9d05c113aa2d4c4a8f4f1"
+  },
+  "docs/nexus-g6-scope-and-reuse-v1.md": {
+    "bytes": 9123,
+    "sha256": "69fab902a8cdad1e0a5c6f89fe8839aa96222d8418d7cd290b3bc29feb6cc4a6"
+  },
   "docs/nexus-governance-advisory-caller-integration-review-v1.md": {
     "bytes": 12138,
     "sha256": "dcf9582db59547bd3f5605b63ddb0964e8ea615676f908b02c9507b8bafc912d"
@@ -1747,6 +1767,10 @@
     "bytes": 362161,
     "sha256": "ef77cb0e37adb4d844d5f34a07e9f66935e6f5dbfb3970168db906eed513165d"
   },
+  "research/nexus-g6-preparation-inventory-v1.json": {
+    "bytes": 8301,
+    "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
+  },
   "research/nexus-website-experience-pack-v1.json": {
     "bytes": 37685,
     "sha256": "95396c95fd122ddaf69fca34902c4dae162648b0a5fa9de6a8c581d32216a0e5"
@@ -1867,6 +1891,10 @@
     "bytes": 4437,
     "sha256": "67988ff4363d72b0f6ca27a9d884b40749be305fc843c4adc8183bc276372ab3"
   },
+  "tests/g6_fixtures.py": {
+    "bytes": 6460,
+    "sha256": "0093c0d609343117272f0a7b36312e8110a3e65b32de9aba58a3e0e1b10db63f"
+  },
   "tests/test_agent_contract.py": {
     "bytes": 3533,
     "sha256": "6147cb58047919de7091866a0bdba0c349c48039e35d971819ecf840ed56d21f"
@@ -1954,6 +1982,10 @@
   "tests/test_g4_host_adapter.py": {
     "bytes": 10452,
     "sha256": "41fa800302bcdfb18489846be87fce61908277f6da60f9a8667e66037fe956d6"
+  },
+  "tests/test_g6_contracts.py": {
+    "bytes": 15181,
+    "sha256": "42cdff6946b6c9726b9e786158378d0be1cc35f422806234a83aa036b9d79ea2"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,
