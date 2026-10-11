@@ -165,3 +165,35 @@ existing permissions. No wildcard or alternative subject is added.
 At this checkpoint the correction is prepared but not applied: A's protected
 console session was logged out, while R/Tee remains available. Owner A login
 is required; no R paid-plan upgrade is justified by this failure.
+
+After renewed A login, actual STS verified A root `175880707430`. The guarded
+repair required exact original trust and unchanged inline permissions before
+its single update; exact immutable subject trust readback and unchanged
+permissions then passed. No alternative subject, wildcard, audience, principal,
+deadline or permission was added. R configuration and retained versions were
+not rebuilt. A new bounded first-stage request follows only the known prior
+authentication failures with zero S3 calls; no prior job rerun is used.
+
+## Completed offline compatibility regression
+
+Full Python discovery in the repaired-core static snapshot: 1167 tests,
+1163 PASS, four existing environment SKIP, zero failure/error. The wrapper's
+Windows stdout encoding failed while printing the completed UTF-8 log; its
+recorded unittest `OK (skipped=4)` was recovered without rerunning the suite.
+The four skips are the three unconfigured embedded runtime inputs and the
+Windows symlink fixture without privilege. They are not counted as PASS.
+
+Existing offline Node compatibility: 366 PASS, zero skip/fail. Two earlier
+validation snapshots failed because the static manifest omits the credential
+loader source by its existing name policy, and the standalone diagnostic
+snapshot initially lacked its generated disabled source artifact. The final
+check used 99 exact tracked diagnostic files and the existing offline artifact
+builder with network traps. No D01 source, test, ceremony, deployment or closed
+qualification was changed. The failed snapshot attempts remain recorded.
+
+Unique Python plus Node result: **1533 total / 1529 PASS / 4 SKIP / 0 FAIL**.
+Focused repetitions (27 D03, 230 G3/G4/G6, 11 package tests) are not added.
+The later live canary change only adds sanitized authentication phase/status
+diagnostics; it passed compilation, current-source package isolation and exact
+package reproduction. The full run's snapshot is retained separately from
+these current-source checks; no exact final release qualification is claimed.
