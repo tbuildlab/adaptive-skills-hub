@@ -53,12 +53,12 @@ new package digest are retained before deployment. No broad source upload occurs
 Six new contract tests check wrong alias, method/query/environment, duplicate
 native header/origin, terminal unknown redaction/no retry, NONE result caching and
 read-only SDK mutation denial. They are simulated HTTP boundary evidence only.
-Native federation and deployed provenance are PENDING until actual responses
-and exact artifact/deployment identities are observed. Matching source metadata
+Native federation and deployed provenance require actual responses
+and exact artifact/deployment identities. Matching source metadata
 does not close full N01, G3, G4/G6 live, independent review or final release.
 
 ```text
-N01_VERCEL_FUNCTION_QUALIFICATION = PENDING
+N01_VERCEL_FUNCTION_QUALIFICATION = PASS_BOUNDED_READ_ONLY_TEST_PROFILE
 N01_LIVE_CLOSURE = INCOMPLETE
 D01_STATUS = CLOSED_UNCHANGED
 REAL_ADMISSION_ENABLED = NO
@@ -92,3 +92,33 @@ The installed CLI reports identity `tdy0225`. `vercel curl` was not executed:
 the official implementation can create an automation protection-bypass token.
 No bypass token, trusted-source rule, protection change or environment pull was
 performed. [CLI documented behavior](https://vercel.com/docs/cli/curl).
+
+The visibility revision `7a3054cd95b7923738fabfb6c5933b97e68db604` was deployed
+through the already authenticated native CLI API after the connector returned
+403. The failed connector call did not create a deployment; no unchanged retry
+was made. Exact artifact SHA256 is
+`76260f99e244335b7c70385be51e464e0172858963afd8478b9afad37e2e1150`, deployment
+`dpl_FqPEEEzK2D2eM3JZ2XCxeEvgZ3Ri`, generated host
+`nexus-g3-qual-a8x9azmyu-tdy0225.vercel.app`. READY and all 40 exact source
+identities were verified with the CLI's own legitimate authentication. The fixed
+20-file prior D01 source still has 19 unchanged files; no D01 action occurred.
+
+The single third explicit invocation started at `2026-10-11T15:13:54.863Z`,
+returned HTTP 200 and logged `NATIVE_FUNCTION_OIDC_A_R_CURRENT_STORAGE_VERIFIED`.
+The sanitized body was retrieved through native CLI logs and independently
+observed in the authenticated native UI. Actual native OIDC A/R identity checks,
+the separately retained generation-2 registration, complete S3 history and exact
+sequence-2 current primary state passed in this runtime. Counts are **2 DDB /
+38 S3 reads**. Epoch 2 / `n01-storage-incarnation-2`, purpose TEST_ONLY, authority
+NONE, Owner context NOT_CREATED, automatic redispatch DENY and REAL_ADMISSION NO
+remain explicit. [Observed metadata](../research/nexus-production-n01-vercel-observed-evidence-v1.json)
+is observational evidence, not authority or an independent security review.
+
+Verified aggregate counts are 82 DDB / 321 S3; including the first two unobserved
+response bodies gives conservative upper bounds 86 DDB / 521 S3. Reserved DDB
+remains 240 / 512, with five of the eight explicit probe invocations unused.
+The original 48-hour operation deadline and USD 1.00 approval remain unchanged;
+no new paid resource, bypass, permission, retention change or model call occurred.
+Native invoice cost remains UNKNOWN. Full N01 source membership, real current
+Owner context/CONFIRM, revoke/consume/replay provenance and protected controller
+remain open; this read-only runtime observation does not close them.

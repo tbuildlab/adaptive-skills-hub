@@ -1680,12 +1680,12 @@
     "sha256": "7117dc43cb9ca55bde39e507b103e12a06f592a86979f81b748ac7b14a1dcb03"
   },
   "docs/nexus-production-n01-storage-qualification-v1.md": {
-    "bytes": 10186,
-    "sha256": "7545b1b1bb71c33e436fc007d00c44d9a037dfa275a7cc8667bc5d4451a97dfc"
+    "bytes": 10713,
+    "sha256": "a70ddf8d8971c91be8611d3af573019f1a5ca97fe60d15731381fd09e6a0b78d"
   },
   "docs/nexus-production-n01-vercel-runtime-qualification-v1.md": {
-    "bytes": 5928,
-    "sha256": "866eb24d82d614b156f1aa097560f67ab578acdf717640c3e8a92a4e196acf48"
+    "bytes": 8019,
+    "sha256": "80b76563accd12aa14c60461fc7266990eb1d73737c015755e3917d902b1b62c"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -1934,6 +1934,10 @@
   "research/nexus-production-n01-storage-run-request-v1.json": {
     "bytes": 213,
     "sha256": "0a234b818e77226582d1b882f577c1212ec2d54124a1dba49251909d01e683b2"
+  },
+  "research/nexus-production-n01-vercel-observed-evidence-v1.json": {
+    "bytes": 2081,
+    "sha256": "34c5648527abf24e0de846931a9e9634549bc4be11a353d1224f82c12e480da6"
   },
   "research/nexus-website-experience-pack-v1.json": {
     "bytes": 37685,

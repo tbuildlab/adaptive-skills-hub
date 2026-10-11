@@ -143,12 +143,18 @@ bearer or grant was restored and automatic redispatch remained DENY. The native
 events and separate R observation are retained in
 [recovery evidence](../research/nexus-production-n01-recovery-observed-evidence-v1.json).
 
-Aggregate N01 actual data-plane count is now 80 DDB / 283 S3 (including the
+Aggregate N01 data-plane count before the Vercel runtime phase was 80 DDB / 283 S3 (including the
 earlier configuration/enrollment scope). DDB reserved remains 224 of 512.
 The separately bounded Vercel read-only runtime phase reserves another 16,
 bringing reserved aggregate to 240 / 512. Existing model remains below USD 1.00;
 actual invoice remains UNKNOWN. Source/Owner/revoke/consume provenance is not
 qualified by this storage-only recovery result.
+The [native Vercel read-only qualification](nexus-production-n01-vercel-runtime-qualification-v1.md)
+subsequently passed in its bounded TEST_ONLY/NONE profile: 2 DDB / 38 S3 actual
+reads for the observed response, plus two earlier executed responses whose exact
+SDK counts were not observed. Verified aggregate is 82 DDB / 321 S3 and conservative
+upper bounds are 86 DDB / 521 S3. Reserved aggregate remains 240 / 512. None of
+these native reads creates a qualified Owner/source/receipt/grant membership.
 Qualified production source ingress, protected runtime revision/current writer,
 independent enrollment/recovery, real Owner context/CONFIRM, nonce/revoke/consume
 production provenance, N02, mediation and E2E remain separate required gates.
