@@ -104,8 +104,8 @@
     "sha256": "2334360de32e0727d101e7bedcd5f5e55ff846b03d426af3d01138f2bde88467"
   },
   "ash/g3_control_codec.py": {
-    "bytes": 14499,
-    "sha256": "20f9eb442e60b8d4a8ce49d87ddd95ad485c3b456e9c1ee5c09fa5b9814ad6dd"
+    "bytes": 14497,
+    "sha256": "e8073dac3ea3d9d0c72e40c7f84df0e62e939293d3b9caaa4be87dd3c8abc706"
   },
   "ash/g3_control_semantics.py": {
     "bytes": 19098,
@@ -116,8 +116,8 @@
     "sha256": "6e5d2e7d765a84503d1cfc8e66d055f036dfccb78e546c5f63aeef61808375f4"
   },
   "ash/g3_grant_codec.py": {
-    "bytes": 8219,
-    "sha256": "2d53f4cb1ee0b29277ec47ec34f27f03f499fca2b3895ccc0db62d5189a289bc"
+    "bytes": 8218,
+    "sha256": "7287fd2dcf503f7d04540beee076f2def28254aeae154e418d6ecc05321f66b4"
   },
   "ash/g3_host_approval_bridge.py": {
     "bytes": 12801,
@@ -128,8 +128,8 @@
     "sha256": "ac9598be5822419a787d4a1de1cb75178bcbc47db54dc1a200e0bc4648928c6d"
   },
   "ash/g3_proposal_codec.py": {
-    "bytes": 3276,
-    "sha256": "dec84e521f9759d843aa301577e9da779d2bb41aa99995420b0d5f5274e3a3e7"
+    "bytes": 3275,
+    "sha256": "0f2c40ed394106a22cf14baa10085b64b7d9819627b717fb609f845c5bd172c1"
   },
   "ash/g3_record_codec.py": {
     "bytes": 19943,

@@ -87,4 +87,3 @@ def _proposal_body(value: Any) -> dict:
         _fail()
     body["effect_summary"] = {"operations": effect_scope["operations"], "targets_sha256": effects["targets_sha256"]}
     return body
-

@@ -267,5 +267,3 @@ def verify_snapshot(snapshot):
     # non-deterministic splitting. Complete semantic joins remain a future gate.
     require(encode_snapshot(tuple(rows))==snapshot)
     return tuple(rows)
-
-

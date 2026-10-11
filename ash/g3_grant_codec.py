@@ -254,4 +254,3 @@ def revocation(value: Any) -> Revocation:
         return Revocation(raw, _id("revocation", raw))
     except G1Error:
         _fail()
-
