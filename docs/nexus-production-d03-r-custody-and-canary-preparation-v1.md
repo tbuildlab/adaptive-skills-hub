@@ -75,7 +75,7 @@ account labels alone cannot qualify independence. Actual role and admin-denial
 service tests remain required.
 
 GitHub native OIDC/STS reuses the existing private repository and exact development
-branch, with time-bounded A→R trust. GitHub's authenticated Actions billing panel
+branch, with time-bounded Aâ†’R trust. GitHub's authenticated Actions billing panel
 shows zero of 2,000 included minutes and zero of 0.5GB included storage consumed.
 The diagnostic job is bounded to eight minutes, contains no artifact/cache upload,
 uses the verified official checkout v4.2.2 commit and pinned SDK, and aborts workflow
@@ -140,3 +140,13 @@ The unchanged first diagnostic request is reformatted to publish corrected sourc
 through the exact path trigger; this is not redispatch of an unknown operation.
 No qualification effect existed to retry, and the actual append still requires the
 protected GENESIS head before its first write. Do not rerun an old workflow attempt.
+## Authentication diagnostic follow-up
+
+Run `38118539116` at `fbed5376f3501d749bc1e4e2e93095b88a3f9c79`
+completed checkout and hash-pinned SDK installation, then quarantined before
+the verified native A-to-R session marker. Its complete sanitized log contains
+no S3 call. It is not a successful qualification. A source repair adds only
+fixed authentication phase, bounded provider error code and HTTP status; no
+provider message, response body, token, credential or header is recorded.
+Reformatting the unchanged first request triggers the repaired diagnostic;
+the prior job is not rerun, and no unknown S3 write is redispatched.

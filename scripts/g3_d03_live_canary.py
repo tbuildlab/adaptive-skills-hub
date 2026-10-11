@@ -10,6 +10,7 @@ import os
 from pathlib import Path
 import sys
 import urllib.request
+import re
 from threading import Lock
 
 from scripts import g3_d03_canary_vectors as v
@@ -21,6 +22,7 @@ OWNER = "862902859484"
 A_ROLE = "arn:aws:iam::175880707430:role/G3QualD03DiagnosticCaller"
 R_ROLE = "arn:aws:iam::862902859484:role/G3QualFenceAppendRead"
 ROOT = Path(__file__).resolve().parents[1]
+PHASE = "REQUEST_VALIDATION"
 
 
 def emit(value):
@@ -64,6 +66,7 @@ class BoundedS3:
 
 
 def native_session():
+    global PHASE
     import boto3
     from botocore.config import Config
     cfg = Config(retries={"total_max_attempts": 1}, connect_timeout=10, read_timeout=20)
@@ -77,12 +80,14 @@ def native_session():
     url += ("&" if "?" in url else "?") + "audience=sts.amazonaws.com"
     req = urllib.request.Request(url, headers={
         "Authorization": "Bearer " + os.environ["ACTIONS_ID_TOKEN_REQUEST_TOKEN"]})
+    PHASE = "GITHUB_NATIVE_OIDC_REQUEST"
     with urllib.request.urlopen(req, timeout=20) as response:
         token = json.load(response)["value"]
     # Unsigned STS operation uses only the native OIDC token in memory.
     from botocore import UNSIGNED
     unsigned = Config(signature_version=UNSIGNED, retries={"total_max_attempts":1},
         connect_timeout=10, read_timeout=20)
+    PHASE = "A_WEB_IDENTITY_ASSUME_ROLE"
     a = boto3.client("sts", region_name="us-east-1", config=unsigned).assume_role_with_web_identity(
         RoleArn=A_ROLE, RoleSessionName="nexus-d03-oidc", WebIdentityToken=token, DurationSeconds=900)
     del token, req
@@ -92,11 +97,14 @@ def native_session():
             aws_secret_access_key=credentials["SecretAccessKey"],
             aws_session_token=credentials["SessionToken"])
     a_sts = client("sts", a["Credentials"])
+    PHASE = "A_CALLER_IDENTITY_CHECK"
     identity = a_sts.get_caller_identity()
     f.require(identity["Account"] == "175880707430" and
         identity["Arn"] == "arn:aws:sts::175880707430:assumed-role/G3QualD03DiagnosticCaller/nexus-d03-oidc")
+    PHASE = "R_SCOPED_ASSUME_ROLE"
     r = a_sts.assume_role(RoleArn=R_ROLE, RoleSessionName="nexus-d03-qualification", DurationSeconds=900)
     r_sts = client("sts", r["Credentials"])
+    PHASE = "R_CALLER_IDENTITY_CHECK"
     identity = r_sts.get_caller_identity()
     f.require(identity["Account"] == OWNER and identity["Arn"] ==
         "arn:aws:sts::862902859484:assumed-role/G3QualFenceAppendRead/nexus-d03-qualification")
@@ -117,12 +125,14 @@ def must_quarantine(label, action, outcomes):
 
 
 def main():
+    global PHASE
     request = json.loads((ROOT / "research/nexus-production-d03-run-request-v1.json").read_text())
     f.require(set(request) == {"schema_version", "stage", "request_id"})
     f.require(request["schema_version"] == "nexus.g3.d03.run-request.v1")
     f.require((request["stage"], request["request_id"]) in (
         ("append", "canary-v1-append-1"), ("recovery-read", "canary-v1-recovery-read-2")))
     sdk, r_sts, _, _ = native_session()
+    PHASE = "PROTECTED_REGISTRATION_AND_HISTORY"
     service = BoundedS3(sdk)
     expected = (ROOT / "research/nexus-production-d03-canary-registration-v1.json").read_bytes()
     expected = canonical_bytes(json.loads(expected))
@@ -267,6 +277,15 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception:
-        emit(dict(d03_stage_status="QUARANTINE",real_admission=False))
+    except Exception as error:
+        response = getattr(error,"response",{})
+        code = response.get("Error",{}).get("Code","LOCAL_OR_TRANSPORT_FAILURE")
+        if type(code) is not str or not re.fullmatch(r"[A-Za-z0-9_.-]{1,64}",code):
+            code = "UNCLASSIFIED"
+        status = response.get("ResponseMetadata",{}).get("HTTPStatusCode",getattr(error,"code",None))
+        if type(status) is not int or not 100 <= status <= 599: status = None
+        emit(dict(d03_stage_status="QUARANTINE",phase=PHASE,error_code=code,http_status=status,
+            error_class=type(error).__name__ if type(error).__name__ in
+            ("FenceError","ClientError","HTTPError","KeyError","ImportError") else "UNCLASSIFIED",
+            real_admission=False))
         sys.exit(1)
