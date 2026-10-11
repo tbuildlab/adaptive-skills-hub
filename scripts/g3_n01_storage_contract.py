@@ -53,5 +53,31 @@ def blobs(snapshot, descriptor):
 
 def scope(value):
     return f.Registration('nexus-d03-custody-862902859484-ap-southeast-1-v1','862902859484',
-        f.NORMAL,f.INSTANCE,1,value['genesis']['id'],value['genesis']['body_sha256'],
+        f.NORMAL,f.INSTANCE,value['generation'],value['genesis']['id'],value['genesis']['body_sha256'],
         tuple(value['admin_checkpoint_ids']),value['config_sha256'])
+
+
+def recovery_inputs(registration):
+    """Exact closed recovery of the current storage lineage, no bearer records."""
+    before,genesis,descriptor,current,original=inputs(registration['config_sha256'],registration['base_time_ms'])
+    f.require(registration==original)
+    bodies={f.reference(genesis)['id']:genesis,f.reference(current.checkpoint)['id']:current.checkpoint}
+    checked=check_delegated_control(current.snapshot,bodies,{},profile='TEST_ONLY',
+                                    protected_config=registration['config_sha256'])
+    rows=[c.decode(row.value) for row in checked.rows]
+    root=next(row for row in rows if row['family']=='root')
+    root.update(revision=3,recovery_sequence=2,previous_checkpoint=f.reference(current.checkpoint),
+                time_high_water_ms=registration['base_time_ms']+2,authority_epoch=2,
+                incarnation='n01-storage-incarnation-2',quarantine='CLOSED')
+    rows.append(dict(schema_version=c.VERSION,family='recovery',revision=1,sequence=1,
+        checkpoint_ref=f.reference(current.checkpoint),control_sha256=current.snapshot.control_after_sha256,
+        descriptor_sha256=c.decode(current.checkpoint)['ledger_commit_sha256'],state='WITNESSED'))
+    snapshot=c.encode_snapshot(tuple(c.ControlRow.from_value(row) for row in rows))
+    after=check_delegated_control(snapshot,bodies,{},profile='TEST_ONLY',
+                                  protected_config=registration['config_sha256'])
+    recovered=prepare_delegated_transition(checked,after,current.checkpoint,
+                                          group='T9',transition='RECOVER',record_refs=[])
+    next_registration=dict(registration,schema_version='nexus.g3.n01.storage-registration.v2',
+        generation=2,admin_checkpoint_ids=[registration['genesis']['id'],f.reference(recovered.checkpoint)['id']],
+        previous_registration_sha256=c.digest(c.canonical(registration)))
+    return current,recovered,next_registration

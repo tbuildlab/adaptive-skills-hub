@@ -7,6 +7,10 @@
     "bytes": 872,
     "sha256": "a913480ba52578b4011b44ac09b8e3d83307df5816a540fbc03f0b7af802ab5f"
   },
+  ".github/workflows/nexus-n01-recovery-qualification.yml": {
+    "bytes": 881,
+    "sha256": "3e6556d78445926fad001da60e50e9a0dba98b699ed6a90074107289c6210ef2"
+  },
   ".github/workflows/nexus-n01-storage-qualification.yml": {
     "bytes": 906,
     "sha256": "d55a2aaa8e474667967109469163854cde4befa6523297396e5546570134fa6c"
@@ -108,8 +112,8 @@
     "sha256": "2334360de32e0727d101e7bedcd5f5e55ff846b03d426af3d01138f2bde88467"
   },
   "ash/g3_checkpoint_custody.py": {
-    "bytes": 4809,
-    "sha256": "71f6fd6f4f9a186e9df3c84f053849fff77c19235038130a2521c867038bca06"
+    "bytes": 4813,
+    "sha256": "d0364cc4f2df4e95de25ab82853e1cf48076894c581a255fd731e2841e81ee52"
   },
   "ash/g3_control_codec.py": {
     "bytes": 14497,
@@ -1676,8 +1680,8 @@
     "sha256": "7117dc43cb9ca55bde39e507b103e12a06f592a86979f81b748ac7b14a1dcb03"
   },
   "docs/nexus-production-n01-storage-qualification-v1.md": {
-    "bytes": 5984,
-    "sha256": "a30956eda566c6e77b8f009df8cc50868497086fb04ed49f1593a57889e332f7"
+    "bytes": 8129,
+    "sha256": "101c57c3ca0e4eb42c97fd56651556e59be3f5496049d85b077204835a6fb565"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -1903,9 +1907,17 @@
     "bytes": 12472,
     "sha256": "f3aa5cf137109e53a48d337e628d8cc12b991bdcad630df57cf6a1acf532503d"
   },
+  "research/nexus-production-n01-recovery-run-request-v1.json": {
+    "bytes": 192,
+    "sha256": "e7780ae9a12863d479191abb2eceb0abfc166db2e9886ce0757fe7b469300597"
+  },
   "research/nexus-production-n01-resource-proposal-v1.json": {
     "bytes": 10544,
     "sha256": "874baad1237cce131ca94e1b92cb5e1e2271409057baa3fa56e3dc337a6e8a7f"
+  },
+  "research/nexus-production-n01-storage-observed-evidence-v1.json": {
+    "bytes": 31147,
+    "sha256": "e0a7a910dcd4278e0d045b654f8ed78135afb2dafc9e71203a5fc13fb55bb510"
   },
   "research/nexus-production-n01-storage-registration-v1.json": {
     "bytes": 771,
@@ -1972,12 +1984,16 @@
     "sha256": "c087efa21557eacf2a63bca79938c57adcad19e237f078de3fab41e0cf282d5d"
   },
   "scripts/g3_n01_storage_contract.py": {
-    "bytes": 3694,
-    "sha256": "6613fa43edadd2d459f04f7bdadd1816992209888000de619170ab14380015ef"
+    "bytes": 5667,
+    "sha256": "199806c4b9ddc164c657cd858fc692123067bddfd8972e1f0f29ebaafe6a8548"
   },
   "scripts/g3_n01_storage_live.py": {
     "bytes": 16349,
     "sha256": "b7439542632cef8c48c90323307c43be9119d6ff7b7d6769666e13236815b8a4"
+  },
+  "scripts/g3_n01_storage_recovery.py": {
+    "bytes": 5165,
+    "sha256": "b67fd5f7e3a5c0c33312e2ea4411f911d10a7c831dff4e8d3695df57e9a88665"
   },
   "scripts/g3_offline_control.py": {
     "bytes": 12420,
@@ -2156,8 +2172,8 @@
     "sha256": "61f732562fa982f2b71776092dc91bdb9cf27f250cec0f55adcc1c78277d12d9"
   },
   "tests/test_g3_n01_checkpoint_custody.py": {
-    "bytes": 3708,
-    "sha256": "72f72a59d3080a517f6eaae83c5deb35b41b9db6f5f24d917cf80e28125f0b63"
+    "bytes": 5236,
+    "sha256": "854744130a231111757d43a0add2a06c5bd18471f9a2c5289ebf466d79beebd6"
   },
   "tests/test_g3_n01_live_budget.py": {
     "bytes": 2439,

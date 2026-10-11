@@ -85,6 +85,39 @@ There was no federation, data-plane call, partial write or unknown AWS outcome.
 The same semantic request is retriggered only after that proven pre-execution
 failure; its single 128-attempt reservation remains unchanged. No workflow rerun
 of an executed request is used.
+
+## Actual primary storage result
+
+Run [38147046486](https://github.com/TDY0225/adaptive-skills-hub/actions/runs/38147046486),
+job 114492492002, source `23b29d92209bb37cfc8b9c36d55fc32a3ce69af4`, completed
+successfully. Authenticated connector log read resolved 169 exact SDK operation
+events: 52 DDB and 117 S3, including the fresh process. Parent DDB count 50,
+child count 2; parent S3 count 95, child 22. Native federation was verified
+separately for each process. Sanitized events and receipt are retained in
+[observed evidence](../research/nexus-production-n01-storage-observed-evidence-v1.json).
+
+Native refusals: wrong partition and ordinary UpdateItem AccessDeniedException;
+duplicate primary put ConditionalCheckFailedException; stale two-item transaction
+TransactionCanceledException with a strong read proving no partial put; duplicate
+journal PreconditionFailed; approval mutation AccessDenied. Prepare, append and
+finalize each received actual service success before injected ACK loss. No
+transaction or journal write was repeated; fresh independent read reconciliation
+resolved the exact sequence-1 head. A new OS process performed read-only checks,
+returning NONE with the semantic root CLOSED.
+
+Parent conservative DDB write payload bound 30988 bytes; new S3 written payload
+5421 bytes. Configuration/enrollment plus run S3 attempts total 150. Aggregate
+DDB actual is 52; reserve remains 128 including all crash/restart contingencies.
+Invoice is UNKNOWN; no resource/permission/cost envelope was expanded.
+
+The remaining explicit N01 recovery integration uses two separate requests:
+PREPARED (reserve 64 DDB attempts), then independent R registration/approval and
+RECOVER append, then FINALIZED (reserve 32). Current protected custody is required;
+old generation/incarnation/reference denies. Every root stays CLOSED, all
+registration purposes stay TEST_ONLY and no grant/Owner authority is restored.
+Total reserved DDB after both phases is 224 of 512; original D03 recovery is not
+repeated. The approvals remain outside A write permission. This qualifies the
+N01 integration seam only, not production source ingress or consent.
 Qualified production source ingress, protected runtime revision/current writer,
 independent enrollment/recovery, real Owner context/CONFIRM, nonce/revoke/consume
 production provenance, N02, mediation and E2E remain separate required gates.

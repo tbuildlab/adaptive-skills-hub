@@ -41,7 +41,7 @@ class Registration:
         require(self.owner == '862902859484' and self.purpose == 'TEST_ONLY')
         require(self.prefix.endswith('/') and (self.prefix == NORMAL or self.prefix.startswith(APPROVALS)))
         require(not any(part in self.prefix for part in ('..', '//', '\\')))
-        require(self.authority_instance == INSTANCE and type(self.generation) is int and self.generation == 1)
+        require(self.authority_instance == INSTANCE and type(self.generation) is int and self.generation in (1,2))
         control.old.check_type(self.config_sha256, 'h')
         control.old.check_type(self.genesis_sha256, 'h')
         require(type(self.genesis_id) is str and self.genesis_id.startswith(records.PREFIX+'recovery-checkpoint.v2:'))

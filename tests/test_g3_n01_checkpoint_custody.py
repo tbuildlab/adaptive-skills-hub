@@ -56,6 +56,29 @@ class N01CustodyTests(unittest.TestCase):
         body=c.decode(self.next.checkpoint)
         with self.assertRaises(f.FenceError):
             self.fence.independent_recovery_authorization(body,f.reference(self.next.checkpoint),self.until)
+    def recovery(self,generation=2):
+        current,candidate,registration=v.recovery_inputs(self.registration)
+        self.install(current.checkpoint,current.snapshot,current.descriptor,1)
+        self.install(candidate.checkpoint,candidate.snapshot,candidate.descriptor,2)
+        body=c.decode(candidate.checkpoint)
+        self.client.add(f.APPROVALS+f'recover/{2:020d}/authorization.json',c.canonical(dict(
+            schema_version='nexus.g3.n01.storage-admin.v1',purpose='TEST_ONLY',
+            config_sha256=registration['config_sha256'],generation=generation,
+            checkpoint=f.reference(candidate.checkpoint),previous_checkpoint=body['previous_checkpoint'])))
+        return candidate,registration
+    def test_exact_independent_recovery_remains_closed_and_none(self):
+        candidate,registration=self.recovery()
+        self.fence=f.N01S3Fence(self.client,v.scope(registration))
+        result=self.read();self.assertEqual(result.head,f.reference(candidate.checkpoint))
+        self.assertEqual(result.authority,'NONE')
+        self.assertEqual(c.decode(result.checkpoints[-1])['authority_epoch'],2)
+    def test_stale_registration_generation_denies_latest_history(self):
+        self.recovery()
+        with self.assertRaises(f.FenceError):self.read()
+    def test_wrong_admin_generation_cannot_qualify_recovery(self):
+        candidate,registration=self.recovery(generation=1)
+        self.fence=f.N01S3Fence(self.client,v.scope(registration))
+        with self.assertRaises(f.FenceError):self.read()
 
 
 if __name__=='__main__':unittest.main()
