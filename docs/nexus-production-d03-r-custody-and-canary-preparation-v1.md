@@ -121,3 +121,22 @@ HUMAN_ACTION_REQUIRED = NONE_AT_THIS_CHECKPOINT
 
 Primary technical references: [S3 conditional-write and racing-writer semantics](https://docs.aws.amazon.com/AmazonS3/latest/userguide/conditional-writes.html),
 [GitHub native AWS OIDC](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws).
+
+## First source publication and pre-runner syntax failure
+
+Diagnostic source checkpoint `692210cc555b42b7c87f94eea0f3906719f0d6a2` was normally
+pushed and remote identity verified. Focused G3/G4/G6 regression passed 230 tests;
+isolated package regression passed 11. Full repository regression is still pending,
+not PASS. The 175-member diagnostic preparation package has SHA256
+`d4746563b39e3a64f8b54b4b68b7e6fac1adbbef9203d08a3be4719fd288a05f`.
+
+[Run 38118190214](https://github.com/TDY0225/adaptive-skills-hub/actions/runs/38118190214)
+failed workflow compilation at YAML line 22. GitHub returned zero jobs and the UI
+reported the syntax annotation: the unquoted `--only-binary=:all:` shell command
+contained a colon followed by whitespace. No runner, OIDC request, STS assumption
+or S3 call executed. This failed source validation remains historical FAIL and is
+not a qualified live test. Use a YAML block scalar and independently parse it.
+The unchanged first diagnostic request is reformatted to publish corrected source
+through the exact path trigger; this is not redispatch of an unknown operation.
+No qualification effect existed to retry, and the actual append still requires the
+protected GENESIS head before its first write. Do not rerun an old workflow attempt.
