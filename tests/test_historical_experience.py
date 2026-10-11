@@ -1,18 +1,21 @@
 """Validate inert documentary knowledge; no production importer or rule loader."""
 from copy import deepcopy
+from collections import Counter
 import hashlib
 from pathlib import Path, PurePosixPath
+from urllib.parse import urlsplit
 import re
 import unittest
 
 from ash.ecosystem_models import parse_json_bytes, canonical_json_bytes
-from ash.g1_profiles import exact, token, sha, tokens
+from ash.g1_profiles import exact, token, sha, tokens, integer
 from ash import g4_contracts as g4
 from ash.g4_host_adapter import pre_execution_gate, StructuralSession
 from tests.g4_fixtures import bundle, request, NOW, domain_body
 
 ROOT = Path(__file__).resolve().parents[1]
 PACK = ROOT / 'research/nexus-website-experience-pack-v1.json'
+REFERENCES = ROOT / 'research/nexus-website-reference-index-v1.json'
 CATEGORIES = {'planning', 'ux', 'visual_qa', 'responsive', 'accessibility',
               'interaction', 'content_truthfulness', 'forms', 'integrations',
               'deployment', 'performance', 'testing', 'production_hardening',
@@ -52,7 +55,7 @@ def read_pack(raw):
         refs = set()
         for source in lesson['provenance']:
             exact(source, {'source_id', 'locator'})
-            if not re.fullmatch(r'[KLRMN][0-9]{2}|D0[12]',source['locator']):
+            if not re.fullmatch(r'[KLRMNF][0-9]{2}|D0[12]',source['locator']):
                 raise ValueError('LOCATOR_INVALID')
             pair = (source['source_id'], source['locator'])
             if source['source_id'] not in source_ids or pair in refs:
@@ -89,13 +92,69 @@ def current_lessons(p):
     return [v for v in p['lessons'] if v['state'] == 'CURRENT']
 
 
+def read_reference_index(raw, pack):
+    """Test-only documentary check; cannot authorize reference execution."""
+    p=parse_json_bytes(raw,maximum_bytes=65536,label='reference index')
+    g4.canonical(p)
+    exact(p,{'schema_version','basis','advisory_only','dispatch_authority',
+             'evidence_register','evidence_register_sha256','sources','lesson_aliases','counts'})
+    if (p['schema_version']!='nexus.website-reference-index.v1'
+            or p['basis']!='ADVISORY_CONTEXT_ONLY' or p['advisory_only'] is not True
+            or p['dispatch_authority']!='none'):
+        raise ValueError('ADVISORY_REFERENCE_REQUIRED')
+    register=next(s for s in pack['sources'] if s['id']=='reference_evidence')
+    if p['evidence_register']!=register['path'] or p['evidence_register_sha256']!=register['sha256']:
+        raise ValueError('REFERENCE_EVIDENCE_BINDING_INVALID')
+    states={'CONFIRMED_USED','CONSULTED_ONLY','CONSIDERED','REJECTED',
+            'SUPERSEDED','NOT_FOUND','INSUFFICIENT_EVIDENCE'}
+    ids=set()
+    for r in p['sources']:
+        exact(r,{'id','name','status','purpose','reference_links','observations','limitations'})
+        token(r['id'])
+        if r['id'] in ids or r['status'] not in states:
+            raise ValueError('REFERENCE_ID_STATUS_INVALID')
+        ids.add(r['id'])
+        for link in r['reference_links']:
+            if link!=p['evidence_register']+'#ref-'+r['id']:
+                raise ValueError('REFERENCE_LINK_METADATA_ONLY')
+        for o in r['observations']:
+            exact(o,{'project','status','artifact','locator','detail'})
+            token(o['artifact'])
+            if o['project'] not in {'noma','apex','northstar','meranti'} or o['status'] not in states:
+                raise ValueError('OBSERVATION_INVALID')
+        if r['status']=='CONFIRMED_USED' and not any(o['status']=='CONFIRMED_USED' for o in r['observations']):
+            raise ValueError('CONFIRMED_USE_REQUIRES_OBSERVATION')
+        if r['status']=='NOT_FOUND' and (r['observations'] or r['reference_links']):
+            raise ValueError('NOT_FOUND_HAS_UNSUPPORTED_EVIDENCE')
+    locators=set()
+    for a in p['lesson_aliases']:
+        exact(a,{'locator','lesson_id','disposition','reference_ids','interpretation'})
+        if not re.fullmatch(r'F[0-9]{2}',a['locator']) or a['locator'] in locators:
+            raise ValueError('REFERENCE_ALIAS_DUPLICATE_INVALID')
+        locators.add(a['locator'])
+        if a['disposition'] not in {'NEW','DUPLICATE'} or not a['reference_ids'] or not set(a['reference_ids'])<=ids:
+            raise ValueError('REFERENCE_ALIAS_SCOPE_INVALID')
+        lessons=[v for v in current_lessons(pack) if v['id']==a['lesson_id']]
+        if len(lessons)!=1 or {'source_id':'reference_evidence','locator':a['locator']} not in lessons[0]['provenance']:
+            raise ValueError('REFERENCE_LESSON_PROVENANCE_INVALID')
+    c=p['counts'];counts=Counter(r['status'] for r in p['sources'])
+    expected={'reference_source_count':len(ids),**{s.lower()+'_count':counts[s] for s in states},
+              'new_reusable_reference_lessons':sum(a['disposition']=='NEW' for a in p['lesson_aliases']),
+              'duplicate_reference_lessons':sum(a['disposition']=='DUPLICATE' for a in p['lesson_aliases'])}
+    exact(c,set(expected))
+    for key,value in c.items():
+        integer(value)
+        if value!=expected[key]:raise ValueError('REFERENCE_COUNT_INVALID')
+    return p
+
+
 class HistoricalExperienceTests(unittest.TestCase):
     def setUp(self):
         self.p = read_pack(PACK.read_bytes())
 
     def test_closed_parse_and_category_retrieval(self):
         self.assertEqual(read_pack(canonical_json_bytes(self.p)), self.p)
-        self.assertEqual(len(current_lessons(self.p)), 41)
+        self.assertEqual(len(current_lessons(self.p)), 44)
         for category in CATEGORIES:
             self.assertTrue([v for v in current_lessons(self.p) if category in v['categories']])
 
@@ -172,6 +231,53 @@ class HistoricalExperienceTests(unittest.TestCase):
             self.assertEqual(pre_execution_gate(value,authority,now=NOW)['status'],'DENY')
         b['source_refs'].remove(original)
         with self.assertRaises(g4.G4Error):g4.validate_domain_bundle(**b)
+
+    def test_reference_evidence_states_and_source_binding(self):
+        p=read_reference_index(REFERENCES.read_bytes(),self.p)
+        source=self.p['sources'][-1]
+        self.assertEqual(hashlib.sha256((ROOT/source['path']).read_bytes().replace(b'\r\n',b'\n')).hexdigest(),p['evidence_register_sha256'])
+        by_id={r['id']:r for r in p['sources']}
+        self.assertEqual(by_id['impeccable']['status'],'CONFIRMED_USED')
+        self.assertTrue(any(o['project']=='northstar' and o['status']=='INSUFFICIENT_EVIDENCE' for o in by_id['impeccable']['observations']))
+        self.assertTrue(any(o['project']=='noma' and o['status']=='CONSULTED_ONLY' for o in by_id['impeccable']['observations']))
+        self.assertTrue(any(o['status']=='SUPERSEDED' for o in by_id['bencho']['observations']))
+        for name in ('arlan','amieiro','libraries-dev'):
+            self.assertEqual(by_id[name]['status'],'NOT_FOUND')
+            self.assertIn('UNKNOWN',by_id[name]['limitations'])
+        register=(ROOT/p['evidence_register']).read_text(encoding='utf-8')
+        for r in p['sources']:
+            for o in r['observations']:self.assertIn('| '+o['artifact']+' |',register)
+            for link in r['reference_links']:self.assertIn('id="'+link.split('#')[1]+'"',register)
+        for url in re.findall(r'\]\((https://[^)]+)\)',register):
+            u=urlsplit(url)
+            self.assertTrue(u.hostname)
+            self.assertFalse(u.username or u.password or u.query or u.fragment)
+
+    def test_reference_alias_deduplication_counts_and_authority(self):
+        p=read_reference_index(REFERENCES.read_bytes(),self.p)
+        self.assertEqual(p['counts']['reference_source_count'],27)
+        self.assertEqual(p['counts']['new_reusable_reference_lessons'],3)
+        self.assertEqual(p['counts']['duplicate_reference_lessons'],13)
+        for a in p['lesson_aliases']:
+            if a['disposition']=='NEW':self.assertIn(a['lesson_id'],{'w42','w43','w44'})
+            else:self.assertNotIn(a['lesson_id'],{'w42','w43','w44'})
+        self.assertEqual(pre_execution_gate(p,None,now=NOW)['status'],'DENY')
+        self.assertEqual(pre_execution_gate(request(),p,now=NOW)['status'],'DENY')
+
+    def test_reference_malformed_links_claims_and_duplicates_refused(self):
+        base=read_reference_index(REFERENCES.read_bytes(),self.p)
+        for mutation in ('authority','status','count','duplicate','secret','account_link','unbound','unsupported_use'):
+            p=deepcopy(base)
+            if mutation=='authority':p['dispatch_authority']='execute'
+            if mutation=='status':p['sources'][0]['status']='EXECUTED_PASS'
+            if mutation=='count':p['counts']['confirmed_used_count']+=1
+            if mutation=='duplicate':p['lesson_aliases'].append(deepcopy(p['lesson_aliases'][0]))
+            if mutation=='secret':p['sources'][0]['limitations']='Bearer sensitive-value'
+            if mutation=='account_link':p['sources'][0]['reference_links']=['https://example.invalid/?session=value']
+            if mutation=='unbound':p['evidence_register_sha256']='0'*64
+            if mutation=='unsupported_use':p['sources'][0]['observations']=[]
+            with self.subTest(mutation=mutation),self.assertRaises(ValueError):
+                read_reference_index(canonical_json_bytes(p),self.p)
 
 
 if __name__=='__main__':unittest.main()

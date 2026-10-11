@@ -1,0 +1,838 @@
+{
+  "schema_version": "nexus.website-reference-index.v1",
+  "basis": "ADVISORY_CONTEXT_ONLY",
+  "advisory_only": true,
+  "dispatch_authority": "none",
+  "evidence_register": "docs/nexus-historical-reference-source-audit-v1.md",
+  "sources": [
+    {
+      "id": "ui-ux-pro-max",
+      "name": "UI UX Pro Max",
+      "status": "CONFIRMED_USED",
+      "purpose": "UX/accessibility advisory guidance",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "Repository skill/quick reference inspected and guidance applied; retained source files exist in prototype evidence."
+        },
+        {
+          "project": "meranti",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "artifact": "meranti-original",
+          "locator": "Sections 1 and 5.2",
+          "detail": "Postmortem reports advisory use/configuration; raw original query/result absent. Exact tool execution UNKNOWN."
+        },
+        {
+          "project": "northstar",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "artifact": "northstar-original",
+          "locator": "Sections 6 and 10",
+          "detail": "Historical USED brief and installation do not reconstruct exact invocation or finding-to-change output."
+        },
+        {
+          "project": "apex",
+          "status": "CONSIDERED",
+          "artifact": "apex-audit",
+          "locator": "Section 7",
+          "detail": "Unavailable at this gate; no review or simulated output claimed."
+        }
+      ],
+      "limitations": "Confirmed use is manual guidance in the later Noma prototype. Database/design-system generator execution is unperformed; Meranti/Northstar exact invocation remains UNKNOWN.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-ui-ux-pro-max"
+      ]
+    },
+    {
+      "id": "uiverse-galaxy",
+      "name": "Uiverse / Uiverse Galaxy",
+      "status": "REJECTED",
+      "purpose": "Community UI component candidates",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "REJECTED",
+          "artifact": "apex-audit",
+          "locator": "Section 11",
+          "detail": "Catalog inspected; no component improved the quote flow enough to justify consistency/maintenance cost."
+        },
+        {
+          "project": "noma",
+          "status": "REJECTED",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "Button catalog inspected; decorative effects rejected in favor of ordinary link feedback."
+        },
+        {
+          "project": "noma",
+          "status": "CONSIDERED",
+          "artifact": "noma-r1",
+          "locator": "Section 6",
+          "detail": "Earlier catalog inspection selected no exact sample; this is not component execution."
+        }
+      ],
+      "limitations": "No block/import/dependency use proved. Candidate/component licensing must be checked separately if future use is authorized.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-uiverse-galaxy"
+      ]
+    },
+    {
+      "id": "remotion",
+      "name": "Remotion",
+      "status": "REJECTED",
+      "purpose": "Programmatic video route",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "REJECTED",
+          "artifact": "noma-r1",
+          "locator": "Section 6",
+          "detail": "No video deliverable or video-based interface; source records NOT RELEVANT."
+        }
+      ],
+      "limitations": "Rejected for this project requirement. No consultation, installation or execution established.",
+      "reference_links": []
+    },
+    {
+      "id": "morphicons",
+      "name": "Morphicons",
+      "status": "REJECTED",
+      "purpose": "Animated icon transitions",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "REJECTED",
+          "artifact": "noma-r1",
+          "locator": "Section 6",
+          "detail": "Text navigation/native menu have no concrete need for morphing icons."
+        },
+        {
+          "project": "apex",
+          "status": "REJECTED",
+          "artifact": "apex-audit",
+          "locator": "Section 15",
+          "detail": "Unavailable/not relevant; native menu-to-close feedback sufficient."
+        }
+      ],
+      "limitations": "No icon package or demonstrated invocation. This is a contextual rejection, not a universal ban.",
+      "reference_links": []
+    },
+    {
+      "id": "arlan",
+      "name": "Arlan",
+      "status": "NOT_FOUND",
+      "purpose": "Owner-named historical candidate; purpose UNKNOWN",
+      "observations": [],
+      "limitations": "No project-linked hit in the bounded repository/artifact/history search. Usage UNKNOWN / INSUFFICIENT_EVIDENCE; no source identity or URL guessed.",
+      "reference_links": []
+    },
+    {
+      "id": "amieiro",
+      "name": "Amieiro",
+      "status": "NOT_FOUND",
+      "purpose": "Owner-named historical candidate; purpose UNKNOWN",
+      "observations": [],
+      "limitations": "No project-linked hit in the bounded repository/artifact/history search. Usage UNKNOWN / INSUFFICIENT_EVIDENCE; no source identity or URL guessed.",
+      "reference_links": []
+    },
+    {
+      "id": "libraries-dev",
+      "name": "Libraries.dev",
+      "status": "NOT_FOUND",
+      "purpose": "Owner-named historical candidate; purpose UNKNOWN",
+      "observations": [],
+      "limitations": "No project-linked hit in the bounded repository/artifact/history search. Usage UNKNOWN / INSUFFICIENT_EVIDENCE; no source identity or URL guessed.",
+      "reference_links": []
+    },
+    {
+      "id": "impeccable",
+      "name": "Impeccable",
+      "status": "CONFIRMED_USED",
+      "purpose": "Independent design guidance and deterministic source detection",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "CONFIRMED_USED",
+          "artifact": "apex-impeccable",
+          "locator": "Capabilities actually executed",
+          "detail": "Source detect command recorded: two side-tab warnings, exit 1; accepted contextual false positives. URL detector blocked; no full suite."
+        },
+        {
+          "project": "northstar",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "artifact": "northstar-original",
+          "locator": "Section 13",
+          "detail": "Later installation and USED brief survive; historical command/output absent."
+        },
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "Public critique/polish guidance inspected; local launcher unavailable; detector/runtime unperformed."
+        }
+      ],
+      "limitations": "Historical Apex source report establishes partial operation, not a fresh rerun, full-suite PASS or WCAG/performance qualification.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-impeccable"
+      ]
+    },
+    {
+      "id": "taste",
+      "name": "Taste Skill",
+      "status": "CONFIRMED_USED",
+      "purpose": "Frontend composition and adversarial visual critique",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-ledger",
+          "locator": "Capability table",
+          "detail": "Entry/full design-taste-frontend instructions read and applied; owner brief remains controlling."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-stage1b",
+          "locator": "Section 11",
+          "detail": "Design protocol, hierarchy and final critique used; owner priorities override default variance."
+        },
+        {
+          "project": "apex",
+          "status": "CONFIRMED_USED",
+          "artifact": "apex-planning",
+          "locator": "Sections 3 and 20",
+          "detail": "Selected advisory planning/visual discipline, without authority over the approved reference."
+        },
+        {
+          "project": "northstar",
+          "status": "INSUFFICIENT_EVIDENCE",
+          "artifact": "northstar-original",
+          "locator": "Sections 6 and 9",
+          "detail": "Advisor use reported but original independent report/finding mapping absent."
+        }
+      ],
+      "limitations": "Guidance use does not prove every suggested package/style was accepted or that owner approval occurred.",
+      "reference_links": []
+    },
+    {
+      "id": "awesome-design-md",
+      "name": "awesome-design-md",
+      "status": "CONFIRMED_USED",
+      "purpose": "Structured design specification/checklist",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "CONFIRMED_USED",
+          "artifact": "apex-planning",
+          "locator": "Section 3",
+          "detail": "Token roles, typography hierarchy, states, spacing and responsive categories informed original design specification."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "Repository/example inspected; explicit token/role/component constraints applied before implementation."
+        }
+      ],
+      "limitations": "Brand examples and external document prose are not ingested. An original DESIGN.md alone does not prove earlier external methodology use.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-awesome-design-md"
+      ]
+    },
+    {
+      "id": "bencho",
+      "name": "Bencho",
+      "status": "CONFIRMED_USED",
+      "purpose": "Interaction concept selection",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "CONFIRMED_USED",
+          "artifact": "apex-review",
+          "locator": "Section 10",
+          "detail": "Press/focus concept retained through native CSS; no implemented Bencho block/runtime."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-r1",
+          "locator": "Sections 6 and 21",
+          "detail": "Bounded sample interaction research informed proposals; comparison/tilt/magnetic patterns rejected when no truthful job exists."
+        },
+        {
+          "project": "noma",
+          "status": "SUPERSEDED",
+          "artifact": "noma-stage1b",
+          "locator": "Sections 6 and 8",
+          "detail": "Earlier shared-preview adaptation failed owner review and was removed; conceptual findings remain historical."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "Later image crop/arrow feedback accepted; accordion layout rejected."
+        }
+      ],
+      "limitations": "CONFIRMED_USED means documented conceptual influence. No copied block, Bencho dependency or later live execution is asserted.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-bencho"
+      ]
+    },
+    {
+      "id": "gsap",
+      "name": "GSAP guidance / runtime / scroll reference",
+      "status": "CONFIRMED_USED",
+      "purpose": "Scoped, optional coordinated motion",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-motion",
+          "locator": "SpatialMotion",
+          "detail": "Current source imports gsap/ScrollTrigger; matchMedia scopes desktop/mobile/reduced branches and reverts on unmount."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-stage1b",
+          "locator": "Section 11",
+          "detail": "Core/timeline/React/ScrollTrigger/performance guidance used; first-viewport reference inspection source-reported."
+        },
+        {
+          "project": "noma",
+          "status": "SUPERSEDED",
+          "artifact": "noma-ledger",
+          "locator": "GSAP runtime row",
+          "detail": "Earlier native-only runtime rejection is historical; later dirty motion implementation is distinct."
+        },
+        {
+          "project": "apex",
+          "status": "REJECTED",
+          "artifact": "apex-planning",
+          "locator": "Section 19",
+          "detail": "Native/CSS covers the quote task; runtime dependency rejected."
+        }
+      ],
+      "limitations": "Runtime imports prove implementation, not numerical performance or reduced-motion runtime QA. No @gsap/react installation or external choreography copy claimed.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-gsap"
+      ]
+    },
+    {
+      "id": "product-design",
+      "name": "Product Design",
+      "status": "CONFIRMED_USED",
+      "purpose": "Visitor journeys and screenshot-first review",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "CONFIRMED_USED",
+          "artifact": "apex-planning",
+          "locator": "Sections 3 and 20",
+          "detail": "Used for planning flow/friction/IA only."
+        },
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-ledger",
+          "locator": "Product Design row",
+          "detail": "Original overview/router/ideate read; generated alternatives/user-selection workflow not executed."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-stage1b",
+          "locator": "Section 11",
+          "detail": "Later bounded screenshot-first review method reused; formal certification unperformed."
+        }
+      ],
+      "limitations": "Ideation generation, plugin presence, review methodology and actual implementation are separate operations.",
+      "reference_links": []
+    },
+    {
+      "id": "frontend-ui-engineering",
+      "name": "Frontend UI Engineering",
+      "status": "CONFIRMED_USED",
+      "purpose": "Semantic and responsive frontend guidance",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-ledger",
+          "locator": "Capability table",
+          "detail": "Skill read/applied: semantic hierarchy, focus/keyboard, contrast and responsive guardrails."
+        }
+      ],
+      "limitations": "Guidance and bounded project checks do not certify broad accessibility conformance.",
+      "reference_links": []
+    },
+    {
+      "id": "refero",
+      "name": "Refero",
+      "status": "CONSULTED_ONLY",
+      "purpose": "Product UI/flow reference research",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "CONSULTED_ONLY",
+          "artifact": "apex-audit",
+          "locator": "Section 13",
+          "detail": "Targeted SaaS demo/contact example inspected; adoption deferred as weak service-quote analogue."
+        },
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-r1",
+          "locator": "Section 6",
+          "detail": "Public site considered; weak match for architecture art-direction research; no MCP access claimed."
+        }
+      ],
+      "limitations": "No Refero pattern implementation or account/session research established.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-refero"
+      ]
+    },
+    {
+      "id": "liquid-glass-react",
+      "name": "Liquid Glass React",
+      "status": "REJECTED",
+      "purpose": "Refraction/glass styling",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "REJECTED",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "README inspected; elasticity/refraction compete with architectural imagery."
+        }
+      ],
+      "limitations": "Inspection is not installation. Direction-specific rejection, not a universal visual rule.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-liquid-glass-react"
+      ]
+    },
+    {
+      "id": "screenshot-to-code",
+      "name": "Screenshot-to-code / image-to-code",
+      "status": "REJECTED",
+      "purpose": "Visual reconstruction",
+      "observations": [
+        {
+          "project": "apex",
+          "status": "REJECTED",
+          "artifact": "apex-audit",
+          "locator": "Section 14",
+          "detail": "Reference alignment already sufficient; reconstruction could disturb accepted flow."
+        },
+        {
+          "project": "noma",
+          "status": "REJECTED",
+          "artifact": "noma-r1",
+          "locator": "Section 6",
+          "detail": "Original direction requested; reference cloning unauthorized."
+        }
+      ],
+      "limitations": "Available capability does not make exact reconstruction necessary or authorized.",
+      "reference_links": []
+    },
+    {
+      "id": "apple",
+      "name": "Apple product/design reference",
+      "status": "CONFIRMED_USED",
+      "purpose": "Hierarchy and photographic focus",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-stage1b",
+          "locator": "Section 11",
+          "detail": "Bounded first-viewport visual inspection reported; hierarchy/image focus interpreted."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-spec",
+          "locator": "Skill-derived decisions",
+          "detail": "Apple DESIGN.md example inspected within design-spec research; brand styling not imported."
+        }
+      ],
+      "limitations": "Expected screenshot files from Stage 1B are absent in the current references directory; their original capture is source-reported, not independently recovered. No external site audit or copied identity.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-apple"
+      ]
+    },
+    {
+      "id": "norm",
+      "name": "Norm Architects",
+      "status": "CONFIRMED_USED",
+      "purpose": "Image-led archive and selection grammar",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-r1",
+          "locator": "Section 7",
+          "detail": "Archive research informs project-led sequencing and compact labels; no copied identity."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-stage1b",
+          "locator": "Section 11",
+          "detail": "First-viewport photographic sequencing interpreted; capture source-reported."
+        }
+      ],
+      "limitations": "Both URLs are exact historical recorded metadata; no current identity/redirect equivalence verified. Missing saved captures do not establish fresh visual inspection.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-norm"
+      ]
+    },
+    {
+      "id": "snohetta",
+      "name": "Snøhetta",
+      "status": "CONSULTED_ONLY",
+      "purpose": "Project archive modes and metadata",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-r1",
+          "locator": "Section 7",
+          "detail": "Archive/search/filter research recorded; small three-study archive does not warrant large filter UI."
+        }
+      ],
+      "limitations": "No external filter system, code, identity or project facts imported.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-snohetta"
+      ]
+    },
+    {
+      "id": "mdn-motion",
+      "name": "MDN reduced-motion reference",
+      "status": "CONFIRMED_USED",
+      "purpose": "Media preference and static fallback",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-r1",
+          "locator": "Section 7",
+          "detail": "Official reduced-motion principle informs proposal: keep static final content visible."
+        },
+        {
+          "project": "noma",
+          "status": "CONFIRMED_USED",
+          "artifact": "noma-motion",
+          "locator": "matchMedia",
+          "detail": "Preference branch implemented; actual runtime preference QA remains UNVERIFIED."
+        }
+      ],
+      "limitations": "Source branch is not observed runtime behavior, assistive-technology testing or certification.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-mdn-motion"
+      ]
+    },
+    {
+      "id": "john-pawson",
+      "name": "John Pawson",
+      "status": "CONSULTED_ONLY",
+      "purpose": "Architectural narrative and provenance",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-phase1",
+          "locator": "Section 4",
+          "detail": "Text/metadata narrative viewed; spatial specificity and distinct photography credits noted."
+        },
+        {
+          "project": "noma",
+          "status": "CONSIDERED",
+          "artifact": "noma-stage1b",
+          "locator": "Section 11",
+          "detail": "Later page attempt unavailable; not counted as visually inspected."
+        }
+      ],
+      "limitations": "Earlier textual consultation is preserved despite later failed visual access; no layout/motion inference from text alone.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-john-pawson"
+      ]
+    },
+    {
+      "id": "primary-works",
+      "name": "Primary Works / Archer Office",
+      "status": "CONSULTED_ONLY",
+      "purpose": "Archive navigation and meaningful categories",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-phase1",
+          "locator": "Section 4",
+          "detail": "Text/metadata research only; archive scale and category clarity interpreted."
+        }
+      ],
+      "limitations": "No screenshots, responsive states or interactions inspected at that phase. Typography/identity not transferable.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-primary-works"
+      ]
+    },
+    {
+      "id": "six-a",
+      "name": "6a architects",
+      "status": "CONSULTED_ONLY",
+      "purpose": "Concise metadata and image/narrative sequence",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSULTED_ONLY",
+          "artifact": "noma-phase1",
+          "locator": "Section 4",
+          "detail": "Text/metadata of archive/detail reviewed; credits and sequence considered."
+        }
+      ],
+      "limitations": "No original project facts/images/layout or fresh visual behavior ingested.",
+      "reference_links": [
+        "docs/nexus-historical-reference-source-audit-v1.md#ref-six-a"
+      ]
+    },
+    {
+      "id": "awwwards",
+      "name": "Awwwards",
+      "status": "CONSIDERED",
+      "purpose": "Brief-named craft benchmark",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSIDERED",
+          "artifact": "noma-phase1",
+          "locator": "Section 4",
+          "detail": "Brief names craft reference only; no award/site inspection or recognition claim."
+        }
+      ],
+      "limitations": "Named benchmark is not consulted-site evidence, award eligibility or recognition.",
+      "reference_links": []
+    },
+    {
+      "id": "webby",
+      "name": "Webby",
+      "status": "CONSIDERED",
+      "purpose": "Brief-named craft benchmark",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSIDERED",
+          "artifact": "noma-phase1",
+          "locator": "Section 4",
+          "detail": "Brief names craft reference only; no award/site inspection or recognition claim."
+        }
+      ],
+      "limitations": "Named benchmark is not consulted-site evidence, award eligibility or recognition.",
+      "reference_links": []
+    },
+    {
+      "id": "fwa",
+      "name": "FWA",
+      "status": "CONSIDERED",
+      "purpose": "Brief-named craft benchmark",
+      "observations": [
+        {
+          "project": "noma",
+          "status": "CONSIDERED",
+          "artifact": "noma-phase1",
+          "locator": "Section 4",
+          "detail": "Brief names craft reference only; no award/site inspection or recognition claim."
+        }
+      ],
+      "limitations": "Named benchmark is not consulted-site evidence, award eligibility or recognition.",
+      "reference_links": []
+    }
+  ],
+  "lesson_aliases": [
+    {
+      "locator": "F01",
+      "lesson_id": "w03",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "ui-ux-pro-max",
+        "impeccable",
+        "gsap"
+      ],
+      "interpretation": "Keep operation-specific presence/inspection/execution/influence evidence separate."
+    },
+    {
+      "locator": "F02",
+      "lesson_id": "w02",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "taste",
+        "product-design"
+      ],
+      "interpretation": "Advisory guidance remains subordinate to scope and accepted authority."
+    },
+    {
+      "locator": "F03",
+      "lesson_id": "w05",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "apple",
+        "norm",
+        "awesome-design-md"
+      ],
+      "interpretation": "Design research does not transfer external identity, project facts or asset authorship."
+    },
+    {
+      "locator": "F04",
+      "lesson_id": "w42",
+      "disposition": "NEW",
+      "reference_ids": [
+        "awesome-design-md"
+      ],
+      "interpretation": "Write an original design specification with semantic token roles, type hierarchy, component states and responsive constraints before implementation."
+    },
+    {
+      "locator": "F05",
+      "lesson_id": "w21",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "uiverse-galaxy",
+        "remotion",
+        "morphicons",
+        "liquid-glass-react",
+        "bencho"
+      ],
+      "interpretation": "Add a component/runtime only when a concrete user job outweighs dependency and maintenance cost."
+    },
+    {
+      "locator": "F06",
+      "lesson_id": "w13",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "frontend-ui-engineering",
+        "ui-ux-pro-max",
+        "bencho"
+      ],
+      "interpretation": "Ensure focus/keyboard and visible direct actions match pointer affordances."
+    },
+    {
+      "locator": "F07",
+      "lesson_id": "w40",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "gsap",
+        "mdn-motion"
+      ],
+      "interpretation": "Scope animation resource lifecycle and retain useful static/reduced-motion content."
+    },
+    {
+      "locator": "F08",
+      "lesson_id": "w41",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "taste",
+        "apple",
+        "norm"
+      ],
+      "interpretation": "Judge meaningful hierarchy in settled static views before enhancing with motion."
+    },
+    {
+      "locator": "F09",
+      "lesson_id": "w43",
+      "disposition": "NEW",
+      "reference_ids": [
+        "frontend-ui-engineering",
+        "product-design"
+      ],
+      "interpretation": "Recompose desktop panels into a meaningful mobile reading/action order rather than shrinking the desktop arrangement."
+    },
+    {
+      "locator": "F10",
+      "lesson_id": "w44",
+      "disposition": "NEW",
+      "reference_ids": [
+        "snohetta",
+        "primary-works",
+        "six-a"
+      ],
+      "interpretation": "Scale discovery controls to collection size and evidenced findability needs; do not add broad archive filters to a tiny collection."
+    },
+    {
+      "locator": "F11",
+      "lesson_id": "w19",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "impeccable"
+      ],
+      "interpretation": "Validate a detector finding against the actual rendered pattern; rejected false positives remain recorded."
+    },
+    {
+      "locator": "F12",
+      "lesson_id": "w16",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "gsap",
+        "impeccable"
+      ],
+      "interpretation": "Implemented motion and partial diagnostics do not prove numerical performance or certification."
+    },
+    {
+      "locator": "F13",
+      "lesson_id": "w05",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "bencho"
+      ],
+      "interpretation": "Comparison controls require truthful paired inputs; unrelated reference photos cannot imply before/after or one building."
+    },
+    {
+      "locator": "F14",
+      "lesson_id": "w37",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "apple",
+        "ui-ux-pro-max"
+      ],
+      "interpretation": "Review responsive image crops/loading/container intent independently from performance scores."
+    },
+    {
+      "locator": "F15",
+      "lesson_id": "w06",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "primary-works",
+        "six-a",
+        "john-pawson",
+        "norm"
+      ],
+      "interpretation": "Record text, first-viewport visual and interaction evidence as different inspection scopes."
+    },
+    {
+      "locator": "F16",
+      "lesson_id": "w41",
+      "disposition": "DUPLICATE",
+      "reference_ids": [
+        "bencho",
+        "taste"
+      ],
+      "interpretation": "Remove a proposed preview interaction when actual visual acceptance fails; preserve its rejected historical decision."
+    }
+  ],
+  "counts": {
+    "reference_source_count": 27,
+    "confirmed_used_count": 11,
+    "consulted_only_count": 5,
+    "rejected_count": 5,
+    "not_found_count": 3,
+    "considered_count": 3,
+    "superseded_count": 0,
+    "insufficient_evidence_count": 0,
+    "new_reusable_reference_lessons": 3,
+    "duplicate_reference_lessons": 13
+  },
+  "evidence_register_sha256": "c9165bb69df28757dea520a6d60ee0ccb8e1bd31f0a8e1b9647f7d9775394e34"
+}

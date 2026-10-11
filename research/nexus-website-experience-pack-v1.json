@@ -48,7 +48,12 @@
     {
       "id": "captured_source_evidence",
       "path": "docs/nexus-historical-project-source-evidence-v1.md",
-      "sha256": "b32662f742e1a4aff58294fe67353aadcafd2c3bc6caec79339f1f0588a842e4"
+      "sha256": "667d8fb617cde06ef8f33d35d527f2e536e444d090850180ba17dce08b4f5373"
+    },
+    {
+      "id": "reference_evidence",
+      "path": "docs/nexus-historical-reference-source-audit-v1.md",
+      "sha256": "c9165bb69df28757dea520a6d60ee0ccb8e1bd31f0a8e1b9647f7d9775394e34"
     }
   ],
   "lessons": [
@@ -100,6 +105,10 @@
         {
           "source_id": "apex_lessons",
           "locator": "L03"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F02"
         }
       ],
       "origin": "EXISTING"
@@ -136,6 +145,10 @@
         {
           "source_id": "apex_lessons",
           "locator": "L07"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F01"
         }
       ],
       "origin": "EXISTING"
@@ -188,6 +201,14 @@
         {
           "source_id": "captured_source_evidence",
           "locator": "N01"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F03"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F13"
         }
       ],
       "origin": "EXISTING"
@@ -208,6 +229,10 @@
         {
           "source_id": "northstar_lessons",
           "locator": "K07"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F15"
         }
       ],
       "origin": "EXISTING"
@@ -384,6 +409,10 @@
         {
           "source_id": "captured_source_evidence",
           "locator": "N04"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F06"
         }
       ],
       "origin": "EXISTING"
@@ -449,6 +478,10 @@
         {
           "source_id": "apex_lessons",
           "locator": "L14"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F12"
         }
       ],
       "origin": "EXISTING"
@@ -513,6 +546,10 @@
         {
           "source_id": "refinement_acceptance",
           "locator": "D02"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F11"
         }
       ],
       "origin": "EXISTING"
@@ -558,6 +595,10 @@
         {
           "source_id": "apex_lessons",
           "locator": "L08"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F05"
         }
       ],
       "origin": "EXISTING"
@@ -907,6 +948,10 @@
         {
           "source_id": "captured_source_evidence",
           "locator": "N07"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F14"
         }
       ],
       "origin": "INGESTED_NOW"
@@ -968,6 +1013,10 @@
         {
           "source_id": "captured_source_evidence",
           "locator": "N03"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F07"
         }
       ],
       "origin": "INGESTED_NOW"
@@ -983,11 +1032,82 @@
       ],
       "advice": "Evaluate useful static hierarchy against the actual visual criterion; simplify interaction-dependent presentation when that criterion fails.",
       "applicability": "Visual review and reference-guided iterations.",
-      "limitations": "Noma Stage 1B remains pending owner approval; its photographic/style preferences are not universal rules.",
+      "limitations": "Noma Stage 1B direction was later superseded by a homepage prototype; owner approval remains pending. Photographic/style preferences are not universal rules.",
       "provenance": [
         {
           "source_id": "captured_source_evidence",
           "locator": "N06"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F08"
+        },
+        {
+          "source_id": "reference_evidence",
+          "locator": "F16"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w42",
+      "semantic_key": "original_semantic_design_specification",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "ux",
+        "visual_qa"
+      ],
+      "advice": "Write an original design specification with semantic token roles, type hierarchy, component states and responsive constraints before implementation.",
+      "applicability": "Original product-specific tokens, type hierarchy, control states and responsive constraints.",
+      "limitations": "Design categories may guide a new specification; no external brand system or copyrighted prose is copied.",
+      "provenance": [
+        {
+          "source_id": "reference_evidence",
+          "locator": "F04"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w43",
+      "semantic_key": "responsive_reading_action_order",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "responsive",
+        "ux",
+        "accessibility"
+      ],
+      "advice": "Recompose desktop panels into a meaningful mobile reading/action order rather than shrinking the desktop arrangement.",
+      "applicability": "Reference-guided panel layouts and mobile transformations.",
+      "limitations": "Review actual reading/action order and keyboard access; viewport size or no-overflow alone is not sufficient.",
+      "provenance": [
+        {
+          "source_id": "reference_evidence",
+          "locator": "F09"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w44",
+      "semantic_key": "collection_scaled_discovery",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "ux",
+        "interaction"
+      ],
+      "advice": "Scale discovery controls to collection size and evidenced findability needs; do not add broad archive filters to a tiny collection.",
+      "applicability": "Small portfolios and archive/control selection.",
+      "limitations": "Revisit filters/search as the collection and evidenced user needs grow; reference-site scale is not a requirement.",
+      "provenance": [
+        {
+          "source_id": "reference_evidence",
+          "locator": "F10"
         }
       ],
       "origin": "INGESTED_NOW"
@@ -997,23 +1117,29 @@
     {
       "id": "noma-local-base",
       "state": "SUPERSEDED",
-      "superseded_by": "noma-stage1b",
-      "summary": "Historical committed local release; no animation framework. Preserved as history, not the current dirty configuration."
+      "superseded_by": "noma-homepage-prototype",
+      "summary": "Historical committed native-only local release, followed by dirty Stage 1/1B GSAP work. Preserved as history."
     },
     {
       "id": "noma-stage1b",
+      "state": "SUPERSEDED",
+      "superseded_by": "noma-homepage-prototype",
+      "summary": "Historical dirty GSAP visual correction; later homepage specification identifies this design as rejected. No historical acceptance invented."
+    },
+    {
+      "id": "noma-homepage-prototype",
       "state": "CURRENT",
       "superseded_by": null,
-      "summary": "Later implemented GSAP visual correction; owner visual approval PENDING; no deployment; reduced-motion execution UNVERIFIED."
+      "summary": "Later reference-locked homepage prototype specification and internal static review; owner approval PENDING, no public release inferred. Reduced-motion runtime remains UNVERIFIED."
     }
   ],
   "audit_counts": {
-    "source_items": 70,
+    "source_items": 86,
     "existing_source_items": 52,
-    "new_unique_lessons": 10,
-    "canonical_current_lessons": 41,
-    "merged_duplicate_or_partial_items": 27,
+    "new_unique_lessons": 13,
+    "canonical_current_lessons": 44,
+    "merged_duplicate_or_partial_items": 40,
     "not_reusable_items": 2,
-    "superseded_context_versions": 1
+    "superseded_context_versions": 2
   }
 }

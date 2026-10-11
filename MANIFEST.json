@@ -1384,12 +1384,16 @@
     "sha256": "750a02a4e0818b9dc37580d01df6f7d5c026e5276c9ad2c36181ac15b1b6a899"
   },
   "docs/nexus-historical-experience-ingestion-audit-v1.md": {
-    "bytes": 13370,
-    "sha256": "4425b5634062bbda442143b6c79e0410f20fbe38fb35043c0738ad546043712d"
+    "bytes": 14800,
+    "sha256": "30ff14557fd93f646fb6924b9ada14387c40c6c4a5fe08b152af78c391ea21ed"
   },
   "docs/nexus-historical-project-source-evidence-v1.md": {
-    "bytes": 9648,
-    "sha256": "b32662f742e1a4aff58294fe67353aadcafd2c3bc6caec79339f1f0588a842e4"
+    "bytes": 10101,
+    "sha256": "667d8fb617cde06ef8f33d35d527f2e536e444d090850180ba17dce08b4f5373"
+  },
+  "docs/nexus-historical-reference-source-audit-v1.md": {
+    "bytes": 21495,
+    "sha256": "c9165bb69df28757dea520a6d60ee0ccb8e1bd31f0a8e1b9647f7d9775394e34"
   },
   "docs/nexus-microsoft-ai-agents-gap-analysis-v1.md": {
     "bytes": 57375,
@@ -1744,8 +1748,12 @@
     "sha256": "ef77cb0e37adb4d844d5f34a07e9f66935e6f5dbfb3970168db906eed513165d"
   },
   "research/nexus-website-experience-pack-v1.json": {
-    "bytes": 33582,
-    "sha256": "ca97f8daf0ae70f66f9fe03d4f319f690807830b855ff592181798daf64b7200"
+    "bytes": 37685,
+    "sha256": "95396c95fd122ddaf69fca34902c4dae162648b0a5fa9de6a8c581d32216a0e5"
+  },
+  "research/nexus-website-reference-index-v1.json": {
+    "bytes": 30305,
+    "sha256": "029d1197b17ebd9241141a5cc30fd6b2627aaabdd9a099e145e44c4be4b13180"
   },
   "scripts/Install-Nexus.ps1": {
     "bytes": 5010,
@@ -1972,8 +1980,8 @@
     "sha256": "d2695866fab8865d63e21894baafc5afcae0d56eaf031be6e4b7f54ba811953e"
   },
   "tests/test_historical_experience.py": {
-    "bytes": 10060,
-    "sha256": "cb7044e4451ef7105b171d6c2be110030f05fc82de2031e526c2e0c644f3b778"
+    "bytes": 16955,
+    "sha256": "6f5a0bbc51bf0109f23cc4bb494189e0cfeee0de0295f4f42e46b12a9782ebfe"
   },
   "tests/test_hub.py": {
     "bytes": 21706,

@@ -18,7 +18,7 @@ HISTORICAL_MEMORY_STATUS = COMPLETE_BOUNDED_ADVISORY_CHECKPOINT
 EXISTING_LESSON_COUNT = 52 source items; 31 unique reusable meanings
 NEW_LESSON_COUNT = 10 unique reusable meanings
 DEDUPLICATED_COUNT = 27 duplicate/partial source items merged by reference
-SUPERSEDED_COUNT = 1 current-source-state summary; 0 reusable lessons erased
+SUPERSEDED_COUNT = 2 current-source-state summaries; 0 reusable lessons erased
 TOTAL_REUSABLE_LESSONS = 41
 UNRESOLVED_SOURCE_GAPS = PRESERVED; see limitations below
 G4_ARCHITECTURE_CHANGED = NO
@@ -74,9 +74,11 @@ cross-project refinement acceptance controls its narrowed D01/D02 meanings.
 Those cross-project refinement IDs are distinct from G3 diagnostic qualification
 IDs. Historical G2 HOLD prose is not a current-state override of later G2 v3/G4.
 
-One context-version overlay marks Noma's earlier committed no-animation-framework
-configuration SUPERSEDED as a *current* description by the later dirty GSAP
-Stage 1B. Both histories remain accessible. This does not reject native controls
+At the project checkpoint, one context overlay superseded Noma's earlier committed
+no-animation configuration with dirty GSAP Stage 1B. The subsequent reference audit
+found a later homepage prototype expressly superseding the rejected Stage 1B design.
+Both older context summaries now point to that current prototype description, still
+pending owner approval. All histories remain accessible. This does not reject native controls
 or mandate GSAP. Meranti's conditional explicit-anchor controller and Noma's
 ordinary native navigation are compatible choices under different requirements.
 
@@ -218,8 +220,36 @@ projects were not queried. These gaps safely remain unresolved.
 
 ## Reference-source addendum
 
-The separately authorized reference audit follows the completed project checkpoint.
-It will classify source usage from repository/project evidence, link metadata
-instead of copying external content, and merge duplicate lessons into this same
-canonical experience pack. Its counts will be appended without rewriting the
-project audit or its original source inventory.
+The [reference audit](nexus-historical-reference-source-audit-v1.md) follows the
+completed/pushed project checkpoint `d0f21dc866de22f866d0e72ad4b9e89ce615557c`.
+It preserves the project phase's 70-item inventory and 41 meanings (ten newly
+captured), then maps sixteen reference-lesson aliases: three new meanings and
+thirteen duplicates. The final pack has 44 unique meanings: 31 existing + thirteen
+new across both phases. Its combined 86-item alias inventory is 44 canonical +
+40 merged duplicate/partial + two project-specific non-reusable items. The later
+Noma prototype corrects the current-state description only; no project evidence
+or reusable lesson was deleted. Reference captures missing from the current source
+tree are explicitly source-reported, not treated as recovered screenshots.
+
+```text
+REFERENCE_SOURCE_COUNT = 27
+CONFIRMED_USED_COUNT = 11
+CONSULTED_ONLY_COUNT = 5
+REJECTED_COUNT = 5
+NOT_FOUND_COUNT = 3
+CONSIDERED_COUNT = 3
+NEW_REUSABLE_REFERENCE_LESSONS = 3
+DUPLICATE_REFERENCE_LESSONS = 13
+FINAL_TOTAL_REUSABLE_LESSONS = 44
+FINAL_NEWLY_INGESTED = 13
+FINAL_DEDUPLICATED = 40
+G4_ARCHITECTURE_CHANGED = NO
+REAL_ADMISSION_CHANGED = NO
+```
+
+Reference aggregate counts differ from per-project/phase observations. Meranti/
+Northstar exact advisor invocations remain UNKNOWN / INSUFFICIENT_EVIDENCE even
+when a different project confirms guidance use. Arlan, Amieiro and Libraries.dev
+are NOT_FOUND only within the bounded search, with usage UNKNOWN. The reference
+audit contains its final verification evidence; the project regression above is
+retained as the earlier checkpoint result.

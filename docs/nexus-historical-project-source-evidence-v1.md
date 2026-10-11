@@ -13,7 +13,7 @@ local source/byte observation below. No project application was changed or run.
 | Meranti Coffee House | `71724514743f68342bcb75968904c9a28bc34da6` | `MERANTI-POSTMORTEM-FOR-NEXUS.md`, 37,591 bytes, `5555b0703719274212f703dacc84925d6dfd546dea3a08f2de10dbee8d5b509e` | Portfolio Demo v1.0 release commit exists. Postmortem reports frozen/live acceptance; live state was not reread. Original remains external to Nexus. |
 | Northstar Sales Lab | `8506d61a88b704d24a6010826e5e2d686fea97a1` | `NORTHSTAR-POSTMORTEM-FOR-NEXUS.md`, 46,088 bytes, `4170f3f387d4b6625adab49cb2d0f5f5af78fb7a74f4233fa808dcc170cb2dd8` | Actual original bytes equal the complete archive already tracked in Nexus. K01-K26 exist. Original is untracked in the application repository. Historical live/provider claims retain their recorded limits. |
 | Apex AirCare | `e63c133a7a9954a343caebe5d93babe5c7d25145` | `APEX-AIRCARE-POSTMORTEM-FOR-NEXUS.md`, 48,732 bytes, `de9abce0578e7dd1b9e398cd177e0c9b79d17fde67eccaa663ef9487a1e01f2e` | Exact original equals the existing Nexus archive. Its header explicitly names Portfolio Demo #3. Application release source is separately `3f26331bf4d0653d7cb5a6a303775eade3439978`; documentation HEAD is not a substitute deployment identity. |
-| Atelier Noma | `c4e24c0faf8af2618d049126c00fb65378396cb4` | Committed Phase 4.5 review SHA256 `a5417e6ceade2a4e072bb4273952c4599f771bffb074031a40469420e2f04397`; untracked Stage 1B review SHA256 `d35e4916b8af36670f26e833b8e1d8f733de9a1a928b557ebfef77299fcca01c` | Implemented local portfolio with later dirty visual work. The committed base reports a bounded local release; later Stage 1 failed visual review, and Stage 1B remains READY FOR OWNER VISUAL REVIEW / approval PENDING / no deployment. No evidence assigns it the Demo #3 number. |
+| Atelier Noma | `c4e24c0faf8af2618d049126c00fb65378396cb4` | Committed Phase 4.5 review SHA256 `a5417e6ceade2a4e072bb4273952c4599f771bffb074031a40469420e2f04397`; untracked Stage 1B review SHA256 `d35e4916b8af36670f26e833b8e1d8f733de9a1a928b557ebfef77299fcca01c` | Implemented local portfolio with dirty visual work. The committed base reports a bounded local release; Stage 1 failed review. Stage 1B reported READY FOR OWNER VISUAL REVIEW, then a later homepage specification superseded its rejected direction. Current prototype approval remains PENDING; no public release inferred. No evidence assigns it Demo #3. |
 | Apex Home Services | UNKNOWN | No corresponding implementation or final-identity artifact found in the searched project/repository scope | The name is supplied as a historical proposal candidate. No rename into Apex AirCare, implementation, release or ingestion is inferred. NOT_FOUND is not proof of never implemented elsewhere. |
 
 The Northstar/Apex originals are accessible in their existing tracked project
@@ -76,10 +76,15 @@ UNKNOWN; IMP-001 remains DEFERRED. Noma public release, owner visual approval,
 runtime reduced-motion and broad certification remain unproved. Meranti old
 observer code, original overflow culprit and pre-fix image props remain missing.
 
-One obsolete current-state summary is superseded: Noma's committed local-base
-no-animation-framework choice is historical, while its later dirty Stage 1B uses
-the existing GSAP dependency and remains pending approval. Neither contextual
-choice is a universal lesson. No historical result or original document is erased.
+At the first project checkpoint, one current-state summary was superseded:
+Noma's committed no-animation choice became historical while dirty Stage 1B used
+the existing GSAP dependency. The later reference-source addendum found a homepage
+prototype specification explicitly superseding the rejected Stage 1B direction;
+owner approval still remains pending. The N05/N06 observations above describe the
+earlier captured Stage 1B, not the current accepted homepage. Two context summaries
+are now superseded by the prototype description. See the separate reference audit
+for its exact source digest. Neither contextual choice is a universal lesson.
+No historical result or original document is erased.
 The accepted Northstar promotion and cross-project refinement records continue
 to control their exact accepted meanings; their early G2 HOLD statements are
 historical and do not replace later managed-G2-v3 acceptance or current G4 status.
