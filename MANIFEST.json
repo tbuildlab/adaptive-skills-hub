@@ -1219,6 +1219,10 @@
     "bytes": 10274,
     "sha256": "74ff7ee6911907ce28e6e09ac6fc967be89355afd4e5bd7423b6baf0ed17c132"
   },
+  "docs/nexus-g3-d03-zero-cost-survey-v1.md": {
+    "bytes": 17702,
+    "sha256": "2d2ac5f315dac089b478570efd7c4a404d50eaef2b81866006b55df7e4ab0065"
+  },
   "docs/nexus-g3-delegated-executor-authority-policy-v1.md": {
     "bytes": 11312,
     "sha256": "6e731c24c4f7fa1c29eec324c811a3efba496cf29b182152170f00853f1cfa37"
@@ -1230,6 +1234,10 @@
   "docs/nexus-g3-live-qualification-setup-plan-v1.md": {
     "bytes": 46921,
     "sha256": "6ff9dcfdf9ae65da634fa0aa0b2cbc150e2e6c2eab9993afdac4eb301136f7a7"
+  },
+  "docs/nexus-g3-return-checkpoint-v1.md": {
+    "bytes": 5728,
+    "sha256": "6a0c4271bdeb043abd1f6867cbe2daa2290d84591bd3ae5de74595448f5b8ee3"
   },
   "docs/nexus-g3-reuse-survey-v1.md": {
     "bytes": 59772,
@@ -1767,6 +1775,10 @@
     "bytes": 362161,
     "sha256": "ef77cb0e37adb4d844d5f34a07e9f66935e6f5dbfb3970168db906eed513165d"
   },
+  "research/nexus-g3-d03-zero-cost-inventory-v1.json": {
+    "bytes": 7526,
+    "sha256": "852cefe5ba3c0b50afb65955805fc41e66042f87fe30b61db2466d7f7c1d6cb2"
+  },
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,
     "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
@@ -1962,6 +1974,10 @@
   "tests/test_g3_authorization.py": {
     "bytes": 19131,
     "sha256": "395769db7286f3f7e97954be7997f690cbe042a5c39f1757792a60a2f2701e25"
+  },
+  "tests/test_g3_d03_zero_cost.py": {
+    "bytes": 9464,
+    "sha256": "807becc6ba3dc0ad8b49307a6cad6ffc103ea022278d8ec804c5cc037004583c"
   },
   "tests/test_g3_host_approval_bridge.py": {
     "bytes": 20770,

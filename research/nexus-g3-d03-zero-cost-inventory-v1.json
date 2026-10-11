@@ -1,0 +1,192 @@
+{
+  "schema_version": "nexus.g3.d03.zero-cost-audit.v1",
+  "basis": "ADVISORY_NON_AUTHORITATIVE",
+  "accepted_baseline": "21ad1c96220a0f6a4df642143e2851aae583cc8e",
+  "real_admission_enabled": false,
+  "d01_status": "CLOSED_BOUNDED_LIVE_PROFILE",
+  "d03_status": "BLOCKED_NO_ZERO_COST_QUALIFIED_FENCE",
+  "g3_status": "INCOMPLETE",
+  "g4_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "g6_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "d04_delegated_release_gate": false,
+  "accepted_security_properties_changed": false,
+  "two_account_requirement": "PRESERVED_NO_ALTERNATE_APPROVED",
+  "selected_mechanism": "NONE_QUALIFIED",
+  "single_missing_d03_property": "QUALIFIED_INDEPENDENTLY_ADMINISTERED_CURRENT_HEAD_WITNESS_FOR_EXACT_REGISTERED_NEXUS_LINEAGE",
+  "bounded_search_not_universal_impossibility": true,
+  "source_identities": [
+    {
+      "path": "docs/nexus-g3-d03-minimal-scope-and-autonomy-amendment-v1.md",
+      "normalized_sha256": "74ff7ee6911907ce28e6e09ac6fc967be89355afd4e5bd7423b6baf0ed17c132"
+    },
+    {
+      "path": "docs/nexus-g3-u1-d03-offline-semantic-closure-v1.md",
+      "normalized_sha256": "3ef9699f2e5fe83674808baeb04496649b167b688c10e6406ec8a0e0d6ad0d2e"
+    },
+    {
+      "path": "docs/nexus-g3-delegated-executor-authority-policy-v1.md",
+      "normalized_sha256": "6e731c24c4f7fa1c29eec324c811a3efba496cf29b182152170f00853f1cfa37"
+    },
+    {
+      "path": "docs/nexus-g3-d01-delegated-live-closure-v1.md",
+      "normalized_sha256": "36b76c1ed70515a3f02c795c63835b72a41d2d3bf9a310d114b9304e6d76346f"
+    },
+    {
+      "path": "docs/nexus-g4-preparation-checkpoint-v1.md",
+      "normalized_sha256": "2f9e4460b08b5a017f84803207d4afa5fc3dde8592be483cabfbe03744c7f753"
+    },
+    {
+      "path": "docs/nexus-g6-preparation-checkpoint-v1.md",
+      "normalized_sha256": "0735f28fd2fcf548c14d9ddf2cd8e06a26ace2b35be9d05c113aa2d4c4a8f4f1"
+    }
+  ],
+  "candidate_count": 11,
+  "pass_candidate_count": 0,
+  "candidates": [
+    {
+      "candidate": "nexus-offline-fence",
+      "classification": "BLOCKED",
+      "custody": "TEST_ONLY_REWRITABLE",
+      "current_head_evidence": "NONE",
+      "cost": "EXISTING_ZERO_INCREMENTAL",
+      "offline_viability": "YES",
+      "operational_complexity": "SMALL",
+      "minimal_integration": "REUSE_CONSUMER_TESTS_ONLY"
+    },
+    {
+      "candidate": "local-git",
+      "classification": "BLOCKED",
+      "custody": "SAME_WRITER_CAN_REPLACE_REFS",
+      "current_head_evidence": "NONE",
+      "cost": "LOCAL_ZERO_INCREMENTAL",
+      "offline_viability": "YES",
+      "operational_complexity": "SMALL",
+      "minimal_integration": "NO_PRODUCTION_ADAPTER"
+    },
+    {
+      "candidate": "existing-github",
+      "classification": "BLOCKED",
+      "custody": "EXECUTOR_HAS_REPOSITORY_ADMIN",
+      "current_head_evidence": "UNREGISTERED",
+      "cost": "NO_NEW_SPEND_PLAN_UNKNOWN",
+      "offline_viability": "NO",
+      "operational_complexity": "SMALL",
+      "minimal_integration": "DEVELOPMENT_GIT_ONLY"
+    },
+    {
+      "candidate": "ntfs-readonly-acl",
+      "classification": "BLOCKED",
+      "custody": "SHARED_MODIFY_READONLY_REVERSIBLE",
+      "current_head_evidence": "NONE",
+      "cost": "LOCAL_ZERO_INCREMENTAL",
+      "offline_viability": "YES",
+      "operational_complexity": "SMALL",
+      "minimal_integration": "NO_PRODUCTION_ADAPTER"
+    },
+    {
+      "candidate": "windows-event-log",
+      "classification": "BLOCKED",
+      "custody": "EXACT_D03_CHANNEL_ADMIN_UNREGISTERED",
+      "current_head_evidence": "CIRCULAR_HISTORY_NOT_RETAINED",
+      "cost": "LOCAL_ZERO_INCREMENTAL",
+      "offline_viability": "YES",
+      "operational_complexity": "MEDIUM",
+      "minimal_integration": "NO_CHANNEL_MUTATION"
+    },
+    {
+      "candidate": "tpm-counter-key-alone",
+      "classification": "NOT_APPLICABLE",
+      "custody": "HARDWARE_AND_NV_CUSTODY_UNVERIFIED",
+      "current_head_evidence": "NONE",
+      "cost": "HARDWARE_UNKNOWN_NO_PURCHASE",
+      "offline_viability": "UNKNOWN",
+      "operational_complexity": "MEDIUM",
+      "minimal_integration": "PRIMITIVE_NOT_RECOVERY_FENCE"
+    },
+    {
+      "candidate": "signed-journal",
+      "classification": "CONDITIONAL",
+      "custody": "INDEPENDENT_SIGNER_AND_ANCHOR_UNREGISTERED",
+      "current_head_evidence": "NONE",
+      "cost": "LOCAL_ZERO_INCREMENTAL",
+      "offline_viability": "YES",
+      "operational_complexity": "SMALL",
+      "minimal_integration": "MATURE_CRYPTO_ONLY_AFTER_REGISTRATION"
+    },
+    {
+      "candidate": "immudb-independent-auditor",
+      "classification": "CONDITIONAL",
+      "custody": "SEPARATE_ADMIN_AND_VERIFIER_STATE_UNREGISTERED",
+      "current_head_evidence": "NONE",
+      "cost": "OSS_HOSTING_NOT_ESTABLISHED",
+      "offline_viability": "YES_IF_DEPLOYED",
+      "operational_complexity": "MEDIUM",
+      "minimal_integration": "SDK_PLUS_EXISTING_NEXUS_LINEAGE"
+    },
+    {
+      "candidate": "public-rekor-v1",
+      "classification": "CONDITIONAL",
+      "custody": "EXTERNAL_OPERATOR_NEXUS_ENROLLMENT_UNQUALIFIED",
+      "current_head_evidence": "UNVERIFIED_PUBLIC_GET",
+      "cost": "PUBLIC_READ_NO_NEW_SPEND_WRITE_TERMS_UNKNOWN",
+      "offline_viability": "NO_CURRENT_HEAD_OFFLINE",
+      "operational_complexity": "MEDIUM",
+      "minimal_integration": "COMPLETE_HISTORY_NOT_BEST_EFFORT_INDEX"
+    },
+    {
+      "candidate": "rekor-v2-independent-witness",
+      "classification": "CONDITIONAL",
+      "custody": "NEXUS_TRUST_FRESHNESS_CUSTODY_UNREGISTERED",
+      "current_head_evidence": "NONE",
+      "cost": "OSS_HOSTED_COST_AND_TERMS_UNKNOWN",
+      "offline_viability": "NO_CURRENT_HEAD_OFFLINE",
+      "operational_complexity": "MEDIUM",
+      "minimal_integration": "MATURE_VERIFIED_CHECKPOINT_CLIENT"
+    },
+    {
+      "candidate": "aws-two-account-s3",
+      "classification": "BLOCKED",
+      "custody": "HISTORICAL_CUSTODY_UNVERIFIED",
+      "current_head_evidence": "NONE",
+      "cost": "BILLING_BACKED_EXCLUDED",
+      "offline_viability": "NO",
+      "operational_complexity": "MEDIUM",
+      "minimal_integration": "HISTORICAL_ONLY"
+    }
+  ],
+  "environment": {
+    "git": "AVAILABLE",
+    "node_crypto": "AVAILABLE",
+    "github_cli_api_auth": "UNAVAILABLE",
+    "github_connector_repository_admin": true,
+    "local_integrity": "MEDIUM_ADMIN_GROUP_DENY_ONLY",
+    "local_checkpoint_acl": "SHARED_MODIFY",
+    "existing_event_log_retention": "CIRCULAR",
+    "tpm_metadata": "UNAVAILABLE_HARDWARE_UNKNOWN",
+    "registered_independent_fence": "NOT_ESTABLISHED",
+    "rekor_public_get": "HTTP_200_UNVERIFIED_NOT_QUALIFICATION",
+    "rekor_response_sha256": "7adf521540cbce93d98e969e34867ab4299fc1914613cbc6edab7d472fd67599"
+  },
+  "new_code": "NINE_LOCAL_COUNTEREXAMPLE_AND_BOUNDARY_TESTS_ONLY",
+  "reused_semantic_suites": [
+    "tests/test_g3_offline_control.py",
+    "tests/test_g3_production_metadata.py",
+    "tests/test_recovery_admission_lab_v1.py"
+  ],
+  "qualification_evidence_class": "OFFLINE_AND_COUNTEREXAMPLE_ONLY",
+  "g3_next_gates": [
+    "D03 qualified independent fence",
+    "protected N01/N02 production composition and actor provenance",
+    "exact registered production route and complete mediation",
+    "real delegated E2E"
+  ],
+  "production_adapter_created": false,
+  "custom_orchestration_created": false,
+  "paid_infrastructure_created": false,
+  "provider_executions_added": 0,
+  "live_d01_ceremonies_added": 0,
+  "public_log_entries_appended": 0,
+  "production_freeze": "DENY",
+  "tag_created": false,
+  "human_action_required": "NONE_FOR_AVAILABLE_PREPARATION"
+}
