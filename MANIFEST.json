@@ -139,6 +139,18 @@
     "bytes": 12801,
     "sha256": "cbf6ab1c974428e3a3cb77a0ba2efc3cf1a391f5dd04ad775bf3d3381972dd54"
   },
+  "ash/g3_n01_owner_context.py": {
+    "bytes": 8172,
+    "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
+  },
+  "ash/g3_n01_runtime_context.py": {
+    "bytes": 6189,
+    "sha256": "f781a5a9aff5e89e1a784e982afc02e31e944c2c6ab66da69194419607978086"
+  },
+  "ash/g3_n01_stytch_transport.py": {
+    "bytes": 6496,
+    "sha256": "b7ca1d8c278b5ae3798af8b60e5239c5616053b21109d7b7c449f2fd306a2a6a"
+  },
   "ash/g3_primary_ledger.py": {
     "bytes": 12796,
     "sha256": "77b3e34049b82eb049d4a6304af37381332f81a21f00c333da07c750d3b0ce8b"
@@ -1675,6 +1687,10 @@
     "bytes": 4937,
     "sha256": "f55dc89d843586a02309b8ecd8e91233251c6684ce2d483f1a27dc23ff577606"
   },
+  "docs/nexus-production-n01-current-owner-context-v1.md": {
+    "bytes": 6671,
+    "sha256": "ddec52d62764b981c90f33f923b1bbefb2a5e05a868953bb3c161dfcc358a265"
+  },
   "docs/nexus-production-n01-owner-budget-receipt-v1.md": {
     "bytes": 1825,
     "sha256": "7117dc43cb9ca55bde39e507b103e12a06f592a86979f81b748ac7b14a1dcb03"
@@ -1910,6 +1926,10 @@
   "research/nexus-production-n01-bound-configuration-v1.json": {
     "bytes": 12472,
     "sha256": "f3aa5cf137109e53a48d337e628d8cc12b991bdcad630df57cf6a1acf532503d"
+  },
+  "research/nexus-production-n01-identity-sdk-requirements-v1.txt": {
+    "bytes": 2371,
+    "sha256": "287aaf8dc31e8749f9db21fd312fe53049833d86f82fe1dcab981974996515f6"
   },
   "research/nexus-production-n01-recovery-observed-evidence-v1.json": {
     "bytes": 25396,
@@ -2198,6 +2218,18 @@
   "tests/test_g3_n01_live_budget.py": {
     "bytes": 2439,
     "sha256": "94b4b62d6a229282911cfbaefce272593d86d3968bf877540a3af20402e2dc43"
+  },
+  "tests/test_g3_n01_owner_context.py": {
+    "bytes": 8449,
+    "sha256": "da4ba41f3791eabd38801e635f3502e2e70222bca93117b55fe74a836a42268f"
+  },
+  "tests/test_g3_n01_runtime_context.py": {
+    "bytes": 7087,
+    "sha256": "22f63a826f49e160f29c0427327a7169a843194f55385b7c4dbe59f958fb9794"
+  },
+  "tests/test_g3_n01_stytch_transport.py": {
+    "bytes": 8327,
+    "sha256": "ef1391c0d4df619bf74b71b50154282308e34f241fe846538e3ba59788ceed1d"
   },
   "tests/test_g3_n01_vercel_probe.py": {
     "bytes": 3490,
