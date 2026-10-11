@@ -1,0 +1,1019 @@
+{
+  "schema_version": "nexus.website-experience-pack.v1",
+  "title": "Portfolio and website engineering experience",
+  "basis": "ADVISORY_CONTEXT_ONLY",
+  "advisory_only": true,
+  "dispatch_authority": "none",
+  "sources": [
+    {
+      "id": "northstar_lessons",
+      "path": "docs/nexus-northstar-demo2-learned-knowledge-v1.md",
+      "sha256": "5a216152512a58de51bbfadcb4994331360dedba23de24a7e30f2ee2c8121151"
+    },
+    {
+      "id": "northstar_acceptance",
+      "path": "docs/nexus-northstar-knowledge-promotion-acceptance-v1.md",
+      "sha256": "ff0e2b082948034cbb45e37cd331a36055117057dd1d6c25bfc295b1ff712d73"
+    },
+    {
+      "id": "northstar_memory",
+      "path": "docs/nexus-northstar-demo2-project-memory-v1.md",
+      "sha256": "3a26415a27447e4ab442f461bc861d58b7f166b1ef727ce4c0bcbbf5cd794ad3"
+    },
+    {
+      "id": "apex_lessons",
+      "path": "docs/nexus-apex-aircare-demo3-learned-knowledge-v1.md",
+      "sha256": "af9cf11d1e4e4d2f5edf2a2264f2bd887f0dccbed91df2a5e842d60555ab133c"
+    },
+    {
+      "id": "apex_memory",
+      "path": "docs/nexus-apex-aircare-demo3-project-memory-v1.md",
+      "sha256": "cb173ddd0a744d6386d20a865eca366718bf6ff94990c6c37856df129871daf7"
+    },
+    {
+      "id": "refinement_acceptance",
+      "path": "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md",
+      "sha256": "62b529e81f8a28f842f304427ccdd411c61abb56a936eadb9614d90d796b72dd"
+    },
+    {
+      "id": "cross_project_synthesis",
+      "path": "docs/nexus-demo2-demo3-cross-project-synthesis-v1.md",
+      "sha256": "08a5237e1b55a85e409c8642b44dc31d45737dc62dece0ddadffb9ab75422bf0"
+    },
+    {
+      "id": "roadmap",
+      "path": "docs/nexus-roadmap-v2.md",
+      "sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8"
+    },
+    {
+      "id": "captured_source_evidence",
+      "path": "docs/nexus-historical-project-source-evidence-v1.md",
+      "sha256": "b32662f742e1a4aff58294fe67353aadcafd2c3bc6caec79339f1f0588a842e4"
+    }
+  ],
+  "lessons": [
+    {
+      "id": "w01",
+      "semantic_key": "required_capability_inventory",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "deployment"
+      ],
+      "advice": "Inventory required capabilities and their reachable invocation paths before depending on them.",
+      "applicability": "Required task tools or publication channels.",
+      "limitations": "Optional advisors need no mandatory installation; metadata supplies no authority.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K01"
+        },
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K10"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L16"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w02",
+      "semantic_key": "advisory_disposition",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "ux"
+      ],
+      "advice": "Record the governing requirement and disposition before applying advisory findings.",
+      "applicability": "Advice-driven changes.",
+      "limitations": "Advice cannot grant permission or establish implementation/validation.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K02"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L03"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w03",
+      "semantic_key": "independent_capability_observations",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "testing"
+      ],
+      "advice": "Keep INSTALLED, CALLABLE, EXECUTED and APPLIED independently evidenced, including exact operation and partial coverage.",
+      "applicability": "Capability-use claims.",
+      "limitations": "Concept influence and source inspection are not runtime invocation; missing evidence remains UNKNOWN.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K03"
+        },
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K04"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L05"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L06"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L07"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w04",
+      "semantic_key": "sensitive_data_flow",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "forms",
+        "production_hardening"
+      ],
+      "advice": "Identify relevant input, transport, log, storage, retention and recipient boundaries before accepting data-flow claims.",
+      "applicability": "Forms and integrations that process data.",
+      "limitations": "Application demo non-persistence does not prove hosting/provider-wide non-retention.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K05"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w05",
+      "semantic_key": "truthful_public_claims",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "content_truthfulness",
+        "visual_qa"
+      ],
+      "advice": "Bind public claims to evidence or explicit fictional/demo labeling, including imagery and authorship.",
+      "applicability": "Public portfolio content and reference imagery.",
+      "limitations": "Visual polish or a photograph cannot prove clients, ownership, awards, coverage or delivered effects.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K06"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L01"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L02"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N01"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w06",
+      "semantic_key": "scoped_acceptance_matrix",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "testing",
+        "acceptance_freeze"
+      ],
+      "advice": "Record acceptance criteria, relevant contexts and observed outcomes instead of inferring readiness from a build.",
+      "applicability": "Delivered artifacts with agreed criteria.",
+      "limitations": "Select task-relevant widths and journeys; no universal matrix or certification.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K07"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w07",
+      "semantic_key": "independent_deployment_facts",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "deployment"
+      ],
+      "advice": "Separate local source, remote source, deployment source, configured origin and observed live state.",
+      "applicability": "Delivery stages that actually exist.",
+      "limitations": "Equal hashes may be valid, but each fact needs evidence; documentation and application commits have distinct roles.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K08"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L17"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w08",
+      "semantic_key": "preserve_unknown_evidence",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "testing",
+        "production_hardening"
+      ],
+      "advice": "Retain UNKNOWN and UNVERIFIED grades and their impact; preserve missing original reports rather than reconstructing them as executed evidence.",
+      "applicability": "Historical and current acceptance claims.",
+      "limitations": "Owner disposition, usefulness and a generated report cannot upgrade a missing security fact.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K09"
+        },
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K22"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w09",
+      "semantic_key": "provider_activation_and_effects",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "integrations",
+        "forms",
+        "production_hardening"
+      ],
+      "advice": "Treat provider selection/configuration, activation and observed external effects as separate claims with separate authority and evidence.",
+      "applicability": "Real provider activation and asynchronous delivery.",
+      "limitations": "A UI confirmation, credential presence or mock PASS does not prove a CRM write, email, PDF, analytics or persistence.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K11"
+        },
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K14"
+        },
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K15"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L13"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w10",
+      "semantic_key": "explicit_demo_mode",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "integrations",
+        "content_truthfulness"
+      ],
+      "advice": "Declare demo/live mode, actual effects, deferred effects and invalid-mode disposition.",
+      "applicability": "Provider-backed demonstrations.",
+      "limitations": "Fallback-to-demo and specific duplicate status handling are project choices, not production defaults.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K12"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w11",
+      "semantic_key": "build_release_live_separation",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "deployment",
+        "testing"
+      ],
+      "advice": "Keep build success, publication success and live behavior verification independently attributed.",
+      "applicability": "Build and release reporting.",
+      "limitations": "A build cannot supply a performance score, external effect or public-origin identity.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K13"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L15"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w12",
+      "semantic_key": "server_input_contract",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "forms",
+        "production_hardening"
+      ],
+      "advice": "Enforce input contracts at the trusted server boundary even when the client validates.",
+      "applicability": "Externally influenced API/form input.",
+      "limitations": "A particular framework, schema library, body limit or same-origin mechanism is not a universal authentication rule.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K16"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L12"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w13",
+      "semantic_key": "behavioral_accessibility",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "accessibility",
+        "interaction"
+      ],
+      "advice": "Verify relevant keyboard, focus, mobile menu, errors and destination behavior, rather than markup or pointer appearance alone.",
+      "applicability": "Changed interactive paths.",
+      "limitations": "Manual/local checks do not establish formal WCAG, screen-reader or physical-device conformance.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K17"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L11"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N04"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w14",
+      "semantic_key": "meaningful_api_boundaries",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "forms",
+        "testing",
+        "production_hardening"
+      ],
+      "advice": "Test meaningful parsing, type, resource, origin/auth, sanitized error and effect cases selected from the actual interface and threat model.",
+      "applicability": "Machine-testable API boundaries.",
+      "limitations": "Do not impose universal statuses, sizes, timing constants, honeypots or exhaustive certification.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K18"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w15",
+      "semantic_key": "effect_aware_recovery",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "integrations",
+        "production_hardening"
+      ],
+      "advice": "Distinguish local timeout/abort from remote execution, cancellation, persistence and cost; reconcile unresolved effects before unsafe retries.",
+      "applicability": "External effect lifecycle and duplicate handling.",
+      "limitations": "A local abort or transport response cannot settle the remote tail; no blind retry or generic 409 success.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K19"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w16",
+      "semantic_key": "measured_performance",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "performance",
+        "testing"
+      ],
+      "advice": "Bind performance recommendations and numerical claims to measured conditions and actual impact.",
+      "applicability": "Performance-sensitive acceptance or optimization.",
+      "limitations": "Northstar numeric evidence remains UNKNOWN; Apex IMP-001 remains DEFERRED; build/console results are not CWV scores.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K23"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L14"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w17",
+      "semantic_key": "search_feature_applicability",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "content_truthfulness"
+      ],
+      "advice": "Record the applicability and rationale of search/structured-data features for actual content.",
+      "applicability": "SEO, metadata, robots, sitemap and public indexing decisions.",
+      "limitations": "No universal JSON-LD, noindex or real-business schema requirement; historical missing rationale stays UNVERIFIED.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K25"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w18",
+      "semantic_key": "subject_freshness_and_freeze",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "acceptance_freeze",
+        "testing"
+      ],
+      "advice": "Bind evidence to the relevant source/configuration snapshot and revalidate affected conclusions after changes while retaining history.",
+      "applicability": "Checkpoints and acceptance.",
+      "limitations": "No tag-every-task requirement; frozen scope must not be silently reopened.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K26"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w19",
+      "semantic_key": "diagnostic_concerns",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "testing",
+        "visual_qa"
+      ],
+      "advice": "Separate observation, reproduction, cause, disposition, remediation and validation when triage claims could collapse them.",
+      "applicability": "Diagnostic review and repair claims.",
+      "limitations": "NOT REPRODUCED is not false-positive proof or a fixed state; accepted D02 is a bounded documentary refinement, not a lifecycle engine.",
+      "provenance": [
+        {
+          "source_id": "apex_lessons",
+          "locator": "L04"
+        },
+        {
+          "source_id": "refinement_acceptance",
+          "locator": "D02"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w20",
+      "semantic_key": "early_boundary_assessment",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "forms",
+        "testing"
+      ],
+      "advice": "Assess relevant boundary policy, risks and evidence needs when an input boundary is first introduced or materially changed.",
+      "applicability": "Meaningfully effectful externally influenced input.",
+      "limitations": "Accepted D01 requires proportionate evidence, not every-parameter tests or Apex-specific constants; it grants no execution authority.",
+      "provenance": [
+        {
+          "source_id": "apex_lessons",
+          "locator": "L09"
+        },
+        {
+          "source_id": "refinement_acceptance",
+          "locator": "D01"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w21",
+      "semantic_key": "justify_dependency_value",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "ux"
+      ],
+      "advice": "Compare a proposed dependency with the existing native/platform solution and its maintenance cost.",
+      "applicability": "Dependency selection.",
+      "limitations": "Native controls/CSS may suffice in one scope while a justified animation dependency may serve another.",
+      "provenance": [
+        {
+          "source_id": "apex_lessons",
+          "locator": "L08"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w22",
+      "semantic_key": "responsive_transition_contexts",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "responsive",
+        "testing"
+      ],
+      "advice": "Inspect and measure relevant intermediate layout transitions and content shrink behavior.",
+      "applicability": "Responsive shared layout changes.",
+      "limitations": "Exact historical viewport widths are fixtures; the original Meranti overflow culprit is not recoverable.",
+      "provenance": [
+        {
+          "source_id": "apex_lessons",
+          "locator": "L10"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M07"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w23",
+      "semantic_key": "bound_warning_disposition",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "testing",
+        "performance"
+      ],
+      "advice": "Keep diagnostic kind, severity, impact, build/context and unresolved detail distinct.",
+      "applicability": "Build and browser warning handling.",
+      "limitations": "Ready or a clean later console does not prove historical warnings harmless or a full performance/network audit.",
+      "provenance": [
+        {
+          "source_id": "northstar_lessons",
+          "locator": "K24"
+        },
+        {
+          "source_id": "apex_lessons",
+          "locator": "L18"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N08"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w24",
+      "semantic_key": "coverage_and_applicability",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "testing",
+        "accessibility"
+      ],
+      "advice": "Scope claims to checks actually performed and distinguish REQUIRED, OPTIONAL, NOT_APPLICABLE and DEFERRED.",
+      "applicability": "Acceptance and tool coverage.",
+      "limitations": "Missing tools/authority do not make mandatory properties non-applicable; partial execution cannot cover a whole tool family.",
+      "provenance": [
+        {
+          "source_id": "apex_lessons",
+          "locator": "L19"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w25",
+      "semantic_key": "unresolved_effect_authority",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "integrations",
+        "acceptance_freeze"
+      ],
+      "advice": "Preserve unresolved diagnostic states and obtain separate authority before real contact/provider/payment/deployment effects.",
+      "applicability": "Transitions from demo/advisory work to effects.",
+      "limitations": "Ownership approval cannot create a missing factual qualification or excuse a mandatory unknown.",
+      "provenance": [
+        {
+          "source_id": "apex_lessons",
+          "locator": "L20"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w26",
+      "semantic_key": "impact_beyond_imports",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "interaction"
+      ],
+      "advice": "Record dependencies in event scopes, DOM/layout contracts and consumers beyond imports.",
+      "applicability": "Shared behavior changes.",
+      "limitations": "Static import inspection alone does not prove complete impact coverage.",
+      "provenance": [
+        {
+          "source_id": "roadmap",
+          "locator": "R01"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w27",
+      "semantic_key": "shared_state_ownership",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "interaction",
+        "testing"
+      ],
+      "advice": "Declare shared interaction ownership/state assumptions; coordinate temporary ownership when programmatic behavior competes with observation.",
+      "applicability": "Shared controls and scroll tracking.",
+      "limitations": "Meranti scroll locking is an applicable example, not a universal new runtime state machine.",
+      "provenance": [
+        {
+          "source_id": "roadmap",
+          "locator": "R02"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M03"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w28",
+      "semantic_key": "consumer_aware_regression",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "testing",
+        "interaction"
+      ],
+      "advice": "Run relevant consumer regression after shared behavior changes.",
+      "applicability": "Changed shared controls/contracts.",
+      "limitations": "Endpoint-only checks and one component result do not cover all dependent consumers.",
+      "provenance": [
+        {
+          "source_id": "roadmap",
+          "locator": "R03"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w29",
+      "semantic_key": "transition_acceptance",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "responsive",
+        "interaction",
+        "testing"
+      ],
+      "advice": "Include meaningful transition states and interruptions in acceptance, not only final endpoints.",
+      "applicability": "Layout, navigation and motion transitions.",
+      "limitations": "Select transitions from actual risks; no blanket animation requirement.",
+      "provenance": [
+        {
+          "source_id": "roadmap",
+          "locator": "R04"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w30",
+      "semantic_key": "recommend_implement_validate_approve",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "visual_qa",
+        "acceptance_freeze"
+      ],
+      "advice": "Keep recommendation, implementation, validation and visual approval as distinct claims.",
+      "applicability": "Artifact review and delivery.",
+      "limitations": "Agent readiness is not owner visual acceptance, including Noma Stage 1B.",
+      "provenance": [
+        {
+          "source_id": "roadmap",
+          "locator": "R05"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N05"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w31",
+      "semantic_key": "acceptance_stop_conditions",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "acceptance_freeze",
+        "planning"
+      ],
+      "advice": "Stop when declared acceptance is met; record limitations and explicit reopening conditions rather than continue speculative polishing.",
+      "applicability": "Accepted bounded delivery.",
+      "limitations": "A changed or failed visual criterion may justify scoped rework; historical approval does not transfer automatically.",
+      "provenance": [
+        {
+          "source_id": "roadmap",
+          "locator": "R06"
+        }
+      ],
+      "origin": "EXISTING"
+    },
+    {
+      "id": "w32",
+      "semantic_key": "active_section_contract",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "interaction",
+        "ux"
+      ],
+      "advice": "Define the current-section criterion and sticky-header relationship before implementing active navigation.",
+      "applicability": "Single-page navigation where current location matters.",
+      "limitations": "Use a layout reference line when product semantics require it; this is not a universal IntersectionObserver ban.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M01"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w33",
+      "semantic_key": "conditional_anchor_motion",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "interaction",
+        "accessibility"
+      ],
+      "advice": "Keep ordinary scrolling native; use a small cancellable controller for explicit in-page clicks only when the product requires a measurable motion contract.",
+      "applicability": "Same-document navigation.",
+      "limitations": "Specify interruption, reduced motion, history and active-state policy; duration/easing remain project parameters.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M02"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N02"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w34",
+      "semantic_key": "semantic_anchor_inventory",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "interaction",
+        "testing"
+      ],
+      "advice": "Classify all anchor consumers by same-document URL semantics and preserve browser behavior for excluded links.",
+      "applicability": "Shared in-page navigation.",
+      "limitations": "Skip links, external links, downloads and new tabs need explicit exclusions; delegation is not mandatory for every site.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M04"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w35",
+      "semantic_key": "live_layout_destinations",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "responsive",
+        "interaction"
+      ],
+      "advice": "Compute sticky navigation targets from live layout and CSS-owned offsets, and recheck after transition completion.",
+      "applicability": "Changing header/menu/layout geometry.",
+      "limitations": "Avoid unexplained fixed offsets; exact old constants and final positions are not universal defaults.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M05"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w36",
+      "semantic_key": "native_disclosure_enhancement",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "interaction",
+        "accessibility"
+      ],
+      "advice": "Preserve native disclosure semantics and add supported motion as progressive enhancement with a functional fallback.",
+      "applicability": "Details/menu disclosures needing optional polish.",
+      "limitations": "Reduced motion and unsupported CSS must retain usable controls; exact animation tokens are contextual.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M06"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w37",
+      "semantic_key": "critical_image_and_container_contract",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "performance",
+        "responsive"
+      ],
+      "advice": "Separate critical/above-fold imagery from supporting imagery and verify positioned, reserved containers across layout transitions.",
+      "applicability": "Responsive image delivery.",
+      "limitations": "Loading attributes are framework-version/context specific; warning correction does not prove numerical performance.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M08"
+        },
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N07"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w38",
+      "semantic_key": "disclosure_vs_handoff_copy",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "content_truthfulness",
+        "ux"
+      ],
+      "advice": "Keep truthful portfolio disclosure public while placing implementation instructions and client-replacement tasks in handoff documentation.",
+      "applicability": "Fictional customer-facing demos.",
+      "limitations": "No universal single disclosure placement; do not remove truthfulness merely to polish copy.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M09"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w39",
+      "semantic_key": "document_client_ownership",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "planning",
+        "testing"
+      ],
+      "advice": "Update architecture/ownership documentation when a shared client boundary gains responsibilities.",
+      "applicability": "Interaction refactors and freeze review.",
+      "limitations": "Historical README drift remains recorded; knowledge ingestion does not authorize editing a frozen application.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "M10"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w40",
+      "semantic_key": "static_motion_lifecycle",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "interaction",
+        "responsive",
+        "accessibility"
+      ],
+      "advice": "Keep meaningful static/server-rendered content and scope media-dependent animation lifecycle and cleanup.",
+      "applicability": "Optional motion enhancement with viewport/reduced-motion branches.",
+      "limitations": "A source branch is not runtime preference verification; Noma reduced-motion execution remains UNVERIFIED.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N03"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    },
+    {
+      "id": "w41",
+      "semantic_key": "static_hierarchy_before_motion",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "categories": [
+        "visual_qa",
+        "ux"
+      ],
+      "advice": "Evaluate useful static hierarchy against the actual visual criterion; simplify interaction-dependent presentation when that criterion fails.",
+      "applicability": "Visual review and reference-guided iterations.",
+      "limitations": "Noma Stage 1B remains pending owner approval; its photographic/style preferences are not universal rules.",
+      "provenance": [
+        {
+          "source_id": "captured_source_evidence",
+          "locator": "N06"
+        }
+      ],
+      "origin": "INGESTED_NOW"
+    }
+  ],
+  "context_versions": [
+    {
+      "id": "noma-local-base",
+      "state": "SUPERSEDED",
+      "superseded_by": "noma-stage1b",
+      "summary": "Historical committed local release; no animation framework. Preserved as history, not the current dirty configuration."
+    },
+    {
+      "id": "noma-stage1b",
+      "state": "CURRENT",
+      "superseded_by": null,
+      "summary": "Later implemented GSAP visual correction; owner visual approval PENDING; no deployment; reduced-motion execution UNVERIFIED."
+    }
+  ],
+  "audit_counts": {
+    "source_items": 70,
+    "existing_source_items": 52,
+    "new_unique_lessons": 10,
+    "canonical_current_lessons": 41,
+    "merged_duplicate_or_partial_items": 27,
+    "not_reusable_items": 2,
+    "superseded_context_versions": 1
+  }
+}
