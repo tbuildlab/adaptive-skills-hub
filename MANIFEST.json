@@ -1583,6 +1583,10 @@
     "bytes": 12473,
     "sha256": "62069f181610840407527ccaab08792050440791eec5b9abecac4000c18513cb"
   },
+  "docs/nexus-production-d03-custody-authorization-package-v1.md": {
+    "bytes": 12520,
+    "sha256": "820f9d7d2e1f11c99dd25d45d9cd858b454a22aa2d3f2cb47fe8f1611191ba1c"
+  },
   "docs/nexus-production-d03-managed-custody-survey-v1.md": {
     "bytes": 11598,
     "sha256": "53c769545c4c0582feeab93a54606ace20d4d1bbf8bc8a7fa71695ccf60a56d7"
