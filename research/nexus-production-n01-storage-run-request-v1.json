@@ -1,8 +1,8 @@
 {
   "schema_version": "nexus.g3.n01.storage-run-request.v1",
   "request_id": "n01-storage-append-1",
-  "stage": "append",
   "reserved_ddb_attempts": 128,
+  "stage": "append",
   "aggregate_ddb_ceiling": 512,
   "real_admission": "NO"
 }

@@ -19,6 +19,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Install existing pinned qualification SDK
-        run: python3 -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r research/nexus-production-d03-sdk-requirements-v1.txt
+        run: |
+          python3 -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r research/nexus-production-d03-sdk-requirements-v1.txt
       - name: One primary custody storage request, no production authority
         run: python3 -m scripts.g3_n01_storage_live

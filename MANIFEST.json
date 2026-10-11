@@ -8,8 +8,8 @@
     "sha256": "a913480ba52578b4011b44ac09b8e3d83307df5816a540fbc03f0b7af802ab5f"
   },
   ".github/workflows/nexus-n01-storage-qualification.yml": {
-    "bytes": 894,
-    "sha256": "63f03bb869e9ab98000dbf46dbe2dc237ab1c05af3d3b7f3e423f4ae1c89d79a"
+    "bytes": 906,
+    "sha256": "d55a2aaa8e474667967109469163854cde4befa6523297396e5546570134fa6c"
   },
   ".gitignore": {
     "bytes": 568,
@@ -1676,8 +1676,8 @@
     "sha256": "7117dc43cb9ca55bde39e507b103e12a06f592a86979f81b748ac7b14a1dcb03"
   },
   "docs/nexus-production-n01-storage-qualification-v1.md": {
-    "bytes": 5433,
-    "sha256": "3bea8b704abefe75fdbc89ae697e9e1247ed38b742823f4140adaea7ded6c552"
+    "bytes": 5984,
+    "sha256": "a30956eda566c6e77b8f009df8cc50868497086fb04ed49f1593a57889e332f7"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -1913,7 +1913,7 @@
   },
   "research/nexus-production-n01-storage-run-request-v1.json": {
     "bytes": 213,
-    "sha256": "4758899ed943938c2638298551ece9353118cebc1243d12a17696c4c50e051c7"
+    "sha256": "0a234b818e77226582d1b882f577c1212ec2d54124a1dba49251909d01e683b2"
   },
   "research/nexus-website-experience-pack-v1.json": {
     "bytes": 37685,

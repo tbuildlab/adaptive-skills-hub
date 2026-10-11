@@ -77,6 +77,14 @@ Configuration plus enrollment S3 count is 33; DDB data-plane count is still zero
 before the first native GitHub storage run. No production source was registered.
 
 Live primary AWS storage status is PENDING until exact current run responses are read.
+Initial GitHub run 38146922841 at source
+`c9bfebd2312d07b69901bf20d4065931eba5c6d4` failed workflow YAML parsing before
+any job existed; protected jobs read returned an empty list. The pip option's
+colon was corrected by a block scalar and checked with the installed YAML parser.
+There was no federation, data-plane call, partial write or unknown AWS outcome.
+The same semantic request is retriggered only after that proven pre-execution
+failure; its single 128-attempt reservation remains unchanged. No workflow rerun
+of an executed request is used.
 Qualified production source ingress, protected runtime revision/current writer,
 independent enrollment/recovery, real Owner context/CONFIRM, nonce/revoke/consume
 production provenance, N02, mediation and E2E remain separate required gates.
