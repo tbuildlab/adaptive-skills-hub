@@ -76,7 +76,7 @@ preceded the first actual writes. No ambiguous mutation was resubmitted.
 Configuration plus enrollment S3 count is 33; DDB data-plane count is still zero
 before the first native GitHub storage run. No production source was registered.
 
-Live primary AWS storage status is PENDING until exact current run responses are read.
+The primary AWS storage result is recorded below; it is not production authority.
 Initial GitHub run 38146922841 at source
 `c9bfebd2312d07b69901bf20d4065931eba5c6d4` failed workflow YAML parsing before
 any job existed; protected jobs read returned an empty list. The pip option's
@@ -110,7 +110,7 @@ Parent conservative DDB write payload bound 30988 bytes; new S3 written payload
 DDB actual is 52; reserve remains 128 including all crash/restart contingencies.
 Invoice is UNKNOWN; no resource/permission/cost envelope was expanded.
 
-The remaining explicit N01 recovery integration uses two separate requests:
+The explicit N01 recovery integration used two separate requests:
 PREPARED (reserve 64 DDB attempts), then independent R registration/approval and
 RECOVER append, then FINALIZED (reserve 32). Current protected custody is required;
 old generation/incarnation/reference denies. Every root stays CLOSED, all
@@ -118,6 +118,37 @@ registration purposes stay TEST_ONLY and no grant/Owner authority is restored.
 Total reserved DDB after both phases is 224 of 512; original D03 recovery is not
 repeated. The approvals remain outside A write permission. This qualifies the
 N01 integration seam only, not production source ingress or consent.
+
+Actual PREPARED run
+[38148000136](https://github.com/TDY0225/adaptive-skills-hub/actions/runs/38148000136)
+at `05669ce4260e8a4df8a1cdd6785f1ede7a624707`, job 114495304426, succeeded:
+17 DDB and 32 S3 attempts. It stopped at a durable reservation without appending
+RECOVER or claiming authority. R root independently verified all thirteen exact
+retained predecessor/candidate objects and complete version inventories, then
+conditionally wrote generation-2 registration, exact recovery authorization and
+sequence-2 checkpoint. Three new versions / 2283 payload bytes / 41 S3 attempts;
+each exact version/body and Compliance retention was read back. No IAM, table,
+retention or resource setting was changed.
+
+Actual FINALIZED run
+[38148321004](https://github.com/TDY0225/adaptive-skills-hub/actions/runs/38148321004)
+at `94d70757724036c4f4918031dc8854ef4ae038d0`, job 114496259803, succeeded:
+11 DDB and 60 S3 attempts. Strong primary read confirmed FINALIZED and exact
+independent sequence-2 checkpoint body SHA256
+`52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41`.
+Old generation-1 registration could not read the current history; the old
+checkpoint could not satisfy primary recovery. A fresh transport still returned
+NONE; epoch 2 / `n01-storage-incarnation-2` / CLOSED were verified. No Owner,
+bearer or grant was restored and automatic redispatch remained DENY. The native
+events and separate R observation are retained in
+[recovery evidence](../research/nexus-production-n01-recovery-observed-evidence-v1.json).
+
+Aggregate N01 actual data-plane count is now 80 DDB / 283 S3 (including the
+earlier configuration/enrollment scope). DDB reserved remains 224 of 512.
+The separately bounded Vercel read-only runtime phase reserves another 16,
+bringing reserved aggregate to 240 / 512. Existing model remains below USD 1.00;
+actual invoice remains UNKNOWN. Source/Owner/revoke/consume provenance is not
+qualified by this storage-only recovery result.
 Qualified production source ingress, protected runtime revision/current writer,
 independent enrollment/recovery, real Owner context/CONFIRM, nonce/revoke/consume
 production provenance, N02, mediation and E2E remain separate required gates.
@@ -125,7 +156,8 @@ An SDK configuration, TEST_ONLY input or storage PASS cannot satisfy them.
 
 ```text
 D03_STATUS = CLOSED_BOUNDED_DIAGNOSTIC_PROFILE_UNCHANGED
-N01_STORAGE_LIVE_STATUS = PENDING_REAL_RUN
+N01_STORAGE_LIVE_STATUS = QUALIFIED_STORAGE_ONLY_NOT_PRODUCTION_AUTHORITY
+N01_RECOVERY_INTEGRATION = QUALIFIED_TEST_ONLY_NONE_NEW_EPOCH_INCARNATION
 N01_LIVE_CLOSURE = INCOMPLETE
 PRODUCTION_AUTHORITY = NONE
 REAL_ADMISSION_ENABLED = NO

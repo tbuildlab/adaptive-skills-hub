@@ -373,6 +373,532 @@
       }
     ]
   },
+  "finalize": {
+    "run_id": 38148321004,
+    "job_id": 114496259803,
+    "source_head": "94d70757724036c4f4918031dc8854ef4ae038d0",
+    "events": [
+      {
+        "authority": "NONE",
+        "native_github_oidc_a_to_r": "VERIFIED"
+      },
+      {
+        "attempt": 1,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "9E2Z0BHYWATSA0PE",
+        "service": "S3"
+      },
+      {
+        "attempt": 2,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "9E2HAKHBATTEQEPT",
+        "service": "S3"
+      },
+      {
+        "attempt": 3,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "9E2MM91N9EMDMQ28",
+        "service": "S3"
+      },
+      {
+        "attempt": 4,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "9E2YN4P8Z47ZTX66",
+        "service": "S3"
+      },
+      {
+        "attempt": 5,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "9E2GMTQKRYGDMEJC",
+        "service": "S3"
+      },
+      {
+        "attempt": 6,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "0CHYGB155RJNFT79",
+        "service": "S3"
+      },
+      {
+        "attempt": 7,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "0CHSTX1NB657ABG0",
+        "service": "S3"
+      },
+      {
+        "attempt": 8,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "0CHVGB2HNZ9CS569",
+        "service": "S3"
+      },
+      {
+        "attempt": 9,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "0CHX2VAW5QFCYRQN",
+        "service": "S3"
+      },
+      {
+        "attempt": 10,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "0CHYTYN71CAM9QNF",
+        "service": "S3"
+      },
+      {
+        "attempt": 11,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "C0WSXAXR3HE5W2QG",
+        "service": "S3"
+      },
+      {
+        "attempt": 12,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "C0WS9PW2VKB3CAAR",
+        "service": "S3"
+      },
+      {
+        "attempt": 13,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "C0WWKF6EA0C5PBX8",
+        "service": "S3"
+      },
+      {
+        "attempt": 14,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "C0WXDZYTWH8WKHM1",
+        "service": "S3"
+      },
+      {
+        "attempt": 15,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "P9HJ93R5DC92ZW9T",
+        "service": "S3"
+      },
+      {
+        "attempt": 16,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "P9HG9VVF9ASDCXW9",
+        "service": "S3"
+      },
+      {
+        "attempt": 17,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "P9HYXAXVBJXWN0K0",
+        "service": "S3"
+      },
+      {
+        "attempt": 18,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "P9HT0RKMF5CCZQJX",
+        "service": "S3"
+      },
+      {
+        "attempt": 19,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "P9HSJ79E2EZA36DH",
+        "service": "S3"
+      },
+      {
+        "attempt": 20,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "37A5WYR12FDNTQ0C",
+        "service": "S3"
+      },
+      {
+        "attempt": 21,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "37A75T8EM0JM82T3",
+        "service": "S3"
+      },
+      {
+        "attempt": 22,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "37ABXWC1FSNCA56C",
+        "service": "S3"
+      },
+      {
+        "attempt": 23,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "37A9Q1382HZPDYF2",
+        "service": "S3"
+      },
+      {
+        "attempt": 24,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "FPZWH8YNMMHME8G8",
+        "service": "S3"
+      },
+      {
+        "attempt": 25,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "FPZT7FBNEVMESMC0",
+        "service": "S3"
+      },
+      {
+        "attempt": 26,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "FPZX6QVWW982BSXY",
+        "service": "S3"
+      },
+      {
+        "attempt": 27,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "FPZRN383Z5AE6ZAP",
+        "service": "S3"
+      },
+      {
+        "attempt": 28,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "FPZR0MS5GN8VCXTW",
+        "service": "S3"
+      },
+      {
+        "attempt": 29,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "QCPHZGPHQ0ZGH316",
+        "service": "S3"
+      },
+      {
+        "attempt": 30,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "QCPN3HMP2FVAMJK9",
+        "service": "S3"
+      },
+      {
+        "attempt": 31,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "QCPSWAAHBJNWX18M",
+        "service": "S3"
+      },
+      {
+        "attempt": 32,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "QCPJS7HZT04X9B6A",
+        "service": "S3"
+      },
+      {
+        "attempt": 33,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "3TA35HMTGF934ZVR",
+        "service": "S3"
+      },
+      {
+        "attempt": 34,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "3TAE41B2JP6J1RK1",
+        "service": "S3"
+      },
+      {
+        "attempt": 35,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "3TABD4D9KTJ1H6J4",
+        "service": "S3"
+      },
+      {
+        "attempt": 36,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "3TA3EXBC8SHMKJQ4",
+        "service": "S3"
+      },
+      {
+        "attempt": 37,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "3TA6T2HTA0NR62VF",
+        "service": "S3"
+      },
+      {
+        "attempt": 38,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "BHFA1VJ6X4MVKZFX",
+        "service": "S3"
+      },
+      {
+        "attempt": 1,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "SVSF0D5I4O4Q5B3IOEMN8661VNVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 2,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "7I7TV9MS1JCMGMNSPVN9K2BKCRVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 3,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "K2BQET3ASA7HTLU7T405PRG0R7VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 4,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "05ML952JFPKRJ62P62JILH6H33VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 5,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "LQ6N9TQFQK15VFDBIL851NRIJFVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 6,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "1MLUE4IMUK94A0CPSIIUGDI243VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 7,
+        "http_status": 200,
+        "operation": "transact_write_items",
+        "request_id": "DKGLBN23CDFSTS578JE823A8JRVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 8,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "6OPIDKKQ67IOBQAOUA8OA9UOV7VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 39,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "KG0PE8TD1PX2DTAW",
+        "service": "S3"
+      },
+      {
+        "attempt": 40,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "KG0YZYE6682ZDS42",
+        "service": "S3"
+      },
+      {
+        "attempt": 41,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "KG0XEJ0JCQ79YR49",
+        "service": "S3"
+      },
+      {
+        "attempt": 42,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "G18QZDXZB1H9VGEG",
+        "service": "S3"
+      },
+      {
+        "attempt": 43,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "G18RGDX5FF2TD7CC",
+        "service": "S3"
+      },
+      {
+        "attempt": 44,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "G18J1QKZGR6WZM6Z",
+        "service": "S3"
+      },
+      {
+        "attempt": 45,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "G18YSNCXYBECW8W6",
+        "service": "S3"
+      },
+      {
+        "attempt": 46,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "G18YMFSQ6GS56FDN",
+        "service": "S3"
+      },
+      {
+        "attempt": 47,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "7SSFE7Y1SDZGKEHJ",
+        "service": "S3"
+      },
+      {
+        "attempt": 48,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "7SS4942WQP16ZG8Y",
+        "service": "S3"
+      },
+      {
+        "attempt": 49,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "7SS0CDA3MD0TZ63R",
+        "service": "S3"
+      },
+      {
+        "attempt": 50,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "7SS5GWVGAJHR6YFS",
+        "service": "S3"
+      },
+      {
+        "attempt": 51,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "WECXR8H0ET32YZ1R",
+        "service": "S3"
+      },
+      {
+        "attempt": 52,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "WECWTMDTYJEH0K4R",
+        "service": "S3"
+      },
+      {
+        "attempt": 53,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "WECM9V9RWC1GWGK1",
+        "service": "S3"
+      },
+      {
+        "attempt": 54,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "WECRGFQ9YBC2Z8ZV",
+        "service": "S3"
+      },
+      {
+        "attempt": 55,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "WECNBAWPPJDSXDZ8",
+        "service": "S3"
+      },
+      {
+        "attempt": 56,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "2Y3381EVX40TPKJR",
+        "service": "S3"
+      },
+      {
+        "attempt": 57,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "2Y35VTDF69J5KAFQ",
+        "service": "S3"
+      },
+      {
+        "attempt": 58,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "2Y35AV5W5ZF0E70B",
+        "service": "S3"
+      },
+      {
+        "attempt": 59,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "2Y3ANCPHHGV2Y8GB",
+        "service": "S3"
+      },
+      {
+        "attempt": 60,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "JKCJAVM09JTQQKHE",
+        "service": "S3"
+      },
+      {
+        "attempt": 9,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "E204DCC7B8H2BJUS3LKO0IRKQFVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 10,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "UFC5G86OP3IQU2B0243DMIKR1VVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 11,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "C3P6LMF6AV6MF1JD94U7SEKQ9FVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "authority": "NONE",
+        "automatic_redispatch": "DENY",
+        "ddb_attempts": 11,
+        "github_run_id": "38148321004",
+        "head": {
+          "body_sha256": "52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41",
+          "id": "nexus.g3.production.recovery-checkpoint.v2:2324a4475c42debe0a21e2b94cd42f1c3d68e9dc1af0397223dfdde4a4076281"
+        },
+        "n01_recovery_status": "REAL_RECOVERY_FINALIZED_NEW_EPOCH_INCARNATION_CLOSED",
+        "owner_or_grant_restored": false,
+        "real_admission": "NO",
+        "request_id": "n01-storage-recovery-finalize-1",
+        "reserved_ddb_attempts": 32,
+        "s3_attempts": 60,
+        "source_head": "94d70757724036c4f4918031dc8854ef4ae038d0",
+        "stage": "finalize"
+      }
+    ]
+  },
   "independent_r": {
     "evidence_class": "OBSERVED_NATIVE_R_ROOT_OWN_OPERATION_RECEIPT_NOT_AUTHORITY",
     "account": "862902859484",
