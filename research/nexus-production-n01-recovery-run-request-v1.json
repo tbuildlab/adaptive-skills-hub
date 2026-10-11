@@ -1,7 +1,7 @@
 {
   "schema_version": "nexus.g3.n01.recovery-run-request.v1",
-  "request_id": "n01-storage-recovery-prepare-1",
-  "stage": "prepare",
-  "reserved_ddb_attempts": 64,
+  "request_id": "n01-storage-recovery-finalize-1",
+  "stage": "finalize",
+  "reserved_ddb_attempts": 32,
   "real_admission": "NO"
 }

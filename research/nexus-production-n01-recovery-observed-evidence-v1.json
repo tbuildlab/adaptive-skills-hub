@@ -1,0 +1,414 @@
+{
+  "schema_version": "nexus.g3.n01.storage-recovery-observation.v1",
+  "evidence_class": "PROTECTED_GITHUB_RUN_LOG_OBSERVATION_NOT_AUTHORITY",
+  "prepare": {
+    "run_id": 38148000136,
+    "job_id": 114495304426,
+    "source_head": "05669ce4260e8a4df8a1cdd6785f1ede7a624707",
+    "events": [
+      {
+        "authority": "NONE",
+        "native_github_oidc_a_to_r": "VERIFIED"
+      },
+      {
+        "attempt": 1,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "Z8CVP7152Z4B9PM6",
+        "service": "S3"
+      },
+      {
+        "attempt": 2,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "Z8CQZPW5F6ZD7624",
+        "service": "S3"
+      },
+      {
+        "attempt": 3,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "Z8CGYQ0NX786Q2K9",
+        "service": "S3"
+      },
+      {
+        "attempt": 4,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "Z8CVA17PP0ZJ5AA5",
+        "service": "S3"
+      },
+      {
+        "attempt": 5,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "72CPQRRMFVC0F7AJ",
+        "service": "S3"
+      },
+      {
+        "attempt": 6,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "72CJKCAZCJG4FA7M",
+        "service": "S3"
+      },
+      {
+        "attempt": 7,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "72CRRAQ18CB9JM8Q",
+        "service": "S3"
+      },
+      {
+        "attempt": 8,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "72CX6GC2YBEFPS5Y",
+        "service": "S3"
+      },
+      {
+        "attempt": 9,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "72CZN54RB6MKSSHB",
+        "service": "S3"
+      },
+      {
+        "attempt": 10,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "4P0TXFGXFPKJTMTF",
+        "service": "S3"
+      },
+      {
+        "attempt": 11,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "4P0G2CSTF6GEPZC0",
+        "service": "S3"
+      },
+      {
+        "attempt": 12,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "4P0MMCCYDBC3QRE1",
+        "service": "S3"
+      },
+      {
+        "attempt": 13,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "4P0Y2Z6P35Y7ENMY",
+        "service": "S3"
+      },
+      {
+        "attempt": 14,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "4P0K5T60CJYN5KSY",
+        "service": "S3"
+      },
+      {
+        "attempt": 15,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "ZD9BWB1DEMMT64HW",
+        "service": "S3"
+      },
+      {
+        "attempt": 16,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "ZD914SCT80QDZJWR",
+        "service": "S3"
+      },
+      {
+        "attempt": 17,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "ZD96TY6J20K2Y5EZ",
+        "service": "S3"
+      },
+      {
+        "attempt": 18,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "ZD98425B4XKQXQ23",
+        "service": "S3"
+      },
+      {
+        "attempt": 19,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "ZD98VHBJ1DYHA1K7",
+        "service": "S3"
+      },
+      {
+        "attempt": 20,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "ZD90GD6NPR6TCT9P",
+        "service": "S3"
+      },
+      {
+        "attempt": 21,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "C8RQKW1ZRG5RTD42",
+        "service": "S3"
+      },
+      {
+        "attempt": 22,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "C8RWGVNGAQGCWJCN",
+        "service": "S3"
+      },
+      {
+        "attempt": 23,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "C8RJ0HWPJGVBFV36",
+        "service": "S3"
+      },
+      {
+        "attempt": 24,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "C8RQCKPE2ZVSM1S5",
+        "service": "S3"
+      },
+      {
+        "attempt": 25,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "C8RZ9TRJEPTCJCP6",
+        "service": "S3"
+      },
+      {
+        "attempt": 26,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "XC68NDQ227JD3AF2",
+        "service": "S3"
+      },
+      {
+        "attempt": 1,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "CPB9OHRKL04VOECG1NDH67MR5VVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 2,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "1H7LDUBDRPU8VEDQDDE0RTN433VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 3,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "BUTJN4G79HT4AFEM8F0CCAC6BRVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 4,
+        "http_status": 200,
+        "operation": "put_item",
+        "request_id": "NK1CJ16CRR76JU6527EHK88A9BVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 5,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "EMKN96HHCLFE2CGSRK6D4Q62CVVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 6,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "KDVLAODQUJLLT16FVBILA4I203VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 7,
+        "http_status": 200,
+        "operation": "put_item",
+        "request_id": "E2FF51OOI2746LPS15EPM4K3TRVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 8,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "SBG0D2P0VCN11EM4H77EPCED6RVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 9,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "VGMIFCUL1310OLU417FF49UGEBVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 10,
+        "http_status": 200,
+        "operation": "put_item",
+        "request_id": "2CIKO30N9BNQDP2HK258IMMI8BVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 11,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "OH69GF6G1675DCMH6B8Q175G8NVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 12,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "0BJVKVP6NQELFAG0DOQP1OGA73VV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 13,
+        "http_status": 200,
+        "operation": "put_item",
+        "request_id": "N4RK39D0ROCISHGAUO18Q5FKONVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 14,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "IRC26CU0I18ABC02C4Q7VNR50JVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 15,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "7CVAH5H8RMIVB00171GLQA2DBVVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 16,
+        "http_status": 200,
+        "operation": "transact_write_items",
+        "request_id": "MSVE90BU680TJRFSN90AM15J2NVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 17,
+        "http_status": 200,
+        "operation": "get_item",
+        "request_id": "PA4N1PLH545U662FPP6VP8VRLBVV4KQNSO5AEMVJF66Q9ASUAAJG",
+        "service": "DDB"
+      },
+      {
+        "attempt": 27,
+        "http_status": 200,
+        "operation": "list_object_versions",
+        "request_id": "P19F2PXQN9DK6JXX",
+        "service": "S3"
+      },
+      {
+        "attempt": 28,
+        "http_status": 200,
+        "operation": "put_object",
+        "request_id": "D84VXJSC210DF1J3",
+        "service": "S3"
+      },
+      {
+        "attempt": 29,
+        "http_status": 200,
+        "operation": "put_object",
+        "request_id": "D84HE8TWTG7SNZV3",
+        "service": "S3"
+      },
+      {
+        "attempt": 30,
+        "http_status": 200,
+        "operation": "get_object",
+        "request_id": "D84YDD0VNN1RG6GV",
+        "service": "S3"
+      },
+      {
+        "attempt": 31,
+        "http_status": 200,
+        "operation": "get_object_retention",
+        "request_id": "RHS639DVZKCDAP8R",
+        "service": "S3"
+      },
+      {
+        "attempt": 32,
+        "http_status": 200,
+        "operation": "put_object",
+        "request_id": "RHSBPH868Z96XRJ6",
+        "service": "S3"
+      },
+      {
+        "authority": "NONE",
+        "automatic_redispatch": "DENY",
+        "ddb_attempts": 17,
+        "github_run_id": "38148000136",
+        "head": {
+          "body_sha256": "52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41",
+          "id": "nexus.g3.production.recovery-checkpoint.v2:2324a4475c42debe0a21e2b94cd42f1c3d68e9dc1af0397223dfdde4a4076281"
+        },
+        "n01_recovery_status": "REAL_PREPARED_AWAITING_INDEPENDENT_R_AUTHORIZATION",
+        "owner_or_grant_restored": false,
+        "real_admission": "NO",
+        "request_id": "n01-storage-recovery-prepare-1",
+        "reserved_ddb_attempts": 64,
+        "s3_attempts": 32,
+        "source_head": "05669ce4260e8a4df8a1cdd6785f1ede7a624707",
+        "stage": "prepare"
+      }
+    ]
+  },
+  "independent_r": {
+    "evidence_class": "OBSERVED_NATIVE_R_ROOT_OWN_OPERATION_RECEIPT_NOT_AUTHORITY",
+    "account": "862902859484",
+    "stage": "INDEPENDENT_R_TEST_ONLY_RECOVER",
+    "outcome": "INDEPENDENT_R_RECOVER_REGISTERED_TEST_ONLY",
+    "authority": "NONE",
+    "purpose": "TEST_ONLY",
+    "real_admission": "NO",
+    "automatic_redispatch": "DENY",
+    "generation": 2,
+    "epoch": 2,
+    "incarnation": "n01-storage-incarnation-2",
+    "owner_or_grant_restored": false,
+    "payload_bytes": 2283,
+    "s3_attempts": 41,
+    "versions": [
+      {
+        "key": "qualification/n01/v1/approvals/storage-registration-v2/registration.json",
+        "bytes": 910,
+        "sha256": "95eb86f481e86adca195ec6f0cb646bd73afd058d238bb803bec459dd626f04f",
+        "version": "BS.OU84Pn8BgOY95JPA6xhRLboeFRuSq"
+      },
+      {
+        "key": "qualification/n01/v1/approvals/recover/00000000000000000002/authorization.json",
+        "bytes": 601,
+        "sha256": "c704505c7c342274265b0db20e4ba5708b58c2e45a88405de7a2155d287ef29e",
+        "version": "iWHjGiXwdMLoE2UnFUGc0sY.R.jb6Ubd"
+      },
+      {
+        "key": "qualification/n01/v1/normal/journal/00000000000000000002",
+        "bytes": 772,
+        "sha256": "52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41",
+        "version": "YPlEcHOrcej3wJNpQCCP2okbBdSJSWPE"
+      }
+    ]
+  },
+  "authority": "NONE",
+  "real_admission": "NO"
+}

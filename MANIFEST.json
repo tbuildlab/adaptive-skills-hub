@@ -1907,9 +1907,13 @@
     "bytes": 12472,
     "sha256": "f3aa5cf137109e53a48d337e628d8cc12b991bdcad630df57cf6a1acf532503d"
   },
+  "research/nexus-production-n01-recovery-observed-evidence-v1.json": {
+    "bytes": 11635,
+    "sha256": "c6fcd157c1810b4750e8e5d72a720789dc6911cca81ec784d571bac0b49968e8"
+  },
   "research/nexus-production-n01-recovery-run-request-v1.json": {
-    "bytes": 192,
-    "sha256": "e7780ae9a12863d479191abb2eceb0abfc166db2e9886ce0757fe7b469300597"
+    "bytes": 194,
+    "sha256": "b212a1ff27a50ccba13fbedf2e4f78f8dece3fcc3aef8f11cdc4e60ca8f09d5c"
   },
   "research/nexus-production-n01-resource-proposal-v1.json": {
     "bytes": 10544,
