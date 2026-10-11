@@ -1591,6 +1591,10 @@
     "bytes": 11724,
     "sha256": "b65d877ba6389a6c85ddb879933663f215f462b82fd6dce05ffab521f668abb8"
   },
+  "docs/nexus-production-d03-bounded-live-closure-v1.md": {
+    "bytes": 9941,
+    "sha256": "31ae3759d552217e0399623c47b454dbc533721fcadd5dce6b1925df770125e0"
+  },
   "docs/nexus-production-d03-custody-authorization-package-v1.md": {
     "bytes": 12520,
     "sha256": "820f9d7d2e1f11c99dd25d45d9cd858b454a22aa2d3f2cb47fe8f1611191ba1c"
