@@ -1948,8 +1948,8 @@
     "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
   },
   "scripts/build_g3_n01_vercel_probe.py": {
-    "bytes": 4191,
-    "sha256": "eec667b53e6f711699b2e6a99202ab21c47df225ebdc77a539a55f59503cad93"
+    "bytes": 4317,
+    "sha256": "dc4452e4b37d7023a9c986932101af30fb1b1754ed19ea3695496ff48e9ef2c6"
   },
   "scripts/build_manifest.py": {
     "bytes": 7516,

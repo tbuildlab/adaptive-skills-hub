@@ -13,7 +13,9 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 PRIOR_SHA='cafe90c51568635e83e364750b3ed52ffaac64e32b99a9d8d6a18291de75de4d'
-MODULES=('ash/__init__.py','ash/g3_checkpoint_custody.py','ash/g3_control_codec.py',
+MODULES=('ash/__init__.py','ash/capabilities.py','ash/ecosystem_models.py',
+    'ash/g1_profiles.py','ash/evaluation.py','ash/g3_proposal_codec.py',
+    'ash/g3_checkpoint_custody.py','ash/g3_control_codec.py',
     'ash/g3_control_semantics.py','ash/g3_delegated_control_codec.py','ash/g3_delegated_record_codec.py',
     'ash/g3_record_codec.py','ash/g3_grant_codec.py','ash/g3_primary_ledger.py',
     'ash/g3_transition_protocol.py','scripts/g3_d03_s3_fence.py',
