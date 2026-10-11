@@ -15,7 +15,7 @@
       "Condition": {
         "StringEquals": {
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com",
-          "token.actions.githubusercontent.com:sub": "repo:TDY0225/adaptive-skills-hub:ref:refs/heads/nexus-v2-production-qualification"
+          "token.actions.githubusercontent.com:sub": "repo:TDY0225@223441940/adaptive-skills-hub@1341770180:ref:refs/heads/nexus-v2-production-qualification"
         },
         "DateLessThan": {"aws:CurrentTime": "2026-11-10T05:36:46Z"}
       }

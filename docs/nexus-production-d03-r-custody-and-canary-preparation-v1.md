@@ -150,3 +150,18 @@ fixed authentication phase, bounded provider error code and HTTP status; no
 provider message, response body, token, credential or header is recorded.
 Reformatting the unchanged first request triggers the repaired diagnostic;
 the prior job is not rerun, and no unknown S3 write is redispatched.
+
+Run `38118972153` at `58f3def80a647ee30607ff5ad1211d3691d7d5bf`
+then established `A_WEB_IDENTITY_ASSUME_ROLE / AccessDenied / HTTP 403`.
+It performed no S3 call and did not establish an A or R session.
+Authenticated GitHub metadata confirmed repository `1341770180`, Owner
+`223441940`, creation `2026-08-21T12:08:28Z`, and default OIDC subject policy.
+[GitHub's current official AWS guidance](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws)
+requires immutable Owner/Repository IDs for repositories created after
+July 15, 2026. The prepared trust correction replaces the obsolete subject
+with `repo:TDY0225@223441940/adaptive-skills-hub@1341770180:ref:refs/heads/nexus-v2-production-qualification`.
+It retains exact equality, STS audience, issuer, branch, deadline and all
+existing permissions. No wildcard or alternative subject is added.
+At this checkpoint the correction is prepared but not applied: A's protected
+console session was logged out, while R/Tee remains available. Owner A login
+is required; no R paid-plan upgrade is justified by this failure.

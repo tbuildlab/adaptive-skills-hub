@@ -1604,8 +1604,8 @@
     "sha256": "d34e70261a2f13af469b8b4dbbb0b62b68fee68a0526541f4cec78a6411c0331"
   },
   "docs/nexus-production-d03-r-custody-and-canary-preparation-v1.md": {
-    "bytes": 9656,
-    "sha256": "7dc9cd87dea37d609a4b005c93d6c3bd1ba68f876eade56946fa5c3794e856cb"
+    "bytes": 10769,
+    "sha256": "8c8567046b3100719898d44275bf963476953d41f9930d9ffe7a1ec0682ade0c"
   },
   "docs/nexus-reusable-project-gates-v1.md": {
     "bytes": 12670,
@@ -1808,8 +1808,8 @@
     "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
   },
   "research/nexus-production-d03-a-caller-policy-v1.json": {
-    "bytes": 1329,
-    "sha256": "7a7c31f864bb6534062e69a040e560c954cb88786138f001e16a4a68ffd0822c"
+    "bytes": 1350,
+    "sha256": "be545ef18d05381b1856febd212df51a9901be49cf0245f057d8ca412f17bd84"
   },
   "research/nexus-production-d03-canary-registration-v1.json": {
     "bytes": 991,
