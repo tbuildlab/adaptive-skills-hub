@@ -99,8 +99,15 @@ class ProtectedHistory:
 
 class S3Fence:
     """No retries. Any unknown/partial history quarantines; no stale fallback."""
+    registration_type = Registration
+    ledger_domain = LEDGER
+    record_parser = staticmethod(parse_metadata)
+    reference = staticmethod(reference)
+    decoded = staticmethod(decoded)
+    domain_digest = staticmethod(domain_digest)
+
     def __init__(self, client, registration, *, max_attempts=1000):
-        require(type(registration) is Registration)
+        require(type(registration) is self.registration_type)
         require(type(max_attempts) is int and 1 <= max_attempts <= 1000)
         self.client, self.registration = client, registration
         self.attempts, self.max_attempts = 0, max_attempts
@@ -179,7 +186,7 @@ class S3Fence:
         try:
             before = protected.inventory("")
             require(len(before) == 1 and before[0][0] == prefix + "authorization.json")
-            authorization = decoded(protected.retained(*before[0], valid_until))
+            authorization = self.decoded(protected.retained(*before[0], valid_until))
             require(authorization == dict(schema_version="nexus.g3.d03.diagnostic-admin-authorization.v1",
                 purpose="TEST_ONLY", generation=self.registration.generation, checkpoint=ref,
                 previous_checkpoint=body["previous_checkpoint"]))
@@ -203,7 +210,7 @@ class S3Fence:
                 require(key in blobs)
                 if key not in cache:
                     cache[key] = self.retained(key, blobs[key], valid_until)
-                actual = domain_digest(domain, decoded(cache[key])) if domain else sha(cache[key])
+                actual = self.domain_digest(domain, self.decoded(cache[key])) if domain else sha(cache[key])
                 require(actual == digest)
                 return cache[key]
 
@@ -212,13 +219,13 @@ class S3Fence:
             for seq, (key, version) in enumerate(journal):
                 require(key == self.registration.prefix + f"journal/{seq:020d}")
                 raw = self.retained(key, version, valid_until)
-                ref, body = reference(raw), decoded(raw)
+                ref, body = self.reference(raw), self.decoded(raw)
                 require(body["authority_instance"] == self.registration.authority_instance)
                 require(body["recovery_sequence"] == seq and body["previous_checkpoint"] == prior)
                 if seq == 0:
                     require(ref == {"id": self.registration.genesis_id,
                                     "body_sha256": self.registration.genesis_sha256})
-                previous = decoded(bodies[-1]) if bodies else None
+                previous = self.decoded(bodies[-1]) if bodies else None
                 admin = body["transition_kind"] in ("GENESIS", "RECOVER")
                 require(not admin or ref["id"] in self.registration.admin_checkpoint_ids)
                 if previous:
@@ -230,15 +237,15 @@ class S3Fence:
                     else:
                         require(body["authority_epoch"] == previous["authority_epoch"])
                         require(body["incarnation"] == previous["incarnation"])
-                descriptor_raw = blob(body["ledger_commit_sha256"], LEDGER)
-                descriptor = decoded(descriptor_raw)
+                descriptor_raw = blob(body["ledger_commit_sha256"], self.ledger_domain)
+                descriptor = self.decoded(descriptor_raw)
                 fields = set(body) - {"schema_version", "ledger_commit_sha256"}
                 require(set(descriptor) == fields | {"control_after_sha256"})
                 require(all(descriptor[x] == body[x] for x in fields))
                 # Descriptor objects are addressed by their domain-separated hash.
-                require(domain_digest(LEDGER, descriptor) == body["ledger_commit_sha256"])
+                require(self.domain_digest(self.ledger_domain, descriptor) == body["ledger_commit_sha256"])
                 control = blob(descriptor["control_after_sha256"])
-                header = decoded(control)
+                header = self.decoded(control)
                 require(set(header) == {"codec_version", "authority_instance", "authority_epoch",
                     "incarnation", "recovery_sequence", "time_high_water_ms", "inventory", "pages"})
                 require(header["codec_version"] == "nexus.g3.control-snapshot.v1")
@@ -249,7 +256,7 @@ class S3Fence:
                 for item in body["record_refs"]:
                     retained = blob(item["body_sha256"])
                     # Records remain untrusted structural metadata, never authority.
-                    require(parse_metadata(retained).record_id == item["id"])
+                    require(self.record_parser(retained).record_id == item["id"])
                 bodies.append(raw); descriptors.append(descriptor_raw)
                 controls.append(control); pages.append(page_bodies); prior = ref
             require(self.inventory("journal/") == journal)
@@ -261,12 +268,12 @@ class S3Fence:
     def append(self, raw, expected_head, *, valid_until):
         """One conditional attempt only; uncertainty pins candidate, never retries."""
         require(self.pending is None)
-        reference(raw)
-        body = decoded(raw)
+        self.reference(raw)
+        body = self.decoded(raw)
         require(body["transition_kind"] not in ("GENESIS", "RECOVER"))
         history = self.read(valid_until=valid_until)
         require(history.head == expected_head and body["previous_checkpoint"] == expected_head)
-        previous = decoded(history.checkpoints[-1])
+        previous = self.decoded(history.checkpoints[-1])
         require(body["recovery_sequence"] == previous["recovery_sequence"] + 1)
         require(all(body[x] == previous[x] for x in ("authority_instance", "authority_epoch", "incarnation")))
         require(body["time_high_water_ms"] >= previous["time_high_water_ms"])
@@ -277,13 +284,13 @@ class S3Fence:
             key = self.registration.prefix + "objects/" + digest
             require(key in objects)
             data = self.retained(key, objects[key], valid_until)
-            require((domain_digest(domain, decoded(data)) if domain else sha(data)) == digest)
+            require((self.domain_digest(domain, self.decoded(data)) if domain else sha(data)) == digest)
             return data
-        descriptor = decoded(candidate_blob(body["ledger_commit_sha256"], LEDGER))
+        descriptor = self.decoded(candidate_blob(body["ledger_commit_sha256"], self.ledger_domain))
         fields = set(body) - {"schema_version", "ledger_commit_sha256"}
         require(set(descriptor) == fields | {"control_after_sha256"})
         require(all(descriptor[x] == body[x] for x in fields))
-        control = decoded(candidate_blob(descriptor["control_after_sha256"]))
+        control = self.decoded(candidate_blob(descriptor["control_after_sha256"]))
         require(control.get("codec_version") == "nexus.g3.control-snapshot.v1")
         require(all(control.get(x) == body[x] for x in ("authority_instance", "authority_epoch",
             "incarnation", "recovery_sequence", "time_high_water_ms")))
@@ -291,7 +298,7 @@ class S3Fence:
         for page in control["pages"]:
             candidate_blob(page["page_sha256"])
         for item in body["record_refs"]:
-            require(parse_metadata(candidate_blob(item["body_sha256"])).record_id == item["id"])
+            require(self.record_parser(candidate_blob(item["body_sha256"])).record_id == item["id"])
         require(self.inventory("objects/") == tuple(sorted(objects.items())))
         self.pending = raw
         self.call("put_object", Key=self.registration.prefix + f"journal/{body['recovery_sequence']:020d}",

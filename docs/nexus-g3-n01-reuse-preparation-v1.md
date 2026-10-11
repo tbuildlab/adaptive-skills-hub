@@ -64,7 +64,7 @@ binding the delegated mode and exact protected configuration, preserving all sev
 remaining mandatory gates and truthful historical D04 evidence. That seam is
 implemented as the separate untrusted v2 record codec documented in the
 [additive compatibility contract](nexus-g3-delegated-record-compatibility-v2.md).
-Its structural validation is complete; control-state semantic integration,
+Its structural and deterministic control-state integration is complete;
 protected runtime membership and live qualification remain open. An executor
 identity cannot replace the Owner Principal;
 delegation cannot fabricate a human CONFIRM or trusted receipt.
@@ -97,7 +97,7 @@ acceptance remain open. Preparation cannot promote any of those gates.
 
 ## Validation taxonomy
 
-Sixty-four new unique simulation/contract tests cover consistency, invalid joins,
+Seventy-six new unique simulation/contract tests cover consistency, invalid joins,
 generation/incarnation, corrupted history, fixed transitions, restart quarantine,
 conditional reservations, dropped acknowledgments and bounded SDK input shapes.
 The official installed botocore model validates actual GetItem/PutItem/
@@ -113,7 +113,12 @@ existing environment skips / zero FAIL in 1,014.692 seconds. The twelve additive
 v2 record cases were added after that snapshot and passed separately. The 366
 unchanged Node cases retain the prior exact-source successful regression; no D01
 ceremony was repeated. Combined distinct coverage is 1,597 / 1,593 PASS / four
-SKIP / zero FAIL across these explicitly separate snapshots. Repeated focused
+SKIP / zero FAIL across these explicitly separate snapshots at the prior
+`25b0ec98778912c8b6bb62469e29ef39471cacbe` preparation checkpoint. Twelve additional
+v2 control integration cases subsequently passed with the affected original tests
+(76 focused cases / zero SKIP / zero FAIL). Full regression of this later source
+is pending; earlier full results are not silently promoted to this exact source.
+Repeated focused
 cases are not added to totals; this is not live qualification.
 Current relevant focused regression: **282 PASS / zero SKIP / zero FAIL** after
 repairing both production-preparation imports of the legacy test-capable modules.
@@ -129,7 +134,7 @@ N01_IMPLEMENTATION_STATUS = PARTIAL_DETERMINISTIC_PREPARATION
 N01_PRIMARY_SERVICE_QUALIFICATION = NOT_PERFORMED
 N01_SOURCE_PROVENANCE_QUALIFICATION = NOT_PERFORMED
 N02_PRODUCTION_INGRESS = NOT_IMPLEMENTED
-DELEGATED_POSITIVE_COMPATIBILITY_SEAM = STRUCTURAL_V2_CODEC_ONLY_UNTRUSTED
+DELEGATED_POSITIVE_COMPATIBILITY_SEAM = V2_DETERMINISTIC_CONSISTENCY_ONLY_UNTRUSTED
 G4_STATUS = COMPLETE_PREPARATION_FAIL_CLOSED
 G6_STATUS = COMPLETE_PREPARATION_FAIL_CLOSED
 REAL_ADMISSION_ENABLED = NO

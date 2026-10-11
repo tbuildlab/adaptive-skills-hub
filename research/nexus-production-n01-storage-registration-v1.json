@@ -1,0 +1,18 @@
+{
+  "schema_version": "nexus.g3.n01.storage-registration.v1",
+  "purpose": "TEST_ONLY",
+  "authority_instance": "g3-n01-qualification-v1",
+  "generation": 1,
+  "config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+  "genesis": {
+    "id": "nexus.g3.production.recovery-checkpoint.v2:ca736f0ab3d739456f41f6107f1582941c071835b6ca05c8f98e624b64e61f50",
+    "body_sha256": "7fe0fb527ce2c8bb519a0f837124bfce22ce8e964008f2aa0fc7b4f1c9b036db"
+  },
+  "admin_checkpoint_ids": [
+    "nexus.g3.production.recovery-checkpoint.v2:ca736f0ab3d739456f41f6107f1582941c071835b6ca05c8f98e624b64e61f50"
+  ],
+  "normal_prefix": "qualification/n01/v1/normal/",
+  "real_admission": "NO",
+  "no_automatic_redispatch": "REQUIRED",
+  "base_time_ms": 1791715897000
+}

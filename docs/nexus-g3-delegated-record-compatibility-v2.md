@@ -32,12 +32,18 @@ v2 bytes in the actual v2 domain. It does not migrate existing retained v1 histo
 
 `ash/g3_delegated_record_codec.py` returns UNTRUSTED metadata with authority NONE
 and semantic validation NOT_PERFORMED. A supplied mode/config digest is not
-protected registration. The v1 control snapshot reader, transition protocol,
-primary transport and diagnostic fence do not silently accept v2. Their explicit
-versioned integration and actual independent source/custody qualification remain
-required before any authoritative positive operation.
+protected registration. The unchanged v1 control snapshot reader does not accept
+v2 rows. `ash/g3_delegated_control_codec.py` uses explicit v2 closed rows and the
+unchanged v1 page/snapshot byte-packing rules, retaining exact actual v2 bytes.
+The fixed semantic reader now checks v2 record, root and source-registration
+configuration agreement and rejects fabricated D04 source PASS. The nine fixed
+transaction groups and injected primary transport have explicit v2 entry points.
+Their outputs remain NONE; supplied checked objects/configuration are untrusted.
+Primary preparation checks actual snapshot header agreement before any reservation.
+The old diagnostic fence does not silently accept v2. Actual independent
+source/custody/runtime qualification remains required before authoritative use.
 
-Twelve unique structural/adversarial test methods pass. Their examples are test
+Twenty-four unique structural/integration/adversarial test methods pass. Their examples are test
 fixtures, including shape-valid positive bodies; none is production authority,
 source qualification, Owner CONFIRM, independent review or real admission.
 The original v1 tests and fail-closed G4/G6 boundary remain required.
@@ -46,6 +52,7 @@ The original v1 tests and fail-closed G4/G6 boundary remain required.
 V1_CONTRACT_CHANGED = NO
 D04_HISTORICAL_STATUS_CHANGED = NO
 DELEGATED_V2_SHAPE_VALIDATION = PASS
+DELEGATED_V2_CONTROL_CONSISTENCY_AND_TRANSPORT_CONTRACT = PASS_OFFLINE_ONLY
 DELEGATED_V2_PROTECTED_RUNTIME_QUALIFICATION = NOT_PERFORMED
 REAL_ADMISSION_ENABLED = NO
 ```

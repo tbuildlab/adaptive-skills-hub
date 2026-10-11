@@ -1,0 +1,24 @@
+name: Bounded N01 storage qualification
+on:
+  push:
+    branches: [nexus-v2-production-qualification]
+    paths: [research/nexus-production-n01-storage-run-request-v1.json]
+permissions:
+  contents: read
+  id-token: write
+concurrency:
+  group: nexus-n01-storage-qualification
+  cancel-in-progress: false
+jobs:
+  storage:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # official v4.2.2
+        with:
+          persist-credentials: false
+      - name: Install existing pinned qualification SDK
+        run: python3 -m pip install --disable-pip-version-check --require-hashes --only-binary=:all: -r research/nexus-production-d03-sdk-requirements-v1.txt
+      - name: One primary custody storage request, no production authority
+        run: python3 -m scripts.g3_n01_storage_live

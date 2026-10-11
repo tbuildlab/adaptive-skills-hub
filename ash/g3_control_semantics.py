@@ -33,7 +33,10 @@ class CheckedControl:
         return "NONE"
 
 
-def _check(snapshot, bodies, evidence, assertions, profile):
+def _check(snapshot, bodies, evidence, assertions, profile, *, control_codec=codec,
+           record_codec=records, protected_config=None):
+    codec = control_codec
+    records = record_codec
     require(profile in ("PRODUCTION", "TEST_ONLY"))
     require(type(bodies) is dict and len(bodies) <= 4096)
     require(type(evidence) is dict and len(evidence) <= 4096)
@@ -45,6 +48,8 @@ def _check(snapshot, bodies, evidence, assertions, profile):
         families[value["family"]][row.key] = value
     require(len(families["root"]) == 1)
     root = next(iter(families["root"].values()))
+    if protected_config is not None:
+        require(root["authority_config_sha256"] == protected_config)
 
     def row(family, identity):
         found = families[family].get(family + ":" + identity)
@@ -68,12 +73,16 @@ def _check(snapshot, bodies, evidence, assertions, profile):
             actual = legacy.revocation(value).revocation_id
         else:
             actual = records.parse_metadata(raw).record_id
+            if protected_config is not None:
+                require(value["authority_config_sha256"] == protected_config)
         require(actual == ident)
         resolved[ident] = (raw, value)
         return value
 
     source_refs = {}
     for value in families["source"].values():
+        if protected_config is not None:
+            require(value["kind"] != "D04" or value["conclusion"] != "PASS")
         ref = value["evidence_ref"]
         require(ref["ref"] not in source_refs)
         raw = evidence.get(ref["ref"])
@@ -86,6 +95,8 @@ def _check(snapshot, bodies, evidence, assertions, profile):
         source_refs[ref["ref"]] = value
         registered = row("registration", value["registration_id"])
         require(registered["purpose"] == profile)
+        if protected_config is not None:
+            require(registered["config_sha256"] == protected_config)
         bound = row("binding", value["binding_id"])
         require(value["principal"] == bound["principal"])
         if value["context_id"] is not None:
@@ -346,5 +357,19 @@ def check_control(snapshot, bodies, evidence, *, profile, assertions=None):
     """Validate complete consistency; NONE even if every supplied byte matches."""
     try:
         return _check(snapshot, bodies, evidence, {} if assertions is None else assertions, profile)
+    except (ValueError, TypeError, KeyError, AttributeError, RecursionError, OverflowError, UnicodeError):
+        raise ControlError("G3_CONTROL_QUARANTINE") from None
+
+
+def check_delegated_control(snapshot, bodies, evidence, *, profile, protected_config,
+                            assertions=None):
+    """Exact v2/config consistency only; supplied configuration is not provenance."""
+    from ash import g3_delegated_control_codec as modern_control
+    from ash import g3_delegated_record_codec as modern_records
+    try:
+        modern_control.old.check_type(protected_config, "h")
+        return _check(snapshot, bodies, evidence, {} if assertions is None else assertions,
+                      profile, control_codec=modern_control, record_codec=modern_records,
+                      protected_config=protected_config)
     except (ValueError, TypeError, KeyError, AttributeError, RecursionError, OverflowError, UnicodeError):
         raise ControlError("G3_CONTROL_QUARANTINE") from None

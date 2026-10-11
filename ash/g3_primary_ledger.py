@@ -52,6 +52,12 @@ class DynamoReservations:
         require(client.meta.config.retries.get("total_max_attempts") == 1)
         self.client=client;self.table=table_arn;self.instance=instance
         self.max_attempts=max_attempts;self.attempts=0;self.quarantined=True
+        self.control_codec=c;self.record_codec=r;self.record_version=1
+
+    def checkpoint_ref(self, raw):
+        parsed=self.record_codec.parse_metadata(raw)
+        require(parsed.to_dict()['schema_version']==r.PREFIX+f'recovery-checkpoint.v{self.record_version}')
+        return dict(id=parsed.record_id,body_sha256=parsed.body_sha256)
 
     def _call(self, operation, **kwargs):
         if self.attempts >= self.max_attempts:
@@ -94,15 +100,15 @@ class DynamoReservations:
     def enroll_genesis(self, checkpoint, snapshot):
         """Primary enrollment only. Requires independent admin/fence outside API."""
         require(self._get('HEAD') is None)
-        value=r.parse_metadata(checkpoint).to_dict();checkpoint_ref(checkpoint)
+        value=self.record_codec.parse_metadata(checkpoint).to_dict();self.checkpoint_ref(checkpoint)
         require(value['transition_kind']=='GENESIS' and value['authority_instance']==self.instance)
-        c.verify_snapshot(snapshot)
+        self.control_codec.verify_snapshot(snapshot)
         header=c.decode(snapshot.root)
         require(all(value[key]==header[key] for key in ('authority_instance','authority_epoch',
             'incarnation','recovery_sequence','time_high_water_ms')))
         descriptor={key:v for key,v in value.items() if key not in ('schema_version','ledger_commit_sha256')}
         descriptor['control_after_sha256']=snapshot.control_after_sha256
-        require(r.domain_digest(r.PREFIX+'ledger-commit.v1',descriptor)==value['ledger_commit_sha256'])
+        require(self.record_codec.domain_digest(r.PREFIX+f'ledger-commit.v{self.record_version}',descriptor)==value['ledger_commit_sha256'])
         for raw in (checkpoint,snapshot.root,*snapshot.pages,r.canonical_bytes(descriptor)):
             self.retain_blob(raw)
         item=dict(self._key('HEAD'),phase={'S':'READY'},checkpoint={'B':checkpoint},sequence={'N':'0'})
@@ -114,14 +120,22 @@ class DynamoReservations:
     @_closed
     def prepare(self, candidate):
         require(not self.quarantined and type(candidate) is Preparation)
-        prior=r.parse_metadata(candidate.expected_checkpoint).to_dict()
-        current=r.parse_metadata(candidate.checkpoint).to_dict()
+        prior=self.record_codec.parse_metadata(candidate.expected_checkpoint).to_dict()
+        current=self.record_codec.parse_metadata(candidate.checkpoint).to_dict()
         require(current['authority_instance']==prior['authority_instance']==self.instance)
         require(current['recovery_sequence']==prior['recovery_sequence']+1)
-        require(current['previous_checkpoint']==checkpoint_ref(candidate.expected_checkpoint))
-        c.verify_snapshot(candidate.snapshot)
+        require(current['previous_checkpoint']==self.checkpoint_ref(candidate.expected_checkpoint))
+        self.control_codec.verify_snapshot(candidate.snapshot)
+        header=c.decode(candidate.snapshot.root)
+        require(all(current[key]==header[key] for key in ('authority_instance','authority_epoch',
+            'incarnation','recovery_sequence','time_high_water_ms')))
+        if self.record_version == 2:
+            roots=[c.decode(row.value) for row in self.control_codec.verify_snapshot(candidate.snapshot)
+                   if c.decode(row.value)['family']=='root']
+            require(all(current[field]==prior[field]==roots[0][field]
+                        for field in self.record_codec.CONFIG_FIELDS.split()))
         descriptor=c.decode(candidate.descriptor)
-        require(r.domain_digest(r.PREFIX+'ledger-commit.v1',descriptor)==current['ledger_commit_sha256'])
+        require(self.record_codec.domain_digest(r.PREFIX+f'ledger-commit.v{self.record_version}',descriptor)==current['ledger_commit_sha256'])
         require(descriptor['control_after_sha256']==candidate.snapshot.control_after_sha256)
         require({key:v for key,v in descriptor.items() if key!='control_after_sha256'}==
                 {key:v for key,v in current.items() if key not in ('schema_version','ledger_commit_sha256')})
@@ -157,9 +171,9 @@ class DynamoReservations:
         Does not reopen after an outstanding reservation or reconcile a write.
         This transport observation returns NONE even if bytes are equal.
         """
-        checkpoint_ref(independent_checkpoint)
+        self.checkpoint_ref(independent_checkpoint)
         item=self._get('HEAD')
-        expected=r.parse_metadata(independent_checkpoint).to_dict()
+        expected=self.record_codec.parse_metadata(independent_checkpoint).to_dict()
         require(item==dict(self._key('HEAD'),phase={'S':'READY'},checkpoint={'B':independent_checkpoint},
             sequence={'N':str(expected['recovery_sequence'])}))
         require(expected['authority_instance']==self.instance)
@@ -171,8 +185,8 @@ class DynamoReservations:
     def finalize(self, candidate, *, independent_checkpoint):
         """Finalize exact reservation only; never acknowledge authority or an effect."""
         require(type(candidate) is Preparation and independent_checkpoint==candidate.checkpoint)
-        checkpoint_ref(independent_checkpoint)
-        value=r.parse_metadata(candidate.checkpoint).to_dict()
+        self.checkpoint_ref(independent_checkpoint)
+        value=self.record_codec.parse_metadata(candidate.checkpoint).to_dict()
         require(value['authority_instance']==self.instance)
         sort='reservation#'+f"{value['recovery_sequence']:020d}"
         expected=dict(self._key(sort),phase={'S':'PREPARED'},
@@ -198,3 +212,14 @@ class DynamoReservations:
                         ':sequence':{'N':str(value['recovery_sequence'])}}}}])
         # Remain closed until a separate fresh independent-current observation.
         return PrimaryObservation(candidate.checkpoint,'FINALIZED_RECHECK_REQUIRED')
+
+
+class DelegatedDynamoReservations(DynamoReservations):
+    """Exact v2 transport. Config bytes/source origin still cannot create authority."""
+    def __init__(self, client, *, table_arn, instance, max_attempts):
+        super().__init__(client,table_arn=table_arn,instance=instance,max_attempts=max_attempts)
+        from ash import g3_delegated_control_codec as modern_control
+        from ash import g3_delegated_record_codec as modern_records
+        self.control_codec=modern_control
+        self.record_codec=modern_records
+        self.record_version=2

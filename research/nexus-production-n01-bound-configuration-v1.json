@@ -1,0 +1,446 @@
+{
+  "schema_version": "nexus.production.n01.resource-proposal.v1",
+  "status": "BOUND_OWNER_APPROVED_CONFIGURATION_INPUT_NOT_AUTHORITY",
+  "binding_status": {
+    "github_subject": "PREVIOUSLY_VERIFIED_EXACT_IMMUTABLE_IDS",
+    "vercel_namespace": "CONDITIONAL_REQUIRES_CURRENT_NATIVE_OIDC_VERIFICATION"
+  },
+  "operation_window_hours": 48,
+  "cleanup_offset_minutes": 10,
+  "aggregate_bounds": {
+    "dynamodb_attempts": 512,
+    "transaction_items": 2,
+    "dynamodb_total_item_bytes": 67108864,
+    "s3_total_version_bytes": 67108864,
+    "s3_tier1_attempts": 5000,
+    "s3_tier2_attempts": 50000,
+    "outbound_gb": "0.25",
+    "maximum_cost_usd_including_tax": "1.00"
+  },
+  "table_request": {
+    "TableName": "NexusG3AuthorityV1",
+    "BillingMode": "PAY_PER_REQUEST",
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "pk",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "sk",
+        "AttributeType": "S"
+      }
+    ],
+    "KeySchema": [
+      {
+        "AttributeName": "pk",
+        "KeyType": "HASH"
+      },
+      {
+        "AttributeName": "sk",
+        "KeyType": "RANGE"
+      }
+    ]
+  },
+  "caller_trust": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "ExactGitHubBranch",
+        "Effect": "Allow",
+        "Principal": {
+          "Federated": "arn:aws:iam::175880707430:oidc-provider/token.actions.githubusercontent.com"
+        },
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "StringEquals": {
+            "token.actions.githubusercontent.com:sub": "repo:TDY0225@223441940/adaptive-skills-hub@1341770180:ref:refs/heads/nexus-v2-production-qualification",
+            "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+          }
+        }
+      },
+      {
+        "Sid": "ExactVerifiedVercelProjectOnly",
+        "Effect": "Allow",
+        "Principal": {
+          "Federated": "arn:aws:iam::175880707430:oidc-provider/oidc.vercel.com/tdy0225"
+        },
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "StringEquals": {
+            "oidc.vercel.com/tdy0225:sub": "owner:tdy0225:project:nexus-g3-qual:environment:production",
+            "oidc.vercel.com/tdy0225:aud": "https://vercel.com/tdy0225"
+          }
+        }
+      }
+    ]
+  },
+  "caller_policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "ExactPrimaryReadsAndImmutablePut",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:GetItem",
+          "dynamodb:PutItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:ap-southeast-1:175880707430:table/NexusG3AuthorityV1"
+        ],
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          },
+          "ForAllValues:StringEquals": {
+            "dynamodb:LeadingKeys": [
+              "authority#g3-n01-qualification-v1"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "ExactTransactionalUpdateOnly",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:UpdateItem"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:ap-southeast-1:175880707430:table/NexusG3AuthorityV1"
+        ],
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "Null": {
+            "dynamodb:LeadingKeys": "false"
+          },
+          "ForAllValues:StringEquals": {
+            "dynamodb:LeadingKeys": [
+              "authority#g3-n01-qualification-v1"
+            ]
+          },
+          "StringEquals": {
+            "dynamodb:EnclosingOperation": "TransactWriteItems"
+          }
+        }
+      },
+      {
+        "Sid": "ExactCustodyRoleOnly",
+        "Effect": "Allow",
+        "Action": [
+          "sts:AssumeRole"
+        ],
+        "Resource": [
+          "arn:aws:iam::862902859484:role/NexusG3N01AppendRead"
+        ],
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "StringEquals": {
+            "sts:RoleSessionName": "NexusG3N01Custody"
+          }
+        }
+      }
+    ]
+  },
+  "custody_trust": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "AWS": "arn:aws:iam::175880707430:role/NexusG3QualificationCaller"
+        },
+        "Action": "sts:AssumeRole",
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "StringEquals": {
+            "sts:RoleSessionName": "NexusG3N01Custody"
+          }
+        }
+      }
+    ]
+  },
+  "custody_policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "VersionReadsOnly",
+        "Effect": "Allow",
+        "Action": [
+          "s3:GetObjectVersion",
+          "s3:GetObjectRetention"
+        ],
+        "Resource": [
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/normal/*",
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/faults/*",
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/approvals/*"
+        ],
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          }
+        }
+      },
+      {
+        "Sid": "ExactHistoryInventories",
+        "Effect": "Allow",
+        "Action": [
+          "s3:ListBucketVersions"
+        ],
+        "Resource": [
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1"
+        ],
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "StringLike": {
+            "s3:prefix": [
+              "qualification/n01/v1/normal/*",
+              "qualification/n01/v1/faults/*",
+              "qualification/n01/v1/approvals/*"
+            ]
+          }
+        }
+      },
+      {
+        "Sid": "ConditionalNormalAppendOnly",
+        "Effect": "Allow",
+        "Action": [
+          "s3:PutObject"
+        ],
+        "Resource": [
+          "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/normal/*"
+        ],
+        "Condition": {
+          "DateLessThan": {
+            "aws:CurrentTime": "2026-10-13T10:51:37Z"
+          },
+          "Null": {
+            "s3:if-none-match": "false"
+          },
+          "StringEquals": {
+            "s3:if-none-match": "*"
+          }
+        }
+      }
+    ]
+  },
+  "admin_only_prefix": "qualification/n01/v1/approvals/",
+  "cleanup_trust": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Principal": {
+          "Service": "scheduler.amazonaws.com"
+        },
+        "Action": "sts:AssumeRole",
+        "Condition": {
+          "StringEquals": {
+            "aws:SourceAccount": "175880707430",
+            "aws:SourceArn": "arn:aws:scheduler:ap-southeast-1:175880707430:schedule-group/NexusG3QualificationCleanupV1"
+          }
+        }
+      }
+    ]
+  },
+  "cleanup_policy": {
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Sid": "DeleteExactDisposableTableOnly",
+        "Effect": "Allow",
+        "Action": [
+          "dynamodb:DeleteTable"
+        ],
+        "Resource": [
+          "arn:aws:dynamodb:ap-southeast-1:175880707430:table/NexusG3AuthorityV1"
+        ]
+      }
+    ]
+  },
+  "schedule_group": {
+    "Name": "NexusG3QualificationCleanupV1"
+  },
+  "schedule_target": {
+    "Arn": "arn:aws:scheduler:::aws-sdk:dynamodb:deleteTable",
+    "RoleArn": "arn:aws:iam::175880707430:role/NexusG3QualificationCleanup",
+    "Input": "{\"TableName\":\"NexusG3AuthorityV1\"}",
+    "RetryPolicy": {
+      "MaximumRetryAttempts": 0,
+      "MaximumEventAgeInSeconds": 60
+    }
+  },
+  "schedule_controls": {
+    "Name": "NexusG3QualificationDeleteTableV1",
+    "GroupName": "NexusG3QualificationCleanupV1",
+    "ScheduleExpressionTimezone": "UTC",
+    "FlexibleTimeWindow": {
+      "Mode": "OFF"
+    },
+    "ActionAfterCompletion": "DELETE",
+    "expression_rule": "at(T0_PLUS_48_HOURS_10_MINUTES)"
+  },
+  "s3_retention": {
+    "Mode": "COMPLIANCE",
+    "Days": 7
+  },
+  "lifecycle_additions": [
+    {
+      "ID": "n01-qualification-expire-1",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "qualification/n01/v1/normal/"
+      },
+      "Expiration": {
+        "Days": 8
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 1
+      }
+    },
+    {
+      "ID": "n01-qualification-markers-1",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "qualification/n01/v1/normal/"
+      },
+      "Expiration": {
+        "ExpiredObjectDeleteMarker": true
+      }
+    },
+    {
+      "ID": "n01-qualification-expire-2",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "qualification/n01/v1/faults/"
+      },
+      "Expiration": {
+        "Days": 8
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 1
+      }
+    },
+    {
+      "ID": "n01-qualification-markers-2",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "qualification/n01/v1/faults/"
+      },
+      "Expiration": {
+        "ExpiredObjectDeleteMarker": true
+      }
+    },
+    {
+      "ID": "n01-qualification-expire-3",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "qualification/n01/v1/approvals/"
+      },
+      "Expiration": {
+        "Days": 8
+      },
+      "NoncurrentVersionExpiration": {
+        "NoncurrentDays": 1
+      }
+    },
+    {
+      "ID": "n01-qualification-markers-3",
+      "Status": "Enabled",
+      "Filter": {
+        "Prefix": "qualification/n01/v1/approvals/"
+      },
+      "Expiration": {
+        "ExpiredObjectDeleteMarker": true
+      }
+    }
+  ],
+  "deployment_requirements": [
+    "OWNER_BOUNDED_COST_APPROVAL",
+    "EXACT_NAMES_UNRELATED_COLLISIONS_DENIED",
+    "APPROVED_DEADLINE_BOUND_IN_ALL_RUNTIME_TRUST_AND_PERMISSIONS",
+    "EXACT_RUNTIME_REGISTRATION_AND_PROTECTED_CONFIGURATION",
+    "INDEPENDENT_R_ADMIN_RECOVERY_ONLY",
+    "NEW_PREFIX_BUCKET_POLICY_EXTENSIONS_REVIEWED_BEFORE_APPLICATION",
+    "ACTUAL_NATIVE_OIDC_ORIGIN_AND_PROJECT_VERIFIED_BEFORE_VERCEL_TRUST",
+    "NO_PRODUCTION_ENABLEMENT_FROM_THIS_TEMPLATE"
+  ],
+  "t0_utc": "2026-10-11T10:51:37Z",
+  "deadline_utc": "2026-10-13T10:51:37Z",
+  "cleanup_at_utc": "2026-10-13T11:01:37Z",
+  "bucket_policy_additions": [
+    {
+      "Sid": "N01NormalHistoryAlwaysConditionalCreate",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/normal/*",
+      "Condition": {
+        "StringNotEquals": {
+          "s3:if-none-match": "*"
+        }
+      }
+    },
+    {
+      "Sid": "N01NormalHistoryNoDeletion",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion"
+      ],
+      "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/normal/*"
+    },
+    {
+      "Sid": "N01RoleNoMutationOutsideNormal",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion",
+        "s3:PutObjectRetention",
+        "s3:PutObjectLegalHold"
+      ],
+      "NotResource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/normal/*",
+      "Condition": {
+        "ArnEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::862902859484:role/NexusG3N01AppendRead"
+        }
+      }
+    },
+    {
+      "Sid": "N01ApprovalsIndependentRootCustodyOnly",
+      "Effect": "Deny",
+      "Principal": "*",
+      "Action": [
+        "s3:PutObject",
+        "s3:DeleteObject",
+        "s3:DeleteObjectVersion",
+        "s3:PutObjectRetention",
+        "s3:PutObjectLegalHold"
+      ],
+      "Resource": "arn:aws:s3:::nexus-d03-custody-862902859484-ap-southeast-1-v1/qualification/n01/v1/approvals/*",
+      "Condition": {
+        "ArnNotEquals": {
+          "aws:PrincipalArn": "arn:aws:iam::862902859484:root"
+        }
+      }
+    }
+  ]
+}

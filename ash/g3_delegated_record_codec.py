@@ -12,6 +12,16 @@ D04_STATUS = 'UNQUALIFIED_NOT_A_RELEASE_GATE'
 DOMAINS = frozenset(v1.PREFIX + kind + '.v2' for kind in v1.KINDS)
 GATE_KINDS = tuple(kind for kind in v1.GATE_KINDS if kind != 'D04_EXECUTOR_EXCLUSION')
 CONFIG_FIELDS = 'authority_mode authority_config_sha256 d04_historical_status'
+PREFIX = v1.PREFIX
+canonical_bytes = v1.canonical_bytes
+parse_json = v1.parse_json
+
+
+def domain_digest(domain, value):
+    """Closed v2 domains; retained v1 inline material domains are unchanged."""
+    v1._require(type(domain) is str and domain in
+                DOMAINS | v1.INLINE_DOMAINS | {PREFIX + 'ledger-commit.v2'})
+    return hashlib.sha256(domain.encode('utf-8') + b'\0' + canonical_bytes(value)).hexdigest()
 
 
 def _shape_projection(value):

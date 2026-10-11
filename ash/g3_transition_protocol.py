@@ -58,7 +58,14 @@ def checkpoint_ref(raw):
     return dict(id=value.record_id, body_sha256=value.body_sha256)
 
 
-def _prepare(before, after, checkpoint, group, transition, record_refs):
+def _prepare(before, after, checkpoint, group, transition, record_refs, *,
+             control_codec=c, record_codec=r, version=1):
+    c = control_codec
+    r = record_codec
+    def reference(raw):
+        parsed = r.parse_metadata(raw)
+        require(parsed.to_dict()["schema_version"] == r.PREFIX + f"recovery-checkpoint.v{version}")
+        return dict(id=parsed.record_id, body_sha256=parsed.body_sha256)
     require(type(before) is CheckedControl and type(after) is CheckedControl)
     require(group in GROUPS and transition in GROUPS[group][0])
     require(type(record_refs) is list)
@@ -71,17 +78,20 @@ def _prepare(before, after, checkpoint, group, transition, record_refs):
     prior = next(value for value in old.values() if value["family"] == "root")
     current = next(value for value in new.values() if value["family"] == "root")
     previous = r.parse_metadata(checkpoint).to_dict()
+    if version == 2:
+        for field in r.CONFIG_FIELDS.split():
+            require(previous[field] == prior[field] == current[field])
     require(previous["authority_instance"] == prior["authority_instance"])
     for field in ("authority_epoch", "incarnation", "recovery_sequence", "time_high_water_ms"):
         require(previous[field] == prior[field])
     prior_descriptor = {key:value for key,value in previous.items()
                         if key not in ("schema_version", "ledger_commit_sha256")}
     prior_descriptor["control_after_sha256"] = before.snapshot.control_after_sha256
-    require(r.domain_digest(r.PREFIX + "ledger-commit.v1", prior_descriptor)
+    require(r.domain_digest(r.PREFIX + f"ledger-commit.v{version}", prior_descriptor)
             == previous["ledger_commit_sha256"])
     require(current["authority_instance"] == prior["authority_instance"])
     require(current["recovery_sequence"] == prior["recovery_sequence"] + 1)
-    require(current["previous_checkpoint"] == checkpoint_ref(checkpoint))
+    require(current["previous_checkpoint"] == reference(checkpoint))
     require(current["time_high_water_ms"] >= prior["time_high_water_ms"])
     require(current["revocation_generation"] in (prior["revocation_generation"], prior["revocation_generation"] + 1))
     if transition == "RECOVER":
@@ -123,7 +133,7 @@ def _prepare(before, after, checkpoint, group, transition, record_refs):
         require({k:v for k,v in former.items() if k not in mutable} ==
                 {k:v for k,v in value.items() if k not in mutable})
     history = new.get("recovery:" + f'{prior["recovery_sequence"]:020d}')
-    require(history is not None and history["checkpoint_ref"] == checkpoint_ref(checkpoint))
+    require(history is not None and history["checkpoint_ref"] == reference(checkpoint))
     require(history["control_sha256"] == before.snapshot.control_after_sha256)
     require(history["descriptor_sha256"] == previous["ledger_commit_sha256"])
     def memberships(values):
@@ -141,11 +151,13 @@ def _prepare(before, after, checkpoint, group, transition, record_refs):
         "incarnation", "recovery_sequence", "previous_checkpoint", "time_high_water_ms")}
     descriptor.update(transition_kind=transition, record_refs=record_refs,
         control_after_sha256=after.snapshot.control_after_sha256)
-    ledger = r.domain_digest(r.PREFIX + "ledger-commit.v1", descriptor)
+    if version == 2:
+        descriptor.update({field: current[field] for field in r.CONFIG_FIELDS.split()})
+    ledger = r.domain_digest(r.PREFIX + f"ledger-commit.v{version}", descriptor)
     body = {key:value for key,value in descriptor.items() if key != "control_after_sha256"}
-    body.update(schema_version=r.PREFIX + "recovery-checkpoint.v1", ledger_commit_sha256=ledger)
+    body.update(schema_version=r.PREFIX + f"recovery-checkpoint.v{version}", ledger_commit_sha256=ledger)
     raw = r.canonical_bytes(body)
-    checkpoint_ref(raw)
+    reference(raw)
     return Preparation(group, checkpoint, raw, r.canonical_bytes(descriptor), after.snapshot)
 
 
@@ -153,5 +165,16 @@ def prepare_transition(before, after, checkpoint, *, group, transition, record_r
     """No I/O, retries, authority or effect; only one exact reviewed candidate."""
     try:
         return _prepare(before, after, checkpoint, group, transition, record_refs)
+    except (ValueError, TypeError, KeyError, StopIteration, UnicodeError):
+        raise ControlError("G3_CONTROL_QUARANTINE") from None
+
+
+def prepare_delegated_transition(before, after, checkpoint, *, group, transition, record_refs):
+    """Versioned fixed transition; never authenticates supplied checked state."""
+    from ash import g3_delegated_control_codec as modern_control
+    from ash import g3_delegated_record_codec as modern_records
+    try:
+        return _prepare(before, after, checkpoint, group, transition, record_refs,
+                        control_codec=modern_control, record_codec=modern_records, version=2)
     except (ValueError, TypeError, KeyError, StopIteration, UnicodeError):
         raise ControlError("G3_CONTROL_QUARANTINE") from None
