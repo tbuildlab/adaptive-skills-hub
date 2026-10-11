@@ -139,9 +139,21 @@
     "bytes": 12801,
     "sha256": "cbf6ab1c974428e3a3cb77a0ba2efc3cf1a391f5dd04ad775bf3d3381972dd54"
   },
+  "ash/g3_n01_commit.py": {
+    "bytes": 5274,
+    "sha256": "66f6015aaaf5b0f07f658f611dec477558e40ce7380f50474311114b996cb377"
+  },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
+  },
+  "ash/g3_n01_public_pin.py": {
+    "bytes": 3293,
+    "sha256": "b157d97ee15e9edaa45d127370a7fa85dffa269fbb790bb323cd8f31a2707e04"
+  },
+  "ash/g3_n01_retained_state.py": {
+    "bytes": 4164,
+    "sha256": "6b6be91c96dd06760b0ff4207b4db2c2b2100ffed23ea0f98b0de1ccc2a7f582"
   },
   "ash/g3_n01_runtime_context.py": {
     "bytes": 6189,
@@ -1683,6 +1695,10 @@
     "bytes": 9578,
     "sha256": "16cf99171f183783caa867d76c285be804b3250279eb871deb16af2c1fc3e6f1"
   },
+  "docs/nexus-production-n01-bounded-public-pin-owner-review-v1.md": {
+    "bytes": 7741,
+    "sha256": "df2dde32c4a40530eb67d02f485353d0b81c0b661d4a12613ab9c98ca2988a60"
+  },
   "docs/nexus-production-n01-configuration-checkpoint-v1.md": {
     "bytes": 4937,
     "sha256": "f55dc89d843586a02309b8ecd8e91233251c6684ce2d483f1a27dc23ff577606"
@@ -1930,6 +1946,10 @@
   "research/nexus-production-n01-identity-sdk-requirements-v1.txt": {
     "bytes": 2371,
     "sha256": "287aaf8dc31e8749f9db21fd312fe53049833d86f82fe1dcab981974996515f6"
+  },
+  "research/nexus-production-n01-pending-public-pin-review-v1.json": {
+    "bytes": 1363,
+    "sha256": "0a5d657153b455511f479eaa8f0cdbabe601759736dd1146ad21920388acf90d"
   },
   "research/nexus-production-n01-recovery-observed-evidence-v1.json": {
     "bytes": 25396,
@@ -2215,6 +2235,10 @@
     "bytes": 5236,
     "sha256": "854744130a231111757d43a0add2a06c5bd18471f9a2c5289ebf466d79beebd6"
   },
+  "tests/test_g3_n01_commit.py": {
+    "bytes": 5083,
+    "sha256": "989ea7064e0a5d817281c81e6cc8f6528dc7637e958860f0f9147cd9fcea1bc2"
+  },
   "tests/test_g3_n01_live_budget.py": {
     "bytes": 2439,
     "sha256": "94b4b62d6a229282911cfbaefce272593d86d3968bf877540a3af20402e2dc43"
@@ -2222,6 +2246,14 @@
   "tests/test_g3_n01_owner_context.py": {
     "bytes": 8449,
     "sha256": "da4ba41f3791eabd38801e635f3502e2e70222bca93117b55fe74a836a42268f"
+  },
+  "tests/test_g3_n01_public_pin.py": {
+    "bytes": 3676,
+    "sha256": "19e4bb9a016d963a36cd8a92735d302776f9676e1d7a68c5e78614a1df24ccc7"
+  },
+  "tests/test_g3_n01_retained_state.py": {
+    "bytes": 4781,
+    "sha256": "de375cfa764837d4660b3169b2c402342d5c2e5e6e08186efddd045afd56c1e9"
   },
   "tests/test_g3_n01_runtime_context.py": {
     "bytes": 7087,
