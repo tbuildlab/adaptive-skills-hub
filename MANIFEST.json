@@ -1804,8 +1804,8 @@
     "sha256": "a6e0fde71fbd4d39c4fdf414e5aeb36cb465668e1f35217781ec7d1fb24e9c5f"
   },
   "docs/nexus-production-n01-public-review-v2-continuation-v1.md": {
-    "bytes": 3557,
-    "sha256": "c51b24402c8553941b0352fffa7414e3675f7d581bb8f174eeb32a679a182533"
+    "bytes": 5264,
+    "sha256": "51f6d7780a30ae069b3cbc2f600596beb9bfb1eedd2ac925c63f541919c71b07"
   },
   "docs/nexus-production-n01-sdk-repair-bounded-public-pin-owner-review-v2.md": {
     "bytes": 3462,
@@ -2110,6 +2110,10 @@
   "research/nexus-production-n01-sdk-repair-offline-verification-v1.json": {
     "bytes": 3431,
     "sha256": "ba877e427bdd584d8cea0c5387c2bf41a8d7261da185435a9760002ca1bd0b5f"
+  },
+  "research/nexus-production-n01-sdk-repair-v2-live-source-evidence-v1.json": {
+    "bytes": 7879,
+    "sha256": "b969f1a1322d31a33a4e31c41ef897091d66b2f17ac4c22f479a060b969e8ea4"
   },
   "research/nexus-production-n01-storage-observed-evidence-v1.json": {
     "bytes": 31147,
