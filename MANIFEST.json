@@ -1775,6 +1775,10 @@
     "bytes": 8042,
     "sha256": "5c06d9d160c40af9554f4409ead662e9e33d5e8b99752b79c7671bef7e17abf4"
   },
+  "docs/nexus-production-n01-owner-login-cold-process-disposition-v1.md": {
+    "bytes": 5160,
+    "sha256": "29eb461d2359c533b260857fa5b97218b42e1187bd1b8c2a0aef747152e9ff8c"
+  },
   "docs/nexus-production-n01-public-pin-owner-acceptance-v1.md": {
     "bytes": 1745,
     "sha256": "bee3b3c9a879a188731850020110158221940e08765f57a1d9fc5277af0330ca"
@@ -2030,6 +2034,10 @@
   "research/nexus-production-n01-native-owner-source-observed-evidence-v1.json": {
     "bytes": 8867,
     "sha256": "d36fa56fd8c35e378cb517f621c8a9fe94fe55998425ce22ef9623d23c6a23be"
+  },
+  "research/nexus-production-n01-owner-login-cold-process-disposition-v1.json": {
+    "bytes": 1876,
+    "sha256": "15c8499985c2e7672169da7f16055704db5c14b34c19a314e8e2db290d1e15c8"
   },
   "research/nexus-production-n01-pending-public-pin-review-v1.json": {
     "bytes": 1363,

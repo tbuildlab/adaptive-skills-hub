@@ -1,0 +1,54 @@
+{
+  "schema_version": "nexus.g3.n01.owner-login-cold-process-disposition.v1",
+  "classification": "LIVE_LOGIN_DENIED_BEFORE_BODY_OR_PROVIDER",
+  "deployment_id": "dpl_D9FFUQGNZKSxdetaR5byf8vEVydM",
+  "request": {
+    "requestPath": "/api/n01/login",
+    "requestMethod": "POST",
+    "responseStatusCode": 403,
+    "timestamp": 1791784792518
+  },
+  "sanitized_denial": {
+    "authority": "NONE",
+    "controller_present": false,
+    "has_query": false,
+    "header_guard_passed": true,
+    "known_base": "/api/n01/login",
+    "known_route": "/api/n01/login",
+    "native_oidc_present": true,
+    "origin_is_exact": true,
+    "origin_is_null": false,
+    "phase": "NOT_AVAILABLE",
+    "probe_used": false,
+    "real_admission": "NO"
+  },
+  "root_cause": "FRESH_PROCESS_WITHOUT_PRIOR_ENROLLED_CONTROLLER",
+  "cold_start_trigger": "INFERRED_PLATFORM_IDLE_OR_INSTANCE_REPLACEMENT_NOT_DISTINGUISHED",
+  "gates": {
+    "route": "PASS",
+    "exact_origin": "PASS",
+    "header_guard": "PASS",
+    "native_oidc_presence": "PASS",
+    "review_window": "PASS_AT_REQUEST",
+    "controller_runtime": "DENY_MISSING",
+    "private_cookie_match": "NOT_REACHED",
+    "csrf": "NOT_REACHED",
+    "form_body": "NOT_READ",
+    "identity_provider": "NOT_CALLED_BY_THIS_HANDLER_PATH",
+    "callback": "NOT_APPLICABLE_BEFORE_AUTHENTICATION",
+    "current_source_binding": "NOT_REACHED_NO_CONTROLLER"
+  },
+  "preserved_head": {
+    "id": "nexus.g3.production.recovery-checkpoint.v2:75e56d2752a0775bab644785d609542fcbd27e37db120ac60b369bb6c1edbc63",
+    "body_sha256": "0223d350fe6852b72bfa632c6c88acdb266ba6855aa5e6ec7d9e5aca7929bb71"
+  },
+  "authority": "NONE",
+  "real_admission": "NO",
+  "redispatches": 0,
+  "recovery_replays": 0,
+  "enrollment_replays": 0,
+  "new_resource_operations": 0,
+  "new_retention_operations": 0,
+  "decision_consumption": "NOT_PERFORMED",
+  "n01_status": "INCOMPLETE"
+}
