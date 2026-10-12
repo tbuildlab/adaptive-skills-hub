@@ -46,6 +46,10 @@ class CompleteMembership:
     def authority(self):return 'NONE'
     @property
     def head(self):return self.history.head
+    @property
+    def checkpoints(self):return self.history.checkpoints
+    @property
+    def versions(self):return self.history.versions
 
 
 class MembershipFence(custody.N01S3Fence):
@@ -87,6 +91,18 @@ Old independent recovery authorization semantics remain exactly inherited.
                 raw=self.retained(key,version,valid_until)
                 if digest in descriptors:
                     require(raw==descriptors[digest])
+                elif control.digest(raw)!=digest:
+                    # PREPARED retains a future domain-addressed descriptor
+                    # before its journal append. Validate its complete closed
+                    # shape, but do not resolve it as checkpoint membership.
+                    descriptor=control.decode(raw)
+                    require(type(descriptor) is dict and 'control_after_sha256' in descriptor)
+                    control.old.check_type(descriptor['control_after_sha256'],'h')
+                    require(records.domain_digest(records.PREFIX+'ledger-commit.v2',descriptor)==digest)
+                    checkpoint={key:value for key,value in descriptor.items() if key!='control_after_sha256'}
+                    checkpoint.update(schema_version=records.PREFIX+'recovery-checkpoint.v2',ledger_commit_sha256=digest)
+                    parsed=records.parse_metadata(control.canonical(checkpoint))
+                    require(parsed.to_dict()['authority_config_sha256']==self.registration.config_sha256)
                 else:
                     require(control.digest(raw)==digest)
                     objects[digest]=raw

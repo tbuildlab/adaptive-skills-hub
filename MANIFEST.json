@@ -148,12 +148,20 @@
     "sha256": "a793cff519623340022d63163c079ea2ea42329eb3185f77dfab929b44aad072"
   },
   "ash/g3_n01_membership_custody.py": {
-    "bytes": 5201,
-    "sha256": "c5566c9ce6a92e8418833dc2baaa61df15a1cd0e9e297919075d37a1d7d55971"
+    "bytes": 6373,
+    "sha256": "87d62c107fd74e3f90790e07108fc8be431dbbe71e034b9e00b16a55e6274ad9"
   },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
+  },
+  "ash/g3_n01_owner_ingress.py": {
+    "bytes": 10311,
+    "sha256": "a4e330a8be085500d96a8999dddcba0cfa24cb01ff6abee4401b4de1a103bc49"
+  },
+  "ash/g3_n01_owner_persistence.py": {
+    "bytes": 16083,
+    "sha256": "138af132455a23ff6a7668410959aa2a6431bd1045acc91ef8a71d8d03f390c0"
   },
   "ash/g3_n01_public_pin.py": {
     "bytes": 3293,
@@ -178,6 +186,10 @@
   "ash/g3_n01_stytch_transport.py": {
     "bytes": 6496,
     "sha256": "b7ca1d8c278b5ae3798af8b60e5239c5616053b21109d7b7c449f2fd306a2a6a"
+  },
+  "ash/g3_n02_presentation.py": {
+    "bytes": 9725,
+    "sha256": "1fc56f75e18411242dec58769319522809b750b800d5f9b84f6b1330eef1a6e2"
   },
   "ash/g3_primary_ledger.py": {
     "bytes": 12796,
@@ -1731,6 +1743,10 @@
     "bytes": 1825,
     "sha256": "7117dc43cb9ca55bde39e507b103e12a06f592a86979f81b748ac7b14a1dcb03"
   },
+  "docs/nexus-production-n01-owner-composition-preparation-v1.md": {
+    "bytes": 8042,
+    "sha256": "5c06d9d160c40af9554f4409ead662e9e33d5e8b99752b79c7671bef7e17abf4"
+  },
   "docs/nexus-production-n01-public-pin-owner-acceptance-v1.md": {
     "bytes": 1745,
     "sha256": "bee3b3c9a879a188731850020110158221940e08765f57a1d9fc5277af0330ca"
@@ -2308,12 +2324,20 @@
     "sha256": "94b4b62d6a229282911cfbaefce272593d86d3968bf877540a3af20402e2dc43"
   },
   "tests/test_g3_n01_membership_custody.py": {
-    "bytes": 4571,
-    "sha256": "ca2931eb7366832c33b4bbd419451e415f89babb46b1fdce63a5dc7b6e4ba5a5"
+    "bytes": 5348,
+    "sha256": "ae538be89dc43a84007c1147f6991f523f4f639b984fc9c57aeb310f5c3e60fa"
   },
   "tests/test_g3_n01_owner_context.py": {
     "bytes": 8449,
     "sha256": "da4ba41f3791eabd38801e635f3502e2e70222bca93117b55fe74a836a42268f"
+  },
+  "tests/test_g3_n01_owner_ingress.py": {
+    "bytes": 9840,
+    "sha256": "165ff6a09ce63f489a0552f7c5e75d9a199aa658a3b988632fcc3c956be967be"
+  },
+  "tests/test_g3_n01_owner_persistence.py": {
+    "bytes": 12770,
+    "sha256": "85d6f152a9da7ed8e87bc05ebb27a8e6a15920559657dce8993df84f6aefce97"
   },
   "tests/test_g3_n01_public_pin.py": {
     "bytes": 3676,
@@ -2342,6 +2366,10 @@
   "tests/test_g3_n01_vercel_probe.py": {
     "bytes": 3490,
     "sha256": "4105c02d1ca4f79c9fd945753dfed340fd7c976f1997cbc385fcc6b87352f0b0"
+  },
+  "tests/test_g3_n02_presentation.py": {
+    "bytes": 8719,
+    "sha256": "f6f14f88402178708694bcaca42a44efcf7c445821ce0d354d4d50767f04a9f6"
   },
   "tests/test_g3_offline_control.py": {
     "bytes": 19333,

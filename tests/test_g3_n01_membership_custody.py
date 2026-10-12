@@ -66,3 +66,14 @@ class MembershipCustodyTests(unittest.TestCase):
         self.assertGreater(matched,0)
         for raw in (b'{}',b'{"schema_version":"unsupported"}',b' { }'):
             with self.assertRaises(ValueError):full.parse_retained_record(raw)
+    def test_prepared_future_descriptor_never_becomes_current_membership(self):
+        self.vector.install(self.vector.next.checkpoint,self.vector.next.snapshot,self.vector.next.descriptor,1,journal=False)
+        result=self.read()
+        self.assertEqual(result.head,custody.reference(self.vector.head))
+        self.assertEqual(len(result.states),1);self.assertEqual(result.authority,'NONE')
+        value=codec.decode(self.vector.next.descriptor);value['unrecognized']='UNKNOWN'
+        raw=codec.canonical(value)
+        from ash import g3_delegated_record_codec as records
+        key=custody.NORMAL+'objects/'+records.domain_digest(records.PREFIX+'ledger-commit.v2',value)
+        self.vector.client.add(key,raw)
+        with self.assertRaises(ValueError):self.read()
