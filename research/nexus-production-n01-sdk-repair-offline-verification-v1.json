@@ -1,0 +1,82 @@
+{
+  "schema_version": "nexus.g3.n01.sdk-repair-offline-verification.v1",
+  "baseline": "da67787b56309c4ceeffa67bc7bebb90f97491bb",
+  "affected": {
+    "total": 191,
+    "pass_count": 191,
+    "skip_count": 0,
+    "fail_count": 0
+  },
+  "full": {
+    "total": 1450,
+    "pass_count": 1446,
+    "skip_count": 4,
+    "fail_count": 0
+  },
+  "skips": [
+    {
+      "test": "test_real_clean_bootstrap_without_system_python (test_github_distribution.GitHubDistributionTests.test_real_clean_bootstrap_without_system_python)",
+      "classification": "HISTORICAL_ENVIRONMENT_UNAVAILABLE",
+      "reason": "real embedded runtime inputs are not configured"
+    },
+    {
+      "test": "test_real_plugin_bootstrap_without_codex_prepares_host_managed_source (test_github_distribution.GitHubDistributionTests.test_real_plugin_bootstrap_without_codex_prepares_host_managed_source)",
+      "classification": "HISTORICAL_ENVIRONMENT_UNAVAILABLE",
+      "reason": "real embedded runtime inputs are not configured"
+    },
+    {
+      "test": "test_real_plugin_health_without_system_python_or_codex (test_github_distribution.GitHubDistributionTests.test_real_plugin_health_without_system_python_or_codex)",
+      "classification": "HISTORICAL_ENVIRONMENT_UNAVAILABLE",
+      "reason": "real embedded runtime inputs are not configured"
+    },
+    {
+      "test": "test_symlink_if_privilege_is_available_is_rejected (test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected)",
+      "classification": "HISTORICAL_ENVIRONMENT_UNAVAILABLE",
+      "reason": "WINDOWS_SYMLINK_PRIVILEGE_UNAVAILABLE"
+    }
+  ],
+  "initial_full_run": {
+    "total": 1447,
+    "pass_count": 1433,
+    "skip_count": 4,
+    "fail_count": 3,
+    "error_count": 7,
+    "log_sha256": "30fff033a24b8ff3eafb61b801f295b2f5710e34927cf864d7d46bba28bac1f0",
+    "classification": "RETAINED_FAILED_RUN_STALE_MANIFEST_AND_CRLF_CHECKOUT"
+  },
+  "final_full_log_sha256": "75d9a99b4d417f66692eb883f857cd6d3787d16cce9924ce9d82f874dc53dbc3",
+  "clock": "OFFLINE_HISTORICAL_CLOCK_ALIGNED_WITH_EXISTING_TIME_TIME_FIXTURES",
+  "historical_tests_changed": "NO",
+  "historical_checkpoint_5_6_replayed": "NO",
+  "sdk_constructor_compatibility": "PASS_ACTUAL_INSTALLED_SDK_SYNTHETIC_CONFIGURATION_NO_NETWORK",
+  "native_lifecycle_model": {
+    "classification": "SYNTHETIC_NON_AUTHORITY",
+    "dynamodb_attempts": 272,
+    "maximum_new_ddb_attempts": 280,
+    "earlier_non_owner_conservative_bound": 98,
+    "prior_native_owner_observed_ddb_attempts": 134,
+    "aggregate_ddb_maximum": 512,
+    "storage_guards_weakened": "NO"
+  },
+  "package_reproduction": "PASS",
+  "package_sha256": "e9ce7100c82aad06076f81e500dd7c0d406393828b279f835c4c49a5e7a4590f",
+  "secret_and_import_scan": "PASS",
+  "diff_check": "PASS",
+  "public_review_1": "EXPIRED",
+  "public_review_2": "NOT_OBTAINED",
+  "new_artifact_deployment": "NOT_PERFORMED_PENDING_EXACT_OWNER_PUBLIC_REVIEW",
+  "new_process_r_binding": "NOT_PERFORMED",
+  "aws_calls_this_repair": "NONE",
+  "live_authentication_calls": "NONE",
+  "owner_login_submissions": "NONE",
+  "current_public_jwks_reads": 1,
+  "n01_live_closure": "INCOMPLETE",
+  "g3_status": "INCOMPLETE",
+  "d01_status": "CLOSED",
+  "d03_status": "CLOSED",
+  "g4_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "g6_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "resource_or_cost_scope_expanded": "NO",
+  "authority": "NONE",
+  "real_admission": "NO"
+}

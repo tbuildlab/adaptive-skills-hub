@@ -65,6 +65,13 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
         except Exception:
             self.retired=True;self.quarantined=True
             raise ValueError('N01_OWNER_SOURCE_QUARANTINE') from None
+    def gate_reader(self):
+        """Fresh bounded observation; the native client retains aggregate counts."""
+        require(not self.retired and self.pending is None)
+        if self.restart_profile!='OWNER_SDK_REPAIR_FORWARD_V1':return self
+        return OwnerMembershipFence(self.client,self.registration,public_review=self.public_review,
+            native_environment=self.native_environment,artifact_inventory_sha256=self.artifact_inventory_sha256,
+            process_nonce=self.process_nonce,max_attempts=1000,custody_revision=self.custody_revision,restart_profile=self.restart_profile)
     def call(self,operation,**kwargs):
         require(not self.retired)
         require(operation in ('list_object_versions','get_object','get_object_retention','put_object'))
@@ -101,15 +108,18 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
     def independent_recovery_authorization(self,body,ref,valid_until):
         if body['recovery_sequence']<=2:
             return custody.N01S3Fence.independent_recovery_authorization(self,body,ref,valid_until)
-        if self.restart_profile is not None and body['recovery_sequence']==3:
+        if self.restart_profile is not None and body['recovery_sequence'] in (3,5):
             from ash import g3_n01_owner_restart as restart
-            return restart.historical_authorization(self,body,ref,valid_until)
+            selected=restart.configuration(self.restart_profile)
+            if body['recovery_sequence']<selected.SEQUENCE:
+                return selected.historical_authorization(self,body,ref,valid_until)
         enrolled=self.current_source()
         require(body['incarnation']=='n01-owner-'+enrolled.value['process_nonce'][:32])
         base=custody.APPROVALS+f'owner-controller-recovery-v{self.custody_revision}/'
         if self.restart_profile is not None:
             from ash import g3_n01_owner_restart as restart
-            require(body['recovery_sequence']==5 and body['authority_epoch']==4
+            restart=restart.configuration(self.restart_profile)
+            require(body['recovery_sequence']==restart.SEQUENCE and body['authority_epoch']==restart.EPOCH
                 and body['previous_checkpoint']==restart.HEAD4)
             base=restart.RECOVERY_PREFIX
         prefix=base+f"{body['recovery_sequence']:020d}/"
@@ -245,7 +255,7 @@ class OwnerMembershipCommit:
             history=append(candidate.checkpoint,custody.reference(self.expected_head),valid_until=self.valid_until)
             require(history.checkpoints[-1]==candidate.checkpoint)
             self.ledger.finalize(candidate,independent_checkpoint=history.checkpoints[-1])
-            history=self.fence.read(valid_until=self.valid_until)
+            history=self.fence.gate_reader().read(valid_until=self.valid_until)
             require(history.checkpoints[-1]==candidate.checkpoint)
             result=self.ledger.observe_current(independent_checkpoint=history.checkpoints[-1])
             self.retired=True

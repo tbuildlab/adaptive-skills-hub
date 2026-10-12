@@ -105,8 +105,9 @@ class OwnerIngress:
         else:require(0<=time.monotonic()-self.__monotonic<120)
         require(self.__client.sync_client._session is self.__transport
                 and self.__client.sync_client.project_id==owner.PROJECT)
-        enrollment=self.__fence.current_source()
-        history=self.__fence.read(valid_until=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc))
+        fence=self.__fence.gate_reader()
+        enrollment=fence.current_source()
+        history=fence.read(valid_until=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc))
         self.__ledger.observe_current(independent_checkpoint=history.checkpoints[-1])
         rows=[control.decode(row.value) for row in history.states[-1].checked.rows]
         root=next(value for value in rows if value['family']=='root')

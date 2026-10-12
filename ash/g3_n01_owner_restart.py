@@ -30,10 +30,22 @@ OLD_ENV=dict(VERCEL_ENV='production',VERCEL_PROJECT_ID=source.HOST_PROJECT,
 BINDING_ID='n01-owner-binding-restart-v1'
 REGISTRATION_ID='n01-owner-only-source-restart-v1'
 SOURCE_ID='n01-owner-enrollment-restart-v1'
+EPOCH=4
+SEQUENCE=5
+GENERATION=2
 
 
 def require_profile(value):
-    require(value is None or value==PROFILE and type(value) is str)
+    require(value is None or type(value) is str and value in (PROFILE,'OWNER_SDK_REPAIR_FORWARD_V1'))
+
+
+def configuration(value):
+    require_profile(value)
+    if value=='OWNER_SDK_REPAIR_FORWARD_V1':
+        from ash import g3_n01_owner_sdk_restart
+        return g3_n01_owner_sdk_restart
+    from ash import g3_n01_owner_restart
+    return g3_n01_owner_restart
 
 
 def historical_authorization(fence,body,ref,valid_until):

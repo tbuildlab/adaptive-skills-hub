@@ -91,6 +91,19 @@ def form(raw,allowed):
     require(set(value)==set(allowed));return value
 
 
+def native_identity_client():
+    """Private native construction only; no auth call or credential projection."""
+    from stytch import Client
+    require(os.environ.get('STYTCH_PROJECT_ID')==source.PROJECT)
+    transport=identity_transport.BoundedStytchSession()
+    try:
+        client=Client(project_id=source.PROJECT,secret=os.environ['STYTCH_SECRET'],environment='test',sync_session=transport)
+        require(client.sync_client._session is transport and client.sync_client.project_id==source.PROJECT)
+        return client,transport
+    except Exception:
+        transport.close();raise ValueError('N01_NATIVE_IDENTITY_BOOTSTRAP_DENY') from None
+
+
 class OwnerController:
     """A fixed lifecycle, not a workflow engine. Unknown is terminal quarantine."""
     def __init__(self,header,environment,artifact_sha):
@@ -103,12 +116,15 @@ class OwnerController:
         self.__last_wall=int(time.time()*1000);self.__last_monotonic=time.monotonic()
         self.__source_proposal=None;self.__events=[]
         try:
+            if RESTART_PROFILE=='OWNER_SDK_REPAIR_FORWARD_V1':
+                client,identity=native_identity_client();identity.close();client=None
             self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall)
             if RESTART_PROFILE is None:
                 self.__history=membership.MembershipFence(self.__transport.custody,boot.storage_scope(),profile='PRODUCTION').read(valid_until=UNTIL)
             else:
                 from ash import g3_n01_owner_restart as restart
                 restart.require_profile(RESTART_PROFILE)
+                restart=restart.configuration(RESTART_PROFILE)
                 self.__history=restart.HistoricalOwnerFence(self.__transport.custody).read(valid_until=UNTIL)
             self._ledger().observe_current(independent_checkpoint=self.__history.checkpoints[-1])
             self.__candidate=(state.prepare_empty_recovery(self.__history,process_nonce=boot.PROCESS_NONCE,now_ms=self._time())
@@ -146,7 +162,7 @@ class OwnerController:
         original=boot.storage_scope()
         if RESTART_PROFILE is not None:
             from ash import g3_n01_owner_restart as restart
-            original=restart.scope()
+            original=restart.configuration(RESTART_PROFILE).scope()
         scope=replace(original,admin_checkpoint_ids=original.admin_checkpoint_ids+
             (custody.reference(self.__candidate.checkpoint)['id'],))
         return persistence.OwnerMembershipFence(self.__transport.custody,scope,public_review=self.__review,
@@ -202,6 +218,7 @@ class OwnerController:
         require(len(own)==1 and hmac.compare_digest(own[0],self.__maintenance));self._time()
     def maintain(self,operation,headers,header):
         self.__maintenance_gate(headers)
+        stage='MAINTENANCE_PHASE'
         try:
             if operation=='recover':
                 require(self.__phase=='SOURCE_PROPOSAL_READY_NONE')
@@ -234,12 +251,13 @@ class OwnerController:
                     require(current==self.__enrolled)
                 # Credential use stays in the protected native SDK. No value
                 # is returned, inspected by the operator or written to evidence.
-                from stytch import Client
-                client=Client(project_id=source.PROJECT,secret=os.environ['STYTCH_SECRET'],environment='test')
-                require(os.environ.get('STYTCH_PROJECT_ID')==source.PROJECT)
-                transport=identity_transport.BoundedStytchSession();client.sync_client._session=transport
+                stage='NATIVE_IDENTITY_BOOTSTRAP'
+                client,transport=native_identity_client()
+                stage='DELIVERY_BINDING'
                 require(DELIVERY_EMAIL_SHA is not None)
+                stage='CURRENT_CUSTODY_READ'
                 fence,_=self._storage()
+                stage='CURRENT_OWNER_INGRESS'
                 self.__owner=ingress.OwnerIngress(client,transport,fence,self._ledger(),delivery_email_sha256=DELIVERY_EMAIL_SHA)
                 self.__phase='OWNER_LOGIN_READY_NONE';self._event('NATIVE_CURRENT_OWNER_LOGIN_READY_NONE')
             elif operation=='revoke':
@@ -252,6 +270,9 @@ class OwnerController:
             else:require(False)
             return self.__phase
         except Exception:
+            if operation=='login':
+                print(json.dumps({'n01_owner_bootstrap_denial':dict(stage=stage,authority='NONE',real_admission='NO',
+                    ddb_attempts=self.__transport.ddb_attempts,s3_attempts=self.__transport.s3_attempts)},sort_keys=True),flush=True)
             self._quarantine();raise ValueError('N01_NATIVE_OWNER_MAINTENANCE_QUARANTINE') from None
     def write_login(self,handler):
         require(self.__phase=='OWNER_LOGIN_READY_NONE');self.__owner.write_form(handler)

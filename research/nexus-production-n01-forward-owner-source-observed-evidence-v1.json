@@ -1,0 +1,134 @@
+{
+  "schema_version": "nexus.g3.n01.forward-owner-source-observation.v1",
+  "source_head": "da67787b56309c4ceeffa67bc7bebb90f97491bb",
+  "native_deployment": {
+    "id": "dpl_95CToN5wALoGF64y1kh1xg9Jwf5j",
+    "url": "nexus-g3-qual-i7qbhdrqb-tdy0225.vercel.app",
+    "readyState": "READY",
+    "projectId": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+    "target": "production",
+    "createdAt": 1791787218983,
+    "requested_region_optimization": "APPLIED_SIN1_OBSERVED",
+    "function_regions": [
+      "sin1"
+    ],
+    "source_identity_matches": 40,
+    "artifact_inventory_sha256": "9867c4d90951083fe65b8cc4f222fbdb1acb0d62f1dae38b1506da594d1a5834",
+    "native_sso_protection": "all_except_custom_domains"
+  },
+  "r_custody": {
+    "authority": "NONE",
+    "real_admission": "NO",
+    "s3_attempts": 10,
+    "schema_version": "nexus.g3.n01.owner-source-r-observation.v1",
+    "stage": "COMPLETE",
+    "status": "OWNER_SOURCE_RECOVERY_INDEPENDENTLY_RETAINED",
+    "versions": [
+      {
+        "bytes": 1288,
+        "key": "qualification/n01/v1/approvals/current-source-controller-restart-v1/registration.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-19T06:43:46+00:00",
+        "sha256": "e70f8e299e58f1c818f486f79505f7916bf21521bdaafba700ac8f21fdcc2641",
+        "version_id": "oTYftDXZmpjvOhaBzRqXFfLfyej1suPA"
+      },
+      {
+        "bytes": 984,
+        "key": "qualification/n01/v1/approvals/owner-controller-recovery-restart-v1/00000000000000000005/authorization.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-19T06:43:47+00:00",
+        "sha256": "20439af4506af3bd3ba593a7522c8c54afb44d6e864f2712299d04d0a195beb6",
+        "version_id": "_6oviU.VaVOnyuATJeG3nNJ0jLAQ7XEi"
+      }
+    ]
+  },
+  "finalized_events": [
+    {
+      "n01_owner_controller_observation": {
+        "artifact_inventory_sha256": "e10084dedca1ad18b5fcea4d6a0414a4b8ebc3670e0013df251efd71c4eb0eb5",
+        "authority": "NONE",
+        "checkpoint": {
+          "body_sha256": "0492f25ce2c1b930ed5c4f5e9b2b0956716abb09b4cd90d7f84bb606097baabd",
+          "id": "nexus.g3.production.recovery-checkpoint.v2:7d0f02227d3aece0d007685e805f0fd2c936ee777bc88e86aae50e8fbc994cc9"
+        },
+        "ddb_attempts": 68,
+        "deployment_host": "nexus-g3-qual-i7qbhdrqb-tdy0225.vercel.app",
+        "deployment_id": "dpl_95CToN5wALoGF64y1kh1xg9Jwf5j",
+        "event": "NATIVE_OWNER_SOURCE_MEMBERSHIP_FINALIZED_NONE",
+        "no_automatic_redispatch": "REQUIRED",
+        "observed_at_ms": 1791787605400,
+        "phase": "OWNER_SOURCE_ENROLLED_NONE",
+        "process_nonce": "62f7f9dde781cac085f0a369e9aeed2cade58205abce8005fcd060525e682b97",
+        "real_admission": "NO",
+        "s3_attempts": 1615
+      }
+    },
+    {
+      "n01_owner_controller_observation": {
+        "artifact_inventory_sha256": "e10084dedca1ad18b5fcea4d6a0414a4b8ebc3670e0013df251efd71c4eb0eb5",
+        "authority": "NONE",
+        "checkpoint": {
+          "body_sha256": "138c264277fda62f78d15e308878ec566096dc36497819f5686f0706a9454ca3",
+          "id": "nexus.g3.production.recovery-checkpoint.v2:e41705595718ee3bdc71137b6736f6a49f0abdc303e8bf7cbf7a230eb821a650"
+        },
+        "ddb_attempts": 30,
+        "deployment_host": "nexus-g3-qual-i7qbhdrqb-tdy0225.vercel.app",
+        "deployment_id": "dpl_95CToN5wALoGF64y1kh1xg9Jwf5j",
+        "event": "NATIVE_OWNER_RECOVERY_FINALIZED_NONE",
+        "no_automatic_redispatch": "REQUIRED",
+        "observed_at_ms": 1791787538485,
+        "phase": "RECOVERED_OWNER_LINEAGE_NONE",
+        "process_nonce": "62f7f9dde781cac085f0a369e9aeed2cade58205abce8005fcd060525e682b97",
+        "real_admission": "NO",
+        "s3_attempts": 741
+      }
+    },
+    {
+      "n01_owner_controller_observation": {
+        "artifact_inventory_sha256": "e10084dedca1ad18b5fcea4d6a0414a4b8ebc3670e0013df251efd71c4eb0eb5",
+        "authority": "NONE",
+        "checkpoint": {
+          "body_sha256": "0223d350fe6852b72bfa632c6c88acdb266ba6855aa5e6ec7d9e5aca7929bb71",
+          "id": "nexus.g3.production.recovery-checkpoint.v2:75e56d2752a0775bab644785d609542fcbd27e37db120ac60b369bb6c1edbc63"
+        },
+        "ddb_attempts": 2,
+        "deployment_host": "nexus-g3-qual-i7qbhdrqb-tdy0225.vercel.app",
+        "deployment_id": "dpl_95CToN5wALoGF64y1kh1xg9Jwf5j",
+        "event": "NATIVE_OWNER_SOURCE_PROPOSAL_READY_NONE",
+        "no_automatic_redispatch": "REQUIRED",
+        "observed_at_ms": 1791787286403,
+        "phase": "SOURCE_PROPOSAL_READY_NONE",
+        "process_nonce": "62f7f9dde781cac085f0a369e9aeed2cade58205abce8005fcd060525e682b97",
+        "real_admission": "NO",
+        "s3_attempts": 107
+      }
+    }
+  ],
+  "first_login_request": {
+    "requestPath": "/api/n01/login",
+    "requestMethod": "POST",
+    "responseStatusCode": 403,
+    "timestamp": 1791787745563
+  },
+  "login_disposition": {
+    "controller_present": true,
+    "probe_used": true,
+    "header_guard_passed": true,
+    "origin_is_exact": true,
+    "phase": "QUARANTINE",
+    "owner_login_ready_event_observed": false,
+    "owner_authentication": "NOT_PERFORMED",
+    "first_failure_exact_runtime_exception": "NOT_LOGGED",
+    "deterministic_defect": "STYTCH_READ_ONLY_SESSION_PROPERTY_ASSIGNMENT",
+    "local_real_sdk_reproduction": "ATTRIBUTE_ERROR",
+    "counters_after_failure": {
+      "ddb_attempts": 68,
+      "s3_attempts": 1615
+    },
+    "later_rejected_requests_origin": "UNKNOWN"
+  },
+  "authority": "NONE",
+  "real_admission": "NO",
+  "invoice_cost": "UNKNOWN",
+  "n01_status": "INCOMPLETE"
+}

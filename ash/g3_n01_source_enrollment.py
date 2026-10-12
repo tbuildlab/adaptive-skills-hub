@@ -101,7 +101,7 @@ def read_protected_source(client,storage_registration,review,*,native_environmen
         if restart_profile is not None:
             from ash import g3_n01_owner_restart as restart
             restart.require_profile(restart_profile)
-            prefix=restart.SOURCE_PREFIX
+            prefix=restart.configuration(restart_profile).SOURCE_PREFIX
         scope=replace(storage_registration,prefix=prefix)
         fence=custody.N01S3Fence(client,scope,max_attempts=4)
         inventory=fence.inventory('')
