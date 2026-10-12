@@ -48,8 +48,18 @@ def measure_artifact(root,expected_manifest_sha256):
         except OSError:raise ValueError('N01_ARTIFACT_FILE_UNAVAILABLE:'+name) from None
         if not (type(entry['bytes']) is int and len(data)==entry['bytes']
                 and hashlib.sha256(data).hexdigest()==entry['sha256']):
-            raise ValueError('N01_ARTIFACT_FILE_MISMATCH:'+name)
-        measured[name]=entry
+            if name!='vercel.json':raise ValueError('N01_ARTIFACT_FILE_MISMATCH:'+name)
+            # Native build serializes its own config. Only byte formatting may
+            # differ: duplicate members or any semantic change still deny.
+            require(len(data)<=8192)
+            def pairs(items):
+                value={}
+                for key,child in items:require(key not in value);value[key]=child
+                return value
+            normalized=codec.canonical(json.loads(data,object_pairs_hook=pairs))
+            if len(normalized)!=entry['bytes'] or codec.digest(normalized)!=entry['sha256']:
+                raise ValueError('N01_ARTIFACT_CONFIG_SEMANTIC_MISMATCH')
+        measured[name]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
     for name in ('api/n01-controller.py','source-inventory.json'):
         try:data=(root/name).read_bytes()
         except OSError:raise ValueError('N01_ARTIFACT_FILE_UNAVAILABLE:'+name) from None

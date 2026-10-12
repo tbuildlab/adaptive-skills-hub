@@ -88,6 +88,19 @@ class ControllerBootstrapTests(unittest.TestCase):
             raw=b'{"../outside":{"bytes":0,"sha256":""}}'
             (root/'source-inventory.json').write_bytes(raw)
             with self.assertRaises(ValueError):boot.measure_artifact(root,boot.hashlib.sha256(raw).hexdigest())
+    def test_native_json_formatting_is_measured_and_semantic_change_denies(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            metadata=builder.build(Path(tmp));root=Path(tmp)/'source'
+            expected=metadata['files']['source-inventory.json']['sha256']
+            config=json.loads((root/'vercel.json').read_bytes())
+            (root/'vercel.json').write_text(json.dumps(config,indent=2)+'\n')
+            self.assertNotEqual(boot.measure_artifact(root,expected),metadata['artifact_inventory_sha256'])
+            config['functions']['api/n01-controller.py']['maxDuration']=61
+            (root/'vercel.json').write_text(json.dumps(config,indent=2)+'\n')
+            with self.assertRaisesRegex(ValueError,'N01_ARTIFACT_CONFIG_SEMANTIC_MISMATCH'):
+                boot.measure_artifact(root,expected)
+            (root/'vercel.json').write_bytes(b'{"functions":{},"functions":{}}')
+            with self.assertRaises(ValueError):boot.measure_artifact(root,expected)
     def test_public_transport_mutation_or_wrong_prefix_denies_and_unknown_retires(self):
         client=Mock();native=boot.PublicCustodyClient(client)
         kwargs={'Bucket':'nexus-d03-custody-862902859484-ap-southeast-1-v1','ExpectedBucketOwner':'862902859484'}
