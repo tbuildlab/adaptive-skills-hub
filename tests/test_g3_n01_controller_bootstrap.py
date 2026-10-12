@@ -3,6 +3,7 @@ from contextlib import redirect_stdout
 from email.message import Message
 from io import BytesIO,StringIO
 import json
+import ast
 from pathlib import Path
 import tempfile
 import unittest
@@ -69,6 +70,10 @@ class ControllerBootstrapTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             metadata=builder.build(Path(tmp));root=Path(tmp)/'source'
             expected=metadata['files']['source-inventory.json']['sha256']
+            loader=ast.parse((root/'api/n01-controller.py').read_text())
+            handler=next(node for node in loader.body if isinstance(node,ast.ClassDef))
+            self.assertEqual(handler.name,'handler')
+            self.assertIn('BaseHTTPRequestHandler',[base.id for base in handler.bases if isinstance(base,ast.Name)])
             self.assertEqual(boot.measure_artifact(root,expected),metadata['artifact_inventory_sha256'])
             (root/'ash/g3_n01_public_review.py').write_bytes(b'changed')
             with self.assertRaises(ValueError):boot.measure_artifact(root,expected)

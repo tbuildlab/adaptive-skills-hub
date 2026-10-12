@@ -36,10 +36,11 @@ def build(destination):
     manifest=codec.canonical(inventory)
     files['source-inventory.json']=manifest
     files['api/n01-controller.py']=(
-        'from pathlib import Path\nfrom scripts import g3_n01_controller_bootstrap as service\n'
+        'from pathlib import Path\nfrom http.server import BaseHTTPRequestHandler\n'
+        'from scripts import g3_n01_controller_bootstrap as service\n'
         "service.ARTIFACT_ROOT=Path(__file__).resolve().parents[1]\n"
         'service.EXPECTED_MANIFEST_SHA='+repr(codec.digest(manifest))+'\n'
-        'handler=service.handler\n').encode()
+        'class handler(service.handler,BaseHTTPRequestHandler):\n    pass\n').encode()
     complete={name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())}
     digest=codec.digest(codec.canonical(complete))
     destination.mkdir(parents=True,exist_ok=True)

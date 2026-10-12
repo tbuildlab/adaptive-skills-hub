@@ -2024,8 +2024,8 @@
     "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
   },
   "scripts/build_g3_n01_controller_bootstrap.py": {
-    "bytes": 4153,
-    "sha256": "a907101dda5cc2e1b60f250ce0028e8c0a31e8c958c0bf64065faff691eca63f"
+    "bytes": 4253,
+    "sha256": "4f01024bf71a289db9fa0d4b195382454b5febf92c8267d5fe6f2fd5cf24ccb5"
   },
   "scripts/build_g3_n01_public_review_custody.py": {
     "bytes": 4963,
@@ -2288,8 +2288,8 @@
     "sha256": "989ea7064e0a5d817281c81e6cc8f6528dc7637e958860f0f9147cd9fcea1bc2"
   },
   "tests/test_g3_n01_controller_bootstrap.py": {
-    "bytes": 7250,
-    "sha256": "d1b2e9c42acc3883b6876733ea5fae07dbe44e9fa708e9a8cb76a4e3e10d01cb"
+    "bytes": 7592,
+    "sha256": "6c92eed99c31807ef651aad5bc9709b6a794e0f4c9a13a52956d82a9831dfd27"
   },
   "tests/test_g3_n01_live_budget.py": {
     "bytes": 2439,
