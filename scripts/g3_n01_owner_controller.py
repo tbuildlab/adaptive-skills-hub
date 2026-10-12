@@ -46,6 +46,7 @@ POST_PATHS=frozenset(('/api/n01/recover','/api/n01/enroll','/api/n01/login','/ap
 GET_PATHS=frozenset(('/api/n01-controller','/api/n01/start','/api/n01/login','/api/n01/confirm','/api/n01/status'))
 UNTIL=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc)
 CUSTODY_REVISION=1
+RESTART_PROFILE=None
 
 
 def canonical_route(path):
@@ -103,9 +104,15 @@ class OwnerController:
         self.__source_proposal=None;self.__events=[]
         try:
             self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall)
-            self.__history=membership.MembershipFence(self.__transport.custody,boot.storage_scope(),profile='PRODUCTION').read(valid_until=UNTIL)
+            if RESTART_PROFILE is None:
+                self.__history=membership.MembershipFence(self.__transport.custody,boot.storage_scope(),profile='PRODUCTION').read(valid_until=UNTIL)
+            else:
+                from ash import g3_n01_owner_restart as restart
+                restart.require_profile(RESTART_PROFILE)
+                self.__history=restart.HistoricalOwnerFence(self.__transport.custody).read(valid_until=UNTIL)
             self._ledger().observe_current(independent_checkpoint=self.__history.checkpoints[-1])
-            self.__candidate=state.prepare_empty_recovery(self.__history,process_nonce=boot.PROCESS_NONCE,now_ms=self._time())
+            self.__candidate=(state.prepare_empty_recovery(self.__history,process_nonce=boot.PROCESS_NONCE,now_ms=self._time())
+                if RESTART_PROFILE is None else restart.prepare_forward_recovery(self.__history,process_nonce=boot.PROCESS_NONCE,now_ms=self._time()))
             now=self._time()
             value=dict(schema_version='nexus.g3.n01.current-source-enrollment.v1',purpose='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY',
                 authority_mode=records.MODE,authority_config_sha256=source.CONFIG,authority_instance=custody.INSTANCE,
@@ -136,10 +143,15 @@ class OwnerController:
     def _ledger(self):
         return DelegatedDynamoReservations(self.__transport.primary,table_arn=native.TABLE,instance=custody.INSTANCE,max_attempts=256)
     def _fence(self):
-        scope=replace(boot.storage_scope(),admin_checkpoint_ids=boot.storage_scope().admin_checkpoint_ids+
+        original=boot.storage_scope()
+        if RESTART_PROFILE is not None:
+            from ash import g3_n01_owner_restart as restart
+            original=restart.scope()
+        scope=replace(original,admin_checkpoint_ids=original.admin_checkpoint_ids+
             (custody.reference(self.__candidate.checkpoint)['id'],))
         return persistence.OwnerMembershipFence(self.__transport.custody,scope,public_review=self.__review,
-            native_environment=self.__environment,artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,max_attempts=1000,custody_revision=CUSTODY_REVISION)
+            native_environment=self.__environment,artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,max_attempts=1000,custody_revision=CUSTODY_REVISION,
+            **({} if RESTART_PROFILE is None else {'restart_profile':RESTART_PROFILE}))
     def _storage(self):
         fence=self._fence();history=fence.read(valid_until=UNTIL)
         self._ledger().observe_current(independent_checkpoint=history.checkpoints[-1])
@@ -199,14 +211,16 @@ class OwnerController:
                     self.__transport.close();self.__transport=native.NativeTransport(header);self.__lease_started=self._time()
                 self.__phase='RECOVER_UNKNOWN'
                 self.__enrolled=self.__transport.enable_owner_storage(self.__review,native_environment=self.__environment,
-                    artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION)
+                    artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION,
+                    **({} if RESTART_PROFILE is None else {'restart_profile':RESTART_PROFILE}))
                 require(self.__enrolled==self.__source_proposal)
                 self._commit(self.__candidate,{})
                 self.__phase='RECOVERED_OWNER_LINEAGE_NONE';self._event('NATIVE_OWNER_RECOVERY_FINALIZED_NONE')
             elif operation=='enroll':
                 require(self.__phase=='RECOVERED_OWNER_LINEAGE_NONE');self.__phase='ENROLL_UNKNOWN'
                 _,history=self._storage()
-                candidate,objects=state.prepare_owner_enrollment(history,self.__enrolled,now_ms=self._time())
+                candidate,objects=state.prepare_owner_enrollment(history,self.__enrolled,now_ms=self._time(),
+                    **({} if RESTART_PROFILE is None else {'restart_profile':RESTART_PROFILE}))
                 self._commit(candidate,objects)
                 self.__phase='OWNER_SOURCE_ENROLLED_NONE';self._event('NATIVE_OWNER_SOURCE_MEMBERSHIP_FINALIZED_NONE')
             elif operation=='login':
@@ -215,7 +229,8 @@ class OwnerController:
                     require(self.__owner is None and self.__current is None)
                     self.__transport.close();self.__transport=native.NativeTransport(header);self.__lease_started=self._time()
                     current=self.__transport.enable_owner_storage(self.__review,native_environment=self.__environment,
-                        artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION)
+                        artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION,
+                        **({} if RESTART_PROFILE is None else {'restart_profile':RESTART_PROFILE}))
                     require(current==self.__enrolled)
                 # Credential use stays in the protected native SDK. No value
                 # is returned, inspected by the operator or written to evidence.

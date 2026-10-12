@@ -36,7 +36,7 @@ source binds the actual Owner-only writer. Owner RECOVER additionally needs one
 exact R-only authorization per checkpoint; restart source mismatch denies.
 """
     def __init__(self,client,registration,*,public_review,native_environment,
-                 artifact_inventory_sha256,process_nonce,max_attempts=1000,custody_revision=1):
+                 artifact_inventory_sha256,process_nonce,max_attempts=1000,custody_revision=1,restart_profile=None):
         super().__init__(client,registration,profile='PRODUCTION',max_attempts=max_attempts)
         require(type(public_review) is review.PublicReview)
         self.public_review=public_review
@@ -45,6 +45,8 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
         self.process_nonce=process_nonce
         require(type(custody_revision) is int and custody_revision in (1,2,3))
         self.custody_revision=custody_revision
+        from ash import g3_n01_owner_restart as restart
+        restart.require_profile(restart_profile);self.restart_profile=restart_profile
         self.retired=False
         self.__write_plan=None;self.__write_used=False
     def __repr__(self):return 'OwnerMembershipFence(authority=NONE)'
@@ -58,7 +60,8 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
         try:
             return source.read_protected_source(self.client,self.registration,self.public_review,
                 native_environment=self.native_environment,artifact_inventory_sha256=self.artifact_inventory_sha256,
-                process_nonce=self.process_nonce,now_ms=int(time.time()*1000),custody_revision=self.custody_revision)
+                process_nonce=self.process_nonce,now_ms=int(time.time()*1000),custody_revision=self.custody_revision,
+                **({} if self.restart_profile is None else {'restart_profile':self.restart_profile}))
         except Exception:
             self.retired=True;self.quarantined=True
             raise ValueError('N01_OWNER_SOURCE_QUARANTINE') from None
@@ -98,9 +101,17 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
     def independent_recovery_authorization(self,body,ref,valid_until):
         if body['recovery_sequence']<=2:
             return custody.N01S3Fence.independent_recovery_authorization(self,body,ref,valid_until)
+        if self.restart_profile is not None and body['recovery_sequence']==3:
+            from ash import g3_n01_owner_restart as restart
+            return restart.historical_authorization(self,body,ref,valid_until)
         enrolled=self.current_source()
         require(body['incarnation']=='n01-owner-'+enrolled.value['process_nonce'][:32])
         base=custody.APPROVALS+f'owner-controller-recovery-v{self.custody_revision}/'
+        if self.restart_profile is not None:
+            from ash import g3_n01_owner_restart as restart
+            require(body['recovery_sequence']==5 and body['authority_epoch']==4
+                and body['previous_checkpoint']==restart.HEAD4)
+            base=restart.RECOVERY_PREFIX
         prefix=base+f"{body['recovery_sequence']:020d}/"
         remaining=self.max_attempts-self.attempts
         require(remaining>=4)

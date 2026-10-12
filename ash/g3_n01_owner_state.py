@@ -64,7 +64,7 @@ def prepare_empty_recovery(history,*,process_nonce,now_ms):
     return _prepare(history,rows,objects={},group='T9',transition='RECOVER')
 
 
-def prepare_owner_enrollment(history,enrollment,*,now_ms):
+def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
     """Exact R-read Owner/source membership, no current authentication assertion."""
     require(type(enrollment) is source.EnrolledSource)
     value=enrollment.value
@@ -80,12 +80,32 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms):
     rows,root=_advance(history,now_ms=now_ms)
     require(root['quarantine']=='OPEN' and root['incarnation']=='n01-owner-'+value['process_nonce'][:32])
     require(root['authority_config_sha256']==value['authority_config_sha256'])
-    require(all(row['family'] in ('root','revocation','recovery') for row in rows))
-    rows.append(dict(schema_version=control.VERSION,family='binding',revision=1,binding_id=BINDING_ID,
+    binding_id,registration_id,source_id=BINDING_ID,REGISTRATION_ID,'n01-owner-enrollment-v1'
+    generation=1
+    if restart_profile is None:
+        require(all(row['family'] in ('root','revocation','recovery') for row in rows))
+    else:
+        from ash import g3_n01_owner_restart as restart
+        restart.require_profile(restart_profile)
+        require(root['authority_epoch']==4 and root['recovery_sequence']==6
+            and control.decode(history.checkpoints[-1])['transition_kind']=='RECOVER'
+            and control.decode(history.checkpoints[-1])['previous_checkpoint']==restart.HEAD4)
+        require(all(row['family'] in ('root','revocation','recovery','binding','registration','source') for row in rows))
+        bindings=[row for row in rows if row['family']=='binding']
+        registrations=[row for row in rows if row['family']=='registration']
+        sources=[row for row in rows if row['family']=='source']
+        require(len(bindings)==len(registrations)==len(sources)==1
+            and bindings[0]['binding_id']==BINDING_ID and bindings[0]['state']=='CURRENT'
+            and registrations[0]['registration_id']==REGISTRATION_ID and registrations[0]['state']=='CURRENT'
+            and sources[0]['source_id']=='n01-owner-enrollment-v1' and sources[0]['state']=='RETIRED')
+        for row in (*bindings,*registrations):row.update(revision=row['revision']+1,state='RETIRED')
+        binding_id,registration_id,source_id=restart.BINDING_ID,restart.REGISTRATION_ID,restart.SOURCE_ID
+        generation=2
+    rows.append(dict(schema_version=control.VERSION,family='binding',revision=1,binding_id=binding_id,
         principal=value['principal'],owner_generation=1,workspace_id=WORKSPACE,project_id=PROJECT,
-        binding_generation=1,state='CURRENT'))
+        binding_generation=generation,state='CURRENT'))
     rows.append(dict(schema_version=control.VERSION,family='registration',revision=1,
-        registration_id=REGISTRATION_ID,subject_kind='owner-context',target_revision='n01-owner-projection-v1',
+        registration_id=registration_id,subject_kind='owner-context',target_revision='n01-owner-projection-v1',
         dispatch_revision='n01-no-dispatch-v1',adapter_revision='n01-owner-controller-v1',
         environment_id='vercel-nexus-g3-qual',environment_generation=value['application_generation'],
         target_contract_sha256=TARGET_CONTRACT,dispatch_contract_sha256=NO_DISPATCH_CONTRACT,
@@ -98,10 +118,28 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms):
         artifact_inventory_sha256=value['artifact_inventory_sha256'],observed_at_ms=now_ms,
         current_owner_authentication='NOT_YET_OBSERVED',authority='NONE',real_admission='NO'))
     digest=control.digest(assertion)
-    rows.append(dict(schema_version=control.VERSION,family='source',revision=1,source_id='n01-owner-enrollment-v1',
-        evidence_ref=dict(ref='n01-r-owner-enrollment-v1',sha256=enrollment.enrollment_sha256),
-        assertion_sha256=digest,kind='OWNER_ENROLLMENT',principal=value['principal'],binding_id=BINDING_ID,
-        context_id=None,registration_id=REGISTRATION_ID,observed_at_ms=now_ms,expires_at_ms=value['expires_at_ms'],
+    rows.append(dict(schema_version=control.VERSION,family='source',revision=1,source_id=source_id,
+        evidence_ref=dict(ref='n01-r-owner-enrollment-v1' if generation==1 else 'n01-r-owner-enrollment-restart-v1',sha256=enrollment.enrollment_sha256),
+        assertion_sha256=digest,kind='OWNER_ENROLLMENT',principal=value['principal'],binding_id=binding_id,
+        context_id=None,registration_id=registration_id,observed_at_ms=now_ms,expires_at_ms=value['expires_at_ms'],
         conclusion='PASS',state='CURRENT'))
     objects={enrollment.enrollment_sha256:enrollment.canonical_bytes,digest:assertion}
     return _prepare(history,rows,objects=objects,group='T5',transition='INVALIDATE'),objects
+
+
+def current_binding_ids(rows):
+    """Only the original or explicitly retired forward qualification lineage."""
+    bindings=[row for row in rows if row['family']=='binding' and row['state']=='CURRENT']
+    registrations=[row for row in rows if row['family']=='registration' and row['state']=='CURRENT']
+    require(len(bindings)==len(registrations)==1)
+    pair=(bindings[0]['binding_id'],registrations[0]['registration_id'])
+    root=next(row for row in rows if row['family']=='root')
+    if pair==(BINDING_ID,REGISTRATION_ID):
+        require(root['authority_epoch']==3 and bindings[0]['binding_generation']==1)
+    else:
+        from ash import g3_n01_owner_restart as restart
+        require(pair==(restart.BINDING_ID,restart.REGISTRATION_ID)
+            and root['authority_epoch']==4 and bindings[0]['binding_generation']==2)
+        require(any(row['family']=='binding' and row['binding_id']==BINDING_ID and row['state']=='RETIRED' for row in rows)
+            and any(row['family']=='registration' and row['registration_id']==REGISTRATION_ID and row['state']=='RETIRED' for row in rows))
+    return pair

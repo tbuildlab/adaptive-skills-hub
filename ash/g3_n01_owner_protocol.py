@@ -22,6 +22,7 @@ def _record(body,objects):
 
 
 def _proof(rows,objects,*,name,kind,body,enrollment,context_id,now_ms,until_ms):
+    binding_id,registration_id=state.current_binding_ids(rows)
     raw=c.canonical(body);sha=c.digest(raw);objects[sha]=raw
     ref=dict(ref=name,sha256=sha)
     assertion=c.canonical(dict(schema_version='nexus.g3.n01.native-source-observation.v1',
@@ -31,7 +32,7 @@ def _proof(rows,objects,*,name,kind,body,enrollment,context_id,now_ms,until_ms):
     digest=c.digest(assertion);objects[digest]=assertion
     rows.append(dict(schema_version=c.VERSION,family='source',revision=1,source_id=name,
         evidence_ref=ref,assertion_sha256=digest,kind=kind,principal=enrollment.value['principal'],
-        binding_id=state.BINDING_ID,context_id=context_id,registration_id=state.REGISTRATION_ID,
+        binding_id=binding_id,context_id=context_id,registration_id=registration_id,
         observed_at_ms=now_ms,expires_at_ms=until_ms,conclusion='PASS',state='CURRENT'))
     return ref
 
@@ -42,8 +43,9 @@ def _enrolled(rows,root,enrollment,now_ms):
     require(root['quarantine']=='OPEN' and root['authority_config_sha256']==source.CONFIG
         and root['incarnation']=='n01-owner-'+value['process_nonce'][:32])
     require(review.FROM_MS<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=review.UNTIL_MS)
-    bound=next(row for row in rows if row['family']=='binding' and row['binding_id']==state.BINDING_ID)
-    reg=next(row for row in rows if row['family']=='registration' and row['registration_id']==state.REGISTRATION_ID)
+    binding_id,registration_id=state.current_binding_ids(rows)
+    bound=next(row for row in rows if row['family']=='binding' and row['binding_id']==binding_id)
+    reg=next(row for row in rows if row['family']=='registration' and row['registration_id']==registration_id)
     require(bound['state']==reg['state']=='CURRENT' and bound['principal']==value['principal'])
     require(reg['purpose']=='PRODUCTION' and reg['enforcement_sha256']==value['artifact_inventory_sha256']
         and reg['n02_revision']==page.TEMPLATE_REVISION and reg['issuer_ref']=='n01-owner-only')
@@ -77,7 +79,7 @@ def prepare_challenge(history,enrollment,projection,*,deadline_ms,nonce,now_ms):
     context=dict(context_id=context_id,context_generation=1,authenticated_at_ms=projection.authenticated_at_ms,
         context_expires_at_ms=until,identity_evidence=identity,session_evidence=session)
     rows.append(dict(schema_version=c.VERSION,family='context',revision=1,**context,
-        binding_id=state.BINDING_ID,binding_generation=binding['binding_generation'],owner_generation=binding['owner_generation'],
+        binding_id=binding['binding_id'],binding_generation=binding['binding_generation'],owner_generation=binding['owner_generation'],
         authority_epoch=root['authority_epoch'],incarnation=root['incarnation'],provider_project=projection.provider_project,
         provider_user=projection.provider_user,provider_session=projection.provider_session,
         expires_at_ms=until,state='CURRENT'))

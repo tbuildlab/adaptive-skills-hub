@@ -13,12 +13,15 @@ ROOT=Path(__file__).resolve().parents[1]
 OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.py','ash/g3_n01_retained_state.py',
     'ash/g3_n01_owner_state.py','ash/g3_n01_owner_protocol.py','ash/g3_n01_owner_persistence.py',
     'ash/g3_n01_owner_ingress.py','ash/g3_n01_runtime_context.py','ash/g3_n01_stytch_transport.py',
-    'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py')
+    'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py','ash/g3_n01_owner_restart.py')
 
 
-def build(destination,*,delivery_email_sha256,transport_revision=1):
+def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profile=None):
     codec.old.check_type(delivery_email_sha256,'h')
     if type(transport_revision) is not int or transport_revision not in (1,2,3):raise ValueError('N01_TRANSPORT_REVISION_DENY')
+    from ash import g3_n01_owner_restart as restart
+    restart.require_profile(restart_profile)
+    if restart_profile is not None and transport_revision!=3:raise ValueError('N01_RESTART_TRANSPORT_DENY')
     names=tuple(dict.fromkeys((*MODULES,*(name for name in EXTRA if name!='scripts/g3_n01_controller_bootstrap.py'),*OWNER_MODULES)))
     files={name:(ROOT/name).read_bytes().replace(b'\r\n',b'\n') for name in names}
     files['scripts/g3_production_metadata.py']=b'from ash.g3_record_codec import canonical_bytes, parse_json, parse_metadata, domain_digest, MetadataError\n'
@@ -45,6 +48,10 @@ def build(destination,*,delivery_email_sha256,transport_revision=1):
         'service.EXPECTED_MANIFEST_SHA='+repr(codec.digest(manifest))+'\n'
         'service.DELIVERY_EMAIL_SHA='+repr(delivery_email_sha256)+'\n'
         'service.CUSTODY_REVISION='+repr(transport_revision)+'\n'
+        +('service.RESTART_PROFILE='+repr(restart_profile)+'\n'
+           'service.native.MAX_DDB=190\nservice.native.MAX_S3=6000\n'
+           'service.native.MAX_S3_WRITES=240\nservice.native.MAX_WRITE_BYTES=8388608\n'
+           if restart_profile is not None else '')+
         'class handler(service.handler,BaseHTTPRequestHandler):\n    pass\n').encode()
     complete={name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())}
     digest=codec.digest(codec.canonical(complete))
@@ -55,6 +62,11 @@ def build(destination,*,delivery_email_sha256,transport_revision=1):
         scope='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY',maximum_native_leases=8,maximum_ddb_attempts=256,
         maximum_s3_attempts=8000,maximum_s3_writes=256,maximum_new_bytes_per_backend=16777216,
         issuer_environment='STYTCH_CONSUMER_TEST',grant_issuance='NOT_IMPLEMENTED',execution='DENY')
+    if restart_profile is not None:
+        metadata.update(restart_profile=restart_profile,expected_predecessor=restart.HEAD4,
+            maximum_ddb_attempts=190,maximum_s3_attempts=6000,maximum_s3_writes=240,
+            maximum_new_bytes_per_backend=8388608,prior_native_ddb_attempts=66,
+            recovery='EXPLICIT_FORWARD_ONLY',old_owner_authority='NEVER_RESTORED')
     (destination/'artifact.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     request=dict(name='nexus-g3-qual',project='prj_xH23xMATVChdhX34OS2vjI8dfWN2',target='production',
         files=[dict(file=name,data=raw.decode(),encoding='utf-8') for name,raw in sorted(files.items())],

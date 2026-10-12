@@ -32,7 +32,9 @@ def inventory():
 '''
 
 
-def build(observation,deployment,destination,*,now_ms,custody_revision=1):
+def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart_profile=None):
+    from ash import g3_n01_owner_restart as restart
+    restart.require_profile(restart_profile)
     require(type(observation) is dict and set(observation)=={'status','source_proposal','source_sha256',
         'recovery_authorization','recovery_authorization_sha256','public_review','current_owner','authority','real_admission'})
     require(observation['status']=='SOURCE_PROPOSAL_READY_NONE' and observation['public_review']=='EXACT_RETAINED_REVIEW_VERIFIED'
@@ -55,8 +57,8 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1):
     require(authorization['schema_version']=='nexus.g3.n01.owner-recovery-authorization.v1'
         and authorization['purpose']=='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY' and authorization['authority_mode']=='DELEGATED_EXECUTOR'
         and authorization['authority_config_sha256']==source.CONFIG and authorization['source_enrollment_sha256']==enrolled.enrollment_sha256
-        and authorization['previous_checkpoint']==dict(id=boot.HEAD_ID,body_sha256='52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41')
-        and authorization['authority_epoch']==3 and authorization['incarnation']=='n01-owner-'+value['process_nonce'][:32]
+        and authorization['previous_checkpoint']==(dict(id=boot.HEAD_ID,body_sha256='52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41') if restart_profile is None else restart.HEAD4)
+        and authorization['authority_epoch']==(3 if restart_profile is None else 4) and authorization['incarnation']=='n01-owner-'+value['process_nonce'][:32]
         and authorization['application_generation']==authorization['review_generation']==1
         and authorization['expires_at_ms']==review.UNTIL_MS and authorization['no_automatic_redispatch']=='REQUIRED'
         and authorization['real_admission']=='NO')
@@ -67,12 +69,16 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1):
     require(type(custody_revision) is int and custody_revision in (1,2,3))
     prefixes=(source.PREFIX,persistence.RECOVERY_PREFIX+'00000000000000000003/') if custody_revision==1 else (
         custody.APPROVALS+f'current-source-controller-v{custody_revision}/',custody.APPROVALS+f'owner-controller-recovery-v{custody_revision}/00000000000000000003/')
+    if restart_profile is not None:
+        require(custody_revision==3 and value['process_nonce']!=restart.OLD_NONCE)
+        prefixes=(restart.SOURCE_PREFIX,restart.RECOVERY_PREFIX+'00000000000000000005/')
     payload={prefixes[0]+'registration.json':raw.decode(),prefixes[1]+'authorization.json':protected.decode()}
     program=R_PROGRAM
     start=program.index('def inventory():');end=program.index('if receipt.exists():',start)
     program=program[:start]+INVENTORY+program[end:]
     program=program.replace('n01-public-review-r-receipt.json','n01-owner-source-r-receipt.json')
     if custody_revision!=1:program=program.replace('n01-owner-source-r-receipt.json',f'n01-owner-source-v{custody_revision}-r-receipt.json')
+    if restart_profile is not None:program=program.replace(f'n01-owner-source-v{custody_revision}-r-receipt.json','n01-owner-source-restart-v1-r-receipt.json')
     program=program.replace('nexus.g3.n01.public-review-r-observation.v1','nexus.g3.n01.owner-source-r-observation.v1')
     program=program.replace('CONDITIONAL_PUBLIC_REVIEW_RETAIN','CONDITIONAL_OWNER_SOURCE_RETAIN')
     program=program.replace('PUBLIC_REVIEW_INDEPENDENTLY_RETAINED','OWNER_SOURCE_RECOVERY_INDEPENDENTLY_RETAINED')

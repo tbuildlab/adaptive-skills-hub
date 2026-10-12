@@ -83,7 +83,7 @@ def bind_source(raw,review,*,native_environment,artifact_inventory_sha256,proces
 
 
 def read_protected_source(client,storage_registration,review,*,native_environment,
-                          artifact_inventory_sha256,process_nonce,now_ms,custody_revision=1):
+                          artifact_inventory_sha256,process_nonce,now_ms,custody_revision=1,restart_profile=None):
     """One fixed independently writable enrollment, never caller-selected origin.
 
     The existing A role can only version-read this prefix; R administration must
@@ -98,6 +98,10 @@ def read_protected_source(client,storage_registration,review,*,native_environmen
         require(type(review) is PublicReview)
         require(type(custody_revision) is int and custody_revision in (1,2,3))
         prefix=custody.APPROVALS+f'current-source-controller-v{custody_revision}/'
+        if restart_profile is not None:
+            from ash import g3_n01_owner_restart as restart
+            restart.require_profile(restart_profile)
+            prefix=restart.SOURCE_PREFIX
         scope=replace(storage_registration,prefix=prefix)
         fence=custody.N01S3Fence(client,scope,max_attempts=4)
         inventory=fence.inventory('')
