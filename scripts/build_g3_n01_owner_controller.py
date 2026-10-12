@@ -60,6 +60,7 @@ def build(destination,*,delivery_email_sha256,transport_revision=1):
         files=[dict(file=name,data=raw.decode(),encoding='utf-8') for name,raw in sorted(files.items())],
         meta=dict(n01Profile='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY',n01SourceHead=head,n01ArtifactSha256=digest),
         projectSettings=dict(framework=None,buildCommand=None,outputDirectory=None,nodeVersion='24.x'))
+    if transport_revision==3:request['projectSettings']['serverlessFunctionRegion']='sin1'
     (destination/'exact-body.json').write_text(json.dumps(request),encoding='utf-8')
     for name,raw in files.items():
         target=destination/'source'/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(raw)

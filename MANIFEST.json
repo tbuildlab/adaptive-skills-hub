@@ -1752,8 +1752,8 @@
     "sha256": "93f2f38511172269b713a507b94b9a906059e6513ba1b7f1c92780a266476117"
   },
   "docs/nexus-production-n01-native-form-transport-amendment-v3.md": {
-    "bytes": 3990,
-    "sha256": "efdec1c6d218ae78c438c840b7b2b7f5cb952005178754e7f7ca76459b5b7ea1"
+    "bytes": 4497,
+    "sha256": "ec7fc65bd2399644547a33901e0feff63e48864514e37269a05172a5979a1ad4"
   },
   "docs/nexus-production-n01-native-owner-controller-preparation-v1.md": {
     "bytes": 3734,
@@ -2080,8 +2080,8 @@
     "sha256": "91a298cd96a5e6dc87fdfba9b009ce5690ff476c53a7cdf65433c61c3b3168dc"
   },
   "scripts/build_g3_n01_owner_controller.py": {
-    "bytes": 5463,
-    "sha256": "cda55e759df9efc1a31f0659e8afd99aa29c8a17f1e03c4a4c38401ac24dffcb"
+    "bytes": 5554,
+    "sha256": "7dc8e5b19e2c9e97606fa17029bb1b6812f7bbc4e748a9d7b409aca5fec8e99d"
   },
   "scripts/build_g3_n01_owner_source_custody.py": {
     "bytes": 7387,
@@ -2368,8 +2368,8 @@
     "sha256": "ae538be89dc43a84007c1147f6991f523f4f639b984fc9c57aeb310f5c3e60fa"
   },
   "tests/test_g3_n01_native_routes.py": {
-    "bytes": 7685,
-    "sha256": "1a401cb67baee308adcf269266ffd3eb09160454ebaecfc6c4a9ee54578afe3c"
+    "bytes": 7847,
+    "sha256": "fa9e48158f879623ae00fa18627962c5643fd0467430139d616d6eb92050cb4a"
   },
   "tests/test_g3_n01_native_transport.py": {
     "bytes": 8305,

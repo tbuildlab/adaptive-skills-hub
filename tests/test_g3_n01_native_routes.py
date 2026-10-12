@@ -92,6 +92,8 @@ class NativeRouteTests(unittest.TestCase):
             root=Path(tmp);builder.build(root,delivery_email_sha256='a'*64,transport_revision=3)
             config=json.loads((root/'source/vercel.json').read_bytes())
             self.assertEqual(config['regions'],['sin1']);self.assertNotIn('functionFailoverRegions',config)
+            request=json.loads((root/'exact-body.json').read_bytes())
+            self.assertEqual(request['projectSettings']['serverlessFunctionRegion'],'sin1')
             self.assertIn('service.CUSTODY_REVISION=3',(root/'source/api/n01-controller.py').read_text())
 
     def test_revision_two_loader_pins_fixed_routes_and_preserves_default_artifact_contract(self):
