@@ -143,6 +143,10 @@
     "bytes": 5274,
     "sha256": "66f6015aaaf5b0f07f658f611dec477558e40ce7380f50474311114b996cb377"
   },
+  "ash/g3_n01_controller_bootstrap.py": {
+    "bytes": 6610,
+    "sha256": "9b1a15076904272ec3d9b9fe307dfcc1feda7b739a324cdca934b2f0f0b148ac"
+  },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
@@ -1723,6 +1727,10 @@
     "bytes": 1745,
     "sha256": "bee3b3c9a879a188731850020110158221940e08765f57a1d9fc5277af0330ca"
   },
+  "docs/nexus-production-n01-public-review-live-custody-v1.md": {
+    "bytes": 5164,
+    "sha256": "a6e0fde71fbd4d39c4fdf414e5aeb36cb465668e1f35217781ec7d1fb24e9c5f"
+  },
   "docs/nexus-production-n01-source-enrollment-continuation-v1.md": {
     "bytes": 6543,
     "sha256": "b0bea9788ee421066ee47f05da9850d2085c7af9a03d3c13fa0b29e034220bd9"
@@ -1971,6 +1979,10 @@
     "bytes": 1060,
     "sha256": "b98ac4facee2947bbfff3419272f77ccd70b33a3bfc49fa8274b927a5f176955"
   },
+  "research/nexus-production-n01-public-review-r-observed-evidence-v1.json": {
+    "bytes": 1601,
+    "sha256": "89142ba0b2b35878a125efc17957a34a5ecb8c46362f34a63a421bfe498add90"
+  },
   "research/nexus-production-n01-recovery-observed-evidence-v1.json": {
     "bytes": 25396,
     "sha256": "ce6924dbb8f7ecb39bd0cdf8ef01655f6bbc83c7a913d22d157bbd17465ef9e3"
@@ -2010,6 +2022,10 @@
   "scripts/Install-Nexus.ps1": {
     "bytes": 5010,
     "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
+  },
+  "scripts/build_g3_n01_controller_bootstrap.py": {
+    "bytes": 4153,
+    "sha256": "a907101dda5cc2e1b60f250ce0028e8c0a31e8c958c0bf64065faff691eca63f"
   },
   "scripts/build_g3_n01_public_review_custody.py": {
     "bytes": 4963,
@@ -2062,6 +2078,10 @@
   "scripts/g3_d03_s3_fence.py": {
     "bytes": 15725,
     "sha256": "c087efa21557eacf2a63bca79938c57adcad19e237f078de3fab41e0cf282d5d"
+  },
+  "scripts/g3_n01_controller_bootstrap.py": {
+    "bytes": 2866,
+    "sha256": "5279d13b712666a248022b46fcb2e5aead7054f93ba61798eacebfd8c90f57e6"
   },
   "scripts/g3_n01_storage_contract.py": {
     "bytes": 5667,
@@ -2266,6 +2286,10 @@
   "tests/test_g3_n01_commit.py": {
     "bytes": 5083,
     "sha256": "989ea7064e0a5d817281c81e6cc8f6528dc7637e958860f0f9147cd9fcea1bc2"
+  },
+  "tests/test_g3_n01_controller_bootstrap.py": {
+    "bytes": 7250,
+    "sha256": "d1b2e9c42acc3883b6876733ea5fae07dbe44e9fa708e9a8cb76a4e3e10d01cb"
   },
   "tests/test_g3_n01_live_budget.py": {
     "bytes": 2439,

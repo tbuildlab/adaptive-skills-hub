@@ -1,0 +1,40 @@
+{
+  "schema_version": "nexus.g3.n01.public-review-r-observation.v1",
+  "observation_source": "authenticated R CloudShell native SDK receipt, read through console terminal",
+  "source_checkpoint": "fc61743f294a7ecc2b5a31079483987c120986c0",
+  "script_sha256": "32599ce86a28e8a906fdfeb673df8d52807a0eb8c7cb8c0c5b5ee2a28c185015",
+  "account": "862902859484",
+  "caller_identity_check": "EXACT_R_ROOT_BEFORE_S3",
+  "stage": "COMPLETE",
+  "status": "PUBLIC_REVIEW_INDEPENDENTLY_RETAINED",
+  "s3_attempts": 8,
+  "dynamodb_attempts": 0,
+  "new_objects": 2,
+  "total_payload_bytes": 2421,
+  "versions": [
+    {
+      "key": "qualification/n01/v1/approvals/public-pin-owner-review-20261011-v1/acceptance.json",
+      "version_id": "esVtCWHNukbpS92VN9Lj8Frl0plXhtAj",
+      "sha256": "67f612bfb60977534e3fab0efbf9ca75fe5765a2e632b4be0f63844d6f5588ae",
+      "bytes": 1059,
+      "mode": "COMPLIANCE",
+      "retain_until_utc": "2026-10-19T00:44:16+00:00"
+    },
+    {
+      "key": "qualification/n01/v1/approvals/public-pin-owner-review-20261011-v1/proposal.json",
+      "version_id": "vebrt2MSu2ku3BqDq6YMxPeznqbpbaRM",
+      "sha256": "be22798028d218c2ec83816e0d78407f0b30eab82295db217c673318d58fdbc3",
+      "bytes": 1362,
+      "mode": "COMPLIANCE",
+      "retain_until_utc": "2026-10-19T00:44:17+00:00"
+    }
+  ],
+  "exact_version_body_readback": "PASS",
+  "complete_unique_inventory_readback": "PASS",
+  "review_window_changed": "NO",
+  "resource_or_permission_expansion": "NO",
+  "native_invoice_cost": "UNKNOWN",
+  "authority": "NONE",
+  "real_admission": "NO",
+  "n01_full_live_status": "INCOMPLETE"
+}
