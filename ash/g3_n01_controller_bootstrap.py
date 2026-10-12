@@ -33,7 +33,8 @@ def storage_scope():
 
 def measure_artifact(root,expected_manifest_sha256):
     """Measure every inventoried source plus the exact loader/manifest bytes."""
-    raw=(root/'source-inventory.json').read_bytes()
+    try:raw=(root/'source-inventory.json').read_bytes()
+    except OSError:raise ValueError('N01_ARTIFACT_MANIFEST_UNAVAILABLE') from None
     require(0<len(raw)<=65536 and hashlib.sha256(raw).hexdigest()==expected_manifest_sha256)
     inventory=json.loads(raw)
     require(type(inventory) is dict and 1<=len(inventory)<=64)
@@ -43,12 +44,14 @@ def measure_artifact(root,expected_manifest_sha256):
             and all(part not in ('..','.','') for part in name.split('/'))
             and '\\' not in name and name not in ('api/n01-controller.py','source-inventory.json'))
         require(type(entry) is dict and set(entry)=={'bytes','sha256'})
-        data=(root/name).read_bytes()
+        try:data=(root/name).read_bytes()
+        except OSError:raise ValueError('N01_ARTIFACT_FILE_UNAVAILABLE:'+name) from None
         require(type(entry['bytes']) is int and len(data)==entry['bytes']
             and hashlib.sha256(data).hexdigest()==entry['sha256'])
         measured[name]=entry
     for name in ('api/n01-controller.py','source-inventory.json'):
-        data=(root/name).read_bytes()
+        try:data=(root/name).read_bytes()
+        except OSError:raise ValueError('N01_ARTIFACT_FILE_UNAVAILABLE:'+name) from None
         measured[name]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
     return codec.digest(codec.canonical(measured))
 

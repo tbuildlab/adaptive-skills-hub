@@ -40,12 +40,22 @@ class handler(BaseHTTPRequestHandler):
         if request_allowed(self.path,self.command,self.headers,os.environ):
             with LOCK:
                 if OUTCOME is None:
-                    OUTCOME=dict(status='QUARANTINE',authority='NONE',real_admission='NO')
+                    OUTCOME=dict(status='QUARANTINE',authority='NONE',real_admission='NO',bootstrap_stage='ARTIFACT_MEASUREMENT')
                     try:
                         require(ARTIFACT_ROOT is not None and EXPECTED_MANIFEST_SHA is not None)
                         measured=boot.measure_artifact(ARTIFACT_ROOT,EXPECTED_MANIFEST_SHA)
+                        OUTCOME['bootstrap_stage']='NATIVE_PUBLIC_REVIEW_READ'
                         OUTCOME=boot.bootstrap(self.headers.get('x-vercel-oidc-token'),os.environ,measured)
-                    except Exception:pass
+                    except Exception as error:
+                        # Report only our closed public-file diagnostics. Never
+                        # emit SDK errors, request fields or arbitrary exceptions.
+                        diagnostic=str(error) if type(error) is ValueError else ''
+                        if diagnostic=='N01_ARTIFACT_MANIFEST_UNAVAILABLE':OUTCOME['bootstrap_stage']=diagnostic
+                        elif diagnostic.startswith('N01_ARTIFACT_FILE_UNAVAILABLE:'):
+                            name=diagnostic.partition(':')[2]
+                            if name in ('requirements.txt','.python-version','vercel.json','public/index.html',
+                                        'api/n01-controller.py','source-inventory.json'):
+                                OUTCOME['bootstrap_stage']=diagnostic
                 result=OUTCOME;status=200 if result['status']=='NATIVE_PUBLIC_REVIEW_BOOTSTRAP_VERIFIED' else 503
         raw=json.dumps(result,sort_keys=True).encode()
         print(json.dumps({'n01_controller_bootstrap_readback':result},sort_keys=True),flush=True)
