@@ -1752,12 +1752,16 @@
     "sha256": "93f2f38511172269b713a507b94b9a906059e6513ba1b7f1c92780a266476117"
   },
   "docs/nexus-production-n01-native-form-transport-amendment-v3.md": {
-    "bytes": 4497,
-    "sha256": "ec7fc65bd2399644547a33901e0feff63e48864514e37269a05172a5979a1ad4"
+    "bytes": 4868,
+    "sha256": "eea8a324d5650819d4c8e07139adbbe60e5b3ff579e92444b498f36da394c1d5"
   },
   "docs/nexus-production-n01-native-owner-controller-preparation-v1.md": {
     "bytes": 3734,
     "sha256": "9b0264e736f92609e60bc8afced2d77fd0d1d7c2fde5a4e6212b11946008b9c1"
+  },
+  "docs/nexus-production-n01-native-owner-source-live-checkpoint-v1.md": {
+    "bytes": 4342,
+    "sha256": "76b5d5007ae619b3ce00cd238dce7fd16a7d27612456673429a7788c3d291a86"
   },
   "docs/nexus-production-n01-native-transport-amendment-v2.md": {
     "bytes": 4689,
@@ -2022,6 +2026,10 @@
   "research/nexus-production-n01-native-bootstrap-observed-evidence-v1.json": {
     "bytes": 2118,
     "sha256": "632a07bb5ff322354a55c5e9033f5fb4b9c3a5fa77deb130598000108ae52207"
+  },
+  "research/nexus-production-n01-native-owner-source-observed-evidence-v1.json": {
+    "bytes": 8867,
+    "sha256": "d36fa56fd8c35e378cb517f621c8a9fe94fe55998425ce22ef9623d23c6a23be"
   },
   "research/nexus-production-n01-pending-public-pin-review-v1.json": {
     "bytes": 1363,

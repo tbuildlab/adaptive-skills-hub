@@ -1,0 +1,210 @@
+{
+  "schema_version": "nexus.g3.n01.native-owner-source-observation.v1",
+  "classification": "LIVE_SOURCE_MEMBERSHIP_ONLY_NONE",
+  "deployment": {
+    "id": "dpl_D9FFUQGNZKSxdetaR5byf8vEVydM",
+    "url": "nexus-g3-qual-aavlane6w-tdy0225.vercel.app",
+    "readyState": "READY",
+    "projectId": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+    "target": "production",
+    "createdAt": 1791782876825,
+    "requested_region_optimization": "NOT_APPLIED_IAD1_OBSERVED",
+    "function_regions": [
+      "iad1"
+    ],
+    "source_identity_matches": 39,
+    "artifact_inventory_sha256": "699e9a298551a14ff25c09d1036633e49db89884b4583b870e453ff62c153577",
+    "native_sso_protection": "all_except_custom_domains"
+  },
+  "public_proposal": {
+    "authority": "NONE",
+    "current_owner": "NOT_AUTHENTICATED",
+    "public_review": "EXACT_RETAINED_REVIEW_VERIFIED",
+    "real_admission": "NO",
+    "recovery_authorization": {
+      "application_generation": 1,
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 3,
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "checkpoint": {
+        "body_sha256": "07b698c453d259d8c7e832bb7220e84dd123ea3404872caadf1e54456e12a5a0",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:fa3ddbfd0b63119dfeb753a19957a321e314b7d7749ae3cf7738ee51032ff7a1"
+      },
+      "expires_at_ms": 1791791511502,
+      "incarnation": "n01-owner-7cff975cfab6ce5e1dff8896393f900e",
+      "no_automatic_redispatch": "REQUIRED",
+      "previous_checkpoint": {
+        "body_sha256": "52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:2324a4475c42debe0a21e2b94cd42f1c3d68e9dc1af0397223dfdde4a4076281"
+      },
+      "purpose": "BOUNDED_OWNER_CONTEXT_SOURCE_ONLY",
+      "real_admission": "NO",
+      "review_generation": 1,
+      "schema_version": "nexus.g3.n01.owner-recovery-authorization.v1",
+      "source_enrollment_sha256": "5df5dec882f24b6d973faf3816201b9e4dede79c4b07bb1adfd31e8f73762012"
+    },
+    "recovery_authorization_sha256": "453d8c6748ac9dcfa059e3eaf8926ae3da826f7ecb91fd2fbb9c419ab80ebdbc",
+    "source_proposal": {
+      "application_generation": 1,
+      "artifact_inventory_sha256": "753940e1c9a7eb30c31ad41cdd99dc27c6f0c8686703d2de7579ec7a1219ee77",
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "deployment_host": "nexus-g3-qual-aavlane6w-tdy0225.vercel.app",
+      "deployment_id": "dpl_D9FFUQGNZKSxdetaR5byf8vEVydM",
+      "expires_at_ms": 1791791511502,
+      "host_project_id": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+      "issued_at_ms": 1791783025044,
+      "no_automatic_redispatch": "REQUIRED",
+      "principal": {
+        "client_id": "project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+        "issuer": "stytch.com/project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+        "subject": "user-test-9da3c5e0-6828-4dfe-8d6d-6ee5dde17a8e"
+      },
+      "process_nonce": "7cff975cfab6ce5e1dff8896393f900ef2070cbe6863a2b6aebd492c20497acc",
+      "purpose": "BOUNDED_OWNER_CONTEXT_SOURCE_ONLY",
+      "real_admission": "NO",
+      "review_acceptance_sha256": "67f612bfb60977534e3fab0efbf9ca75fe5765a2e632b4be0f63844d6f5588ae",
+      "review_generation": 1,
+      "review_package_sha256": "be22798028d218c2ec83816e0d78407f0b30eab82295db217c673318d58fdbc3",
+      "schema_version": "nexus.g3.n01.current-source-enrollment.v1",
+      "service_revision": "nexus-g3-n01-controller-v1",
+      "source_kinds": [
+        "D01",
+        "D03",
+        "OWNER_ENROLLMENT"
+      ]
+    },
+    "source_sha256": "5df5dec882f24b6d973faf3816201b9e4dede79c4b07bb1adfd31e8f73762012",
+    "status": "SOURCE_PROPOSAL_READY_NONE"
+  },
+  "independent_source_custody": {
+    "authority": "NONE",
+    "real_admission": "NO",
+    "s3_attempts": 10,
+    "schema_version": "nexus.g3.n01.owner-source-r-observation.v1",
+    "stage": "COMPLETE",
+    "status": "OWNER_SOURCE_RECOVERY_INDEPENDENTLY_RETAINED",
+    "versions": [
+      {
+        "bytes": 1288,
+        "key": "qualification/n01/v1/approvals/current-source-controller-v3/registration.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-19T05:31:12+00:00",
+        "sha256": "5df5dec882f24b6d973faf3816201b9e4dede79c4b07bb1adfd31e8f73762012",
+        "version_id": "TmH3JsC12UzPAW6JUMM6ez968oMhLpJc"
+      },
+      {
+        "bytes": 984,
+        "key": "qualification/n01/v1/approvals/owner-controller-recovery-v3/00000000000000000003/authorization.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-19T05:31:13+00:00",
+        "sha256": "453d8c6748ac9dcfa059e3eaf8926ae3da826f7ecb91fd2fbb9c419ab80ebdbc",
+        "version_id": "0Gc.Qps9CfOqbqBP2jzh4aULb4F6wWky"
+      }
+    ]
+  },
+  "observed_events": [
+    {
+      "artifact_inventory_sha256": "753940e1c9a7eb30c31ad41cdd99dc27c6f0c8686703d2de7579ec7a1219ee77",
+      "authority": "NONE",
+      "checkpoint": {
+        "body_sha256": "52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:2324a4475c42debe0a21e2b94cd42f1c3d68e9dc1af0397223dfdde4a4076281"
+      },
+      "ddb_attempts": 2,
+      "deployment_host": "nexus-g3-qual-aavlane6w-tdy0225.vercel.app",
+      "deployment_id": "dpl_D9FFUQGNZKSxdetaR5byf8vEVydM",
+      "event": "NATIVE_OWNER_SOURCE_PROPOSAL_READY_NONE",
+      "no_automatic_redispatch": "REQUIRED",
+      "observed_at_ms": 1791783025045,
+      "phase": "SOURCE_PROPOSAL_READY_NONE",
+      "process_nonce": "7cff975cfab6ce5e1dff8896393f900ef2070cbe6863a2b6aebd492c20497acc",
+      "real_admission": "NO",
+      "s3_attempts": 63
+    },
+    {
+      "artifact_inventory_sha256": "753940e1c9a7eb30c31ad41cdd99dc27c6f0c8686703d2de7579ec7a1219ee77",
+      "authority": "NONE",
+      "checkpoint": {
+        "body_sha256": "07b698c453d259d8c7e832bb7220e84dd123ea3404872caadf1e54456e12a5a0",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:fa3ddbfd0b63119dfeb753a19957a321e314b7d7749ae3cf7738ee51032ff7a1"
+      },
+      "ddb_attempts": 28,
+      "deployment_host": "nexus-g3-qual-aavlane6w-tdy0225.vercel.app",
+      "deployment_id": "dpl_D9FFUQGNZKSxdetaR5byf8vEVydM",
+      "event": "NATIVE_OWNER_RECOVERY_FINALIZED_NONE",
+      "no_automatic_redispatch": "REQUIRED",
+      "observed_at_ms": 1791783213094,
+      "phase": "RECOVERED_OWNER_LINEAGE_NONE",
+      "process_nonce": "7cff975cfab6ce5e1dff8896393f900ef2070cbe6863a2b6aebd492c20497acc",
+      "real_admission": "NO",
+      "s3_attempts": 475
+    },
+    {
+      "artifact_inventory_sha256": "753940e1c9a7eb30c31ad41cdd99dc27c6f0c8686703d2de7579ec7a1219ee77",
+      "authority": "NONE",
+      "checkpoint": {
+        "body_sha256": "0223d350fe6852b72bfa632c6c88acdb266ba6855aa5e6ec7d9e5aca7929bb71",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:75e56d2752a0775bab644785d609542fcbd27e37db120ac60b369bb6c1edbc63"
+      },
+      "ddb_attempts": 66,
+      "deployment_host": "nexus-g3-qual-aavlane6w-tdy0225.vercel.app",
+      "deployment_id": "dpl_D9FFUQGNZKSxdetaR5byf8vEVydM",
+      "event": "NATIVE_OWNER_SOURCE_MEMBERSHIP_FINALIZED_NONE",
+      "no_automatic_redispatch": "REQUIRED",
+      "observed_at_ms": 1791783403783,
+      "phase": "OWNER_SOURCE_ENROLLED_NONE",
+      "process_nonce": "7cff975cfab6ce5e1dff8896393f900ef2070cbe6863a2b6aebd492c20497acc",
+      "real_admission": "NO",
+      "s3_attempts": 1085
+    }
+  ],
+  "native_route_outcomes": [
+    {
+      "requestPath": "/api/n01/start",
+      "requestMethod": "GET",
+      "responseStatusCode": 200,
+      "timestamp": 1791783403936
+    },
+    {
+      "requestPath": "/api/n01/enroll",
+      "requestMethod": "POST",
+      "responseStatusCode": 303,
+      "timestamp": 1791783240016
+    },
+    {
+      "requestPath": "/api/n01/start",
+      "requestMethod": "GET",
+      "responseStatusCode": 200,
+      "timestamp": 1791783213295
+    },
+    {
+      "requestPath": "/api/n01/recover",
+      "requestMethod": "POST",
+      "responseStatusCode": 303,
+      "timestamp": 1791783103726
+    },
+    {
+      "requestPath": "/api/n01/start",
+      "requestMethod": "GET",
+      "responseStatusCode": 200,
+      "timestamp": 1791783032608
+    },
+    {
+      "requestPath": "/api/n01-controller",
+      "requestMethod": "GET",
+      "responseStatusCode": 200,
+      "timestamp": 1791783006154
+    }
+  ],
+  "current_owner": "NOT_OBSERVED_AT_CHECKPOINT",
+  "context_persistence": "NOT_OBSERVED_AT_CHECKPOINT",
+  "decision_consumption": "NOT_OBSERVED_AT_CHECKPOINT",
+  "remote_revocation": "NOT_OBSERVED_AT_CHECKPOINT",
+  "grant_issuance": "NOT_IMPLEMENTED",
+  "execution": "DENY",
+  "no_automatic_redispatch": "REQUIRED",
+  "real_admission": "NO",
+  "authority": "NONE"
+}
