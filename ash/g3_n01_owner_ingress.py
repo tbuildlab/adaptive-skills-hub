@@ -21,6 +21,7 @@ from ash.g3_n01_runtime_context import CurrentSession
 from ash.g3_n01_stytch_transport import BoundedStytchSession
 from ash.g3_primary_ledger import DelegatedDynamoReservations
 from ash.g3_control_semantics import require
+from ash import g3_n02_presentation as presentation
 
 
 class OwnerIngress:
@@ -75,6 +76,25 @@ class OwnerIngress:
             '<form method="post" action="/api/n01/login"><input type="hidden" name="csrf" value="'+self.__csrf+'">'
             +label+'<button type="submit">Continue</button></form></html>').encode()
         handler.wfile.write(page)
+    def current_projection(self):
+        require(self.__state=='CURRENT')
+        self.__gate()
+        return self.__context.recheck()
+    def render_current(self,challenge,view,*,now_ms):
+        require(self.__state=='CURRENT')
+        return presentation.render(challenge,view,csrf=self.__csrf,now_ms=now_ms)
+    def compare_current_decision(self,raw,shown,headers,*,expected_host,now_ms):
+        require(self.__state=='CURRENT')
+        # The cookie/CSRF comparison remains inside this private relying party.
+        # Native handler validates cardinality before this closed input lens.
+        result=presentation.compare_post(raw,shown,csrf=self.__csrf,
+            origin=headers.get('Origin'),host=headers.get('Host'),expected_host=expected_host,
+            method='POST',content_type=headers.get('Content-Type'),now_ms=now_ms)
+        # compare_post already proved equality to the private CSRF. Cookie
+        # authentication never exports that value to a controller or audit log.
+        self.authenticated_form(headers,csrf=self.__csrf)
+        self.__gate()
+        return result
     def __gate(self):
         now=int(time.time()*1000)
         require(review.FROM_MS<=self.__started<=self.__last_wall<=now<self.__until
