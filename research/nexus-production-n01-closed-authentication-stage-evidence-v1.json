@@ -1,0 +1,133 @@
+{
+  "schema_version": "nexus.g3.n01.closed-authentication-stage-evidence.v1",
+  "authority": "NONE",
+  "real_admission": "NO",
+  "purpose": "INACTIVE_HTTP_AND_CLOSED_DIAGNOSTIC_VERIFICATION_ONLY",
+  "retained_owner_checkpoint_head": "4be529dc9724c4ebc467e908aff77d62973b9b9c",
+  "retained_deployment_id": "dpl_EufrmzcN5baE2c8k2APkXyfbjiVD",
+  "retained_custody_sequence": 8,
+  "original_login_request_id": "nbvws-1791804516122-3c81572183d5",
+  "original_first_denial_request_id": "sd2vt-1791804522501-f3f9beb90600",
+  "original_success_event": "NATIVE_CURRENT_OWNER_LOGIN_READY_NONE",
+  "original_precise_failure_stage": "INSUFFICIENT_EVIDENCE",
+  "original_missing_get_cause": "INSUFFICIENT_EVIDENCE",
+  "post_initiator": "UNKNOWN_NOT_ATTRIBUTED_TO_HUMAN_REPEATED_CLICKS",
+  "repeated_maintenance_fixture_failure": "AUTH_FORM_SHAPE",
+  "fixture_failure_is_historical_proof": false,
+  "loopback_inactive_browser_sequence": [
+    {
+      "method": "GET",
+      "route": "START",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "route": "LOGIN",
+      "status": 303
+    },
+    {
+      "method": "GET",
+      "route": "LOGIN",
+      "status": 200
+    }
+  ],
+  "native_inactive_preview": {
+    "deployment_id": "dpl_3nJyNXwAQLCehGhJrqF7ydSvim2N",
+    "project_id": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+    "target": "PREVIEW_NOT_PRODUCTION",
+    "region": "sin1",
+    "fixture": "TEST_ONLY",
+    "source_sha256": "4ae71ca69f0ad75b01c24fec4715cefcc9f452ba8aa3a245148492cb2131ce0a",
+    "post_request_id": "hqzg5-1791805983613-1702affae8b3",
+    "post_status": 303,
+    "get_request_id": "d75z7-1791805990803-da4980d49527",
+    "get_status": 200,
+    "get_event": "GET_FORM_DELIVERY_PASS",
+    "one_inactive_click_observed": true,
+    "browser_disabled_email_field_visible": true,
+    "authentication": "NOT_IMPLEMENTED",
+    "custody_and_primary_clients": "NOT_IMPLEMENTED",
+    "production_alias_promotion": "NOT_REQUESTED",
+    "owner_source_binding": "NONE",
+    "source_identity_matches": 3,
+    "native_protection": "all_except_custom_domains",
+    "production_deployment_unchanged": "dpl_EufrmzcN5baE2c8k2APkXyfbjiVD"
+  },
+  "initial_inactive_harness_failure": {
+    "deployment_id": "dpl_6J391R85Nv8WARHf9qAScgbEQVVq",
+    "request_status": 500,
+    "closed_cause": "HTTPMESSAGE_METHOD_NAME_COLLISION",
+    "retained_as_pass": false,
+    "affected_owner_runtime": false
+  },
+  "security_body_ast_equivalence": "PASS",
+  "regression_status": "PASS_EXPLICIT_EXISTING_ENVIRONMENT_SKIPS",
+  "new_owner_login_requests": 0,
+  "new_otp_totp_requests": 0,
+  "new_aws_operations": 0,
+  "new_owner_recovery_or_enrollment": 0,
+  "new_owner_r_binding": 0,
+  "credential_values_inspected_or_logged": false,
+  "g3_status": "INCOMPLETE",
+  "n01_status": "INCOMPLETE",
+  "d01_status": "CLOSED",
+  "d03_status": "CLOSED",
+  "g4_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "g6_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "new_owner_artifact_binding": "NOT_STARTED_INACTIVE_PROJECTION_HAS_NO_AUTHORITY",
+  "regression": {
+    "affected": {
+      "total": 205,
+      "pass": 205,
+      "skip": 0,
+      "fail": 0,
+      "error": 0
+    },
+    "full": {
+      "total": 1464,
+      "pass": 1460,
+      "skip": 4,
+      "fail": 0,
+      "error": 0
+    },
+    "existing_skip_classes": {
+      "UNCONFIGURED_EMBEDDED_RUNTIME_INPUTS": 3,
+      "WINDOWS_SYMLINK_PRIVILEGE_UNAVAILABLE": 1
+    },
+    "historical_tests_modified": false,
+    "clock": "OFFLINE_HISTORICAL_CLOCK_ALIGNED_WITH_EXISTING_TIME_TIME_FIXTURES",
+    "clock_is_live_review_extension": false,
+    "tested_executable_source_sha256": {
+      "ash/g3_n01_owner_ingress.py": "fb53f7553d1554da1ffb8f3309c6f4a8b513a9c109c3bcc10aabec0fe1d1a6cc",
+      "scripts/g3_n01_owner_controller.py": "79e88c3862a1670875db13602b4bbffc8d07b8f901e8b321ad1bbd0ee75fec6f",
+      "tests/test_g3_n01_owner_closed_stages.py": "1875c97bce99e04127163b18e6adac50ea4fe7f7ce94b30aa6d0e580547776d4"
+    },
+    "result_sha256": {
+      "affected": "9967209131e219b3dcd8ed63a1de536aa2adeac5f05d1d4cc50053b74e207b4c",
+      "full": "0c4b5db764108f0b1e0afc4382edf91716af17c0d070c00333064e4608391265"
+    },
+    "log_sha256": {
+      "affected": "93ea0a1bb783b6a5c9fd7883239691cd329e5777232aa5f047486174cbc2b42b",
+      "full": "519312523b26a7dc06d5fdd7e2ae521f8dd7c0dfb67a3ade30ad430eec2e6235"
+    },
+    "live_calls": 0,
+    "authority": "NONE",
+    "real_admission": "NO"
+  },
+  "forward_lifecycle_disposition": {
+    "existing_sdk_repair_profile_predecessor": 6,
+    "retained_head": 8,
+    "existing_profile_reuse": "DENY_WRONG_PREDECESSOR",
+    "approved_aggregate_ddb_attempts": 512,
+    "earlier_non_owner_conservative_allocation": 98,
+    "prior_owner_observed_attempts": 134,
+    "current_sdk_repair_observed_attempts": 70,
+    "conservative_unspent_aggregate_attempts": 210,
+    "existing_full_sdk_lifecycle_modeled_attempts": 272,
+    "attempt_counter_reset": "NOT_PERMITTED",
+    "new_forward_lifecycle": "NOT_DISPATCHED",
+    "new_cost_overrun": "NOT_ESTABLISHED",
+    "authority": "NONE",
+    "real_admission": "NO"
+  }
+}

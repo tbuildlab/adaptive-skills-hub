@@ -252,6 +252,7 @@ class OwnerController:
                 self._commit(candidate,objects)
                 self.__phase='OWNER_SOURCE_ENROLLED_NONE';self._event('NATIVE_OWNER_SOURCE_MEMBERSHIP_FINALIZED_NONE')
             elif operation=='login':
+                ingress.closed_stage('MAINTENANCE_LOGIN','ENTER')
                 require(self.__phase=='OWNER_SOURCE_ENROLLED_NONE')
                 if self._time()-self.__lease_started>=600000:
                     require(self.__owner is None and self.__current is None)
@@ -271,6 +272,7 @@ class OwnerController:
                 stage='CURRENT_OWNER_INGRESS'
                 self.__owner=ingress.OwnerIngress(client,transport,fence,self._ledger(),delivery_email_sha256=DELIVERY_EMAIL_SHA)
                 self.__phase='OWNER_LOGIN_READY_NONE';self._event('NATIVE_CURRENT_OWNER_LOGIN_READY_NONE')
+                ingress.closed_stage('MAINTENANCE_LOGIN','PASS')
             elif operation=='revoke':
                 require(self.__phase=='DECISION_CONSUMED_NONE' and self.__current is not None)
                 self.__phase='REVOKE_UNKNOWN';result=self.__current.revoke();self.__current=None
@@ -282,6 +284,7 @@ class OwnerController:
             return self.__phase
         except Exception:
             if operation=='login':
+                ingress.closed_stage('MAINTENANCE_LOGIN','DENY')
                 print(json.dumps({'n01_owner_bootstrap_denial':dict(stage=stage,authority='NONE',real_admission='NO',
                     ddb_attempts=self.__transport.ddb_attempts,s3_attempts=self.__transport.s3_attempts)},sort_keys=True),flush=True)
             self._quarantine();raise ValueError('N01_NATIVE_OWNER_MAINTENANCE_QUARANTINE') from None
@@ -293,11 +296,20 @@ class OwnerController:
     def owner_cookie(self,handler):
         require(self.__owner is not None);self.__owner.attach_cookie(handler)
     def login(self,raw,headers):
+        ingress.closed_stage('AUTH_PHASE','ENTER')
+        if self.__phase!='OWNER_LOGIN_READY_NONE':ingress.closed_stage('AUTH_PHASE','DENY')
         require(self.__phase=='OWNER_LOGIN_READY_NONE')
+        stage='AUTH_PHASE'
         try:
             kind=self.__owner.state
             key={'PREAUTH':'email','OTP_SENT':'code','OTP_VERIFIED':'totp_code'}[kind]
-            fields=form(raw,('csrf',key));self.__owner.authenticated_form(headers,csrf=fields['csrf'])
+            ingress.closed_stage(stage,'PASS')
+            stage='AUTH_FORM_SHAPE';ingress.closed_stage(stage,'ENTER')
+            fields=form(raw,('csrf',key));ingress.closed_stage(stage,'PASS')
+            stage='AUTH_FORM_AUTHENTICATION';ingress.closed_stage(stage,'ENTER')
+            self.__owner.authenticated_form(headers,csrf=fields['csrf']);ingress.closed_stage(stage,'PASS')
+            stage='AUTH_DISPATCH'
+            ingress.closed_stage(stage,'ENTER')
             if kind=='PREAUTH':self.__owner.send_email(fields[key])
             elif kind=='OTP_SENT':self.__owner.authenticate_email(fields[key])
             else:
@@ -308,8 +320,9 @@ class OwnerController:
                 self.__phase='CHALLENGE_UNKNOWN';self._commit(candidate,objects)
                 self.__current.recheck();self.__challenge=challenge;self.__view=view
                 self.__phase='CURRENT_OWNER_CHALLENGE_PERSISTED_NONE';self._event('NATIVE_CURRENT_OWNER_CHALLENGE_FINALIZED_NONE')
-            return self.__phase
+            ingress.closed_stage(stage,'PASS');return self.__phase
         except Exception:
+            ingress.closed_stage(stage,'DENY')
             self._quarantine();raise ValueError('N01_NATIVE_OWNER_LOGIN_QUARANTINE') from None
     def display(self,handler):
         require(self.__phase=='CURRENT_OWNER_CHALLENGE_PERSISTED_NONE')
@@ -348,9 +361,20 @@ class handler(BaseHTTPRequestHandler):
         if html:values['Referrer-Policy']='same-origin'
         for key,value in values.items():self.send_header(key,value)
     def _redirect(self,path,*,owner_cookie=False):
+        target={'/api/n01/login':'LOGIN','/api/n01/confirm':'CONFIRM','/api/n01/start':'START','/api/n01/status':'STATUS'}.get(path)
+        ingress.closed_stage('REDIRECT_TARGET','ENTER')
+        require(target is not None);ingress.closed_stage('REDIRECT_TARGET','PASS',route=target)
+        ingress.closed_stage('REDIRECT_303','ENTER')
         self.send_response(303);self.send_header('Location',path);self.send_header('Cache-Control','no-store')
         if owner_cookie:CONTROLLER.owner_cookie(self)
         self.end_headers()
+        ingress.closed_stage('REDIRECT_303','PASS')
+    def _request_stage(self):
+        route=({'/api/n01-controller':'PROBE'}|{'/api/n01/'+x:x.upper() for x in ('start','login','confirm','status','recover','enroll','decision','revoke')}).get(self.path,'OTHER')
+        ingress.closed_stage('REQUEST','ENTER',method=self.command if self.command in ('GET','POST') else 'OTHER',route=route)
+        passed=request_allowed(self.path,self.command,self.headers,os.environ)
+        ingress.closed_stage('REQUEST_GUARD','PASS' if passed else 'DENY')
+        return passed
     def _deny(self):
         print(json.dumps({'n01_owner_transport_denial':dict(
             known_route=self.path if self.path in GET_PATHS|POST_PATHS else 'UNSUPPORTED',
@@ -366,8 +390,9 @@ class handler(BaseHTTPRequestHandler):
     def do_GET(self):
         global CONTROLLER,PROBE_USED
         self.path=canonical_route(self.path)
-        if not request_allowed(self.path,self.command,self.headers,os.environ):return self._deny()
+        if not self._request_stage():return self._deny()
         with LOCK:
+            stage=None
             try:
                 if self.path=='/api/n01-controller':
                     if not PROBE_USED:
@@ -386,27 +411,39 @@ class handler(BaseHTTPRequestHandler):
                     self._headers(html=True);CONTROLLER.maintenance_cookie(self)
                     self.end_headers();self.wfile.write(buffer.getvalue())
                 elif self.path=='/api/n01/login':
+                    stage='GET_FORM_RENDER'
+                    ingress.closed_stage('GET_FORM_RENDER','ENTER')
                     require(CONTROLLER is not None);buffer=BytesIO();CONTROLLER.write_login(SimpleNamespace(wfile=buffer))
+                    ingress.closed_stage('GET_FORM_RENDER','PASS')
                     self._headers(html=True)
                     # The initial preauth cookie is delivered once through the
                     # protected browser. OTP intermediate responses do not rotate.
-                    if CONTROLLER.initial_login:CONTROLLER.owner_cookie(self)
+                    if CONTROLLER.initial_login:
+                        stage='PREAUTH_COOKIE_ISSUANCE';CONTROLLER.owner_cookie(self)
+                    stage='GET_FORM_DELIVERY';ingress.closed_stage(stage,'ENTER')
                     self.end_headers();self.wfile.write(buffer.getvalue())
+                    ingress.closed_stage('GET_FORM_DELIVERY','PASS')
                 else:
                     require(CONTROLLER is not None);buffer=BytesIO();CONTROLLER.display(SimpleNamespace(wfile=buffer))
                     self._headers(html=True);self.end_headers();self.wfile.write(buffer.getvalue())
-            except Exception:self._deny()
+            except Exception:
+                if stage is not None:ingress.closed_stage(stage,'DENY')
+                self._deny()
     def do_POST(self):
         self.path=canonical_route(self.path)
-        if not request_allowed(self.path,self.command,self.headers,os.environ):return self._deny()
+        if not self._request_stage():return self._deny()
         with LOCK:
-            raw=None
+            raw=None;stage=None
             try:
                 require(CONTROLLER is not None);raw=self.rfile.read(int(self.headers.get('Content-Length')))
                 require(len(raw)==int(self.headers.get('Content-Length')))
                 if self.path=='/api/n01/login':
                     if CONTROLLER.phase=='OWNER_SOURCE_ENROLLED_NONE':
+                        stage='MAINTENANCE_FORM_SHAPE'
+                        ingress.closed_stage('MAINTENANCE_FORM_SHAPE','ENTER')
                         fields=form(raw,('operation',));require(fields['operation']=='login')
+                        ingress.closed_stage('MAINTENANCE_FORM_SHAPE','PASS')
+                        stage=None
                         CONTROLLER.maintain('login',self.headers,self.headers.get('x-vercel-oidc-token'))
                     else:CONTROLLER.login(raw,self.headers)
                     path='/api/n01/confirm' if CONTROLLER.phase=='CURRENT_OWNER_CHALLENGE_PERSISTED_NONE' else '/api/n01/login'
@@ -417,7 +454,9 @@ class handler(BaseHTTPRequestHandler):
                     fields=form(raw,('operation',));operation=self.path.rsplit('/',1)[-1]
                     require(fields['operation']==operation);CONTROLLER.maintain(operation,self.headers,self.headers.get('x-vercel-oidc-token'))
                     self._redirect('/api/n01/status' if operation=='revoke' else '/api/n01/start')
-            except Exception:self._deny()
+            except Exception:
+                if stage is not None:ingress.closed_stage(stage,'DENY')
+                self._deny()
             finally:raw=None
     do_PUT=do_GET
     do_DELETE=do_GET

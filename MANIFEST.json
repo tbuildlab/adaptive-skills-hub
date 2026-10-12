@@ -160,8 +160,8 @@
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
   },
   "ash/g3_n01_owner_ingress.py": {
-    "bytes": 11617,
-    "sha256": "9da1e3a3dbb4f0e3d763b76bc4d9d0ff375a3cb9d9656e0dca81b4a574549d9d"
+    "bytes": 14016,
+    "sha256": "fb53f7553d1554da1ffb8f3309c6f4a8b513a9c109c3bcc10aabec0fe1d1a6cc"
   },
   "ash/g3_n01_owner_persistence.py": {
     "bytes": 18170,
@@ -1747,6 +1747,10 @@
     "bytes": 7741,
     "sha256": "df2dde32c4a40530eb67d02f485353d0b81c0b661d4a12613ab9c98ca2988a60"
   },
+  "docs/nexus-production-n01-closed-authentication-stage-diagnostics-v1.md": {
+    "bytes": 8630,
+    "sha256": "a73e2734243151597e4babd6e918967a2cd9c25b62df2a69e745fb423dffe8e5"
+  },
   "docs/nexus-production-n01-configuration-checkpoint-v1.md": {
     "bytes": 4937,
     "sha256": "f55dc89d843586a02309b8ecd8e91233251c6684ce2d483f1a27dc23ff577606"
@@ -2047,6 +2051,10 @@
     "bytes": 12472,
     "sha256": "f3aa5cf137109e53a48d337e628d8cc12b991bdcad630df57cf6a1acf532503d"
   },
+  "research/nexus-production-n01-closed-authentication-stage-evidence-v1.json": {
+    "bytes": 5064,
+    "sha256": "508a94a8a3d5926ca17df8861aa18510e52d4fc2629e978cd29a1c5af342add4"
+  },
   "research/nexus-production-n01-forward-owner-source-observed-evidence-v1.json": {
     "bytes": 5537,
     "sha256": "ec2b80db1f3cc16e48edea23593bed4dda03a6bbba2379211f0e0ae4e8d44a0a"
@@ -2212,8 +2220,8 @@
     "sha256": "0e171aacf85e84e1de572872fad8e5de88bc81fff050281598c81c62b4c4d616"
   },
   "scripts/g3_n01_owner_controller.py": {
-    "bytes": 28222,
-    "sha256": "87295441fd484ac6aacb162c829ced92b859ca5f4ae75727a78e973e2a41dabf"
+    "bytes": 30701,
+    "sha256": "79e88c3862a1670875db13602b4bbffc8d07b8f901e8b321ad1bbd0ee75fec6f"
   },
   "scripts/g3_n01_storage_contract.py": {
     "bytes": 5667,
@@ -2442,6 +2450,10 @@
   "tests/test_g3_n01_native_transport.py": {
     "bytes": 8305,
     "sha256": "ade1b46add8f9cf23abb644980b322a3a86cc9d6e77c567b1c89f9047a94fbb1"
+  },
+  "tests/test_g3_n01_owner_closed_stages.py": {
+    "bytes": 8938,
+    "sha256": "1875c97bce99e04127163b18e6adac50ea4fe7f7ce94b30aa6d0e580547776d4"
   },
   "tests/test_g3_n01_owner_context.py": {
     "bytes": 8449,

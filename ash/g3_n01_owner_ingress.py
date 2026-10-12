@@ -7,6 +7,7 @@ current context, not a repetition or renewal of the closed D01 qualification.
 """
 import hashlib
 import hmac
+import json
 from datetime import datetime,timezone
 import re
 import secrets
@@ -22,6 +23,25 @@ from ash.g3_n01_stytch_transport import BoundedStytchSession
 from ash.g3_primary_ledger import DelegatedDynamoReservations
 from ash.g3_control_semantics import require
 from ash import g3_n02_presentation as presentation
+
+
+DIAGNOSTIC_STAGES=frozenset(('REQUEST','REQUEST_GUARD','MAINTENANCE_LOGIN','MAINTENANCE_FORM_SHAPE',
+    'AUTH_PHASE','AUTH_FORM_SHAPE','CSRF_PRESENT','CSRF_MATCH','COOKIE_MATCH','CURRENT_STATE_GATE',
+    'PROVIDER_SEND_PREPARATION','PROVIDER_SEND_RESULT','REDIRECT_TARGET','REDIRECT_303',
+    'GET_FORM_RENDER','PREAUTH_COOKIE_ISSUANCE','CURRENT_COOKIE_ISSUANCE','GET_FORM_DELIVERY','AUTH_DISPATCH','AUTH_FORM_AUTHENTICATION'))
+DIAGNOSTIC_ROUTES=frozenset(('START','LOGIN','CONFIRM','STATUS','RECOVER','ENROLL','DECISION','REVOKE','PROBE','OTHER'))
+
+
+def closed_stage(stage,result,*,method=None,route=None):
+    """Fixed identifiers only: never accepts input values, exceptions or credentials."""
+    require(type(stage) is str and stage in DIAGNOSTIC_STAGES)
+    require(type(result) is str and result in ('ENTER','PASS','DENY'))
+    require(method is None or type(method) is str and method in ('GET','POST','OTHER'))
+    require(route is None or type(route) is str and route in DIAGNOSTIC_ROUTES)
+    record=dict(stage=stage,result=result,authority='NONE',real_admission='NO')
+    if method is not None:record['method']=method
+    if route is not None:record['route']=route
+    print(json.dumps({'n01_owner_closed_stage':record},sort_keys=True),flush=True)
 
 
 class OwnerIngress:
@@ -47,20 +67,29 @@ class OwnerIngress:
     def __reduce_ex__(self,_):raise TypeError('N01_OWNER_INGRESS_NOT_RESTORABLE')
     def __getstate__(self):raise TypeError('N01_OWNER_INGRESS_NOT_RESTORABLE')
     def attach_cookie(self,handler):
+        stage='PREAUTH_COOKIE_ISSUANCE' if self.__state=='PREAUTH' else 'CURRENT_COOKIE_ISSUANCE'
+        closed_stage(stage,'ENTER')
         require(self.__state in ('PREAUTH','CURRENT'))
         # Legitimate protected browser delivery only; never an evidence getter.
         handler.send_header('Set-Cookie','__Host-NexusN01='+self.__cookie+'; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=300')
+        closed_stage(stage,'PASS')
     def authenticated_form(self,headers,*,csrf):
+        stage='CSRF_PRESENT'
         try:
-            require(type(csrf) is str and len(csrf)==64 and hmac.compare_digest(csrf,self.__csrf))
+            closed_stage(stage,'ENTER');require(type(csrf) is str and len(csrf)==64);closed_stage(stage,'PASS')
+            stage='CSRF_MATCH';closed_stage(stage,'ENTER')
+            require(hmac.compare_digest(csrf,self.__csrf));closed_stage(stage,'PASS')
+            stage='COOKIE_MATCH';closed_stage(stage,'ENTER')
             values=headers.get_all('Cookie');require(type(values) is list and len(values)==1)
             own=[]
             for part in values[0].split(';'):
                 name,sep,value=part.strip().partition('=')
                 if name=='__Host-NexusN01':require(sep=='=');own.append(value)
             require(len(own)==1 and hmac.compare_digest(own[0],self.__cookie))
+            closed_stage(stage,'PASS')
             return 'FORM_MATCH_ONLY_NONE'
         except Exception:
+            closed_stage(stage,'DENY')
             self.retire()
             raise ValueError('N01_OWNER_FORM_DENIED') from None
     def write_form(self,handler):
@@ -96,6 +125,13 @@ class OwnerIngress:
         self.__gate()
         return result
     def __gate(self):
+        closed_stage('CURRENT_STATE_GATE','ENTER')
+        try:
+            result=self.__check_current_gate()
+            closed_stage('CURRENT_STATE_GATE','PASS');return result
+        except Exception:
+            closed_stage('CURRENT_STATE_GATE','DENY');raise
+    def __check_current_gate(self):
         now=int(time.time()*1000)
         require(self.__fence.public_review.valid_from_ms<=self.__started<=self.__last_wall<=now<self.__until
                 and time.monotonic()>=self.__last_monotonic)
@@ -127,19 +163,25 @@ class OwnerIngress:
         self.__last_wall=finished;self.__last_monotonic=monotonic
         return enrollment
     def send_email(self,email):
+        stage='PROVIDER_SEND_PREPARATION'
         try:
+            closed_stage(stage,'ENTER')
             require(self.__state=='PREAUTH' and type(email) is str and 0<len(email)<=320)
             normalized=email.strip().lower()
             require(hmac.compare_digest(hashlib.sha256(normalized.encode()).hexdigest(),self.__email_sha))
-            self.__gate();self.__state='UNKNOWN'
+            stage='CURRENT_STATE_GATE';self.__gate()
+            stage='PROVIDER_SEND_PREPARATION';closed_stage(stage,'PASS');self.__state='UNKNOWN'
+            stage='PROVIDER_SEND_RESULT';closed_stage(stage,'ENTER')
             self.__client.otps.email.send(email=normalized,expiration_minutes=2)
             body=self.__transport._native_body
             require(type(body) is dict and body.get('status_code')==200
                     and type(body.get('email_id')) is str
                     and re.fullmatch(r'email-test-[a-f0-9-]{36}',body['email_id']))
             self.__method=body['email_id'];self.__state='OTP_SENT'
+            closed_stage(stage,'PASS')
             return 'CURRENT_OWNER_EMAIL_REQUESTED_NONE'
         except Exception:
+            closed_stage(stage,'DENY')
             self.retire();raise ValueError('N01_OWNER_LOGIN_RETIRED') from None
         finally:self.__transport._native_body=None
     def authenticate_email(self,code):
