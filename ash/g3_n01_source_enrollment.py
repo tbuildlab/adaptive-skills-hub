@@ -15,6 +15,7 @@ from ash import g3_checkpoint_custody as custody
 from ash.g3_control_semantics import require
 from ash.g3_n01_owner_context import PROJECT, OWNER, integer
 from ash.g3_n01_public_review import PublicReview, PACKAGE_SHA, ACCEPTANCE_SHA, FROM_MS, UNTIL_MS
+from ash import g3_n01_public_review as public_review
 
 CONFIG='3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1'
 HOST_PROJECT='prj_xH23xMATVChdhX34OS2vjI8dfWN2'
@@ -54,15 +55,13 @@ def bind_source(raw,review,*,native_environment,artifact_inventory_sha256,proces
                 and value['authority_config_sha256']==CONFIG
                 and value['authority_instance']=='g3-n01-qualification-v1')
         require(value['service_revision']=='nexus-g3-n01-controller-v1')
-        for field in ('application_generation','review_generation'):
-            require(type(value[field]) is int and value[field]==1)
-        require(value['review_package_sha256']==review.package_sha256==PACKAGE_SHA
-                and value['review_acceptance_sha256']==review.acceptance_sha256==ACCEPTANCE_SHA)
+        selected=public_review.enrollment_pins(value)
+        require(selected==review.pins)
         require(value['principal']==dict(issuer='stytch.com/'+PROJECT,client_id=PROJECT,subject=OWNER))
         require(value['real_admission']=='NO' and value['no_automatic_redispatch']=='REQUIRED')
         require(value['source_kinds']==['D01','D03','OWNER_ENROLLMENT'])
-        require(FROM_MS<=integer(value['issued_at_ms'])<=integer(now_ms)<integer(value['expires_at_ms'])<=UNTIL_MS)
-        require(review.valid_from_ms==FROM_MS and review.valid_until_ms==UNTIL_MS)
+        require(selected.valid_from_ms<=integer(value['issued_at_ms'])<=integer(now_ms)<integer(value['expires_at_ms'])<=selected.valid_until_ms)
+        require(review.valid_from_ms==selected.valid_from_ms and review.valid_until_ms==selected.valid_until_ms)
         codec.old.check_type(value['artifact_inventory_sha256'],'h')
         require(value['artifact_inventory_sha256']==artifact_inventory_sha256)
         require(type(value['process_nonce']) is str
@@ -93,6 +92,9 @@ def read_protected_source(client,storage_registration,review,*,native_environmen
     try:
         require(type(storage_registration) is custody.Registration and storage_registration.generation==2
                 and storage_registration.config_sha256==CONFIG)
+        require(type(review) is PublicReview)
+        selected=review.pins
+        FROM_MS,UNTIL_MS=selected.valid_from_ms,selected.valid_until_ms
         require(FROM_MS<=integer(now_ms)<UNTIL_MS)
         started=int(time.time()*1000);require(now_ms<=started<UNTIL_MS)
         require(type(review) is PublicReview)
@@ -102,6 +104,7 @@ def read_protected_source(client,storage_registration,review,*,native_environmen
             from ash import g3_n01_owner_restart as restart
             restart.require_profile(restart_profile)
             prefix=restart.configuration(restart_profile).SOURCE_PREFIX
+        require(selected.generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
         scope=replace(storage_registration,prefix=prefix)
         fence=custody.N01S3Fence(client,scope,max_attempts=4)
         inventory=fence.inventory('')

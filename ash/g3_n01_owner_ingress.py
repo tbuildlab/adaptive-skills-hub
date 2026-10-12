@@ -37,7 +37,7 @@ class OwnerIngress:
         self.__method=None;self.__bearer=None;self.__context=None
         self.__started=int(time.time()*1000);self.__monotonic=time.monotonic()
         self.__last_wall=self.__started;self.__last_monotonic=self.__monotonic
-        self.__until=min(self.__started+120000,review.UNTIL_MS)
+        self.__until=min(self.__started+120000,self.__fence.public_review.valid_until_ms)
         self.__state='PREAUTH'
     @property
     def authority(self):return 'NONE'
@@ -97,7 +97,7 @@ class OwnerIngress:
         return result
     def __gate(self):
         now=int(time.time()*1000)
-        require(review.FROM_MS<=self.__started<=self.__last_wall<=now<self.__until
+        require(self.__fence.public_review.valid_from_ms<=self.__started<=self.__last_wall<=now<self.__until
                 and time.monotonic()>=self.__last_monotonic)
         if self.__state=='CURRENT':
             require(type(self.__context) is CurrentSession)
@@ -107,7 +107,7 @@ class OwnerIngress:
                 and self.__client.sync_client.project_id==owner.PROJECT)
         fence=self.__fence.gate_reader()
         enrollment=fence.current_source()
-        history=fence.read(valid_until=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc))
+        history=fence.read(valid_until=datetime.fromtimestamp(self.__fence.public_review.valid_until_ms/1000,timezone.utc))
         self.__ledger.observe_current(independent_checkpoint=history.checkpoints[-1])
         rows=[control.decode(row.value) for row in history.states[-1].checked.rows]
         root=next(value for value in rows if value['family']=='root')
@@ -167,7 +167,7 @@ class OwnerIngress:
                     and type(body.get('session_token')) is str and 0<len(body['session_token'])<=8192)
             bearer=body['session_token'];self.__transport._native_body=None;self.__bearer=None
             self.__context=CurrentSession(self.__client,self.__transport,bearer,self.__fence.public_review.keys,
-                review_from_ms=review.FROM_MS,review_until_ms=review.UNTIL_MS,
+                review_from_ms=self.__fence.public_review.valid_from_ms,review_until_ms=self.__fence.public_review.valid_until_ms,
                 operation_until_ms=enrolled.value['expires_at_ms'])
             self.__until=self.__context.deadline_ms;self.__state='CURRENT'
             # Rotate the process-only browser session after fresh MFA.

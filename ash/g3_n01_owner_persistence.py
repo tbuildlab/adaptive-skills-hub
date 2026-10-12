@@ -39,6 +39,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
                  artifact_inventory_sha256,process_nonce,max_attempts=1000,custody_revision=1,restart_profile=None):
         super().__init__(client,registration,profile='PRODUCTION',max_attempts=max_attempts)
         require(type(public_review) is review.PublicReview)
+        require(public_review.pins.generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
         self.public_review=public_review
         self.native_environment=native_environment
         self.artifact_inventory_sha256=artifact_inventory_sha256
@@ -76,7 +77,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
         require(not self.retired)
         require(operation in ('list_object_versions','get_object','get_object_retention','put_object'))
         if operation=='put_object':
-            require(review.FROM_MS<=int(time.time()*1000)<review.UNTIL_MS)
+            require(self.public_review.valid_from_ms<=int(time.time()*1000)<self.public_review.valid_until_ms)
             require(set(kwargs)=={'Key','Body','IfNoneMatch','ContentType','ChecksumAlgorithm'})
             require(self.__write_plan is not None and kwargs.get('Key') in self.__write_plan
                 and kwargs.get('Body')==self.__write_plan[kwargs['Key']]
@@ -136,7 +137,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
                 source_enrollment_sha256=enrolled.enrollment_sha256,
                 checkpoint=ref,previous_checkpoint=body['previous_checkpoint'],
                 authority_epoch=body['authority_epoch'],incarnation=body['incarnation'],
-                application_generation=1,review_generation=1,expires_at_ms=review.UNTIL_MS,
+                application_generation=1,review_generation=self.public_review.pins.generation,expires_at_ms=self.public_review.pins.valid_until_ms,
                 no_automatic_redispatch='REQUIRED',real_admission='NO')
             require(control.decode(raw)==expected and protected.inventory('')==inventory)
         finally:self.attempts+=protected.attempts
@@ -173,7 +174,7 @@ class OwnerMembershipCommit:
         require(ledger.instance==custody.INSTANCE==fence.registration.authority_instance)
         custody.reference(expected_head)
         require(type(valid_until) is datetime and valid_until.tzinfo is not None
-                and datetime.now(timezone.utc)<valid_until<=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc))
+                and datetime.now(timezone.utc)<valid_until<=datetime.fromtimestamp(fence.public_review.pins.valid_until_ms/1000,timezone.utc))
         self.ledger=ledger;self.fence=fence;self.expected_head=expected_head;self.valid_until=valid_until
         self.used=False;self.retired=False
     @property

@@ -11,6 +11,7 @@ import json
 
 from ash import g3_delegated_control_codec as codec
 from ash.g3_n01_public_review import PACKAGE_SHA, ACCEPTANCE_SHA, PREFIX, UNTIL_MS
+from ash import g3_n01_public_review as review
 
 ROOT=Path(__file__).resolve().parents[1]
 
@@ -75,16 +76,24 @@ finally:
 '''
 
 
-def build(destination):
+def build(destination,*,review_generation=1):
+    selected=review.pins(review_generation)
+    PACKAGE_SHA,ACCEPTANCE_SHA,PREFIX=selected.package_sha256,selected.acceptance_sha256,selected.prefix
     names=('nexus-production-n01-pending-public-pin-review-v1.json',
            'nexus-production-n01-public-pin-owner-acceptance-v1.json')
+    if review_generation==2:names=('nexus-production-n01-pending-public-pin-review-sdk-repair-v2.json',
+        'nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json')
     raws=tuple(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip(b'\n'))) for name in names)
     if tuple(map(codec.digest,raws))!=(PACKAGE_SHA,ACCEPTANCE_SHA):raise ValueError('PUBLIC_REVIEW_PACKAGE_CHANGED')
     payload={PREFIX+'proposal.json':raws[0].decode(),PREFIX+'acceptance.json':raws[1].decode()}
     setup='BUCKET='+repr('nexus-d03-custody-862902859484-ap-southeast-1-v1')+'\nOWNER='+repr('862902859484')+'\n'
     setup+='PREFIX='+repr(PREFIX)+'\nPAYLOAD='+repr(payload)+'\n'
     destination.parent.mkdir(parents=True,exist_ok=True)
-    destination.write_text(setup+R_PROGRAM,encoding='utf-8',newline='\n')
+    program=R_PROGRAM
+    if review_generation==2:
+        program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
+        program=program.replace('n01-public-review-r-receipt.json','n01-public-review-sdk-repair-v2-r-receipt.json')
+    destination.write_text(setup+program,encoding='utf-8',newline='\n')
     return dict(script_sha256=hashlib.sha256(destination.read_bytes()).hexdigest(),
         maximum_s3_attempts=16,new_objects=2,maximum_public_bytes=sum(map(len,raws)),
         qualification='PUBLIC_PIN_REVIEW_CUSTODY_ONLY',real_admission='NO')

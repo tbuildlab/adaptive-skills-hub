@@ -73,9 +73,9 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
     require(value['purpose']=='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY' and value['real_admission']=='NO')
     require(value['principal']==dict(issuer='stytch.com/'+source.PROJECT,client_id=source.PROJECT,subject=source.OWNER))
     require(value['source_kinds']==['D01','D03','OWNER_ENROLLMENT'] and value['no_automatic_redispatch']=='REQUIRED')
-    require(value['application_generation']==value['review_generation']==1
-        and value['review_package_sha256']==review.PACKAGE_SHA and value['review_acceptance_sha256']==review.ACCEPTANCE_SHA)
-    require(review.FROM_MS<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=review.UNTIL_MS)
+    selected=review.enrollment_pins(value)
+    require(selected.generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
+    require(selected.valid_from_ms<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=selected.valid_until_ms)
     require(control.digest(enrollment.canonical_bytes)==enrollment.enrollment_sha256)
     rows,root=_advance(history,now_ms=now_ms)
     require(root['quarantine']=='OPEN' and root['incarnation']=='n01-owner-'+value['process_nonce'][:32])

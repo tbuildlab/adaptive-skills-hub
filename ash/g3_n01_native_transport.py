@@ -37,12 +37,13 @@ def _size(value,depth=0):
 
 class NativeTransport:
     """NONE and non-restorable. One process budget; unknown retires all clients."""
-    def __init__(self,native_header):
+    def __init__(self,native_header,*,review_generation=1):
         import boto3
         from botocore.config import Config
         from botocore import UNSIGNED
         require(type(native_header) is str and native_header.isascii() and 0<len(native_header)<=16384)
         self.__clients=[];self.__ddb=None;self.__s3=None;self.__write=False;self.retired=False
+        self.__review=review.pins(review_generation)
         self.sts_attempts=0
         cfg=Config(retries={'total_max_attempts':1},connect_timeout=5,read_timeout=10)
         unsigned=Config(signature_version=UNSIGNED,retries={'total_max_attempts':1},connect_timeout=5,read_timeout=10)
@@ -52,7 +53,7 @@ class NativeTransport:
                 aws_session_token=credentials['SessionToken'])
             self.__clients.append(item);return item
         try:
-            require(review.FROM_MS<=int(time.time()*1000)<review.UNTIL_MS)
+            require(self.__review.valid_from_ms<=int(time.time()*1000)<self.__review.valid_until_ms)
             with _LOCK:
                 require(_BUDGET['leases']<8);_BUDGET['leases']+=1
             initial=boto3.client('sts',region_name='us-east-1',config=unsigned);self.__clients.append(initial)
@@ -85,6 +86,7 @@ class NativeTransport:
     def enable_owner_storage(self,public_review,*,native_environment,artifact_inventory_sha256,process_nonce,custody_revision=1,restart_profile=None):
         try:
             require(not self.retired and not self.__write)
+            if self.__review.generation==2:require(type(public_review) is review.PublicReview and public_review.pins==self.__review)
             enrollment=source.read_protected_source(self.custody,boot.storage_scope(),public_review,
                 native_environment=native_environment,artifact_inventory_sha256=artifact_inventory_sha256,
                 process_nonce=process_nonce,now_ms=int(time.time()*1000),custody_revision=custody_revision,
@@ -95,7 +97,7 @@ class NativeTransport:
             self.close();raise ValueError('N01_NATIVE_WRITE_ENROLLMENT_QUARANTINE') from None
     def _call(self,service,operation,kwargs):
         try:
-            require(not self.retired and review.FROM_MS<=int(time.time()*1000)<review.UNTIL_MS)
+            require(not self.retired and self.__review.valid_from_ms<=int(time.time()*1000)<self.__review.valid_until_ms)
             if service=='s3':
                 require(operation in ('list_object_versions','get_object','get_object_retention','put_object'))
                 require(kwargs.get('Bucket')==boot.storage_scope().bucket and kwargs.get('ExpectedBucketOwner')=='862902859484')

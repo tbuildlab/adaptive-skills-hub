@@ -32,7 +32,9 @@ def inventory():
 '''
 
 
-def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart_profile=None):
+def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart_profile=None,review_generation=1):
+    selected=review.pins(review_generation)
+    require(review_generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
     from ash import g3_n01_owner_restart as restart
     restart.require_profile(restart_profile)
     restart=restart.configuration(restart_profile)
@@ -44,8 +46,8 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
     require(deployment['readyState']=='READY' and deployment['target']=='production' and deployment['projectId']==source.HOST_PROJECT
         and deployment['native_sso_protection']=='all_except_custom_domains' and deployment['source_identity_matches']==count)
     value=observation['source_proposal'];raw=codec.canonical(value)
-    public=review.verify_review(codec.canonical(codec.decode((ROOT/'research/nexus-production-n01-pending-public-pin-review-v1.json').read_bytes().rstrip())),
-        codec.canonical(codec.decode((ROOT/'research/nexus-production-n01-public-pin-owner-acceptance-v1.json').read_bytes().rstrip())),now_ms=now_ms)
+    names=('nexus-production-n01-pending-public-pin-review-v1.json','nexus-production-n01-public-pin-owner-acceptance-v1.json') if review_generation==1 else ('nexus-production-n01-pending-public-pin-review-sdk-repair-v2.json','nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json')
+    public=review.verify_review(*(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip())) for name in names),now_ms=now_ms,review_generation=review_generation)
     env=dict(VERCEL_ENV='production',VERCEL_PROJECT_ID=deployment['projectId'],VERCEL_DEPLOYMENT_ID=deployment['id'],VERCEL_URL=deployment['url'])
     enrolled=source.bind_source(raw,public,native_environment=env,artifact_inventory_sha256=value['artifact_inventory_sha256'],
         process_nonce=value['process_nonce'],now_ms=now_ms)
@@ -60,8 +62,9 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
         and authorization['authority_config_sha256']==source.CONFIG and authorization['source_enrollment_sha256']==enrolled.enrollment_sha256
         and authorization['previous_checkpoint']==(dict(id=boot.HEAD_ID,body_sha256='52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41') if restart_profile is None else restart.HEAD4)
         and authorization['authority_epoch']==(3 if restart_profile is None else restart.EPOCH) and authorization['incarnation']=='n01-owner-'+value['process_nonce'][:32]
-        and authorization['application_generation']==authorization['review_generation']==1
-        and authorization['expires_at_ms']==review.UNTIL_MS and authorization['no_automatic_redispatch']=='REQUIRED'
+        and type(authorization['application_generation']) is int and authorization['application_generation']==1
+        and type(authorization['review_generation']) is int and authorization['review_generation']==review_generation
+        and authorization['expires_at_ms']==selected.valid_until_ms and authorization['no_automatic_redispatch']=='REQUIRED'
         and authorization['real_admission']=='NO')
     require(set(authorization['checkpoint'])=={'id','body_sha256'})
     codec.old.check_type(authorization['checkpoint']['body_sha256'],'h')
@@ -75,6 +78,7 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
         prefixes=(restart.SOURCE_PREFIX,restart.RECOVERY_PREFIX+f'{restart.SEQUENCE:020d}/')
     payload={prefixes[0]+'registration.json':raw.decode(),prefixes[1]+'authorization.json':protected.decode()}
     program=R_PROGRAM
+    if review_generation==2:program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
     start=program.index('def inventory():');end=program.index('if receipt.exists():',start)
     program=program[:start]+INVENTORY+program[end:]
     program=program.replace('n01-public-review-r-receipt.json','n01-owner-source-r-receipt.json')

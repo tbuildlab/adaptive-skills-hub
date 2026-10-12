@@ -42,8 +42,12 @@ def _enrolled(rows,root,enrollment,now_ms):
     value=enrollment.value
     require(root['quarantine']=='OPEN' and root['authority_config_sha256']==source.CONFIG
         and root['incarnation']=='n01-owner-'+value['process_nonce'][:32])
-    require(review.FROM_MS<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=review.UNTIL_MS)
+    selected=review.enrollment_pins(value)
+    require(selected.valid_from_ms<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=selected.valid_until_ms)
     binding_id,registration_id=state.current_binding_ids(rows)
+    if selected.generation==2:
+        from ash import g3_n01_owner_sdk_restart as repair
+        require((binding_id,registration_id)==(repair.BINDING_ID,repair.REGISTRATION_ID) and root['authority_epoch']==repair.EPOCH)
     bound=next(row for row in rows if row['family']=='binding' and row['binding_id']==binding_id)
     reg=next(row for row in rows if row['family']=='registration' and row['registration_id']==registration_id)
     require(bound['state']==reg['state']=='CURRENT' and bound['principal']==value['principal'])
@@ -60,7 +64,7 @@ def prepare_challenge(history,enrollment,projection,*,deadline_ms,nonce,now_ms):
     require(projection.provider_project==source.PROJECT and projection.provider_user==source.OWNER)
     c.old.check_type(nonce,'h')
     require(type(deadline_ms) is int and projection.authenticated_at_ms<=now_ms<deadline_ms
-        <=min(projection.authenticated_at_ms+owner.MAX_CONTEXT_MS,projection.remote_expires_at_ms,review.UNTIL_MS))
+        <=min(projection.authenticated_at_ms+owner.MAX_CONTEXT_MS,projection.remote_expires_at_ms,review.enrollment_pins(enrollment.value).valid_until_ms))
     rows,root=state._advance(history,now_ms=now_ms);binding=_enrolled(rows,root,enrollment,now_ms)
     require(not any(row['family']=='context' for row in rows))  # Fixed single qualification lineage.
     context_id='n01-owner-context-v1';view_id='n01-owner-view-v1';challenge_id='n01-owner-challenge-v1';objects={}

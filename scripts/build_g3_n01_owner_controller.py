@@ -16,7 +16,10 @@ OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.p
     'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py','ash/g3_n01_owner_restart.py','ash/g3_n01_owner_sdk_restart.py')
 
 
-def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profile=None):
+def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profile=None,review_generation=1):
+    from ash import g3_n01_public_review as review
+    selected=review.pins(review_generation)
+    if review_generation==2 and restart_profile!='OWNER_SDK_REPAIR_FORWARD_V1':raise ValueError('N01_REVIEW_PROFILE_DENY')
     codec.old.check_type(delivery_email_sha256,'h')
     if type(transport_revision) is not int or transport_revision not in (1,2,3):raise ValueError('N01_TRANSPORT_REVISION_DENY')
     from ash import g3_n01_owner_restart as restart
@@ -53,6 +56,7 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
            +('service.native.MAX_DDB=280\nservice.native.MAX_S3=10000\n' if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 'service.native.MAX_DDB=190\nservice.native.MAX_S3=6000\n')
            +'service.native.MAX_S3_WRITES=240\nservice.native.MAX_WRITE_BYTES=8388608\n'
            if restart_profile is not None else '')+
+        ('service.REVIEW_GENERATION=2\nservice.UNTIL=service.datetime.fromtimestamp('+str(selected.valid_until_ms)+'/1000,service.timezone.utc)\n' if review_generation==2 else '')+
         'class handler(service.handler,BaseHTTPRequestHandler):\n    pass\n').encode()
     complete={name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())}
     digest=codec.digest(codec.canonical(complete))
@@ -63,6 +67,8 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
         scope='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY',maximum_native_leases=8,maximum_ddb_attempts=256,
         maximum_s3_attempts=8000,maximum_s3_writes=256,maximum_new_bytes_per_backend=16777216,
         issuer_environment='STYTCH_CONSUMER_TEST',grant_issuance='NOT_IMPLEMENTED',execution='DENY')
+    if review_generation==2:
+        metadata.update(review_generation=2,review_package_sha256=selected.package_sha256,review_acceptance_sha256=selected.acceptance_sha256,review_valid_until_ms=selected.valid_until_ms)
     if restart_profile is not None:
         metadata.update(restart_profile=restart_profile,expected_predecessor=restart.HEAD4,
             maximum_ddb_attempts=280 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 190,maximum_s3_attempts=10000 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 6000,maximum_s3_writes=240,

@@ -152,24 +152,24 @@
     "sha256": "87d62c107fd74e3f90790e07108fc8be431dbbe71e034b9e00b16a55e6274ad9"
   },
   "ash/g3_n01_native_transport.py": {
-    "bytes": 10184,
-    "sha256": "f47d343f6836c0ad68a5711f03eb7b989c5e4e7ae58fc386a1788500b6dbe0b9"
+    "bytes": 10444,
+    "sha256": "82ec0f0b482871045f2649767fda7275cf3db0805fdf34062a8d0255d7c23eb1"
   },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
   },
   "ash/g3_n01_owner_ingress.py": {
-    "bytes": 11487,
-    "sha256": "e44c5be05f236b76e03b77651ef7cd183b62251a979f90a242c987dd60805ce4"
+    "bytes": 11617,
+    "sha256": "9da1e3a3dbb4f0e3d763b76bc4d9d0ff375a3cb9d9656e0dca81b4a574549d9d"
   },
   "ash/g3_n01_owner_persistence.py": {
-    "bytes": 17954,
-    "sha256": "7916ea3e1b6b37e9c567e6168e64f971f32fa0757cb3f5b1a014774828ff4c23"
+    "bytes": 18170,
+    "sha256": "27c7d5a345e4c8dbf5244e969924b8d7f61f90d9d6b0e37ec076696c855b7738"
   },
   "ash/g3_n01_owner_protocol.py": {
-    "bytes": 15995,
-    "sha256": "87938fcdb42a575739cf1129ce8e0122588db7fcc6629248cc711ee676da6348"
+    "bytes": 16316,
+    "sha256": "47b8095364effa4fd8ae93146964f4f077e7c2c4458331a05dd65223db64328d"
   },
   "ash/g3_n01_owner_restart.py": {
     "bytes": 6874,
@@ -180,16 +180,16 @@
     "sha256": "df03fe15ff6080c83db2c0685a01e9fb1660c10900ead7686f1bc15e76fb603b"
   },
   "ash/g3_n01_owner_state.py": {
-    "bytes": 11529,
-    "sha256": "5bf8635c118debcbb0c04555a9afb2476ad885f013e0891f131b5045647f295b"
+    "bytes": 11474,
+    "sha256": "a3fdb2e424cf49edbc4f599b309f50819517f0619362ee5b8a11accae98e6e60"
   },
   "ash/g3_n01_public_pin.py": {
     "bytes": 3293,
     "sha256": "b157d97ee15e9edaa45d127370a7fa85dffa269fbb790bb323cd8f31a2707e04"
   },
   "ash/g3_n01_public_review.py": {
-    "bytes": 4752,
-    "sha256": "07bd844f7e44b827061752613eb1e5be0e120299ccffa861eba13db8fc35348e"
+    "bytes": 6501,
+    "sha256": "fc703dfeb097927e9f1e21b3a4147774585479dd082e3372f62564b990d1d709"
   },
   "ash/g3_n01_retained_state.py": {
     "bytes": 4164,
@@ -200,8 +200,8 @@
     "sha256": "f781a5a9aff5e89e1a784e982afc02e31e944c2c6ab66da69194419607978086"
   },
   "ash/g3_n01_source_enrollment.py": {
-    "bytes": 6717,
-    "sha256": "aeb8d0ca7c120c977e22006cd055fc44035bbf6e8d1263bcf6bd0a8f0cee28a2"
+    "bytes": 6845,
+    "sha256": "25f89e15372f2c0d2f9a3675006b425524671d81a5d330f9c0ebb103e8e13d48"
   },
   "ash/g3_n01_stytch_transport.py": {
     "bytes": 6496,
@@ -1803,6 +1803,10 @@
     "bytes": 5164,
     "sha256": "a6e0fde71fbd4d39c4fdf414e5aeb36cb465668e1f35217781ec7d1fb24e9c5f"
   },
+  "docs/nexus-production-n01-public-review-v2-continuation-v1.md": {
+    "bytes": 3557,
+    "sha256": "c51b24402c8553941b0352fffa7414e3675f7d581bb8f174eeb32a679a182533"
+  },
   "docs/nexus-production-n01-sdk-repair-bounded-public-pin-owner-review-v2.md": {
     "bytes": 3462,
     "sha256": "1c34d9317c5d86e945a63a5adf0ef591aa025b453cc722d20c12b0a364c5f695"
@@ -2071,6 +2075,10 @@
     "bytes": 1363,
     "sha256": "0a5d657153b455511f479eaa8f0cdbabe601759736dd1146ad21920388acf90d"
   },
+  "research/nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json": {
+    "bytes": 1092,
+    "sha256": "e9b67ad315f7e11f3213f9d624e5dbf1f19bdd1c7d729fe2404d4bad6d7774c6"
+  },
   "research/nexus-production-n01-public-pin-owner-acceptance-v1.json": {
     "bytes": 1060,
     "sha256": "b98ac4facee2947bbfff3419272f77ccd70b33a3bfc49fa8274b927a5f176955"
@@ -2078,6 +2086,14 @@
   "research/nexus-production-n01-public-review-r-observed-evidence-v1.json": {
     "bytes": 1601,
     "sha256": "89142ba0b2b35878a125efc17957a34a5ecb8c46362f34a63a421bfe498add90"
+  },
+  "research/nexus-production-n01-public-review-v2-custody-evidence-v1.json": {
+    "bytes": 1114,
+    "sha256": "a34105222b646454c7d5b8e10adf973d827a1397be37dc9190be4f684b30515d"
+  },
+  "research/nexus-production-n01-public-review-v2-offline-verification-v1.json": {
+    "bytes": 1099,
+    "sha256": "4fb101d8eadb20dedacdc1f9aff06866c647ff52db77bc4375793feed21db418"
   },
   "research/nexus-production-n01-recovery-observed-evidence-v1.json": {
     "bytes": 25396,
@@ -2128,16 +2144,16 @@
     "sha256": "91a298cd96a5e6dc87fdfba9b009ce5690ff476c53a7cdf65433c61c3b3168dc"
   },
   "scripts/build_g3_n01_owner_controller.py": {
-    "bytes": 6843,
-    "sha256": "c8e43b3ae54655fd1619d9a52cb49bbfddba9df2aba0e6037e570c2073ce3777"
+    "bytes": 7480,
+    "sha256": "d3f65a6a1fe8760dcd30abdb63f769e79616bd01670bcc4aa96334cc6daa4118"
   },
   "scripts/build_g3_n01_owner_source_custody.py": {
-    "bytes": 8196,
-    "sha256": "7ff8156c6961812f5fafbe75d096a9161455973c07f92afe9933a1e93b40fa62"
+    "bytes": 8809,
+    "sha256": "b913566941a73198605028cc51c47c1483838752e272e389803add27984a4efb"
   },
   "scripts/build_g3_n01_public_review_custody.py": {
-    "bytes": 4963,
-    "sha256": "1400b5c4b275110259aab5dceff49769ea90ec233a1fc20c1e770677e63d29aa"
+    "bytes": 5661,
+    "sha256": "f403c11243b3cada28fa677eeb0423dbb5c11cb34f1219ff5c9d924a9164b312"
   },
   "scripts/build_g3_n01_vercel_probe.py": {
     "bytes": 4317,
@@ -2192,8 +2208,8 @@
     "sha256": "0e171aacf85e84e1de572872fad8e5de88bc81fff050281598c81c62b4c4d616"
   },
   "scripts/g3_n01_owner_controller.py": {
-    "bytes": 27666,
-    "sha256": "35fc23589f1ad63c2ab0489dff4aa2596ca457aa1c33e4209f4e0d051ae946a3"
+    "bytes": 28222,
+    "sha256": "87295441fd484ac6aacb162c829ced92b859ca5f4ae75727a78e973e2a41dabf"
   },
   "scripts/g3_n01_storage_contract.py": {
     "bytes": 5667,
@@ -2462,6 +2478,10 @@
   "tests/test_g3_n01_public_review.py": {
     "bytes": 4838,
     "sha256": "0caf2057b501c00c7626e1dacdd0e48ae6f6c449f6d67400c9998c18c3ed9ce9"
+  },
+  "tests/test_g3_n01_public_review_v2.py": {
+    "bytes": 6140,
+    "sha256": "0b8749e28df521fcd7169298cbe44c492241f470246a9c231c16212af242df32"
   },
   "tests/test_g3_n01_retained_state.py": {
     "bytes": 4781,

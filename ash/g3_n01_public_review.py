@@ -22,6 +22,34 @@ CONFIG='3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1'
 
 
 @dataclass(frozen=True)
+class ReviewPins:
+    generation: int
+    package_sha256: str
+    acceptance_sha256: str
+    prefix: str
+    valid_from_ms: int
+    valid_until_ms: int
+
+
+def pins(generation=1):
+    """Two exact Owner-approved reviews; selection never extends either one."""
+    require(type(generation) is int and generation in (1,2))
+    if generation==1:
+        return ReviewPins(1,PACKAGE_SHA,ACCEPTANCE_SHA,PREFIX,FROM_MS,UNTIL_MS)
+    return ReviewPins(2,'cd2d4a2fa5002d4bd28a0dc3cc789c89fe220060871ed3ee7fa02bd0480feb16',
+        '2263e997e06496796053b25943a64ae269e8711ccbc382d198b4a125c0af8f17',
+        custody.APPROVALS+'public-pin-owner-review-sdk-repair-20261012-v2/',1791800738065,1791815138065)
+
+
+def enrollment_pins(value):
+    selected=pins(value['review_generation'])
+    require(type(value['application_generation']) is int and value['application_generation']==1
+        and value['review_package_sha256']==selected.package_sha256
+        and value['review_acceptance_sha256']==selected.acceptance_sha256)
+    return selected
+
+
+@dataclass(frozen=True)
 class PublicReview:
     key_bytes: bytes
     valid_from_ms: int
@@ -32,9 +60,17 @@ class PublicReview:
     def __post_init__(self):
         require(type(self.key_bytes) is bytes and codec.digest(self.key_bytes)==KEYS_SHA)
         public_keys(tuple(codec.decode(self.key_bytes)))
+        selected=self.pins
         require(type(self.valid_from_ms) is int and type(self.valid_until_ms) is int
-                and self.valid_from_ms==FROM_MS and self.valid_until_ms==UNTIL_MS
-                and self.package_sha256==PACKAGE_SHA and self.acceptance_sha256==ACCEPTANCE_SHA)
+                and self.valid_from_ms==selected.valid_from_ms and self.valid_until_ms==selected.valid_until_ms
+                and self.acceptance_sha256==selected.acceptance_sha256)
+
+    @property
+    def pins(self):
+        for generation in (1,2):
+            selected=pins(generation)
+            if self.package_sha256==selected.package_sha256:return selected
+        raise ValueError('N01_PUBLIC_REVIEW_DENY')
 
     @property
     def authority(self):return 'NONE'
@@ -43,9 +79,12 @@ class PublicReview:
     def keys(self):return public_keys(tuple(codec.decode(self.key_bytes)))
 
 
-def verify_review(proposal,acceptance,*,now_ms):
+def verify_review(proposal,acceptance,*,now_ms,review_generation=1):
     """Exact bytes/interval only; caller must prove independent custody origin."""
     try:
+        selected=pins(review_generation)
+        PACKAGE_SHA,ACCEPTANCE_SHA=selected.package_sha256,selected.acceptance_sha256
+        FROM_MS,UNTIL_MS=selected.valid_from_ms,selected.valid_until_ms
         require(type(proposal) is bytes and type(acceptance) is bytes
                 and 0<len(proposal)<=8192 and 0<len(acceptance)<=4096)
         require(codec.digest(proposal)==PACKAGE_SHA and codec.digest(acceptance)==ACCEPTANCE_SHA)
@@ -59,7 +98,7 @@ def verify_review(proposal,acceptance,*,now_ms):
         require(FROM_MS<=integer(now_ms)<UNTIL_MS)
         require(FROM_MS==pending['valid_from_ms'] and UNTIL_MS==pending['valid_until_ms'])
         require(type(pending['application_generation']) is int and pending['application_generation']==1
-                and type(pending['review_generation']) is int and pending['review_generation']==1)
+                and type(pending['review_generation']) is int and pending['review_generation']==selected.generation)
         require(approved['real_admission']==pending['real_admission']=='NO')
         keys=public_keys(tuple(pending['keys']))
         require(codec.digest(codec.canonical(list(keys)))==pending['keys_sha256'])
@@ -68,13 +107,15 @@ def verify_review(proposal,acceptance,*,now_ms):
         raise ValueError('N01_PUBLIC_REVIEW_DENY') from None
 
 
-def read_protected_review(client,storage_registration,*,now_ms):
+def read_protected_review(client,storage_registration,*,now_ms,review_generation=1):
     """Two fixed R-only documents, exact versions, retention and fresh inventory.
 
     Reuses qualified versioned-read transport; no write, credential loading,
     historical review extension, runtime/source registration or authority.
     """
     try:
+        selected=pins(review_generation)
+        PREFIX,FROM_MS,UNTIL_MS=selected.prefix,selected.valid_from_ms,selected.valid_until_ms
         require(type(storage_registration) is custody.Registration and storage_registration.generation==2
                 and storage_registration.config_sha256==CONFIG)
         require(FROM_MS<=integer(now_ms)<UNTIL_MS)
@@ -87,6 +128,6 @@ def read_protected_review(client,storage_registration,*,now_ms):
         material={key:fence.retained(key,version,until) for key,version in inventory}
         require(fence.inventory('')==inventory)
         finished=int(time.time()*1000);require(started<=finished<UNTIL_MS)
-        return verify_review(material[PREFIX+'proposal.json'],material[PREFIX+'acceptance.json'],now_ms=finished)
+        return verify_review(material[PREFIX+'proposal.json'],material[PREFIX+'acceptance.json'],now_ms=finished,review_generation=review_generation)
     except Exception:
         raise ValueError('N01_PUBLIC_REVIEW_CUSTODY_QUARANTINE') from None

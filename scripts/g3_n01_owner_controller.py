@@ -47,6 +47,17 @@ GET_PATHS=frozenset(('/api/n01-controller','/api/n01/start','/api/n01/login','/a
 UNTIL=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc)
 CUSTODY_REVISION=1
 RESTART_PROFILE=None
+REVIEW_GENERATION=1
+
+
+def current_review():
+    selected=review.pins(REVIEW_GENERATION)
+    require(selected.generation==1 or RESTART_PROFILE=='OWNER_SDK_REPAIR_FORWARD_V1')
+    return selected
+
+
+def native_transport(header):
+    return native.NativeTransport(header) if REVIEW_GENERATION==1 else native.NativeTransport(header,review_generation=REVIEW_GENERATION)
 
 
 def canonical_route(path):
@@ -68,7 +79,7 @@ def request_allowed(path,method,headers,environment):
         and headers.get_all('Host')==[host]
         and headers.get_all('Transfer-Encoding') is None
         and len(headers.get_all('x-vercel-oidc-token') or [])==1
-        and review.FROM_MS<=int(time.time()*1000)<review.UNTIL_MS)
+        and current_review().valid_from_ms<=int(time.time()*1000)<current_review().valid_until_ms)
     if not allowed:return False
     if method=='GET':return headers.get_all('Content-Length') in (None,['0']) and headers.get('Origin') in (None,'https://'+host)
     return (headers.get_all('Origin')==['https://'+host]
@@ -109,7 +120,7 @@ class OwnerController:
     def __init__(self,header,environment,artifact_sha):
         self.__phase='QUARANTINE';self.__environment={key:environment.get(key) for key in
             ('VERCEL_ENV','VERCEL_URL','VERCEL_PROJECT_ID','VERCEL_DEPLOYMENT_ID')}
-        self.__artifact_sha=artifact_sha;self.__transport=native.NativeTransport(header)
+        self.__artifact_sha=artifact_sha;self.__transport=native_transport(header)
         self.__lease_started=int(time.time()*1000);self.__maintenance=secrets.token_hex(32)
         self.__review=None;self.__history=None;self.__candidate=None;self.__enrolled=None
         self.__owner=None;self.__current=None;self.__challenge=None;self.__view=None;self.__shown=None
@@ -118,7 +129,7 @@ class OwnerController:
         try:
             if RESTART_PROFILE=='OWNER_SDK_REPAIR_FORWARD_V1':
                 client,identity=native_identity_client();identity.close();client=None
-            self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall)
+            self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall,review_generation=REVIEW_GENERATION)
             if RESTART_PROFILE is None:
                 self.__history=membership.MembershipFence(self.__transport.custody,boot.storage_scope(),profile='PRODUCTION').read(valid_until=UNTIL)
             else:
@@ -132,12 +143,12 @@ class OwnerController:
             now=self._time()
             value=dict(schema_version='nexus.g3.n01.current-source-enrollment.v1',purpose='BOUNDED_OWNER_CONTEXT_SOURCE_ONLY',
                 authority_mode=records.MODE,authority_config_sha256=source.CONFIG,authority_instance=custody.INSTANCE,
-                application_generation=1,review_generation=1,service_revision='nexus-g3-n01-controller-v1',
-                review_package_sha256=review.PACKAGE_SHA,review_acceptance_sha256=review.ACCEPTANCE_SHA,
+                application_generation=1,review_generation=current_review().generation,service_revision='nexus-g3-n01-controller-v1',
+                review_package_sha256=current_review().package_sha256,review_acceptance_sha256=current_review().acceptance_sha256,
                 principal=dict(issuer='stytch.com/'+source.PROJECT,client_id=source.PROJECT,subject=source.OWNER),
                 deployment_id=environment['VERCEL_DEPLOYMENT_ID'],deployment_host=environment['VERCEL_URL'],host_project_id=source.HOST_PROJECT,
                 artifact_inventory_sha256=artifact_sha,process_nonce=boot.PROCESS_NONCE,source_kinds=['D01','D03','OWNER_ENROLLMENT'],
-                issued_at_ms=now,expires_at_ms=review.UNTIL_MS,no_automatic_redispatch='REQUIRED',real_admission='NO')
+                issued_at_ms=now,expires_at_ms=current_review().valid_until_ms,no_automatic_redispatch='REQUIRED',real_admission='NO')
             raw=codec.canonical(value)
             self.__source_proposal=source.bind_source(raw,self.__review,native_environment=self.__environment,
                 artifact_inventory_sha256=artifact_sha,process_nonce=boot.PROCESS_NONCE,now_ms=now)
@@ -154,7 +165,7 @@ class OwnerController:
     def __reduce_ex__(self,_):raise TypeError('N01_OWNER_CONTROLLER_NOT_RESTORABLE')
     def _time(self):
         now=int(time.time()*1000);monotonic=time.monotonic()
-        require(review.FROM_MS<=self.__last_wall<=now<review.UNTIL_MS and self.__last_monotonic<=monotonic)
+        require(current_review().valid_from_ms<=self.__last_wall<=now<current_review().valid_until_ms and self.__last_monotonic<=monotonic)
         self.__last_wall=now;self.__last_monotonic=monotonic;return now
     def _ledger(self):
         return DelegatedDynamoReservations(self.__transport.primary,table_arn=native.TABLE,instance=custody.INSTANCE,max_attempts=256)
@@ -196,7 +207,7 @@ class OwnerController:
             authority_mode=records.MODE,authority_config_sha256=source.CONFIG,
             source_enrollment_sha256=self.__source_proposal.enrollment_sha256,checkpoint=custody.reference(self.__candidate.checkpoint),
             previous_checkpoint=body['previous_checkpoint'],authority_epoch=body['authority_epoch'],incarnation=body['incarnation'],
-            application_generation=1,review_generation=1,expires_at_ms=review.UNTIL_MS,no_automatic_redispatch='REQUIRED',real_admission='NO')
+            application_generation=1,review_generation=current_review().generation,expires_at_ms=current_review().valid_until_ms,no_automatic_redispatch='REQUIRED',real_admission='NO')
         return dict(status=self.__phase,source_proposal=self.__source_proposal.value,source_sha256=self.__source_proposal.enrollment_sha256,
             recovery_authorization=authorization,recovery_authorization_sha256=codec.digest(codec.canonical(authorization)),
             public_review='EXACT_RETAINED_REVIEW_VERIFIED',current_owner='NOT_AUTHENTICATED',authority='NONE',real_admission='NO')
@@ -225,7 +236,7 @@ class OwnerController:
                 # Fresh native credential lease is a new explicit maintenance
                 # action, never replay of an unknown primary mutation.
                 if self._time()-self.__lease_started>=600000:
-                    self.__transport.close();self.__transport=native.NativeTransport(header);self.__lease_started=self._time()
+                    self.__transport.close();self.__transport=native_transport(header);self.__lease_started=self._time()
                 self.__phase='RECOVER_UNKNOWN'
                 self.__enrolled=self.__transport.enable_owner_storage(self.__review,native_environment=self.__environment,
                     artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION,
@@ -244,7 +255,7 @@ class OwnerController:
                 require(self.__phase=='OWNER_SOURCE_ENROLLED_NONE')
                 if self._time()-self.__lease_started>=600000:
                     require(self.__owner is None and self.__current is None)
-                    self.__transport.close();self.__transport=native.NativeTransport(header);self.__lease_started=self._time()
+                    self.__transport.close();self.__transport=native_transport(header);self.__lease_started=self._time()
                     current=self.__transport.enable_owner_storage(self.__review,native_environment=self.__environment,
                         artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION,
                         **({} if RESTART_PROFILE is None else {'restart_profile':RESTART_PROFILE}))
