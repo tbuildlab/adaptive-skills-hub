@@ -30,7 +30,7 @@ def build(destination):
                 key=line.split('==')[0];assert key not in locks or locks[key]==line;locks[key]=line
     files['requirements.txt']=('\n'.join(locks[key] for key in sorted(locks))+'\n').encode()
     files['.python-version']=b'3.12\n'
-    files['public/index.html']=b'<!doctype html><html lang="en"><meta charset="utf-8"><title>N01 bootstrap</title><p>Protected bootstrap only. No Owner context or execution authority.</p></html>\n'
+    files['index.html']=b'<!doctype html><html lang="en"><meta charset="utf-8"><title>N01 bootstrap</title><p>Protected bootstrap only. No Owner context or execution authority.</p></html>\n'
     files['vercel.json']=codec.canonical({'functions':{'api/n01-controller.py':{'maxDuration':60}}})
     inventory={name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())}
     manifest=codec.canonical(inventory)
@@ -52,7 +52,7 @@ def build(destination):
     request=dict(name='nexus-g3-qual',project='prj_xH23xMATVChdhX34OS2vjI8dfWN2',target='production',
         files=[dict(file=name,data=raw.decode(),encoding='utf-8') for name,raw in sorted(files.items())],
         meta={'n01Profile':'PUBLIC_REVIEW_BOOTSTRAP_ONLY','n01SourceHead':source_head,'n01ArtifactSha256':digest},
-        projectSettings=dict(framework=None,buildCommand=None,outputDirectory='public',nodeVersion='24.x'))
+        projectSettings=dict(framework=None,buildCommand=None,outputDirectory=None,nodeVersion='24.x'))
     (destination/'exact-body.json').write_text(json.dumps(request),encoding='utf-8')
     snapshot=destination/'source'
     for name,raw in files.items():

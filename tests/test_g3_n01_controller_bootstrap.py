@@ -69,6 +69,8 @@ class ControllerBootstrapTests(unittest.TestCase):
     def test_complete_artifact_measurement_and_source_tamper_denies(self):
         with tempfile.TemporaryDirectory() as tmp:
             metadata=builder.build(Path(tmp));root=Path(tmp)/'source'
+            self.assertIn('index.html',metadata['files'])
+            self.assertFalse(any(name.startswith('public/') for name in metadata['files']))
             expected=metadata['files']['source-inventory.json']['sha256']
             loader=ast.parse((root/'api/n01-controller.py').read_text())
             handler=next(node for node in loader.body if isinstance(node,ast.ClassDef))

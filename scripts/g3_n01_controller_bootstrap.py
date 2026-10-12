@@ -53,7 +53,7 @@ class handler(BaseHTTPRequestHandler):
                         if diagnostic=='N01_ARTIFACT_MANIFEST_UNAVAILABLE':OUTCOME['bootstrap_stage']=diagnostic
                         elif diagnostic.startswith('N01_ARTIFACT_FILE_UNAVAILABLE:'):
                             name=diagnostic.partition(':')[2]
-                            if name in ('requirements.txt','.python-version','vercel.json','public/index.html',
+                            if name in ('requirements.txt','.python-version','vercel.json','index.html',
                                         'api/n01-controller.py','source-inventory.json'):
                                 OUTCOME['bootstrap_stage']=diagnostic
                 result=OUTCOME;status=200 if result['status']=='NATIVE_PUBLIC_REVIEW_BOOTSTRAP_VERIFIED' else 503
