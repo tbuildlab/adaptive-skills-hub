@@ -31,7 +31,7 @@ def build(destination):
     files['requirements.txt']=('\n'.join(locks[key] for key in sorted(locks))+'\n').encode()
     files['.python-version']=b'3.12\n'
     files['index.html']=b'<!doctype html><html lang="en"><meta charset="utf-8"><title>N01 bootstrap</title><p>Protected bootstrap only. No Owner context or execution authority.</p></html>\n'
-    files['vercel.json']=codec.canonical({'functions':{'api/n01-controller.py':{'maxDuration':60}}})
+    files['vercel.json']=codec.canonical({'name':'nexus-g3-qual','functions':{'api/n01-controller.py':{'maxDuration':60}}})
     inventory={name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())}
     manifest=codec.canonical(inventory)
     files['source-inventory.json']=manifest

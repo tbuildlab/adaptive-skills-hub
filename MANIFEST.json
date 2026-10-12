@@ -2024,8 +2024,8 @@
     "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
   },
   "scripts/build_g3_n01_controller_bootstrap.py": {
-    "bytes": 4242,
-    "sha256": "5c9bf302371de82db04afa9545145a9723325933b8b365b56cd9535dbc2e8612"
+    "bytes": 4265,
+    "sha256": "91a298cd96a5e6dc87fdfba9b009ce5690ff476c53a7cdf65433c61c3b3168dc"
   },
   "scripts/build_g3_n01_public_review_custody.py": {
     "bytes": 4963,
