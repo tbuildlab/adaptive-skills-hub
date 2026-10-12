@@ -47,6 +47,8 @@ class handler(BaseHTTPRequestHandler):
                         OUTCOME['bootstrap_stage']='NATIVE_PUBLIC_REVIEW_READ'
                         OUTCOME=boot.bootstrap(self.headers.get('x-vercel-oidc-token'),os.environ,measured)
                     except Exception as error:
+                        if type(error) is boot.ArtifactConfigMismatch:
+                            OUTCOME['artifact_config_shape']=error.observation
                         # Report only our closed public-file diagnostics. Never
                         # emit SDK errors, request fields or arbitrary exceptions.
                         diagnostic=str(error) if type(error) is ValueError else ''

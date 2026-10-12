@@ -25,6 +25,24 @@ A='arn:aws:iam::175880707430:role/NexusG3QualificationCaller'
 R='arn:aws:iam::862902859484:role/NexusG3N01AppendRead'
 
 
+class ArtifactConfigMismatch(ValueError):
+    """Fixed non-secret shape only; never raw native config or environment."""
+    def __init__(self,value):
+        self.observation={'code':'N01_ARTIFACT_CONFIG_SEMANTIC_MISMATCH'}
+        if type(value) is dict:
+            keys=sorted(key for key in value if type(key) is str and key.isidentifier() and len(key)<=32)
+            self.observation['top_level_keys']=keys
+            functions=value.get('functions')
+            if type(functions) is dict:
+                self.observation['exact_function_name_present']='api/n01-controller.py' in functions
+                own=functions.get('api/n01-controller.py')
+                if type(own) is dict:
+                    self.observation['function_setting_keys']=sorted(key for key in own if key.isidentifier() and len(key)<=32)
+                    duration=own.get('maxDuration')
+                    if type(duration) is int and 1<=duration<=300:self.observation['max_duration']=duration
+        super().__init__('N01_ARTIFACT_CONFIG_SEMANTIC_MISMATCH')
+
+
 def storage_scope():
     return custody.Registration('nexus-d03-custody-862902859484-ap-southeast-1-v1',
         '862902859484',custody.NORMAL,custody.INSTANCE,2,GENESIS_ID,GENESIS_SHA,
@@ -56,9 +74,10 @@ def measure_artifact(root,expected_manifest_sha256):
                 value={}
                 for key,child in items:require(key not in value);value[key]=child
                 return value
-            normalized=codec.canonical(json.loads(data,object_pairs_hook=pairs))
+            parsed=json.loads(data,object_pairs_hook=pairs)
+            normalized=codec.canonical(parsed)
             if len(normalized)!=entry['bytes'] or codec.digest(normalized)!=entry['sha256']:
-                raise ValueError('N01_ARTIFACT_CONFIG_SEMANTIC_MISMATCH')
+                raise ArtifactConfigMismatch(parsed)
         measured[name]={'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest()}
     for name in ('api/n01-controller.py','source-inventory.json'):
         try:data=(root/name).read_bytes()

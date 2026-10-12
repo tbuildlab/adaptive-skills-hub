@@ -144,8 +144,8 @@
     "sha256": "66f6015aaaf5b0f07f658f611dec477558e40ce7380f50474311114b996cb377"
   },
   "ash/g3_n01_controller_bootstrap.py": {
-    "bytes": 7637,
-    "sha256": "3e5473db2c4719de9160e1e2d2c7b6149f280f56380694296a7ae4454c27ebb1"
+    "bytes": 8696,
+    "sha256": "a793cff519623340022d63163c079ea2ea42329eb3185f77dfab929b44aad072"
   },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
@@ -2080,8 +2080,8 @@
     "sha256": "c087efa21557eacf2a63bca79938c57adcad19e237f078de3fab41e0cf282d5d"
   },
   "scripts/g3_n01_controller_bootstrap.py": {
-    "bytes": 3793,
-    "sha256": "1cf0f6fa75c60d0477fe84b12604acd29ec3a22f2fc7895c710ab6a01e18ceba"
+    "bytes": 3943,
+    "sha256": "0e171aacf85e84e1de572872fad8e5de88bc81fff050281598c81c62b4c4d616"
   },
   "scripts/g3_n01_storage_contract.py": {
     "bytes": 5667,
