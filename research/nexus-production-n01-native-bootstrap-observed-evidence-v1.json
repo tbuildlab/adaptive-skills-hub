@@ -1,0 +1,55 @@
+{
+  "schema_version": "nexus.g3.n01.native-bootstrap-observation.v1",
+  "source_head": "1dc3cf754615113fa3a53b93885fe28a7d9ef90b",
+  "native_deployment": {
+    "id": "dpl_5sxMuPgfNyt8kAX1xqQbRi8i7Nwn",
+    "url": "nexus-g3-qual-2t17w2lbo-tdy0225.vercel.app",
+    "readyState": "READY",
+    "projectId": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+    "target": "production",
+    "createdAt": 1791767058420,
+    "source_identity_matches": 29,
+    "artifact_inventory_sha256": "81b3bfa9a399628e90cd57c771f7d085a888066a79513f7334c02075644194e7",
+    "native_sso_protection": "all_except_custom_domains"
+  },
+  "native_runtime_readback": {
+    "application_generation": 1,
+    "artifact_inventory_sha256": "9573abc3f60aff92499a282f5ee17308f730534b4d69082e03c5962f41a48d9b",
+    "authority": "NONE",
+    "automatic_redispatch": "DENY",
+    "ddb_attempts": 0,
+    "deployment_host": "nexus-g3-qual-2t17w2lbo-tdy0225.vercel.app",
+    "deployment_id": "dpl_5sxMuPgfNyt8kAX1xqQbRi8i7Nwn",
+    "expires_at_ms": 1791791511502,
+    "owner_context": "NOT_CREATED",
+    "process_nonce": "8c1baa61c7f88a4f61046726900412c3cbe1c33b80c3d36a6f949887be08fff4",
+    "project_id": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+    "real_admission": "NO",
+    "review_acceptance_sha256": "67f612bfb60977534e3fab0efbf9ca75fe5765a2e632b4be0f63844d6f5588ae",
+    "review_generation": 1,
+    "review_package_sha256": "be22798028d218c2ec83816e0d78407f0b30eab82295db217c673318d58fdbc3",
+    "s3_attempts": 6,
+    "source_enrollment": "NOT_PERFORMED",
+    "status": "NATIVE_PUBLIC_REVIEW_BOOTSTRAP_VERIFIED"
+  },
+  "deployment_attempts": 8,
+  "explicit_runtime_invocations": 7,
+  "successful_invocations": 1,
+  "quarantined_invocations": 6,
+  "build_failure_before_runtime": 1,
+  "unobserved_runtime_s3_upper_bound": 12,
+  "known_cumulative_attempts": {
+    "dynamodb": 82,
+    "s3": 335
+  },
+  "conservative_cumulative_upper_bound": {
+    "dynamodb": 86,
+    "s3": 547
+  },
+  "invoice_cost": "UNKNOWN",
+  "n01_maximum_approved_usd": "1.00",
+  "source_enrollment": "NOT_PERFORMED",
+  "owner_context": "NOT_CREATED",
+  "authority": "NONE",
+  "real_admission": "NO"
+}

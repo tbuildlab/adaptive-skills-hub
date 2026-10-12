@@ -147,6 +147,10 @@
     "bytes": 8696,
     "sha256": "a793cff519623340022d63163c079ea2ea42329eb3185f77dfab929b44aad072"
   },
+  "ash/g3_n01_membership_custody.py": {
+    "bytes": 5201,
+    "sha256": "c5566c9ce6a92e8418833dc2baaa61df15a1cd0e9e297919075d37a1d7d55971"
+  },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
@@ -1719,6 +1723,10 @@
     "bytes": 6671,
     "sha256": "ddec52d62764b981c90f33f923b1bbefb2a5e05a868953bb3c161dfcc358a265"
   },
+  "docs/nexus-production-n01-native-bootstrap-observation-v1.md": {
+    "bytes": 4719,
+    "sha256": "93f2f38511172269b713a507b94b9a906059e6513ba1b7f1c92780a266476117"
+  },
   "docs/nexus-production-n01-owner-budget-receipt-v1.md": {
     "bytes": 1825,
     "sha256": "7117dc43cb9ca55bde39e507b103e12a06f592a86979f81b748ac7b14a1dcb03"
@@ -1970,6 +1978,10 @@
   "research/nexus-production-n01-identity-sdk-requirements-v1.txt": {
     "bytes": 2371,
     "sha256": "287aaf8dc31e8749f9db21fd312fe53049833d86f82fe1dcab981974996515f6"
+  },
+  "research/nexus-production-n01-native-bootstrap-observed-evidence-v1.json": {
+    "bytes": 2118,
+    "sha256": "632a07bb5ff322354a55c5e9033f5fb4b9c3a5fa77deb130598000108ae52207"
   },
   "research/nexus-production-n01-pending-public-pin-review-v1.json": {
     "bytes": 1363,
@@ -2294,6 +2306,10 @@
   "tests/test_g3_n01_live_budget.py": {
     "bytes": 2439,
     "sha256": "94b4b62d6a229282911cfbaefce272593d86d3968bf877540a3af20402e2dc43"
+  },
+  "tests/test_g3_n01_membership_custody.py": {
+    "bytes": 4571,
+    "sha256": "ca2931eb7366832c33b4bbd419451e415f89babb46b1fdce63a5dc7b6e4ba5a5"
   },
   "tests/test_g3_n01_owner_context.py": {
     "bytes": 8449,
