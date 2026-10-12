@@ -36,13 +36,15 @@ source binds the actual Owner-only writer. Owner RECOVER additionally needs one
 exact R-only authorization per checkpoint; restart source mismatch denies.
 """
     def __init__(self,client,registration,*,public_review,native_environment,
-                 artifact_inventory_sha256,process_nonce,max_attempts=1000):
+                 artifact_inventory_sha256,process_nonce,max_attempts=1000,custody_revision=1):
         super().__init__(client,registration,profile='PRODUCTION',max_attempts=max_attempts)
         require(type(public_review) is review.PublicReview)
         self.public_review=public_review
         self.native_environment=native_environment
         self.artifact_inventory_sha256=artifact_inventory_sha256
         self.process_nonce=process_nonce
+        require(type(custody_revision) is int and custody_revision in (1,2))
+        self.custody_revision=custody_revision
         self.retired=False
         self.__write_plan=None;self.__write_used=False
     def __repr__(self):return 'OwnerMembershipFence(authority=NONE)'
@@ -56,7 +58,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
         try:
             return source.read_protected_source(self.client,self.registration,self.public_review,
                 native_environment=self.native_environment,artifact_inventory_sha256=self.artifact_inventory_sha256,
-                process_nonce=self.process_nonce,now_ms=int(time.time()*1000))
+                process_nonce=self.process_nonce,now_ms=int(time.time()*1000),custody_revision=self.custody_revision)
         except Exception:
             self.retired=True;self.quarantined=True
             raise ValueError('N01_OWNER_SOURCE_QUARANTINE') from None
@@ -98,7 +100,8 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
             return custody.N01S3Fence.independent_recovery_authorization(self,body,ref,valid_until)
         enrolled=self.current_source()
         require(body['incarnation']=='n01-owner-'+enrolled.value['process_nonce'][:32])
-        prefix=RECOVERY_PREFIX+f"{body['recovery_sequence']:020d}/"
+        base=RECOVERY_PREFIX if self.custody_revision==1 else custody.APPROVALS+'owner-controller-recovery-v2/'
+        prefix=base+f"{body['recovery_sequence']:020d}/"
         remaining=self.max_attempts-self.attempts
         require(remaining>=4)
         protected=custody.N01S3Fence(self.client,replace(self.registration,prefix=prefix),max_attempts=remaining)

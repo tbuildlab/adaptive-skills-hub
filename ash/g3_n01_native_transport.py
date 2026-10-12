@@ -82,12 +82,12 @@ class NativeTransport:
     def __repr__(self):return 'NativeTransport(authority=NONE)'
     def __reduce_ex__(self,_):raise TypeError('N01_NATIVE_TRANSPORT_NOT_RESTORABLE')
     def __getstate__(self):raise TypeError('N01_NATIVE_TRANSPORT_NOT_RESTORABLE')
-    def enable_owner_storage(self,public_review,*,native_environment,artifact_inventory_sha256,process_nonce):
+    def enable_owner_storage(self,public_review,*,native_environment,artifact_inventory_sha256,process_nonce,custody_revision=1):
         try:
             require(not self.retired and not self.__write)
             enrollment=source.read_protected_source(self.custody,boot.storage_scope(),public_review,
                 native_environment=native_environment,artifact_inventory_sha256=artifact_inventory_sha256,
-                process_nonce=process_nonce,now_ms=int(time.time()*1000))
+                process_nonce=process_nonce,now_ms=int(time.time()*1000),custody_revision=custody_revision)
             self.__write=True
             return enrollment
         except Exception:

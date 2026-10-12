@@ -45,6 +45,15 @@ PROBE_USED=False
 POST_PATHS=frozenset(('/api/n01/recover','/api/n01/enroll','/api/n01/login','/api/n01/decision','/api/n01/revoke'))
 GET_PATHS=frozenset(('/api/n01-controller','/api/n01/start','/api/n01/login','/api/n01/confirm','/api/n01/status'))
 UNTIL=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc)
+CUSTODY_REVISION=1
+
+
+def canonical_route(path):
+    """Closed internal rewrite selector; never an authorization or supplied URL."""
+    routes=('start','login','confirm','status','recover','enroll','decision','revoke')
+    for route in routes:
+        if path=='/api/n01-controller?n01_route='+route:return '/api/n01/'+route
+    return path
 
 
 def request_allowed(path,method,headers,environment):
@@ -129,7 +138,7 @@ class OwnerController:
         scope=replace(boot.storage_scope(),admin_checkpoint_ids=boot.storage_scope().admin_checkpoint_ids+
             (custody.reference(self.__candidate.checkpoint)['id'],))
         return persistence.OwnerMembershipFence(self.__transport.custody,scope,public_review=self.__review,
-            native_environment=self.__environment,artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,max_attempts=1000)
+            native_environment=self.__environment,artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,max_attempts=1000,custody_revision=CUSTODY_REVISION)
     def _storage(self):
         fence=self._fence();history=fence.read(valid_until=UNTIL)
         self._ledger().observe_current(independent_checkpoint=history.checkpoints[-1])
@@ -189,7 +198,7 @@ class OwnerController:
                     self.__transport.close();self.__transport=native.NativeTransport(header);self.__lease_started=self._time()
                 self.__phase='RECOVER_UNKNOWN'
                 self.__enrolled=self.__transport.enable_owner_storage(self.__review,native_environment=self.__environment,
-                    artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE)
+                    artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION)
                 require(self.__enrolled==self.__source_proposal)
                 self._commit(self.__candidate,{})
                 self.__phase='RECOVERED_OWNER_LINEAGE_NONE';self._event('NATIVE_OWNER_RECOVERY_FINALIZED_NONE')
@@ -205,7 +214,7 @@ class OwnerController:
                     require(self.__owner is None and self.__current is None)
                     self.__transport.close();self.__transport=native.NativeTransport(header);self.__lease_started=self._time()
                     current=self.__transport.enable_owner_storage(self.__review,native_environment=self.__environment,
-                        artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE)
+                        artifact_inventory_sha256=self.__artifact_sha,process_nonce=boot.PROCESS_NONCE,custody_revision=CUSTODY_REVISION)
                     require(current==self.__enrolled)
                 # Credential use stays in the protected native SDK. No value
                 # is returned, inspected by the operator or written to evidence.
@@ -291,9 +300,16 @@ class handler(BaseHTTPRequestHandler):
         if owner_cookie:CONTROLLER.owner_cookie(self)
         self.end_headers()
     def _deny(self):
+        print(json.dumps({'n01_owner_transport_denial':dict(
+            known_route=self.path if self.path in GET_PATHS|POST_PATHS else 'UNSUPPORTED',
+            has_query='?' in self.path,controller_present=CONTROLLER is not None,probe_used=PROBE_USED,
+            native_oidc_present=len(self.headers.get_all('x-vercel-oidc-token') or [])==1,
+            phase=CONTROLLER.phase if CONTROLLER is not None and type(CONTROLLER) is OwnerController else 'NOT_AVAILABLE',
+            authority='NONE',real_admission='NO')},sort_keys=True),flush=True)
         self._headers(403);self.end_headers();self.wfile.write(b'{"status":"DENY_OR_QUARANTINE","authority":"NONE","real_admission":"NO"}')
     def do_GET(self):
         global CONTROLLER,PROBE_USED
+        self.path=canonical_route(self.path)
         if not request_allowed(self.path,self.command,self.headers,os.environ):return self._deny()
         with LOCK:
             try:
@@ -325,6 +341,7 @@ class handler(BaseHTTPRequestHandler):
                     self._headers(html=True);self.end_headers();self.wfile.write(buffer.getvalue())
             except Exception:self._deny()
     def do_POST(self):
+        self.path=canonical_route(self.path)
         if not request_allowed(self.path,self.command,self.headers,os.environ):return self._deny()
         with LOCK:
             raw=None

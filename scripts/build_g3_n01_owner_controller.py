@@ -16,8 +16,9 @@ OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.p
     'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py')
 
 
-def build(destination,*,delivery_email_sha256):
+def build(destination,*,delivery_email_sha256,transport_revision=1):
     codec.old.check_type(delivery_email_sha256,'h')
+    if type(transport_revision) is not int or transport_revision not in (1,2):raise ValueError('N01_TRANSPORT_REVISION_DENY')
     names=tuple(dict.fromkeys((*MODULES,*(name for name in EXTRA if name!='scripts/g3_n01_controller_bootstrap.py'),*OWNER_MODULES)))
     files={name:(ROOT/name).read_bytes().replace(b'\r\n',b'\n') for name in names}
     files['scripts/g3_production_metadata.py']=b'from ash.g3_record_codec import canonical_bytes, parse_json, parse_metadata, domain_digest, MetadataError\n'
@@ -30,7 +31,9 @@ def build(destination,*,delivery_email_sha256):
     files['.python-version']=b'3.12\n'
     files['index.html']=b'<!doctype html><html lang="en"><meta charset="utf-8"><title>N01 Owner qualification</title><p>Protected Owner-only qualification. No execution authority. REAL_ADMISSION is NO.</p></html>\n'
     files['vercel.json']=codec.canonical(dict(name='nexus-g3-qual',functions={'api/n01-controller.py':{'maxDuration':60}},
-        rewrites=[dict(source='/api/n01/:path*',destination='/api/n01-controller')]))
+        rewrites=([dict(source='/api/n01/:path*',destination='/api/n01-controller')] if transport_revision==1 else
+                  [dict(source='/api/n01/'+route,destination='/api/n01-controller?n01_route='+route)
+                   for route in ('start','login','confirm','status','recover','enroll','decision','revoke')])))
     manifest=codec.canonical({name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())})
     files['source-inventory.json']=manifest
     files['api/n01-controller.py']=(
@@ -39,6 +42,7 @@ def build(destination,*,delivery_email_sha256):
         'service.ARTIFACT_ROOT=Path(__file__).resolve().parents[1]\n'
         'service.EXPECTED_MANIFEST_SHA='+repr(codec.digest(manifest))+'\n'
         'service.DELIVERY_EMAIL_SHA='+repr(delivery_email_sha256)+'\n'
+        'service.CUSTODY_REVISION='+repr(transport_revision)+'\n'
         'class handler(service.handler,BaseHTTPRequestHandler):\n    pass\n').encode()
     complete={name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())}
     digest=codec.digest(codec.canonical(complete))

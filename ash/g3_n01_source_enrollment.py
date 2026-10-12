@@ -83,7 +83,7 @@ def bind_source(raw,review,*,native_environment,artifact_inventory_sha256,proces
 
 
 def read_protected_source(client,storage_registration,review,*,native_environment,
-                          artifact_inventory_sha256,process_nonce,now_ms):
+                          artifact_inventory_sha256,process_nonce,now_ms,custody_revision=1):
     """One fixed independently writable enrollment, never caller-selected origin.
 
     The existing A role can only version-read this prefix; R administration must
@@ -96,10 +96,12 @@ def read_protected_source(client,storage_registration,review,*,native_environmen
         require(FROM_MS<=integer(now_ms)<UNTIL_MS)
         started=int(time.time()*1000);require(now_ms<=started<UNTIL_MS)
         require(type(review) is PublicReview)
-        scope=replace(storage_registration,prefix=PREFIX)
+        require(type(custody_revision) is int and custody_revision in (1,2))
+        prefix=PREFIX if custody_revision==1 else custody.APPROVALS+'current-source-controller-v2/'
+        scope=replace(storage_registration,prefix=prefix)
         fence=custody.N01S3Fence(client,scope,max_attempts=4)
         inventory=fence.inventory('')
-        require(len(inventory)==1 and inventory[0][0]==PREFIX+'registration.json')
+        require(len(inventory)==1 and inventory[0][0]==prefix+'registration.json')
         raw=fence.retained(*inventory[0],datetime.fromtimestamp(UNTIL_MS/1000,timezone.utc))
         require(fence.inventory('')==inventory)
         finished=int(time.time()*1000);require(started<=finished<UNTIL_MS)
