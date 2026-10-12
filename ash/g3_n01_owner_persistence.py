@@ -43,7 +43,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
         self.native_environment=native_environment
         self.artifact_inventory_sha256=artifact_inventory_sha256
         self.process_nonce=process_nonce
-        require(type(custody_revision) is int and custody_revision in (1,2))
+        require(type(custody_revision) is int and custody_revision in (1,2,3))
         self.custody_revision=custody_revision
         self.retired=False
         self.__write_plan=None;self.__write_used=False
@@ -100,7 +100,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
             return custody.N01S3Fence.independent_recovery_authorization(self,body,ref,valid_until)
         enrolled=self.current_source()
         require(body['incarnation']=='n01-owner-'+enrolled.value['process_nonce'][:32])
-        base=RECOVERY_PREFIX if self.custody_revision==1 else custody.APPROVALS+'owner-controller-recovery-v2/'
+        base=custody.APPROVALS+f'owner-controller-recovery-v{self.custody_revision}/'
         prefix=base+f"{body['recovery_sequence']:020d}/"
         remaining=self.max_attempts-self.attempts
         require(remaining>=4)

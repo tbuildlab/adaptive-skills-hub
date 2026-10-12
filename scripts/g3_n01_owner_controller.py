@@ -295,6 +295,10 @@ class handler(BaseHTTPRequestHandler):
         values=presentation.response_headers() if html else {'Content-Type':'application/json; charset=utf-8',
             'Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Frame-Options':'DENY',
             'X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'"}
+        # A navigation-mode HTML form POST under no-referrer sends Origin:null.
+        # Same-origin retains exact Origin while disclosing nothing cross-origin.
+        # Private state, codes and credentials are never part of these URLs.
+        if html:values['Referrer-Policy']='same-origin'
         for key,value in values.items():self.send_header(key,value)
     def _redirect(self,path,*,owner_cookie=False):
         self.send_response(303);self.send_header('Location',path);self.send_header('Cache-Control','no-store')
@@ -306,6 +310,9 @@ class handler(BaseHTTPRequestHandler):
             known_base=self.path.split('?',1)[0] if self.path.split('?',1)[0] in GET_PATHS|POST_PATHS else 'UNSUPPORTED',
             has_query='?' in self.path,controller_present=CONTROLLER is not None,probe_used=PROBE_USED,
             native_oidc_present=len(self.headers.get_all('x-vercel-oidc-token') or [])==1,
+            header_guard_passed=request_allowed(self.path,self.command,self.headers,os.environ),
+            origin_is_exact=self.headers.get_all('Origin')==['https://'+os.environ.get('VERCEL_URL','')],
+            origin_is_null=self.headers.get_all('Origin')==['null'],
             phase=CONTROLLER.phase if CONTROLLER is not None and type(CONTROLLER) is OwnerController else 'NOT_AVAILABLE',
             authority='NONE',real_admission='NO')},sort_keys=True),flush=True)
         self._headers(403);self.end_headers();self.wfile.write(b'{"status":"DENY_OR_QUARANTINE","authority":"NONE","real_admission":"NO"}')

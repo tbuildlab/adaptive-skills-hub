@@ -56,8 +56,43 @@ class NativeRouteTests(unittest.TestCase):
                 custody.APPROVALS+'owner-controller-recovery-v2/00000000000000000003/authorization.json'})
             self.assertIn('n01-owner-source-v2-r-receipt.json',path.read_text())
             self.assertEqual(result['authority'],'NONE')
-            for invalid in (True,0,3,'2'):
+            for invalid in (True,0,4,'2'):
                 with self.assertRaises(ValueError):custody_builder.build(vector.observation,vector.deployment,path,now_ms=vector.vector.now,custody_revision=invalid)
+
+    def test_form_origin_correction_keeps_historical_header_contract_and_exact_origin_required(self):
+        from io import BytesIO
+        from ash import g3_n02_presentation as presentation
+        obj=object.__new__(service.handler);obj.send_response=lambda x:None;headers={};obj.send_header=lambda k,v:headers.update({k:v})
+        obj._headers(html=True)
+        self.assertEqual(headers['Referrer-Policy'],'same-origin')
+        self.assertEqual(presentation.response_headers()['Referrer-Policy'],'no-referrer')
+        self.assertIn("form-action 'self'",headers['Content-Security-Policy'])
+        from tests import test_g3_n01_owner_controller as vectors
+        vector=vectors.OwnerControllerTests();vector.setUp();self.addCleanup(vector.doCleanups)
+        for origin in ('null','https://evil.invalid'):
+            hdr=vector.headers(True);hdr.replace_header('Origin',origin)
+            self.assertFalse(service.request_allowed('/api/n01/recover','POST',hdr,vector.env))
+
+    def test_revision_three_is_independent_of_prior_retained_attempts(self):
+        from scripts import build_g3_n01_owner_source_custody as custody_builder
+        from ash import g3_checkpoint_custody as custody
+        vector=old_builder_tests.OwnerSourceBuilderTests();vector.setUp()
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'r.py'
+            custody_builder.build(vector.observation,vector.deployment,path,now_ms=vector.vector.now,custody_revision=3)
+            tree=ast.parse(path.read_text())
+            payload=next(ast.literal_eval(node.value) for node in tree.body if isinstance(node,ast.Assign) and node.targets[0].id=='PAYLOAD')
+            self.assertEqual(set(payload),{custody.APPROVALS+'current-source-controller-v3/registration.json',
+                custody.APPROVALS+'owner-controller-recovery-v3/00000000000000000003/authorization.json'})
+            self.assertIn('n01-owner-source-v3-r-receipt.json',path.read_text())
+
+    def test_revision_three_uses_one_existing_hobby_region_near_the_bound_data_plane(self):
+        import json
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);builder.build(root,delivery_email_sha256='a'*64,transport_revision=3)
+            config=json.loads((root/'source/vercel.json').read_bytes())
+            self.assertEqual(config['regions'],['sin1']);self.assertNotIn('functionFailoverRegions',config)
+            self.assertIn('service.CUSTODY_REVISION=3',(root/'source/api/n01-controller.py').read_text())
 
     def test_revision_two_loader_pins_fixed_routes_and_preserves_default_artifact_contract(self):
         import json

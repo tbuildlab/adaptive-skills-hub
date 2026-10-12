@@ -64,15 +64,15 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1):
     codec.old.check_type(authorization['checkpoint']['body_sha256'],'h')
     require(authorization['checkpoint']['id'].startswith('nexus.g3.production.recovery-checkpoint.v2:'))
     codec.old.check_type(authorization['checkpoint']['id'].rsplit(':',1)[1],'h')
-    require(type(custody_revision) is int and custody_revision in (1,2))
+    require(type(custody_revision) is int and custody_revision in (1,2,3))
     prefixes=(source.PREFIX,persistence.RECOVERY_PREFIX+'00000000000000000003/') if custody_revision==1 else (
-        custody.APPROVALS+'current-source-controller-v2/',custody.APPROVALS+'owner-controller-recovery-v2/00000000000000000003/')
+        custody.APPROVALS+f'current-source-controller-v{custody_revision}/',custody.APPROVALS+f'owner-controller-recovery-v{custody_revision}/00000000000000000003/')
     payload={prefixes[0]+'registration.json':raw.decode(),prefixes[1]+'authorization.json':protected.decode()}
     program=R_PROGRAM
     start=program.index('def inventory():');end=program.index('if receipt.exists():',start)
     program=program[:start]+INVENTORY+program[end:]
     program=program.replace('n01-public-review-r-receipt.json','n01-owner-source-r-receipt.json')
-    if custody_revision==2:program=program.replace('n01-owner-source-r-receipt.json','n01-owner-source-v2-r-receipt.json')
+    if custody_revision!=1:program=program.replace('n01-owner-source-r-receipt.json',f'n01-owner-source-v{custody_revision}-r-receipt.json')
     program=program.replace('nexus.g3.n01.public-review-r-observation.v1','nexus.g3.n01.owner-source-r-observation.v1')
     program=program.replace('CONDITIONAL_PUBLIC_REVIEW_RETAIN','CONDITIONAL_OWNER_SOURCE_RETAIN')
     program=program.replace('PUBLIC_REVIEW_INDEPENDENTLY_RETAINED','OWNER_SOURCE_RECOVERY_INDEPENDENTLY_RETAINED')
@@ -88,7 +88,7 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1):
 if __name__=='__main__':
     parser=argparse.ArgumentParser();parser.add_argument('--observation',type=Path,required=True)
     parser.add_argument('--deployment',type=Path,required=True);parser.add_argument('--destination',type=Path,required=True)
-    parser.add_argument('--custody-revision',type=int,choices=(1,2),default=1)
+    parser.add_argument('--custody-revision',type=int,choices=(1,2,3),default=1)
     args=parser.parse_args();import time
     print(json.dumps(build(json.loads(args.observation.read_bytes()),json.loads(args.deployment.read_bytes()),
         args.destination,now_ms=int(time.time()*1000),custody_revision=args.custody_revision),sort_keys=True))

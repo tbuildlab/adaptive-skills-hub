@@ -96,8 +96,8 @@ def read_protected_source(client,storage_registration,review,*,native_environmen
         require(FROM_MS<=integer(now_ms)<UNTIL_MS)
         started=int(time.time()*1000);require(now_ms<=started<UNTIL_MS)
         require(type(review) is PublicReview)
-        require(type(custody_revision) is int and custody_revision in (1,2))
-        prefix=PREFIX if custody_revision==1 else custody.APPROVALS+'current-source-controller-v2/'
+        require(type(custody_revision) is int and custody_revision in (1,2,3))
+        prefix=custody.APPROVALS+f'current-source-controller-v{custody_revision}/'
         scope=replace(storage_registration,prefix=prefix)
         fence=custody.N01S3Fence(client,scope,max_attempts=4)
         inventory=fence.inventory('')

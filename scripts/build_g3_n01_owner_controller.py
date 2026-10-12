@@ -18,7 +18,7 @@ OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.p
 
 def build(destination,*,delivery_email_sha256,transport_revision=1):
     codec.old.check_type(delivery_email_sha256,'h')
-    if type(transport_revision) is not int or transport_revision not in (1,2):raise ValueError('N01_TRANSPORT_REVISION_DENY')
+    if type(transport_revision) is not int or transport_revision not in (1,2,3):raise ValueError('N01_TRANSPORT_REVISION_DENY')
     names=tuple(dict.fromkeys((*MODULES,*(name for name in EXTRA if name!='scripts/g3_n01_controller_bootstrap.py'),*OWNER_MODULES)))
     files={name:(ROOT/name).read_bytes().replace(b'\r\n',b'\n') for name in names}
     files['scripts/g3_production_metadata.py']=b'from ash.g3_record_codec import canonical_bytes, parse_json, parse_metadata, domain_digest, MetadataError\n'
@@ -34,6 +34,8 @@ def build(destination,*,delivery_email_sha256,transport_revision=1):
         rewrites=([dict(source='/api/n01/:path*',destination='/api/n01-controller')] if transport_revision==1 else
                   [dict(source='/api/n01/'+route,destination='/api/n01-controller?n01_route='+route)
                    for route in ('start','login','confirm','status','recover','enroll','decision','revoke')])))
+    if transport_revision==3:
+        config=codec.decode(files['vercel.json']);config['regions']=['sin1'];files['vercel.json']=codec.canonical(config)
     manifest=codec.canonical({name:dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()) for name,raw in sorted(files.items())})
     files['source-inventory.json']=manifest
     files['api/n01-controller.py']=(
