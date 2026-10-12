@@ -9,6 +9,13 @@ from tests import test_build_g3_n01_owner_source_custody as old_builder_tests
 
 
 class NativeRouteTests(unittest.TestCase):
+    def test_native_original_path_with_exact_matching_rewrite_selector_only(self):
+        for route in ('start','login','confirm','status','recover','enroll','decision','revoke'):
+            self.assertEqual(service.canonical_route('/api/n01/'+route+'?n01_route='+route),'/api/n01/'+route)
+        for raw in ('/api/n01/start?n01_route=recover','/api/n01/start?n01_route=start&x=1',
+                    '/api/n01/start?n01_route=start&n01_route=start','/api/n01/start?n01_route=%73tart'):
+            self.assertEqual(service.canonical_route(raw),raw)
+
     def test_revision_two_cannot_fall_back_to_old_independent_source(self):
         from dataclasses import replace
         from ash import g3_n01_source_enrollment as source
@@ -59,6 +66,7 @@ class NativeRouteTests(unittest.TestCase):
             artifact=builder.build(root,delivery_email_sha256='a'*64,transport_revision=2)
             config=json.loads((root/'source/vercel.json').read_bytes())
             self.assertEqual(len(config['rewrites']),8)
+            self.assertEqual(config['functions']['api/n01-controller.py']['maxDuration'],300)
             self.assertTrue(all('*' not in row['source'] and row['destination'].startswith('/api/n01-controller?n01_route=') for row in config['rewrites']))
             self.assertIn('service.CUSTODY_REVISION=2',(root/'source/api/n01-controller.py').read_text())
             self.assertEqual(artifact['authority'],'NONE')

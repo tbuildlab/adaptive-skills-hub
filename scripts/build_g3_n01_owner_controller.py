@@ -30,7 +30,7 @@ def build(destination,*,delivery_email_sha256,transport_revision=1):
     files['requirements.txt']=('\n'.join(locks[key] for key in sorted(locks))+'\n').encode()
     files['.python-version']=b'3.12\n'
     files['index.html']=b'<!doctype html><html lang="en"><meta charset="utf-8"><title>N01 Owner qualification</title><p>Protected Owner-only qualification. No execution authority. REAL_ADMISSION is NO.</p></html>\n'
-    files['vercel.json']=codec.canonical(dict(name='nexus-g3-qual',functions={'api/n01-controller.py':{'maxDuration':60}},
+    files['vercel.json']=codec.canonical(dict(name='nexus-g3-qual',functions={'api/n01-controller.py':{'maxDuration':60 if transport_revision==1 else 300}},
         rewrites=([dict(source='/api/n01/:path*',destination='/api/n01-controller')] if transport_revision==1 else
                   [dict(source='/api/n01/'+route,destination='/api/n01-controller?n01_route='+route)
                    for route in ('start','login','confirm','status','recover','enroll','decision','revoke')])))

@@ -53,6 +53,7 @@ def canonical_route(path):
     routes=('start','login','confirm','status','recover','enroll','decision','revoke')
     for route in routes:
         if path=='/api/n01-controller?n01_route='+route:return '/api/n01/'+route
+        if path=='/api/n01/'+route+'?n01_route='+route:return '/api/n01/'+route
     return path
 
 
@@ -302,6 +303,7 @@ class handler(BaseHTTPRequestHandler):
     def _deny(self):
         print(json.dumps({'n01_owner_transport_denial':dict(
             known_route=self.path if self.path in GET_PATHS|POST_PATHS else 'UNSUPPORTED',
+            known_base=self.path.split('?',1)[0] if self.path.split('?',1)[0] in GET_PATHS|POST_PATHS else 'UNSUPPORTED',
             has_query='?' in self.path,controller_present=CONTROLLER is not None,probe_used=PROBE_USED,
             native_oidc_present=len(self.headers.get_all('x-vercel-oidc-token') or [])==1,
             phase=CONTROLLER.phase if CONTROLLER is not None and type(CONTROLLER) is OwnerController else 'NOT_AVAILABLE',
