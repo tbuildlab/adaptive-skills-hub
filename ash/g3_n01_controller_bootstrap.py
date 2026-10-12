@@ -46,8 +46,9 @@ def measure_artifact(root,expected_manifest_sha256):
         require(type(entry) is dict and set(entry)=={'bytes','sha256'})
         try:data=(root/name).read_bytes()
         except OSError:raise ValueError('N01_ARTIFACT_FILE_UNAVAILABLE:'+name) from None
-        require(type(entry['bytes']) is int and len(data)==entry['bytes']
-            and hashlib.sha256(data).hexdigest()==entry['sha256'])
+        if not (type(entry['bytes']) is int and len(data)==entry['bytes']
+                and hashlib.sha256(data).hexdigest()==entry['sha256']):
+            raise ValueError('N01_ARTIFACT_FILE_MISMATCH:'+name)
         measured[name]=entry
     for name in ('api/n01-controller.py','source-inventory.json'):
         try:data=(root/name).read_bytes()

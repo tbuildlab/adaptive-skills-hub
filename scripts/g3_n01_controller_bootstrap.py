@@ -51,7 +51,7 @@ class handler(BaseHTTPRequestHandler):
                         # emit SDK errors, request fields or arbitrary exceptions.
                         diagnostic=str(error) if type(error) is ValueError else ''
                         if diagnostic=='N01_ARTIFACT_MANIFEST_UNAVAILABLE':OUTCOME['bootstrap_stage']=diagnostic
-                        elif diagnostic.startswith('N01_ARTIFACT_FILE_UNAVAILABLE:'):
+                        elif diagnostic.startswith(('N01_ARTIFACT_FILE_UNAVAILABLE:','N01_ARTIFACT_FILE_MISMATCH:')):
                             name=diagnostic.partition(':')[2]
                             if name in ('requirements.txt','.python-version','vercel.json','index.html',
                                         'api/n01-controller.py','source-inventory.json'):
