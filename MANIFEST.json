@@ -1747,6 +1747,10 @@
     "bytes": 4197,
     "sha256": "30a6d8b20a9a9c8449a6d175b5deaa79eccaae159744df7e804fae113e0bc320"
   },
+  "docs/nexus-production-n01-atomic-v4-native-source-checkpoint-v1.md": {
+    "bytes": 2543,
+    "sha256": "b7293f06521de8765c2ac1b296f8b54d75e3802ae4894170684033cb4d164fbe"
+  },
   "docs/nexus-production-n01-bounded-authorization-package-v1.md": {
     "bytes": 9578,
     "sha256": "16cf99171f183783caa867d76c285be804b3250279eb871deb16af2c1fc3e6f1"
@@ -2070,6 +2074,10 @@
   "research/nexus-production-d03-sdk-requirements-v1.txt": {
     "bytes": 757,
     "sha256": "abf0de7a969b90eeceefb16bdba24b6d5f2a57ae1af5c9b3d0fbbc663d5fd548"
+  },
+  "research/nexus-production-n01-atomic-v4-native-source-evidence-v1.json": {
+    "bytes": 10401,
+    "sha256": "a1d31c166419a3e34e1c32725b98556c642076c2be37faca49742024f3c3fdc1"
   },
   "research/nexus-production-n01-bound-configuration-v1.json": {
     "bytes": 12472,

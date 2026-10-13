@@ -1,0 +1,247 @@
+{
+  "aggregate_ddb_calls_including_prior": 347,
+  "aggregate_ddb_cap": 512,
+  "authority": "NONE",
+  "browser_json_response": "BLOCKED_BY_CLIENT_AFTER_NATIVE_200",
+  "current_public_review_r_custody": {
+    "authority": "NONE",
+    "real_admission": "NO",
+    "s3_attempts": 8,
+    "schema_version": "nexus.g3.n01.public-review-r-observation.v1",
+    "stage": "COMPLETE",
+    "status": "PUBLIC_REVIEW_INDEPENDENTLY_RETAINED",
+    "versions": [
+      {
+        "bytes": 1087,
+        "key": "qualification/n01/v1/approvals/public-pin-owner-review-atomic-20261013-v4/acceptance.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-20T06:18:07+00:00",
+        "sha256": "c01f6c6e8a5e08cd9b21ffc04746cbe485eff96b9ed4022e3a84018acc842fb0",
+        "version_id": "PTW9JN6uvbIYixSVs7YCyFmeMBitJw20"
+      },
+      {
+        "bytes": 2140,
+        "key": "qualification/n01/v1/approvals/public-pin-owner-review-atomic-20261013-v4/proposal.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-20T06:18:08+00:00",
+        "sha256": "01301b7b9652b2d54bb85402b484b9a0f519a5de311b53879e86e803ee9f315e",
+        "version_id": "VJ0GQvLbBJF9m9RNJznE.vS2sxNfCvu0"
+      }
+    ]
+  },
+  "current_source_recovery_r_custody": {
+    "authority": "NONE",
+    "real_admission": "NO",
+    "s3_attempts": 10,
+    "schema_version": "nexus.g3.n01.owner-source-r-observation.v1",
+    "stage": "COMPLETE",
+    "status": "OWNER_SOURCE_RECOVERY_INDEPENDENTLY_RETAINED",
+    "versions": [
+      {
+        "bytes": 1288,
+        "key": "qualification/n01/v1/approvals/current-source-controller-atomic-v1/registration.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-20T06:24:48+00:00",
+        "sha256": "96375231e41cdfdc965c3e7941985ff9553c5f16bcded6dcdd5bd8d471d3cf08",
+        "version_id": "oiBhnrBx_nOGKDad3eG.LLABXdK2y4hk"
+      },
+      {
+        "bytes": 984,
+        "key": "qualification/n01/v1/approvals/owner-controller-recovery-atomic-v1/00000000000000000009/authorization.json",
+        "mode": "COMPLIANCE",
+        "retain_until_utc": "2026-10-20T06:24:49+00:00",
+        "sha256": "e062a668a7c5404d9664e9af6b7c2d8897cec1aaffc9bc3622fd16e1b9f4cd67",
+        "version_id": "aVzU12uf2F52aDt4tBTeUYrZrha05SxG"
+      }
+    ]
+  },
+  "d01_status": "CLOSED",
+  "d03_status": "CLOSED",
+  "deployment": {
+    "artifact_inventory_sha256": "d8b0fc752d039d7251662f377be58cb1db4615ca3384f5f07686651f06019d93",
+    "createdAt": 1791872278166,
+    "function_regions": [
+      "sin1"
+    ],
+    "id": "dpl_2nJDqJiwaEgbTxt4ej8PSQMLS3nW",
+    "native_sso_protection": "all_except_custom_domains",
+    "projectId": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+    "readyState": "READY",
+    "requested_region_optimization": "APPLIED_SIN1_OBSERVED",
+    "source_identity_matches": 42,
+    "target": "production",
+    "url": "nexus-g3-qual-8xogl0pxo-tdy0225.vercel.app"
+  },
+  "g3_status": "INCOMPLETE",
+  "n01_status": "INCOMPLETE",
+  "native_events": [
+    {
+      "artifact_inventory_sha256": "91c2ecb95f3e42fdd5bc3adab89c5a4dd2ebd7a7bfb6f16fd936c7b1f11ed9cd",
+      "authority": "NONE",
+      "checkpoint": {
+        "body_sha256": "cee49468377d9e5068c1bb07bd1faffeaa831554d06e817987899aafd0a2e7d0",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:1f2b3a821551c19b1d8c98f37ad1ef957366349175d04d7fcb38841f8fa4f4b5"
+      },
+      "ddb_attempts": 45,
+      "deployment_host": "nexus-g3-qual-8xogl0pxo-tdy0225.vercel.app",
+      "deployment_id": "dpl_2nJDqJiwaEgbTxt4ej8PSQMLS3nW",
+      "event": "NATIVE_OWNER_SOURCE_MEMBERSHIP_FINALIZED_NONE",
+      "no_automatic_redispatch": "REQUIRED",
+      "observed_at_ms": 1791872885737,
+      "phase": "OWNER_SOURCE_ENROLLED_NONE",
+      "process_nonce": "2f71543e6e206736d281aefb62a328afdda9f9a5f28a877f47ad183c4ac30777",
+      "real_admission": "NO",
+      "s3_attempts": 2671
+    },
+    {
+      "artifact_inventory_sha256": "91c2ecb95f3e42fdd5bc3adab89c5a4dd2ebd7a7bfb6f16fd936c7b1f11ed9cd",
+      "authority": "NONE",
+      "checkpoint": {
+        "body_sha256": "5e7c419d184d224354d6c6af18190ee37b89953495ed767dac3e8a8106fddfa8",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:e9cffaeac5bb818606eec93ee8b678d67882f251a09d5fa5b52ba5cc437d4911"
+      },
+      "ddb_attempts": 20,
+      "deployment_host": "nexus-g3-qual-8xogl0pxo-tdy0225.vercel.app",
+      "deployment_id": "dpl_2nJDqJiwaEgbTxt4ej8PSQMLS3nW",
+      "event": "NATIVE_OWNER_RECOVERY_FINALIZED_NONE",
+      "no_automatic_redispatch": "REQUIRED",
+      "observed_at_ms": 1791872781613,
+      "phase": "RECOVERED_OWNER_LINEAGE_NONE",
+      "process_nonce": "2f71543e6e206736d281aefb62a328afdda9f9a5f28a877f47ad183c4ac30777",
+      "real_admission": "NO",
+      "s3_attempts": 1269
+    },
+    {
+      "artifact_inventory_sha256": "91c2ecb95f3e42fdd5bc3adab89c5a4dd2ebd7a7bfb6f16fd936c7b1f11ed9cd",
+      "authority": "NONE",
+      "checkpoint": {
+        "body_sha256": "e2bec061b42ee10ac844109ba1347ff94a062a0a3b41c7509628ad05a05aff81",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:01e32a4befb0cbbac1fb820b237f6a7e7d2d43f3411c9bcf0b5ce6c48e4ad077"
+      },
+      "ddb_attempts": 1,
+      "deployment_host": "nexus-g3-qual-8xogl0pxo-tdy0225.vercel.app",
+      "deployment_id": "dpl_2nJDqJiwaEgbTxt4ej8PSQMLS3nW",
+      "event": "NATIVE_OWNER_SOURCE_PROPOSAL_READY_NONE",
+      "no_automatic_redispatch": "REQUIRED",
+      "observed_at_ms": 1791872406034,
+      "phase": "SOURCE_PROPOSAL_READY_NONE",
+      "process_nonce": "2f71543e6e206736d281aefb62a328afdda9f9a5f28a877f47ad183c4ac30777",
+      "real_admission": "NO",
+      "s3_attempts": 195
+    }
+  ],
+  "native_requests": [
+    {
+      "requestMethod": "GET",
+      "requestPath": "/api/n01/start",
+      "responseStatusCode": 200,
+      "timestamp": 1791872885786
+    },
+    {
+      "requestMethod": "POST",
+      "requestPath": "/api/n01/enroll",
+      "responseStatusCode": 303,
+      "timestamp": 1791872844263
+    },
+    {
+      "requestMethod": "GET",
+      "requestPath": "/api/n01/start",
+      "responseStatusCode": 200,
+      "timestamp": 1791872781705
+    },
+    {
+      "requestMethod": "POST",
+      "requestPath": "/api/n01/recover",
+      "responseStatusCode": 303,
+      "timestamp": 1791872749835
+    },
+    {
+      "requestMethod": "GET",
+      "requestPath": "/api/n01/start",
+      "responseStatusCode": 200,
+      "timestamp": 1791872564266
+    },
+    {
+      "requestMethod": "GET",
+      "requestPath": "/api/n01-controller",
+      "responseStatusCode": 200,
+      "timestamp": 1791872396338
+    }
+  ],
+  "old_checkpoints_7_8": "RETAINED_NOT_REPLAYED",
+  "original_probe": "RECOVERED_FROM_ORIGINAL_SANITIZED_NATIVE_LOG_ONLY",
+  "original_source_proposal": {
+    "authority": "NONE",
+    "current_owner": "NOT_AUTHENTICATED",
+    "public_review": "EXACT_RETAINED_REVIEW_VERIFIED",
+    "real_admission": "NO",
+    "recovery_authorization": {
+      "application_generation": 1,
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 6,
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "checkpoint": {
+        "body_sha256": "5e7c419d184d224354d6c6af18190ee37b89953495ed767dac3e8a8106fddfa8",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:e9cffaeac5bb818606eec93ee8b678d67882f251a09d5fa5b52ba5cc437d4911"
+      },
+      "expires_at_ms": 1791877500000,
+      "incarnation": "n01-owner-2f71543e6e206736d281aefb62a328af",
+      "no_automatic_redispatch": "REQUIRED",
+      "previous_checkpoint": {
+        "body_sha256": "e2bec061b42ee10ac844109ba1347ff94a062a0a3b41c7509628ad05a05aff81",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:01e32a4befb0cbbac1fb820b237f6a7e7d2d43f3411c9bcf0b5ce6c48e4ad077"
+      },
+      "purpose": "BOUNDED_OWNER_CONTEXT_SOURCE_ONLY",
+      "real_admission": "NO",
+      "review_generation": 4,
+      "schema_version": "nexus.g3.n01.owner-recovery-authorization.v1",
+      "source_enrollment_sha256": "96375231e41cdfdc965c3e7941985ff9553c5f16bcded6dcdd5bd8d471d3cf08"
+    },
+    "recovery_authorization_sha256": "e062a668a7c5404d9664e9af6b7c2d8897cec1aaffc9bc3622fd16e1b9f4cd67",
+    "source_proposal": {
+      "application_generation": 1,
+      "artifact_inventory_sha256": "91c2ecb95f3e42fdd5bc3adab89c5a4dd2ebd7a7bfb6f16fd936c7b1f11ed9cd",
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "deployment_host": "nexus-g3-qual-8xogl0pxo-tdy0225.vercel.app",
+      "deployment_id": "dpl_2nJDqJiwaEgbTxt4ej8PSQMLS3nW",
+      "expires_at_ms": 1791877500000,
+      "host_project_id": "prj_xH23xMATVChdhX34OS2vjI8dfWN2",
+      "issued_at_ms": 1791872406033,
+      "no_automatic_redispatch": "REQUIRED",
+      "principal": {
+        "client_id": "project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+        "issuer": "stytch.com/project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+        "subject": "user-test-9da3c5e0-6828-4dfe-8d6d-6ee5dde17a8e"
+      },
+      "process_nonce": "2f71543e6e206736d281aefb62a328afdda9f9a5f28a877f47ad183c4ac30777",
+      "purpose": "BOUNDED_OWNER_CONTEXT_SOURCE_ONLY",
+      "real_admission": "NO",
+      "review_acceptance_sha256": "c01f6c6e8a5e08cd9b21ffc04746cbe485eff96b9ed4022e3a84018acc842fb0",
+      "review_generation": 4,
+      "review_package_sha256": "01301b7b9652b2d54bb85402b484b9a0f519a5de311b53879e86e803ee9f315e",
+      "schema_version": "nexus.g3.n01.current-source-enrollment.v1",
+      "service_revision": "nexus-g3-n01-controller-v1",
+      "source_kinds": [
+        "D01",
+        "D03",
+        "OWNER_ENROLLMENT"
+      ]
+    },
+    "source_sha256": "96375231e41cdfdc965c3e7941985ff9553c5f16bcded6dcdd5bd8d471d3cf08",
+    "status": "SOURCE_PROPOSAL_READY_NONE"
+  },
+  "owner_authentication": "NOT_EXECUTED",
+  "owner_context_persistence": "NOT_QUALIFIED",
+  "owner_decision_consumption": "NOT_QUALIFIED",
+  "paid_scope": "UNCHANGED_USD_1.00",
+  "probe_redispatch": "NOT_PERFORMED",
+  "real_admission": "NO",
+  "remaining_native_ddb_attempts": 165,
+  "root_r_new_s3_calls": 18,
+  "schema_version": "nexus.g3.n01.atomic-v4-native-checkpoint.v1",
+  "source_head": "128730fb5de6875df43670c2fb960c9452b92494",
+  "total_native_ddb_cap": 210,
+  "upload_runtime_digest_relation": "DISTINCT_ACCEPTED_CONFIG_BYTE_FORMATTING_RUNTIME_MEASURE"
+}
