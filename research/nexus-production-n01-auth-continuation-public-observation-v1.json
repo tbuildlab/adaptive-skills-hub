@@ -1,0 +1,23 @@
+{
+  "observed_at_ms": 1791874367155,
+  "source_url": "https://test.stytch.com/v1/sessions/jwks/project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+  "keyset_equal_v4": true,
+  "public_key_count": 1,
+  "private_material_present": false,
+  "keys_sha256": "4e735ee0dd506031013a15c605a6ab08ffbbe1b45d3605b0ee3254872d814480",
+  "pricing_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonDynamoDB/current/ap-southeast-1/index.json",
+  "pricing_rates": [
+    {
+      "usage_type": "APS1-ReadRequestUnits",
+      "unit": "ReadRequestUnits",
+      "usd": "0.0000001425"
+    },
+    {
+      "usage_type": "APS1-WriteRequestUnits",
+      "unit": "WriteRequestUnits",
+      "usd": "0.0000007100"
+    }
+  ],
+  "authority": "NONE",
+  "real_admission": "NO"
+}

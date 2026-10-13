@@ -36,11 +36,14 @@ GENERATION=2
 
 
 def require_profile(value):
-    require(value is None or type(value) is str and value in (PROFILE,'OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
+    require(value is None or type(value) is str and value in (PROFILE,'OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1','OWNER_AUTH_ATTEMPT_FORWARD_V1'))
 
 
 def configuration(value):
     require_profile(value)
+    if value=='OWNER_AUTH_ATTEMPT_FORWARD_V1':
+        from ash import g3_n01_owner_auth_restart
+        return g3_n01_owner_auth_restart
     if value=='OWNER_ATOMIC_FORWARD_V1':
         from ash import g3_n01_owner_atomic_restart
         return g3_n01_owner_atomic_restart

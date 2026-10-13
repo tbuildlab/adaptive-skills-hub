@@ -26,7 +26,7 @@ from ash import g3_n02_presentation as presentation
 
 
 DIAGNOSTIC_STAGES=frozenset(('REQUEST','REQUEST_GUARD','MAINTENANCE_LOGIN','MAINTENANCE_FORM_SHAPE',
-    'AUTH_PHASE','AUTH_FORM_SHAPE','CSRF_PRESENT','CSRF_MATCH','COOKIE_MATCH','CURRENT_STATE_GATE',
+    'AUTH_PHASE','AUTH_FORM_SHAPE','CSRF_PRESENT','CSRF_MATCH','COOKIE_MATCH','CURRENT_STATE_GATE','TIME_WINDOW',
     'PROVIDER_SEND_PREPARATION','PROVIDER_SEND_RESULT','REDIRECT_TARGET','REDIRECT_303',
     'GET_FORM_RENDER','PREAUTH_COOKIE_ISSUANCE','CURRENT_COOKIE_ISSUANCE','GET_FORM_DELIVERY','AUTH_DISPATCH','AUTH_FORM_AUTHENTICATION'))
 DIAGNOSTIC_ROUTES=frozenset(('START','LOGIN','CONFIRM','STATUS','RECOVER','ENROLL','DECISION','REVOKE','PROBE','OTHER'))
@@ -59,6 +59,10 @@ class OwnerIngress:
         self.__last_wall=self.__started;self.__last_monotonic=self.__monotonic
         self.__until=min(self.__started+120000,self.__fence.public_review.valid_until_ms)
         self.__state='PREAUTH'
+        self.__bounded_attempt=self.__fence.public_review.pins.generation==5
+        if getattr(self,'_OwnerIngress__bounded_attempt',False):
+            require(self.__fence.public_review.valid_from_ms<=self.__started
+                and self.__started+120000<=self.__fence.public_review.valid_until_ms)
     @property
     def authority(self):return 'NONE'
     @property
@@ -66,12 +70,29 @@ class OwnerIngress:
     def __repr__(self):return 'OwnerIngress(authority=NONE)'
     def __reduce_ex__(self,_):raise TypeError('N01_OWNER_INGRESS_NOT_RESTORABLE')
     def __getstate__(self):raise TypeError('N01_OWNER_INGRESS_NOT_RESTORABLE')
+    def __time_window(self):
+        """Local closed time gate only; never substitutes for current custody."""
+        closed_stage('TIME_WINDOW','ENTER')
+        try:
+            now=int(time.time()*1000);monotonic=time.monotonic()
+            require(self.__fence.public_review.valid_from_ms<=self.__started<=self.__last_wall<=now<self.__until
+                and monotonic>=self.__last_monotonic)
+            if self.__state!='CURRENT':require(0<=monotonic-self.__monotonic<120)
+            self.__last_wall=now;self.__last_monotonic=monotonic
+            closed_stage('TIME_WINDOW','PASS');return now
+        except Exception:
+            closed_stage('TIME_WINDOW','DENY');self.retire()
+            raise ValueError('N01_OWNER_TIME_WINDOW_RETIRED') from None
     def attach_cookie(self,handler):
         stage='PREAUTH_COOKIE_ISSUANCE' if self.__state=='PREAUTH' else 'CURRENT_COOKIE_ISSUANCE'
         closed_stage(stage,'ENTER')
         require(self.__state in ('PREAUTH','CURRENT'))
+        lifetime=300
+        if getattr(self,'_OwnerIngress__bounded_attempt',False):
+            now=self.__time_window();lifetime=min(lifetime,(self.__until-now)//1000)
+            require(lifetime>0)
         # Legitimate protected browser delivery only; never an evidence getter.
-        handler.send_header('Set-Cookie','__Host-NexusN01='+self.__cookie+'; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age=300')
+        handler.send_header('Set-Cookie','__Host-NexusN01='+self.__cookie+'; Path=/; Secure; HttpOnly; SameSite=Strict; Max-Age='+str(lifetime))
         closed_stage(stage,'PASS')
     def authenticated_form(self,headers,*,csrf):
         stage='CSRF_PRESENT'
@@ -95,6 +116,10 @@ class OwnerIngress:
     def write_form(self,handler):
         """Fixed browser form; input codes are never echoed or read by the operator."""
         require(self.__state in ('PREAUTH','OTP_SENT','OTP_VERIFIED'))
+        deadline=''
+        if getattr(self,'_OwnerIngress__bounded_attempt',False):
+            self.__time_window()
+            deadline='<p>Authentication deadline (UTC): '+datetime.fromtimestamp(self.__until/1000,timezone.utc).isoformat()+'. This fixed window cannot be renewed. Submit each step once.</p>'
         field,title,kind,auto=(('email','Current enrolled Owner email','email','email') if self.__state=='PREAUTH'
             else ('code','Fresh email code','password','one-time-code') if self.__state=='OTP_SENT'
             else ('totp_code','Current authenticator code','password','one-time-code'))
@@ -102,6 +127,7 @@ class OwnerIngress:
         page=('<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
             '<title>N01 current Owner authentication</title><h1>Current Owner authentication</h1>'
             '<p>Dedicated Stytch Consumer Test profile. This establishes current identity only; REAL_ADMISSION remains NO.</p>'
+            +deadline+
             '<form method="post" action="/api/n01/login"><input type="hidden" name="csrf" value="'+self.__csrf+'">'
             +label+'<button type="submit">Continue</button></form></html>').encode()
         handler.wfile.write(page)
@@ -132,6 +158,7 @@ class OwnerIngress:
         except Exception:
             closed_stage('CURRENT_STATE_GATE','DENY');raise
     def __check_current_gate(self):
+        if getattr(self,'_OwnerIngress__bounded_attempt',False):self.__time_window()
         now=int(time.time()*1000)
         require(self.__fence.public_review.valid_from_ms<=self.__started<=self.__last_wall<=now<self.__until
                 and time.monotonic()>=self.__last_monotonic)

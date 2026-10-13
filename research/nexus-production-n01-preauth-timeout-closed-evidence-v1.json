@@ -1,0 +1,50 @@
+{
+  "scope": "READ_ONLY_DIAGNOSIS_NO_OWNER_REQUEST_REDISPATCH",
+  "root_cause": "PREAUTH_DEADLINE_EXPIRED_BEFORE_AUTHENTICATION_POST",
+  "timezone": "Asia/Kuala_Lumpur",
+  "login_ready": "2026-10-13T14:33:15.718+08:00",
+  "initial_get_200": "2026-10-13T14:33:15.850+08:00",
+  "latest_possible_preauth_expiry": "2026-10-13T14:35:15.718+08:00",
+  "failed_post_403": "2026-10-13T14:36:11.495+08:00",
+  "minimum_seconds_after_expiry": 55.777,
+  "first_failed_closed_stage": "CURRENT_STATE_GATE",
+  "prior_passed_stages": [
+    "REQUEST_GUARD",
+    "AUTH_PHASE",
+    "AUTH_FORM_SHAPE",
+    "CSRF_PRESENT",
+    "CSRF_MATCH",
+    "COOKIE_MATCH",
+    "AUTH_FORM_AUTHENTICATION"
+  ],
+  "redirect_target": "/api/n01/login",
+  "cookie_attributes": {
+    "domain": "OMITTED_HOST_ONLY",
+    "path": "/",
+    "secure": true,
+    "http_only": true,
+    "same_site": "Strict",
+    "max_age_seconds": 300
+  },
+  "cookie_presence_in_initial_get": "NOT_OBSERVED_NOT_VALIDATED_BY_GET_HANDLER",
+  "cookie_presence_and_private_runtime_match_in_failed_post": "PASS",
+  "controller_present_in_failed_post": true,
+  "public_review_v4_expired_at_failed_post": false,
+  "full_current_custody_binding_recheck_in_failed_post": "NOT_REACHED_BEFORE_TIME_REJECTION",
+  "provider_send_result_stage": "NOT_ENTERED",
+  "request_actor_identity": "NOT_ESTABLISHED_BY_CLOSED_LOGS",
+  "source_files_match_deployment_source": true,
+  "minimal_fix_proposal": [
+    "Preserve original nonrenewable 120-second deadline and quarantine; never reuse expired private state.",
+    "Expose only closed expiry diagnostics and non-secret remaining-time display; reject expired form delivery.",
+    "Bound PREAUTH browser cookie lifetime by the existing server deadline; retain all cookie security attributes.",
+    "Avoid consuming the short window during agent-to-Owner handoff; any future attempt requires a separate authorized fresh lifecycle, never historical replay."
+  ],
+  "production_source_modified": false,
+  "new_login_requests": 0,
+  "new_binding_operations": 0,
+  "real_admission": "NO",
+  "head": "ba5c53ec09121d680633c2df8247e50ca164a536",
+  "closed_native_logs_sha256": "d76aaa8d2ced12b7060fdc2f7f0173c76619f96056425a43cd1538a29260ecb9",
+  "diagnosis_record_sha256": "dc05cc8880f28be643d5165c774d6dbb37393d08f0ef3b83c40aafc1c944cd76"
+}

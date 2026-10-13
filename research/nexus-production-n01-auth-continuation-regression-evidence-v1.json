@@ -1,0 +1,75 @@
+{
+  "schema_version": "nexus.g3.n01.authentication-continuation-preparation-evidence.v1",
+  "prepared_at_ms": 1791876881561,
+  "head": "ba5c53ec09121d680633c2df8247e50ca164a536",
+  "unchanged_current_code_regression": {
+    "affected": {
+      "mode": "affected",
+      "total": 229,
+      "passed": 229,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [],
+      "clock": "OFFLINE_HISTORICAL_CLOCK_ALIGNED_WITH_EXISTING_TIME_TIME_FIXTURES",
+      "snapshot": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-n01-v4-final-preparation-suww0v88",
+      "live_calls": 0,
+      "authority": "NONE",
+      "real_admission": "NO"
+    },
+    "full": {
+      "mode": "full",
+      "total": 1488,
+      "passed": 1484,
+      "failures": 0,
+      "errors": 0,
+      "skipped": [
+        {
+          "test": "test_real_clean_bootstrap_without_system_python (test_github_distribution.GitHubDistributionTests.test_real_clean_bootstrap_without_system_python)",
+          "reason": "real embedded runtime inputs are not configured"
+        },
+        {
+          "test": "test_real_plugin_bootstrap_without_codex_prepares_host_managed_source (test_github_distribution.GitHubDistributionTests.test_real_plugin_bootstrap_without_codex_prepares_host_managed_source)",
+          "reason": "real embedded runtime inputs are not configured"
+        },
+        {
+          "test": "test_real_plugin_health_without_system_python_or_codex (test_github_distribution.GitHubDistributionTests.test_real_plugin_health_without_system_python_or_codex)",
+          "reason": "real embedded runtime inputs are not configured"
+        },
+        {
+          "test": "test_symlink_if_privilege_is_available_is_rejected (test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected)",
+          "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpde2wkk8p\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpde2wkk8p\\\\approved-project\\\\linked'"
+        }
+      ],
+      "clock": "OFFLINE_HISTORICAL_CLOCK_ALIGNED_WITH_EXISTING_TIME_TIME_FIXTURES",
+      "snapshot": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-n01-v4-final-preparation-suww0v88",
+      "live_calls": 0,
+      "authority": "NONE",
+      "real_admission": "NO"
+    }
+  },
+  "source_attestation": {
+    "head": "ba5c53ec09121d680633c2df8247e50ca164a536",
+    "python_files_checked": 212,
+    "python_inventory_sha256": "689391080f0e3f7eef7f2a87b05998db4f72cd5b3784793cc5c2235d4aae0822",
+    "source_or_historical_test_changes": [],
+    "live_requests_created": 0,
+    "production_bindings_created": 0,
+    "authority": "NONE",
+    "real_admission": "NO"
+  },
+  "source_attestation_sha256": "f73e735e694a2c43ae6c6a838244e24bb8c555910a0ac09fbf5715058449bfa1",
+  "regression_log_sha256": {
+    "affected": "467b7eeba43c631ce3a49d1c481f61cf47cd56f15c1956929671762962f4b949",
+    "full": "fae940b4c841f55e2d4ed5b7d2264b08b045ea94071474efe07d89bfcc71cf4b"
+  },
+  "structural_budget_analysis_sha256": "6e61c42aef1089afeb0c5214ddee4a11989ceae718809033dc6992472efc8172",
+  "new_profile_implementation": "NOT_STARTED",
+  "new_profile_semantic_and_live_qualification": "NOT_PERFORMED_REQUIRES_APPROVAL_THEN_QUALIFICATION_BEFORE_ACTIVATION",
+  "production_source_modified": false,
+  "new_cloud_bindings": 0,
+  "new_login_or_preauth": 0,
+  "new_otp_totp_dispatch": 0,
+  "approval": "NOT_OBTAINED",
+  "authority": "NONE",
+  "real_admission": "NO"
+}

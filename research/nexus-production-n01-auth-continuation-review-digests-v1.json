@@ -1,0 +1,11 @@
+{
+  "review_id": "n01-bounded-authentication-continuation-20261013-v1",
+  "approval": "NOT_OBTAINED",
+  "canonical_package_sha256": "51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7",
+  "public_pin_v5_canonical_sha256": "fbd10e9bbaf60b4eaf108faa7b7ab4ba4efc69d1106c77d1bfcedc881d7a5a02",
+  "package_path": "research/nexus-production-n01-pending-bounded-authentication-continuation-owner-review-v1.json",
+  "document_path": "docs/nexus-production-n01-bounded-authentication-continuation-owner-review-v1.md",
+  "document_sha256": "be5649c95496121253c3f9b8c959264c86c47d35a8e743cdf17727a44f6ab3bc",
+  "canonicalization": "UTF8_SORTED_KEYS_COMPACT_JSON_NO_TRAILING_NEWLINE",
+  "real_admission": "NO"
+}

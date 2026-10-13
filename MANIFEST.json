@@ -159,41 +159,45 @@
     "bytes": 5839,
     "sha256": "f372aef85db2ccb819a59ec52bec6d8079b845528d1d1b64cd5be99e0ff6e567"
   },
+  "ash/g3_n01_owner_auth_restart.py": {
+    "bytes": 6101,
+    "sha256": "8efc4582932cd11c2160a9f47f8cfce61a3f9f6cb98d3574c6b367a8bcc8dbfa"
+  },
   "ash/g3_n01_owner_context.py": {
     "bytes": 8172,
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
   },
   "ash/g3_n01_owner_ingress.py": {
-    "bytes": 14016,
-    "sha256": "fb53f7553d1554da1ffb8f3309c6f4a8b513a9c109c3bcc10aabec0fe1d1a6cc"
+    "bytes": 15732,
+    "sha256": "53d2456a00f0e483dda40771d57b10114cc50f6dfe382331d7358cf7e3087f2d"
   },
   "ash/g3_n01_owner_persistence.py": {
-    "bytes": 18683,
-    "sha256": "874f953bb2646d45d75221a6182b4986f5c4282f6b2de5b0e61cd00ed3a46ef6"
+    "bytes": 18753,
+    "sha256": "a451a4498b264d711c7439d6bbe12b951642f9a9ea10362721ba6c1c3d2a6917"
   },
   "ash/g3_n01_owner_protocol.py": {
     "bytes": 16745,
     "sha256": "c96a217ae34470ed4d293a891a4e58d8732bfce3695721ca5cad1e23caf049e0"
   },
   "ash/g3_n01_owner_restart.py": {
-    "bytes": 7036,
-    "sha256": "1e6657c3402404c2446179dfe7cc490002d6b22a698ac86a9b2c77107d6f9c4f"
+    "bytes": 7206,
+    "sha256": "ef3f4cdd72d8949f27484cb0d5d2dbf53f8a108132ad5931bda746ec14762b16"
   },
   "ash/g3_n01_owner_sdk_restart.py": {
     "bytes": 5697,
     "sha256": "df03fe15ff6080c83db2c0685a01e9fb1660c10900ead7686f1bc15e76fb603b"
   },
   "ash/g3_n01_owner_state.py": {
-    "bytes": 12878,
-    "sha256": "b6899d1cbbc8dbfe9359b79adaf8d0d08c21329313da1502ebac9042bdc9a37d"
+    "bytes": 14256,
+    "sha256": "c17e2668b7f55ef8aaf639b43b58ff43b903588d0bbe2b0ba5bbfe44a0c79ef2"
   },
   "ash/g3_n01_public_pin.py": {
     "bytes": 3293,
     "sha256": "b157d97ee15e9edaa45d127370a7fa85dffa269fbb790bb323cd8f31a2707e04"
   },
   "ash/g3_n01_public_review.py": {
-    "bytes": 8668,
-    "sha256": "104f1714d79e05b0f8a63e274edfb41a8763d546de6ded9307fa39a3b80dc1a8"
+    "bytes": 9669,
+    "sha256": "34016afb7f3936b6301a0d14c5854213c397f348f16614f7be6974cfbed474ee"
   },
   "ash/g3_n01_retained_state.py": {
     "bytes": 4164,
@@ -1751,6 +1755,14 @@
     "bytes": 2543,
     "sha256": "b7293f06521de8765c2ac1b296f8b54d75e3802ae4894170684033cb4d164fbe"
   },
+  "docs/nexus-production-n01-bounded-authentication-continuation-owner-review-v1.md": {
+    "bytes": 10172,
+    "sha256": "be5649c95496121253c3f9b8c959264c86c47d35a8e743cdf17727a44f6ab3bc"
+  },
+  "docs/nexus-production-n01-bounded-authentication-continuation-owner-review-v2.md": {
+    "bytes": 7997,
+    "sha256": "f2245e2470c162abebef75adecd24d50e4ef58684ac542027d52259d5ce592d4"
+  },
   "docs/nexus-production-n01-bounded-authorization-package-v1.md": {
     "bytes": 9578,
     "sha256": "16cf99171f183783caa867d76c285be804b3250279eb871deb16af2c1fc3e6f1"
@@ -2079,9 +2091,37 @@
     "bytes": 10401,
     "sha256": "a1d31c166419a3e34e1c32725b98556c642076c2be37faca49742024f3c3fdc1"
   },
+  "research/nexus-production-n01-auth-continuation-budget-evidence-v1.json": {
+    "bytes": 2844,
+    "sha256": "c58e2a73500e7e3b9c82b25d2075399f92359d735e0ea661dca525268f36a211"
+  },
+  "research/nexus-production-n01-auth-continuation-offline-qualification-v2.json": {
+    "bytes": 8586,
+    "sha256": "617db6caaa2ca2ca513549932a289a98ba8a6877328c491ceedb2a8e6f2875b4"
+  },
+  "research/nexus-production-n01-auth-continuation-public-observation-v1.json": {
+    "bytes": 763,
+    "sha256": "717183e924eaf32e6d42583971066a96a53af26dc0f12f2d3938078c8ca439fe"
+  },
+  "research/nexus-production-n01-auth-continuation-regression-evidence-v1.json": {
+    "bytes": 3548,
+    "sha256": "643f92862449b62799881763b02107387c79787374ae269b15b85136bd504604"
+  },
+  "research/nexus-production-n01-auth-continuation-review-digests-v1.json": {
+    "bytes": 714,
+    "sha256": "f55565b588059012bf486cbfde4af97d3b2df071024bed06a72db1c89e399ef6"
+  },
+  "research/nexus-production-n01-auth-continuation-review-digests-v2.json": {
+    "bytes": 1681,
+    "sha256": "d000b54b36bba66b3eaae784ac74f76a58c393d8259488736b243df3d8d752e0"
+  },
   "research/nexus-production-n01-bound-configuration-v1.json": {
     "bytes": 12472,
     "sha256": "f3aa5cf137109e53a48d337e628d8cc12b991bdcad630df57cf6a1acf532503d"
+  },
+  "research/nexus-production-n01-bounded-authentication-continuation-owner-acceptance-v1.json": {
+    "bytes": 980,
+    "sha256": "8537175c5e30e492c8ea58116e08d8fdbdfeb7c7a78681efc40cdbffb1f6a2b3"
   },
   "research/nexus-production-n01-closed-authentication-stage-evidence-v1.json": {
     "bytes": 5064,
@@ -2111,6 +2151,14 @@
     "bytes": 108792,
     "sha256": "1a5258b6fa5176ca45ff6a07b2e6c69bb1d2c82bf2054e3f8cdc85124f0490bf"
   },
+  "research/nexus-production-n01-pending-bounded-authentication-continuation-owner-review-v1.json": {
+    "bytes": 7377,
+    "sha256": "51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7"
+  },
+  "research/nexus-production-n01-pending-bounded-authentication-continuation-owner-review-v2.json": {
+    "bytes": 11610,
+    "sha256": "5954450f63fe5f528b7d9b046f738f4bd076e69bb506ecfe058e3c7d99f58e62"
+  },
   "research/nexus-production-n01-pending-public-pin-review-atomic-v3.json": {
     "bytes": 1953,
     "sha256": "37204b22b606bd653c66eb345a05b98d7f310abd82f86ac7dfdc86b1b690166b"
@@ -2118,6 +2166,14 @@
   "research/nexus-production-n01-pending-public-pin-review-atomic-v4.json": {
     "bytes": 2141,
     "sha256": "024048618416a58249e9110fdbbb491311d8c1eae11517ea3eb51397040849c0"
+  },
+  "research/nexus-production-n01-pending-public-pin-review-auth-continuation-v5.json": {
+    "bytes": 2355,
+    "sha256": "204792aaf767c89b49579bd2a50466642f65684cbd14de43ebb857cf0eb0a310"
+  },
+  "research/nexus-production-n01-pending-public-pin-review-auth-continuation-v6.json": {
+    "bytes": 2578,
+    "sha256": "c1bf5f93c526bcde6211d7ffeb4e49e6f8814cfeb3b6c9a72254a90d5fc99862"
   },
   "research/nexus-production-n01-pending-public-pin-review-sdk-repair-v2.json": {
     "bytes": 1808,
@@ -2127,6 +2183,10 @@
     "bytes": 1363,
     "sha256": "0a5d657153b455511f479eaa8f0cdbabe601759736dd1146ad21920388acf90d"
   },
+  "research/nexus-production-n01-preauth-timeout-closed-evidence-v1.json": {
+    "bytes": 2301,
+    "sha256": "1a86f25003dd9071a7eba960e7f1e96854283ee0a3b1b03f59b98647437c812c"
+  },
   "research/nexus-production-n01-public-pin-owner-acceptance-atomic-v3.json": {
     "bytes": 1087,
     "sha256": "dd3c35a62aa65790206a15ef434cdac830078d5fe75df249873ccc1b4682cf65"
@@ -2134,6 +2194,10 @@
   "research/nexus-production-n01-public-pin-owner-acceptance-atomic-v4.json": {
     "bytes": 1088,
     "sha256": "cbc709577e02f3eafb4a92efc9d4cf2efa57093076367c94316603f612840120"
+  },
+  "research/nexus-production-n01-public-pin-owner-acceptance-auth-continuation-v5.json": {
+    "bytes": 1169,
+    "sha256": "6bc69ff9ff181f8e5c1cb6a1ae462b3bbed0f593ccd325815fc729214362f653"
   },
   "research/nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json": {
     "bytes": 1092,
@@ -2216,16 +2280,16 @@
     "sha256": "91a298cd96a5e6dc87fdfba9b009ce5690ff476c53a7cdf65433c61c3b3168dc"
   },
   "scripts/build_g3_n01_owner_controller.py": {
-    "bytes": 7973,
-    "sha256": "4ec7f95de4a1b88233879da0889320f72273b2466b4695d2f79088778b52a6bf"
+    "bytes": 9747,
+    "sha256": "5195e3b4af41087cba951a4218263a08cc1e757d768e0d9221d50061fa563f25"
   },
   "scripts/build_g3_n01_owner_source_custody.py": {
-    "bytes": 9321,
-    "sha256": "7784f1bb977462d481cb5533420f1d4db6722a8ecfcae0e3502badd299e2992c"
+    "bytes": 9772,
+    "sha256": "89deaba491aceb90d06d8037f613a8a07f9d1523186d51881a80100804e248c1"
   },
   "scripts/build_g3_n01_public_review_custody.py": {
-    "bytes": 6255,
-    "sha256": "8a4ca3ecd000a7b829cd6b096cf3e7fbb3d44f4b1a25a5d767980abf32694a6e"
+    "bytes": 6539,
+    "sha256": "58a8c163eaa36c4a89729178c0fed2644882c424534b7fa59ba5d5b96712c037"
   },
   "scripts/build_g3_n01_vercel_probe.py": {
     "bytes": 4317,
@@ -2280,8 +2344,8 @@
     "sha256": "0e171aacf85e84e1de572872fad8e5de88bc81fff050281598c81c62b4c4d616"
   },
   "scripts/g3_n01_owner_controller.py": {
-    "bytes": 31157,
-    "sha256": "2f2a4c333db4389e6b1442c4d76b1d7e53cbb929a9337a5c411eba92554e86be"
+    "bytes": 31193,
+    "sha256": "d74a27b75aaa9bc413b25df59db24be4c967049a15624de546c83edaee7e22f7"
   },
   "scripts/g3_n01_storage_contract.py": {
     "bytes": 5667,
@@ -2486,6 +2550,14 @@
   "tests/test_g3_n01_atomic_reads.py": {
     "bytes": 16295,
     "sha256": "100cc9743b8af8fae01a8457af312e7be8f4ff7d19919a98dff85fae79e09d8b"
+  },
+  "tests/test_g3_n01_auth_continuation.py": {
+    "bytes": 18354,
+    "sha256": "37205cd81f9ab131fdaafda618bbb045ea36bcc3e476d4135cb91139040d1909"
+  },
+  "tests/test_g3_n01_auth_expiry.py": {
+    "bytes": 4005,
+    "sha256": "4e1cbfc78bab8af09b7ec07891c40c6b5c9396f78e9c45afbcf743631d6eb819"
   },
   "tests/test_g3_n01_checkpoint_custody.py": {
     "bytes": 5236,

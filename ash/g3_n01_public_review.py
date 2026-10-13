@@ -43,7 +43,7 @@ def pins(generation=1):
 
 def enrollment_pins(value):
     generation=value['review_generation']
-    selected=(atomic_pins() if generation==3 else current_atomic_pins()) if type(generation) is int and generation in (3,4) else pins(generation)
+    selected=auth_attempt_pins() if type(generation) is int and generation==5 else (atomic_pins() if generation==3 else current_atomic_pins()) if type(generation) is int and generation in (3,4) else pins(generation)
     require(type(value['application_generation']) is int and value['application_generation']==1
         and value['review_package_sha256']==selected.package_sha256
         and value['review_acceptance_sha256']==selected.acceptance_sha256)
@@ -72,8 +72,19 @@ def current_atomic_pins():
         custody.APPROVALS+'public-pin-owner-review-atomic-20261013-v4/',1791870300000,1791877500000)
 
 
+def auth_attempt_pins():
+    """Exact independently approved v5; no migration of any expired review."""
+    return ReviewPins(5,'fbd10e9bbaf60b4eaf108faa7b7ab4ba4efc69d1106c77d1bfcedc881d7a5a02',
+        '9ba7e7e2ffe1c1b1bac27a1a5439508d83c0b77853106e52ffbc6c59b134aed6',
+        custody.APPROVALS+'public-pin-owner-review-auth-continuation-20261013-v5/',1791878400000,1791885600000)
+
+
 def current_pins(generation=1,*,restart_profile=None):
     """Current v4 selector; historical select_pins remains unchanged."""
+    if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':require(type(generation) is int and generation==5)
+    if type(generation) is int and generation==5:
+        require(restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
+        return auth_attempt_pins()
     if type(generation) is int and generation==4:
         require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
         return current_atomic_pins()
@@ -81,7 +92,9 @@ def current_pins(generation=1,*,restart_profile=None):
 
 
 def require_enrollment_profile(selected,restart_profile):
-    if selected.generation in (3,4):require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
+    if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':require(selected.generation==5)
+    if selected.generation==5:require(restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
+    elif selected.generation in (3,4):require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
     else:require(selected.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
 
 
@@ -109,6 +122,8 @@ class PublicReview:
         selected=atomic_pins()
         if self.package_sha256==selected.package_sha256:return selected
         selected=current_atomic_pins()
+        if self.package_sha256==selected.package_sha256:return selected
+        selected=auth_attempt_pins()
         if self.package_sha256==selected.package_sha256:return selected
         raise ValueError('N01_PUBLIC_REVIEW_DENY')
 

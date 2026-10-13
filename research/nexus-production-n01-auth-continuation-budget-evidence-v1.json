@@ -1,0 +1,90 @@
+{
+  "classification": "TEST_ONLY_STRUCTURAL_SHAPE_AND_ANALYTICAL_CALL_BOUND_NOT_NEW_PROFILE_QUALIFICATION",
+  "baseline_model_calls": 174,
+  "proposed_head10_lineage_material": [
+    {
+      "pages": 3,
+      "objects": 0,
+      "maximum_page_bytes": 17250,
+      "maximum_rows_per_page": 20,
+      "worst_case_ddb_calls": 21
+    },
+    {
+      "pages": 3,
+      "objects": 2,
+      "maximum_page_bytes": 20168,
+      "maximum_rows_per_page": 23,
+      "worst_case_ddb_calls": 25
+    },
+    {
+      "pages": 7,
+      "objects": 8,
+      "maximum_page_bytes": 23914,
+      "maximum_rows_per_page": 27,
+      "worst_case_ddb_calls": 47
+    },
+    {
+      "pages": 9,
+      "objects": 4,
+      "maximum_page_bytes": 25646,
+      "maximum_rows_per_page": 29,
+      "worst_case_ddb_calls": 44
+    },
+    {
+      "pages": 9,
+      "objects": 2,
+      "maximum_page_bytes": 27358,
+      "maximum_rows_per_page": 31,
+      "worst_case_ddb_calls": 40
+    }
+  ],
+  "outside_commit_observations": 12,
+  "new_ddb_worst_case": 189,
+  "old_aggregate_conservative_usage": 348,
+  "old_aggregate_cap": 512,
+  "old_remaining": 164,
+  "new_aggregate_cap": 537,
+  "requested_cap_increment": 25,
+  "guard_required_before_live_binding": "Exact head10 bytes; only fixed five transitions; P/O bounded by this shape; unexpected growth DENY; full semantic/new-profile regression required after explicit approval",
+  "live_calls": 0,
+  "authority": "NONE",
+  "real_admission": "NO",
+  "regression_head": "ba5c53ec09121d680633c2df8247e50ca164a536",
+  "proposed_profile": "OWNER_AUTH_ATTEMPT_FORWARD_V1",
+  "proposed_authority_epoch": 7,
+  "proposed_source_binding_generation": 5,
+  "proposed_checkpoint_sequences": [
+    11,
+    12,
+    13,
+    14,
+    15
+  ],
+  "historical_checkpoints_7_8_9_10_replay": "FORBIDDEN",
+  "before_read_units": 114200,
+  "after_read_units": 124200,
+  "unit_rates": [
+    {
+      "usage_type": "APS1-ReadRequestUnits",
+      "unit": "ReadRequestUnits",
+      "usd": "0.0000001425"
+    },
+    {
+      "usage_type": "APS1-WriteRequestUnits",
+      "unit": "WriteRequestUnits",
+      "usd": "0.0000007100"
+    }
+  ],
+  "modeled_increment_including_20pct_tax_reserve": 0.03579,
+  "modeled_total_including_20pct_tax_reserve": 0.9015342,
+  "total_usd_authorization_cap": 1.0,
+  "actual_invoice": "UNKNOWN_NOT_QUERIED",
+  "new_live_profile_qualification": "NOT_IMPLEMENTED_NOT_RUN_PENDING_OWNER_REVIEW",
+  "s3_cap_new_total_attempts": 16000,
+  "s3_cap_new_writes": 240,
+  "s3_cap_new_bytes_per_backend": 8388608,
+  "s3_aggregate_tier1_cap": 5000,
+  "s3_aggregate_tier2_cap": 50000,
+  "s3_aggregate_bytes_cap": 67108864,
+  "s3_before_dispatch_condition": "Reconcile retained prior charges/attempts/bytes; do not reset counters or exceed unchanged aggregate caps; no live dispatch if remaining envelope cannot accommodate sealed full semantic model"
+}

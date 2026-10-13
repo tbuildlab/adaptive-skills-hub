@@ -13,7 +13,7 @@ ROOT=Path(__file__).resolve().parents[1]
 OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.py','ash/g3_n01_retained_state.py',
     'ash/g3_n01_owner_state.py','ash/g3_n01_owner_protocol.py','ash/g3_n01_owner_persistence.py',
     'ash/g3_n01_owner_ingress.py','ash/g3_n01_runtime_context.py','ash/g3_n01_stytch_transport.py',
-    'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py','ash/g3_n01_owner_restart.py','ash/g3_n01_owner_sdk_restart.py','ash/g3_n01_owner_atomic_restart.py')
+    'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py','ash/g3_n01_owner_restart.py','ash/g3_n01_owner_sdk_restart.py','ash/g3_n01_owner_atomic_restart.py','ash/g3_n01_owner_auth_restart.py')
 
 
 def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profile=None,review_generation=1):
@@ -25,9 +25,20 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
     from ash import g3_n01_owner_restart as restart
     restart.require_profile(restart_profile)
     restart=restart.configuration(restart_profile)
+    auth_attempt=restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1'
     atomic=restart_profile=='OWNER_ATOMIC_FORWARD_V1'
-    ddb_limit=210 if atomic else 280 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 190
-    s3_limit=16000 if atomic else 10000 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 6000
+    ddb_limit=189 if auth_attempt else 210 if atomic else 280 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 190
+    # The approved 16,000 includes independent R setup/reconciliation. Reserve
+    # 64 calls/four writes/64 KiB before assigning this one runtime's envelope.
+    s3_limit=15936 if auth_attempt else 16000 if atomic else 10000 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 6000
+    s3_writes=236 if auth_attempt else 240
+    write_bytes=8323072 if auth_attempt else 8388608
+    if auth_attempt:
+        # The reviewed documentary cost package contains decimal prices; it is
+        # exact-hash constrained bytes, not a runtime authority codec record.
+        pending=(ROOT/'research/nexus-production-n01-pending-bounded-authentication-continuation-owner-review-v1.json').read_bytes().strip()
+        acceptance=codec.canonical(codec.decode((ROOT/'research/nexus-production-n01-bounded-authentication-continuation-owner-acceptance-v1.json').read_bytes().strip()))
+        if codec.digest(pending)!='51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7' or codec.digest(acceptance)!='d9568152db6d3e4cbf43cf3a4fc94ec76c01bf3b173e6846235f7923336313ef':raise ValueError('N01_LIFECYCLE_AMENDMENT_DENY')
     if restart_profile is not None and transport_revision!=3:raise ValueError('N01_RESTART_TRANSPORT_DENY')
     names=tuple(dict.fromkeys((*MODULES,*(name for name in EXTRA if name!='scripts/g3_n01_controller_bootstrap.py'),*OWNER_MODULES)))
     files={name:(ROOT/name).read_bytes().replace(b'\r\n',b'\n') for name in names}
@@ -57,8 +68,8 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
         'service.CUSTODY_REVISION='+repr(transport_revision)+'\n'
         +('service.RESTART_PROFILE='+repr(restart_profile)+'\n'
            +'service.native.MAX_DDB='+str(ddb_limit)+'\nservice.native.MAX_S3='+str(s3_limit)+'\n'
-           +("service.PRIMARY_READ_PROFILE='PAIRED_ATOMIC_V1'\n" if atomic else '')
-           +'service.native.MAX_S3_WRITES=240\nservice.native.MAX_WRITE_BYTES=8388608\n'
+           +("service.PRIMARY_READ_PROFILE='PAIRED_ATOMIC_V1'\n" if atomic or auth_attempt else '')
+           +'service.native.MAX_S3_WRITES='+str(s3_writes)+'\nservice.native.MAX_WRITE_BYTES='+str(write_bytes)+'\n'
            if restart_profile is not None else '')+
         ('service.REVIEW_GENERATION='+str(selected.generation)+'\nservice.UNTIL=service.datetime.fromtimestamp('+str(selected.valid_until_ms)+'/1000,service.timezone.utc)\n' if review_generation>=2 else '')+
         'class handler(service.handler,BaseHTTPRequestHandler):\n    pass\n').encode()
@@ -75,10 +86,11 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
         metadata.update(review_generation=selected.generation,review_package_sha256=selected.package_sha256,review_acceptance_sha256=selected.acceptance_sha256,review_valid_until_ms=selected.valid_until_ms)
     if restart_profile is not None:
         metadata.update(restart_profile=restart_profile,expected_predecessor=restart.HEAD4,
-            maximum_ddb_attempts=ddb_limit,maximum_s3_attempts=s3_limit,maximum_s3_writes=240,
-            maximum_new_bytes_per_backend=8388608,prior_native_ddb_attempts=204 if atomic else 134 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 66,
+            maximum_ddb_attempts=ddb_limit,maximum_s3_attempts=s3_limit,maximum_s3_writes=s3_writes,
+            maximum_new_bytes_per_backend=write_bytes,prior_native_ddb_attempts=250 if auth_attempt else 204 if atomic else 134 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 66,
             recovery='EXPLICIT_FORWARD_ONLY',old_owner_authority='NEVER_RESTORED')
     if atomic:metadata.update(primary_read_profile='PAIRED_ATOMIC_V1',maximum_read_items_per_transaction=2,approved_aggregate_ddb_attempts=512,earlier_non_owner_reserved_attempts=98)
+    if auth_attempt:metadata.update(primary_read_profile='PAIRED_ATOMIC_V1',maximum_read_items_per_transaction=2,approved_aggregate_ddb_attempts=537,earlier_non_owner_reserved_attempts=98,prior_ddb_charged_conservative=348,authentication_attempt_limit=1,lifecycle_amendment_sha256='51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7',owner_readiness_before_preauth='REQUIRED',independent_r_admin_s3_attempts_reserved=64,independent_r_admin_s3_writes_reserved=4,independent_r_admin_bytes_reserved=65536,total_new_s3_attempts_limit=16000)
     (destination/'artifact.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     request=dict(name='nexus-g3-qual',project='prj_xH23xMATVChdhX34OS2vjI8dfWN2',target='production',
         files=[dict(file=name,data=raw.decode(),encoding='utf-8') for name,raw in sorted(files.items())],

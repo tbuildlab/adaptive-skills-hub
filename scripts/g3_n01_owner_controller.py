@@ -58,7 +58,7 @@ def current_review():
 
 
 def native_transport(header):
-    if REVIEW_GENERATION in (3,4):return native.NativeTransport(header,review_generation=REVIEW_GENERATION,review_profile=RESTART_PROFILE)
+    if REVIEW_GENERATION in (3,4,5):return native.NativeTransport(header,review_generation=REVIEW_GENERATION,review_profile=RESTART_PROFILE)
     return native.NativeTransport(header) if REVIEW_GENERATION==1 else native.NativeTransport(header,review_generation=REVIEW_GENERATION)
 
 
@@ -129,10 +129,10 @@ class OwnerController:
         self.__last_wall=int(time.time()*1000);self.__last_monotonic=time.monotonic()
         self.__source_proposal=None;self.__events=[]
         try:
-            if RESTART_PROFILE in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):
+            if RESTART_PROFILE in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1','OWNER_AUTH_ATTEMPT_FORWARD_V1'):
                 client,identity=native_identity_client();identity.close();client=None
             self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall,review_generation=REVIEW_GENERATION,
-                **({'restart_profile':RESTART_PROFILE} if REVIEW_GENERATION in (3,4) else {}))
+                **({'restart_profile':RESTART_PROFILE} if REVIEW_GENERATION in (3,4,5) else {}))
             if RESTART_PROFILE is None:
                 self.__history=membership.MembershipFence(self.__transport.custody,boot.storage_scope(),profile='PRODUCTION').read(valid_until=UNTIL)
             else:

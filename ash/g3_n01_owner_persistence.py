@@ -69,7 +69,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
     def gate_reader(self):
         """Fresh bounded observation; the native client retains aggregate counts."""
         require(not self.retired and self.pending is None)
-        if self.restart_profile not in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):return self
+        if self.restart_profile not in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1','OWNER_AUTH_ATTEMPT_FORWARD_V1'):return self
         return OwnerMembershipFence(self.client,self.registration,public_review=self.public_review,
             native_environment=self.native_environment,artifact_inventory_sha256=self.artifact_inventory_sha256,
             process_nonce=self.process_nonce,max_attempts=1000,custody_revision=self.custody_revision,restart_profile=self.restart_profile)
@@ -109,7 +109,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
     def independent_recovery_authorization(self,body,ref,valid_until):
         if body['recovery_sequence']<=2:
             return custody.N01S3Fence.independent_recovery_authorization(self,body,ref,valid_until)
-        if self.restart_profile is not None and body['recovery_sequence'] in (3,5,7):
+        if self.restart_profile is not None and body['recovery_sequence'] in (3,5,7,9):
             from ash import g3_n01_owner_restart as restart
             selected=restart.configuration(self.restart_profile)
             if body['recovery_sequence']<selected.SEQUENCE:
@@ -196,7 +196,7 @@ class OwnerMembershipCommit:
             # New long-history profile has a separate bounded initial observer;
             # the writer and native aggregate counters are never reset. This is
             # not a retry after exhaustion and does not reuse an old verdict.
-            reader=self.fence.gate_reader() if self.fence.restart_profile=='OWNER_ATOMIC_FORWARD_V1' else self.fence
+            reader=self.fence.gate_reader() if self.fence.restart_profile in ('OWNER_ATOMIC_FORWARD_V1','OWNER_AUTH_ATTEMPT_FORWARD_V1') else self.fence
             history=reader.read(valid_until=self.valid_until)
             require(history.checkpoints[-1]==self.expected_head)
             enrolled=self.fence.current_source()

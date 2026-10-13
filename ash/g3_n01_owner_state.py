@@ -95,7 +95,17 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
         bindings=[row for row in rows if row['family']=='binding']
         registrations=[row for row in rows if row['family']=='registration']
         sources=[row for row in rows if row['family']=='source']
-        if restart_profile=='OWNER_ATOMIC_FORWARD_V1':
+        if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':
+            from ash import g3_n01_owner_atomic_restart as prior
+            from ash import g3_n01_owner_sdk_restart as sdk
+            require(len(bindings)==len(registrations)==len(sources)==4
+                and state_pairs_retired(rows,(BINDING_ID,REGISTRATION_ID))
+                and state_pairs_retired(rows,('n01-owner-binding-restart-v1','n01-owner-only-source-restart-v1'))
+                and state_pairs_retired(rows,(sdk.BINDING_ID,sdk.REGISTRATION_ID))
+                and any(row['binding_id']==prior.BINDING_ID and row['state']=='CURRENT' for row in bindings)
+                and any(row['registration_id']==prior.REGISTRATION_ID and row['state']=='CURRENT' for row in registrations)
+                and all(row['state']=='RETIRED' for row in sources))
+        elif restart_profile=='OWNER_ATOMIC_FORWARD_V1':
             from ash import g3_n01_owner_sdk_restart as prior
             require(len(bindings)==len(registrations)==len(sources)==3
                 and state_pairs_retired(rows,(BINDING_ID,REGISTRATION_ID))
@@ -138,7 +148,7 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
         current_owner_authentication='NOT_YET_OBSERVED',authority='NONE',real_admission='NO'))
     digest=control.digest(assertion)
     rows.append(dict(schema_version=control.VERSION,family='source',revision=1,source_id=source_id,
-        evidence_ref=dict(ref={1:'n01-r-owner-enrollment-v1',2:'n01-r-owner-enrollment-restart-v1',3:'n01-r-owner-enrollment-sdk-repair-v1',4:'n01-r-owner-enrollment-atomic-v1'}[generation],sha256=enrollment.enrollment_sha256),
+        evidence_ref=dict(ref={1:'n01-r-owner-enrollment-v1',2:'n01-r-owner-enrollment-restart-v1',3:'n01-r-owner-enrollment-sdk-repair-v1',4:'n01-r-owner-enrollment-atomic-v1',5:'n01-r-owner-enrollment-auth-attempt-v1'}[generation],sha256=enrollment.enrollment_sha256),
         assertion_sha256=digest,kind='OWNER_ENROLLMENT',principal=value['principal'],binding_id=binding_id,
         context_id=None,registration_id=registration_id,observed_at_ms=now_ms,expires_at_ms=value['expires_at_ms'],
         conclusion='PASS',state='CURRENT'))
@@ -164,7 +174,13 @@ def current_binding_ids(rows):
         from ash import g3_n01_owner_restart as restart
         from ash import g3_n01_owner_sdk_restart as repaired
         from ash import g3_n01_owner_atomic_restart as atomic
-        if pair==(atomic.BINDING_ID,atomic.REGISTRATION_ID):
+        from ash import g3_n01_owner_auth_restart as auth
+        if pair==(auth.BINDING_ID,auth.REGISTRATION_ID):
+            require(root['authority_epoch']==auth.EPOCH and bindings[0]['binding_generation']==auth.GENERATION
+                and state_pairs_retired(rows,(atomic.BINDING_ID,atomic.REGISTRATION_ID))
+                and state_pairs_retired(rows,(repaired.BINDING_ID,repaired.REGISTRATION_ID))
+                and state_pairs_retired(rows,(restart.BINDING_ID,restart.REGISTRATION_ID)))
+        elif pair==(atomic.BINDING_ID,atomic.REGISTRATION_ID):
             require(root['authority_epoch']==atomic.EPOCH and bindings[0]['binding_generation']==atomic.GENERATION
                 and state_pairs_retired(rows,(repaired.BINDING_ID,repaired.REGISTRATION_ID))
                 and state_pairs_retired(rows,(restart.BINDING_ID,restart.REGISTRATION_ID)))
