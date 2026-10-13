@@ -1,0 +1,1034 @@
+{
+  "authority": "NONE",
+  "aws_calls_added": 0,
+  "canonical_sha256": "dce612f12e4ae4167b0599e3fe6e4a1241eda8ae948d8f5093edd66dbe3fafdd",
+  "checkpoint_metadata": [
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 1,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-storage-incarnation-1",
+      "ledger_commit_sha256": "f514bb91d659200e99cebc555bbe2fbeb0a10f975cea711ea8f3431db36567be",
+      "previous_checkpoint": null,
+      "record_refs": [],
+      "recovery_sequence": 0,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791715897000,
+      "transition_kind": "GENESIS"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 1,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-storage-incarnation-1",
+      "ledger_commit_sha256": "c5fc3ef4822b7dc9a39e78d481892a6615635bf21ae3764dc7ec2da4fa8e4ae8",
+      "previous_checkpoint": {
+        "body_sha256": "7fe0fb527ce2c8bb519a0f837124bfce22ce8e964008f2aa0fc7b4f1c9b036db",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:ca736f0ab3d739456f41f6107f1582941c071835b6ca05c8f98e624b64e61f50"
+      },
+      "record_refs": [],
+      "recovery_sequence": 1,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791715897001,
+      "transition_kind": "INVALIDATE"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 2,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-storage-incarnation-2",
+      "ledger_commit_sha256": "856b4b4a3656d2d4820ebd4517b7fc17f3f6b7eb1b4f1898912bae59b0d2c763",
+      "previous_checkpoint": {
+        "body_sha256": "9ff4a35d28558657a00dffb225225b231568c3600c5dda414d18158c215fe7ba",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:2cb814bc96bf150896fb08641915f63ee0f6c0444601398e9d44249cf52849d7"
+      },
+      "record_refs": [],
+      "recovery_sequence": 2,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791715897002,
+      "transition_kind": "RECOVER"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 3,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-7cff975cfab6ce5e1dff8896393f900e",
+      "ledger_commit_sha256": "9df9dcf8c473e7045e58aad1be0d7fedcac932bebe613a2f7913fa33b82bb5c0",
+      "previous_checkpoint": {
+        "body_sha256": "52dd16d2303656eec0f3c6413e5337f03cb1e64531b7acf8ace920bcaf89ad41",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:2324a4475c42debe0a21e2b94cd42f1c3d68e9dc1af0397223dfdde4a4076281"
+      },
+      "record_refs": [],
+      "recovery_sequence": 3,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791783024976,
+      "transition_kind": "RECOVER"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 3,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-7cff975cfab6ce5e1dff8896393f900e",
+      "ledger_commit_sha256": "ffa3a99fec7f05cb13a575f2332cbfb3eb0e63f37bd388a9ac1adf4238c5807d",
+      "previous_checkpoint": {
+        "body_sha256": "07b698c453d259d8c7e832bb7220e84dd123ea3404872caadf1e54456e12a5a0",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:fa3ddbfd0b63119dfeb753a19957a321e314b7d7749ae3cf7738ee51032ff7a1"
+      },
+      "record_refs": [],
+      "recovery_sequence": 4,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791783261201,
+      "transition_kind": "INVALIDATE"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 4,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-62f7f9dde781cac085f0a369e9aeed2c",
+      "ledger_commit_sha256": "21b82c0c68752afbb1fc806c95c35bb2c5529013bb8674488ed501863305e001",
+      "previous_checkpoint": {
+        "body_sha256": "0223d350fe6852b72bfa632c6c88acdb266ba6855aa5e6ec7d9e5aca7929bb71",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:75e56d2752a0775bab644785d609542fcbd27e37db120ac60b369bb6c1edbc63"
+      },
+      "record_refs": [],
+      "recovery_sequence": 5,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791787286225,
+      "transition_kind": "RECOVER"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 4,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-62f7f9dde781cac085f0a369e9aeed2c",
+      "ledger_commit_sha256": "455cabd67733cb571e1a492a1e2ac686f9698d65291289242b6ad7a754b28109",
+      "previous_checkpoint": {
+        "body_sha256": "138c264277fda62f78d15e308878ec566096dc36497819f5686f0706a9454ca3",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:e41705595718ee3bdc71137b6736f6a49f0abdc303e8bf7cbf7a230eb821a650"
+      },
+      "record_refs": [],
+      "recovery_sequence": 6,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791787584785,
+      "transition_kind": "INVALIDATE"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 5,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-965ba01bdd3a8d75d02ccdf7af75fc0f",
+      "ledger_commit_sha256": "00542d4cba3beaecc22cd5239b9caeb30a8ed3c3a98d649b84579096b770460e",
+      "previous_checkpoint": {
+        "body_sha256": "0492f25ce2c1b930ed5c4f5e9b2b0956716abb09b4cd90d7f84bb606097baabd",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:7d0f02227d3aece0d007685e805f0fd2c936ee777bc88e86aae50e8fbc994cc9"
+      },
+      "record_refs": [],
+      "recovery_sequence": 7,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791803852891,
+      "transition_kind": "RECOVER"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 5,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-965ba01bdd3a8d75d02ccdf7af75fc0f",
+      "ledger_commit_sha256": "b6a682d3f59d3c143b89097922492c60bafaabda3232415cb9e305c21513fab8",
+      "previous_checkpoint": {
+        "body_sha256": "85ef46c4a8354e1a0b8e519198e8ba593a0c6da43301e01f62008ac0fb84a606",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:6248756d006366bb80df286a8d1357cd47389ef34eb993e9e469ee2e1530ded7"
+      },
+      "record_refs": [],
+      "recovery_sequence": 8,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791804222092,
+      "transition_kind": "INVALIDATE"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 6,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-2f71543e6e206736d281aefb62a328af",
+      "ledger_commit_sha256": "f34ac910639ec9e316b19dc101dd120df5b850e725d88974efa77c07f24ac675",
+      "previous_checkpoint": {
+        "body_sha256": "e2bec061b42ee10ac844109ba1347ff94a062a0a3b41c7509628ad05a05aff81",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:01e32a4befb0cbbac1fb820b237f6a7e7d2d43f3411c9bcf0b5ce6c48e4ad077"
+      },
+      "record_refs": [],
+      "recovery_sequence": 9,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791872405571,
+      "transition_kind": "RECOVER"
+    },
+    {
+      "authority_config_sha256": "3632c49345ea111aa992b27a8645e44f479fe7685c98ac04515147891fd0a2d1",
+      "authority_epoch": 6,
+      "authority_instance": "g3-n01-qualification-v1",
+      "authority_mode": "DELEGATED_EXECUTOR",
+      "d04_historical_status": "UNQUALIFIED_NOT_A_RELEASE_GATE",
+      "incarnation": "n01-owner-2f71543e6e206736d281aefb62a328af",
+      "ledger_commit_sha256": "3276e1ad41d023788c701f5e804bb4f1a22b813136d40268221f09515645b793",
+      "previous_checkpoint": {
+        "body_sha256": "5e7c419d184d224354d6c6af18190ee37b89953495ed767dac3e8a8106fddfa8",
+        "id": "nexus.g3.production.recovery-checkpoint.v2:e9cffaeac5bb818606eec93ee8b678d67882f251a09d5fa5b52ba5cc437d4911"
+      },
+      "record_refs": [],
+      "recovery_sequence": 10,
+      "schema_version": "nexus.g3.production.recovery-checkpoint.v2",
+      "time_high_water_ms": 1791872850704,
+      "transition_kind": "INVALIDATE"
+    }
+  ],
+  "lifecycle_metadata": [
+    {
+      "family": "revocation",
+      "generation": 1,
+      "revision": 1,
+      "state": "INDEX"
+    },
+    {
+      "binding_generation": 2,
+      "binding_id": "n01-owner-binding-restart-v1",
+      "family": "binding",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "binding_generation": 3,
+      "binding_id": "n01-owner-binding-sdk-repair-v1",
+      "family": "binding",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "binding_generation": 1,
+      "binding_id": "n01-owner-binding-v1",
+      "family": "binding",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "authority_epoch": 3,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-7cff975cfab6ce5e1dff8896393f900e",
+      "recovery_sequence": 4,
+      "revision": 5,
+      "time_high_water_ms": 1791783261201
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 1,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "CURRENT"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "authority_epoch": 4,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-62f7f9dde781cac085f0a369e9aeed2c",
+      "recovery_sequence": 5,
+      "revision": 6,
+      "time_high_water_ms": 1791787286225
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_generation": 1,
+      "binding_id": "n01-owner-binding-v1",
+      "family": "binding",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-atomic-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-sdk-repair-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "authority_epoch": 6,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-2f71543e6e206736d281aefb62a328af",
+      "recovery_sequence": 10,
+      "revision": 11,
+      "time_high_water_ms": 1791872850704
+    },
+    {
+      "binding_id": "n01-owner-binding-atomic-v1",
+      "expires_at_ms": 1791877500000,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-atomic-v1",
+      "revision": 1,
+      "source_id": "n01-owner-enrollment-atomic-v1",
+      "state": "CURRENT"
+    },
+    {
+      "binding_id": "n01-owner-binding-restart-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-restart-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_id": "n01-owner-binding-sdk-repair-v1",
+      "expires_at_ms": 1791815138065,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-sdk-repair-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-sdk-repair-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "RETIRED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-sdk-repair-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "authority_epoch": 5,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-965ba01bdd3a8d75d02ccdf7af75fc0f",
+      "recovery_sequence": 8,
+      "revision": 9,
+      "time_high_water_ms": 1791804222092
+    },
+    {
+      "binding_id": "n01-owner-binding-restart-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-restart-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_id": "n01-owner-binding-sdk-repair-v1",
+      "expires_at_ms": 1791815138065,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-sdk-repair-v1",
+      "revision": 1,
+      "source_id": "n01-owner-enrollment-sdk-repair-v1",
+      "state": "CURRENT"
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_generation": 4,
+      "binding_id": "n01-owner-binding-atomic-v1",
+      "family": "binding",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "binding_generation": 2,
+      "binding_id": "n01-owner-binding-restart-v1",
+      "family": "binding",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "binding_generation": 3,
+      "binding_id": "n01-owner-binding-sdk-repair-v1",
+      "family": "binding",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "binding_generation": 1,
+      "binding_id": "n01-owner-binding-v1",
+      "family": "binding",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "authority_epoch": 5,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-965ba01bdd3a8d75d02ccdf7af75fc0f",
+      "recovery_sequence": 7,
+      "revision": 8,
+      "time_high_water_ms": 1791803852891
+    },
+    {
+      "binding_id": "n01-owner-binding-restart-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-restart-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "RETIRED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "authority_epoch": 2,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-storage-incarnation-2",
+      "recovery_sequence": 2,
+      "revision": 3,
+      "time_high_water_ms": 1791715897002
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "authority_epoch": 3,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-7cff975cfab6ce5e1dff8896393f900e",
+      "recovery_sequence": 3,
+      "revision": 4,
+      "time_high_water_ms": 1791783024976
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-sdk-repair-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "authority_epoch": 6,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-2f71543e6e206736d281aefb62a328af",
+      "recovery_sequence": 9,
+      "revision": 10,
+      "time_high_water_ms": 1791872405571
+    },
+    {
+      "binding_id": "n01-owner-binding-restart-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-restart-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_id": "n01-owner-binding-sdk-repair-v1",
+      "expires_at_ms": 1791815138065,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-sdk-repair-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-sdk-repair-v1",
+      "state": "RETIRED"
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "RETIRED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "family": "registration",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "authority_epoch": 4,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-owner-62f7f9dde781cac085f0a369e9aeed2c",
+      "recovery_sequence": 6,
+      "revision": 7,
+      "time_high_water_ms": 1791787584785
+    },
+    {
+      "binding_id": "n01-owner-binding-restart-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-restart-v1",
+      "revision": 1,
+      "source_id": "n01-owner-enrollment-restart-v1",
+      "state": "CURRENT"
+    },
+    {
+      "binding_id": "n01-owner-binding-v1",
+      "expires_at_ms": 1791791511502,
+      "family": "source",
+      "registration_id": "n01-owner-only-source-v1",
+      "revision": 2,
+      "source_id": "n01-owner-enrollment-v1",
+      "state": "RETIRED"
+    },
+    {
+      "authority_epoch": 1,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-storage-incarnation-1",
+      "recovery_sequence": 0,
+      "revision": 1,
+      "time_high_water_ms": 1791715897000
+    },
+    {
+      "binding_generation": 2,
+      "binding_id": "n01-owner-binding-restart-v1",
+      "family": "binding",
+      "revision": 1,
+      "state": "CURRENT"
+    },
+    {
+      "binding_generation": 1,
+      "binding_id": "n01-owner-binding-v1",
+      "family": "binding",
+      "revision": 2,
+      "state": "RETIRED"
+    },
+    {
+      "family": "recovery",
+      "revision": 1,
+      "state": "WITNESSED"
+    },
+    {
+      "authority_epoch": 1,
+      "authority_instance": "g3-n01-qualification-v1",
+      "family": "root",
+      "incarnation": "n01-storage-incarnation-1",
+      "recovery_sequence": 1,
+      "revision": 2,
+      "time_high_water_ms": 1791715897001
+    }
+  ],
+  "real_admission": "NO",
+  "s3_calls_before_and_after": 64,
+  "schema_field_names": [
+    {
+      "fields": [
+        "authority_config_sha256",
+        "authority_epoch",
+        "authority_instance",
+        "authority_mode",
+        "control_after_sha256",
+        "d04_historical_status",
+        "incarnation",
+        "previous_checkpoint",
+        "record_refs",
+        "recovery_sequence",
+        "time_high_water_ms",
+        "transition_kind"
+      ],
+      "schema": "UNSPECIFIED"
+    },
+    {
+      "fields": [
+        "authority_epoch",
+        "authority_instance",
+        "codec_version",
+        "incarnation",
+        "inventory",
+        "pages",
+        "recovery_sequence",
+        "time_high_water_ms"
+      ],
+      "schema": "UNSPECIFIED"
+    },
+    {
+      "fields": [
+        "codec_version",
+        "namespace",
+        "rows"
+      ],
+      "schema": "UNSPECIFIED"
+    },
+    {
+      "fields": [
+        "application_generation",
+        "artifact_inventory_sha256",
+        "authority_config_sha256",
+        "authority_instance",
+        "authority_mode",
+        "deployment_host",
+        "deployment_id",
+        "expires_at_ms",
+        "host_project_id",
+        "issued_at_ms",
+        "no_automatic_redispatch",
+        "principal",
+        "process_nonce",
+        "purpose",
+        "real_admission",
+        "review_acceptance_sha256",
+        "review_generation",
+        "review_package_sha256",
+        "schema_version",
+        "service_revision",
+        "source_kinds"
+      ],
+      "schema": "nexus.g3.n01.current-source-enrollment.v1"
+    },
+    {
+      "fields": [
+        "application_generation",
+        "authority_config_sha256",
+        "authority_epoch",
+        "authority_mode",
+        "checkpoint",
+        "expires_at_ms",
+        "incarnation",
+        "no_automatic_redispatch",
+        "previous_checkpoint",
+        "purpose",
+        "real_admission",
+        "review_generation",
+        "schema_version",
+        "source_enrollment_sha256"
+      ],
+      "schema": "nexus.g3.n01.owner-recovery-authorization.v1"
+    },
+    {
+      "fields": [
+        "artifact_inventory_sha256",
+        "authority",
+        "current_owner_authentication",
+        "deployment_id",
+        "kind",
+        "observed_at_ms",
+        "principal",
+        "process_nonce",
+        "real_admission",
+        "schema_version",
+        "source_enrollment_sha256"
+      ],
+      "schema": "nexus.g3.n01.owner-source-observation.v1"
+    },
+    {
+      "fields": [
+        "admin_checkpoint_ids",
+        "authority_instance",
+        "base_time_ms",
+        "config_sha256",
+        "generation",
+        "genesis",
+        "no_automatic_redispatch",
+        "normal_prefix",
+        "previous_registration_sha256",
+        "purpose",
+        "real_admission",
+        "schema_version"
+      ],
+      "schema": "nexus.g3.n01.storage-registration.v2"
+    },
+    {
+      "fields": [
+        "authority_config_sha256",
+        "authority_epoch",
+        "authority_instance",
+        "authority_mode",
+        "d04_historical_status",
+        "incarnation",
+        "ledger_commit_sha256",
+        "previous_checkpoint",
+        "record_refs",
+        "recovery_sequence",
+        "schema_version",
+        "time_high_water_ms",
+        "transition_kind"
+      ],
+      "schema": "nexus.g3.production.recovery-checkpoint.v2"
+    }
+  ],
+  "schema_version": "nexus.g3.n01.cached-retained-schema-analysis.v1",
+  "source": "ALREADY_READ_NATIVE_R_CACHE_NO_ADDITIONAL_AWS_CALLS"
+}

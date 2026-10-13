@@ -827,6 +827,10 @@
     "bytes": 12709,
     "sha256": "7923b65ee44c47548330ed3f20a49a41779b5637fbbf339efd6cf8bf2980756f"
   },
+  "docs/nexus-core-product-resumption-plan-v1.md": {
+    "bytes": 6796,
+    "sha256": "7509c51b6c80ae9a8076084978c0df92668beedc6fd3fb8fa3dcd43d8b6ad1b4"
+  },
   "docs/nexus-cross-project-refinement-d01-d02-acceptance-v1.md": {
     "bytes": 36657,
     "sha256": "62b529e81f8a28f842f304427ccdd411c61abb56a936eadb9614d90d796b72dd"
@@ -1371,6 +1375,10 @@
     "bytes": 46921,
     "sha256": "6ff9dcfdf9ae65da634fa0aa0b2cbc150e2e6c2eab9993afdac4eb301136f7a7"
   },
+  "docs/nexus-g3-n01-optional-high-assurance-research-hold-v1.md": {
+    "bytes": 4334,
+    "sha256": "0a1857dc72bc466426b1822cd2fc1a3256d0206b7caa59dd7e99f013ae1c111d"
+  },
   "docs/nexus-g3-n01-reuse-preparation-v1.md": {
     "bytes": 8792,
     "sha256": "69ed8ba2ca53985a31c3ebfbf88f5d0e3f4efeac82ed53b826484171fa3fb451"
@@ -1847,6 +1855,10 @@
     "bytes": 5264,
     "sha256": "51f6d7780a30ae069b3cbc2f600596beb9bfb1eedd2ac925c63f541919c71b07"
   },
+  "docs/nexus-production-n01-resource-lifecycle-continuation-analysis-v1.md": {
+    "bytes": 15563,
+    "sha256": "d70f68a8dd762a6d15435c73e993b787afc67e8992ffc3fb30874e101dbbf574"
+  },
   "docs/nexus-production-n01-sdk-repair-bounded-public-pin-owner-review-v2.md": {
     "bytes": 3462,
     "sha256": "1c34d9317c5d86e945a63a5adf0ef591aa025b453cc722d20c12b0a364c5f695"
@@ -2067,9 +2079,25 @@
     "bytes": 7526,
     "sha256": "852cefe5ba3c0b50afb65955805fc41e66042f87fe30b61db2466d7f7c1d6cb2"
   },
+  "research/nexus-g3-n01-hold-preserved-manifest-v1.json": {
+    "bytes": 114050,
+    "sha256": "82cca074d9c5bca0e084e360fa176eea11690a49a385f5ca9ea5434ec6504265"
+  },
+  "research/nexus-g3-n01-research-hold-freeze-v1.json": {
+    "bytes": 211685,
+    "sha256": "d37d0595d1d82f9e6d7067a822bb7975f9093e1702670cb8d1bdee948d7aa10b"
+  },
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,
     "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
+  },
+  "research/nexus-n01-cached-retained-schema-analysis-v1.json": {
+    "bytes": 30286,
+    "sha256": "56cc474be1dd8602201e9da9fad8cebcf6730c3ef29b94c9128a4360de3f2b2a"
+  },
+  "research/nexus-n01-resource-continuation-r-readback-v1.json": {
+    "bytes": 63276,
+    "sha256": "77c129119217835a0fdc44e6001145fe41ade22d9450effdf8eb7c698d071b60"
   },
   "research/nexus-production-d03-a-caller-policy-v1.json": {
     "bytes": 1350,
@@ -2238,6 +2266,14 @@
   "research/nexus-production-n01-recovery-run-request-v1.json": {
     "bytes": 194,
     "sha256": "b212a1ff27a50ccba13fbedf2e4f78f8dece3fcc3aef8f11cdc4e60ca8f09d5c"
+  },
+  "research/nexus-production-n01-resource-continuation-cost-evidence-v1.json": {
+    "bytes": 2773,
+    "sha256": "0d8a9e6f651cf281f389c10ff29c9d2c65d6478eed0a3b01ace20032f8c54624"
+  },
+  "research/nexus-production-n01-resource-continuation-hold-disposition-v1.json": {
+    "bytes": 6750,
+    "sha256": "42239e73e245a05d81dfa3bce44a9af365d90beecfba7d1af51e7f16ab67d5a9"
   },
   "research/nexus-production-n01-resource-proposal-v1.json": {
     "bytes": 10544,

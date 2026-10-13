@@ -1,0 +1,77 @@
+{
+  "actual_invoice": "UNKNOWN",
+  "additional_s3_storage_bytes": 0,
+  "aws_authenticated_calls_added_by_public_catalog_queries": 0,
+  "cloud_mutations": 0,
+  "conservative_all_requests_tier1": true,
+  "conservative_outbound_usd_per_decimal_gb": "0.12",
+  "cost_model_scope": "REQUESTS_AND_RETRIEVED_S3_PAYLOAD_ONLY_NOT_TOTAL_ACCOUNT_INVOICE",
+  "credits_assumed": false,
+  "ddb_data_plane_calls": 0,
+  "existing_n01_cost_cap_usd": "1.00",
+  "future_reconstruction_ddb_s3_cost": "UNDETERMINED_NOT_AUTHORIZABLE",
+  "native_s3_calls": 64,
+  "native_sts_get_caller_identity_calls": 1,
+  "new_aws_resources": 0,
+  "new_retention_versions": 0,
+  "observed_at_utc": "2026-10-13T13:24:52.674749+00:00",
+  "read_bytes": 128363,
+  "real_admission": "NO",
+  "rounded_s3_read_request_and_payload_allowance_usd": "0.001",
+  "s3_read_request_and_payload_upper_bound_usd": "0.000402484272",
+  "s3_tier1_usd_per_request": "0.000005",
+  "s3_tier2_usd_per_request": "0.0000004",
+  "schema_version": "nexus.g3.n01.resource-analysis-cost-observation.v1",
+  "source_s3_catalog_sha256": "e789c3b3adc240336cd88860b7c172a10eca96956ce766c6e7ec806a62ee9429",
+  "source_s3_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonS3/current/ap-southeast-1/index.json",
+  "source_transfer_catalog_sha256": "cfc36a6012cb0939f3d4da299697ca9a542bd8711bd083b84f457ccbc8303108",
+  "source_transfer_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AWSDataTransfer/current/ap-southeast-1/index.json",
+  "tax_reserve_multiplier": "1.2",
+  "transfer_prices": [
+    {
+      "begin_range": "0",
+      "destination": "External",
+      "end_range": "10240",
+      "transfer_type": "AWS Outbound",
+      "unit": "GB",
+      "usage_type": "APS1-DataTransfer-Out-Bytes",
+      "usd": "0.1200000000"
+    },
+    {
+      "begin_range": "10240",
+      "destination": "External",
+      "end_range": "51200",
+      "transfer_type": "AWS Outbound",
+      "unit": "GB",
+      "usage_type": "APS1-DataTransfer-Out-Bytes",
+      "usd": "0.0850000000"
+    },
+    {
+      "begin_range": "51200",
+      "destination": "External",
+      "end_range": "153600",
+      "transfer_type": "AWS Outbound",
+      "unit": "GB",
+      "usage_type": "APS1-DataTransfer-Out-Bytes",
+      "usd": "0.0820000000"
+    },
+    {
+      "begin_range": "153600",
+      "destination": "External",
+      "end_range": "Inf",
+      "transfer_type": "AWS Outbound",
+      "unit": "GB",
+      "usage_type": "APS1-DataTransfer-Out-Bytes",
+      "usd": "0.0800000000"
+    },
+    {
+      "begin_range": "0",
+      "destination": "US East (N. Virginia)",
+      "end_range": "Inf",
+      "transfer_type": "InterRegion Outbound",
+      "unit": "GB",
+      "usage_type": "APS1-USE1-AWS-Out-Bytes",
+      "usd": "0.0900000000"
+    }
+  ]
+}
