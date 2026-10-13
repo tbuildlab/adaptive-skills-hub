@@ -52,12 +52,13 @@ REVIEW_GENERATION=1
 
 
 def current_review():
-    selected=review.pins(REVIEW_GENERATION)
-    require(selected.generation==1 or RESTART_PROFILE in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
+    selected=review.select_pins(REVIEW_GENERATION,restart_profile=RESTART_PROFILE)
+    review.require_enrollment_profile(selected,RESTART_PROFILE)
     return selected
 
 
 def native_transport(header):
+    if REVIEW_GENERATION==3:return native.NativeTransport(header,review_generation=3,review_profile=RESTART_PROFILE)
     return native.NativeTransport(header) if REVIEW_GENERATION==1 else native.NativeTransport(header,review_generation=REVIEW_GENERATION)
 
 
@@ -130,7 +131,8 @@ class OwnerController:
         try:
             if RESTART_PROFILE in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):
                 client,identity=native_identity_client();identity.close();client=None
-            self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall,review_generation=REVIEW_GENERATION)
+            self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall,review_generation=REVIEW_GENERATION,
+                **({'restart_profile':RESTART_PROFILE} if REVIEW_GENERATION==3 else {}))
             if RESTART_PROFILE is None:
                 self.__history=membership.MembershipFence(self.__transport.custody,boot.storage_scope(),profile='PRODUCTION').read(valid_until=UNTIL)
             else:

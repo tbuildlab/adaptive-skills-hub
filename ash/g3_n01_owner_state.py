@@ -74,7 +74,7 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
     require(value['principal']==dict(issuer='stytch.com/'+source.PROJECT,client_id=source.PROJECT,subject=source.OWNER))
     require(value['source_kinds']==['D01','D03','OWNER_ENROLLMENT'] and value['no_automatic_redispatch']=='REQUIRED')
     selected=review.enrollment_pins(value)
-    require(selected.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
+    review.require_enrollment_profile(selected,restart_profile)
     require(selected.valid_from_ms<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=selected.valid_until_ms)
     require(control.digest(enrollment.canonical_bytes)==enrollment.enrollment_sha256)
     rows,root=_advance(history,now_ms=now_ms)

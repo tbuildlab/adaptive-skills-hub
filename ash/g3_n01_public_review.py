@@ -42,11 +42,32 @@ def pins(generation=1):
 
 
 def enrollment_pins(value):
-    selected=pins(value['review_generation'])
+    generation=value['review_generation']
+    selected=atomic_pins() if type(generation) is int and generation==3 else pins(generation)
     require(type(value['application_generation']) is int and value['application_generation']==1
         and value['review_package_sha256']==selected.package_sha256
         and value['review_acceptance_sha256']==selected.acceptance_sha256)
     return selected
+
+
+def atomic_pins():
+    """Exact v3 approval; independent interval, no historical pin extension."""
+    return ReviewPins(3,'37204b22b606bd653c66eb345a05b98d7f310abd82f86ac7dfdc86b1b690166b',
+        'dd3c35a62aa65790206a15ef434cdac830078d5fe75df249873ccc1b4682cf65',
+        custody.APPROVALS+'public-pin-owner-review-atomic-20261013-v3/',1791851400000,1791865800000)
+
+
+def select_pins(generation=1,*,restart_profile=None):
+    """New v3 is available only to the exact forward atomic lifecycle."""
+    if type(generation) is int and generation==3:
+        require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
+        return atomic_pins()
+    return pins(generation)
+
+
+def require_enrollment_profile(selected,restart_profile):
+    if selected.generation==3:require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
+    else:require(selected.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
 
 
 @dataclass(frozen=True)
@@ -70,6 +91,8 @@ class PublicReview:
         for generation in (1,2):
             selected=pins(generation)
             if self.package_sha256==selected.package_sha256:return selected
+        selected=atomic_pins()
+        if self.package_sha256==selected.package_sha256:return selected
         raise ValueError('N01_PUBLIC_REVIEW_DENY')
 
     @property
@@ -79,10 +102,10 @@ class PublicReview:
     def keys(self):return public_keys(tuple(codec.decode(self.key_bytes)))
 
 
-def verify_review(proposal,acceptance,*,now_ms,review_generation=1):
+def verify_review(proposal,acceptance,*,now_ms,review_generation=1,restart_profile=None):
     """Exact bytes/interval only; caller must prove independent custody origin."""
     try:
-        selected=pins(review_generation)
+        selected=select_pins(review_generation,restart_profile=restart_profile)
         PACKAGE_SHA,ACCEPTANCE_SHA=selected.package_sha256,selected.acceptance_sha256
         FROM_MS,UNTIL_MS=selected.valid_from_ms,selected.valid_until_ms
         require(type(proposal) is bytes and type(acceptance) is bytes
@@ -107,14 +130,14 @@ def verify_review(proposal,acceptance,*,now_ms,review_generation=1):
         raise ValueError('N01_PUBLIC_REVIEW_DENY') from None
 
 
-def read_protected_review(client,storage_registration,*,now_ms,review_generation=1):
+def read_protected_review(client,storage_registration,*,now_ms,review_generation=1,restart_profile=None):
     """Two fixed R-only documents, exact versions, retention and fresh inventory.
 
     Reuses qualified versioned-read transport; no write, credential loading,
     historical review extension, runtime/source registration or authority.
     """
     try:
-        selected=pins(review_generation)
+        selected=select_pins(review_generation,restart_profile=restart_profile)
         PREFIX,FROM_MS,UNTIL_MS=selected.prefix,selected.valid_from_ms,selected.valid_until_ms
         require(type(storage_registration) is custody.Registration and storage_registration.generation==2
                 and storage_registration.config_sha256==CONFIG)
@@ -128,6 +151,6 @@ def read_protected_review(client,storage_registration,*,now_ms,review_generation
         material={key:fence.retained(key,version,until) for key,version in inventory}
         require(fence.inventory('')==inventory)
         finished=int(time.time()*1000);require(started<=finished<UNTIL_MS)
-        return verify_review(material[PREFIX+'proposal.json'],material[PREFIX+'acceptance.json'],now_ms=finished,review_generation=review_generation)
+        return verify_review(material[PREFIX+'proposal.json'],material[PREFIX+'acceptance.json'],now_ms=finished,review_generation=review_generation,restart_profile=restart_profile)
     except Exception:
         raise ValueError('N01_PUBLIC_REVIEW_CUSTODY_QUARANTINE') from None

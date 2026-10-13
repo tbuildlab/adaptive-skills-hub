@@ -39,7 +39,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
                  artifact_inventory_sha256,process_nonce,max_attempts=1000,custody_revision=1,restart_profile=None):
         super().__init__(client,registration,profile='PRODUCTION',max_attempts=max_attempts)
         require(type(public_review) is review.PublicReview)
-        require(public_review.pins.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
+        review.require_enrollment_profile(public_review.pins,restart_profile)
         self.public_review=public_review
         self.native_environment=native_environment
         self.artifact_inventory_sha256=artifact_inventory_sha256

@@ -45,7 +45,10 @@ def _enrolled(rows,root,enrollment,now_ms):
     selected=review.enrollment_pins(value)
     require(selected.valid_from_ms<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=selected.valid_until_ms)
     binding_id,registration_id=state.current_binding_ids(rows)
-    if selected.generation==2:
+    if selected.generation==3:
+        from ash import g3_n01_owner_atomic_restart as atomic
+        require((binding_id,registration_id)==(atomic.BINDING_ID,atomic.REGISTRATION_ID) and root['authority_epoch']==atomic.EPOCH)
+    elif selected.generation==2:
         from ash import g3_n01_owner_sdk_restart as repair
         from ash import g3_n01_owner_atomic_restart as atomic
         require(((binding_id,registration_id)==(repair.BINDING_ID,repair.REGISTRATION_ID) and root['authority_epoch']==repair.EPOCH)

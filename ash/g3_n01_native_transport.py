@@ -37,13 +37,13 @@ def _size(value,depth=0):
 
 class NativeTransport:
     """NONE and non-restorable. One process budget; unknown retires all clients."""
-    def __init__(self,native_header,*,review_generation=1):
+    def __init__(self,native_header,*,review_generation=1,review_profile=None):
         import boto3
         from botocore.config import Config
         from botocore import UNSIGNED
         require(type(native_header) is str and native_header.isascii() and 0<len(native_header)<=16384)
         self.__clients=[];self.__ddb=None;self.__s3=None;self.__write=False;self.retired=False
-        self.__review=review.pins(review_generation)
+        self.__review=review.select_pins(review_generation,restart_profile=review_profile)
         self.sts_attempts=0
         cfg=Config(retries={'total_max_attempts':1},connect_timeout=5,read_timeout=10)
         unsigned=Config(signature_version=UNSIGNED,retries={'total_max_attempts':1},connect_timeout=5,read_timeout=10)
@@ -86,7 +86,7 @@ class NativeTransport:
     def enable_owner_storage(self,public_review,*,native_environment,artifact_inventory_sha256,process_nonce,custody_revision=1,restart_profile=None):
         try:
             require(not self.retired and not self.__write)
-            if self.__review.generation==2:require(type(public_review) is review.PublicReview and public_review.pins==self.__review)
+            if self.__review.generation>=2:require(type(public_review) is review.PublicReview and public_review.pins==self.__review)
             enrollment=source.read_protected_source(self.custody,boot.storage_scope(),public_review,
                 native_environment=native_environment,artifact_inventory_sha256=artifact_inventory_sha256,
                 process_nonce=process_nonce,now_ms=int(time.time()*1000),custody_revision=custody_revision,
