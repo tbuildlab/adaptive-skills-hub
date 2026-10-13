@@ -1,0 +1,4082 @@
+{
+  "schema_version": "nexus.g3.n01.paired-read-budget-evidence.v1",
+  "baseline": "172a3c1b50be97f990ecb49b34bff3e0fd313cf6",
+  "authority": "NONE",
+  "real_admission": "NO",
+  "fixture": "TEST_ONLY",
+  "live_calls": 0,
+  "original_scalar_attempts": 272,
+  "original_paired_attempts": 174,
+  "approved_aggregate_ddb_attempts": 512,
+  "prior_conservative_allocation": 302,
+  "new_hard_ddb_attempts": 210,
+  "maximum_items_per_transactional_read": 2,
+  "new_modeled_usd_with_tax_reserve": "0.8657442",
+  "existing_usd_hard_authorization_cap": "1.00",
+  "existing_review_v2": "EXPIRED_NOT_EXTENDED",
+  "new_owner_binding": "NOT_STARTED",
+  "regression": {
+    "status": "PASS_EXPLICIT_EXISTING_ENVIRONMENT_SKIPS",
+    "affected": {
+      "total": 215,
+      "passed": 215,
+      "skipped": 0,
+      "failed": 0,
+      "error": 0
+    },
+    "full": {
+      "total": 1474,
+      "passed": 1470,
+      "skipped": 4,
+      "failed": 0,
+      "error": 0
+    },
+    "existing_skip_classes": {
+      "UNCONFIGURED_EMBEDDED_RUNTIME_INPUTS": 3,
+      "WINDOWS_SYMLINK_PRIVILEGE_UNAVAILABLE": 1
+    },
+    "historical_tests_modified": false,
+    "tested_executable_sources_equal": true,
+    "tested_executable_source_sha256": {
+      "ash/g3_n01_native_transport.py": "3074e4d45b799c45583def676d047eb0e22f681565e36eae9ca60162c44838e3",
+      "ash/g3_n01_owner_atomic_restart.py": "f372aef85db2ccb819a59ec52bec6d8079b845528d1d1b64cd5be99e0ff6e567",
+      "ash/g3_n01_owner_persistence.py": "8263343d585d1cea240979b4dbe86e20ea526061b9bdc9796b0dc3448028e262",
+      "ash/g3_n01_owner_protocol.py": "ed6eecd10e5cff0ed7022340f9b71242a71b968de8f1cd2dc31f544c8c3c94d0",
+      "ash/g3_n01_owner_restart.py": "1e6657c3402404c2446179dfe7cc490002d6b22a698ac86a9b2c77107d6f9c4f",
+      "ash/g3_n01_owner_state.py": "22ebaa2fb1a636c9ae9fb9677bbff25ebded4b7d06f2247cba45f840023d7401",
+      "ash/g3_n01_source_enrollment.py": "640c461cdfa730f91df93685a219a1129e2cdb028d69b32d483be4fa9e77175f",
+      "ash/g3_primary_ledger.py": "71f220dc1faa034adc4a4146131c4764a86ee7368ebd96c375a1b6301f9ddf01",
+      "scripts/build_g3_n01_owner_controller.py": "7b927d8db63295472a342d46c1081c0ff76597cb085ca71eecc41f70296a263f",
+      "scripts/g3_n01_owner_controller.py": "fe52ffa3338f210ffdc75943d7a16eff5450033219e0446761336c81f4e8a207",
+      "tests/test_g3_n01_atomic_reads.py": "100cc9743b8af8fae01a8457af312e7be8f4ff7d19919a98dff85fae79e09d8b"
+    },
+    "clock": "OFFLINE_HISTORICAL_CLOCK_ALIGNED_WITH_EXISTING_TIME_TIME_FIXTURES",
+    "clock_is_live_review_extension": false,
+    "log_sha256": {
+      "n01-atomic-affected.log": "0458c6cd94256d78c4140f736d1ad61e44792c572e6c25b86cd626d08abe3085",
+      "n01-atomic-full.log": "36d3ca9fc5429aa94e36c36e3d63385676c3cdbc429cdff286d0c9ad5fcc985a"
+    },
+    "result_sha256": {
+      "affected": "ad5d82f416fb7e42cea564624f4f728af05d42546e3e79c8a23922896ae470d1",
+      "full": "7b27d39c0046cf240f4440364c3a49fc36c05f930755b41d3ee3e9a7da855955"
+    }
+  },
+  "new_head_eight_observations": {
+    "CONFIRM": {
+      "attempts": 174,
+      "phase_calls": [
+        [
+          "INITIAL_SOURCE_PROPOSAL",
+          1
+        ],
+        [
+          "RECOVER",
+          21
+        ],
+        [
+          "ENROLL",
+          25
+        ],
+        [
+          "LOGIN",
+          1
+        ],
+        [
+          "EMAIL_OTP_TOTP_GATES",
+          3
+        ],
+        [
+          "CONTEXT_CHALLENGE",
+          46
+        ],
+        [
+          "DECISION_CONSUME",
+          43
+        ],
+        [
+          "REVOKE_FINAL_OBSERVATION",
+          34
+        ]
+      ],
+      "s3_attempts": 10312,
+      "operation_counts": {
+        "get": 10,
+        "atomic_get": 104,
+        "put": 50,
+        "transact": 10
+      },
+      "material": [
+        {
+          "transition": "RECOVER",
+          "pages": 3,
+          "objects": 0,
+          "maximum_page_bytes": 13685
+        },
+        {
+          "transition": "INVALIDATE",
+          "pages": 3,
+          "objects": 2,
+          "maximum_page_bytes": 16567
+        },
+        {
+          "transition": "CHALLENGE",
+          "pages": 7,
+          "objects": 8,
+          "maximum_page_bytes": 20277
+        },
+        {
+          "transition": "CONFIRM",
+          "pages": 9,
+          "objects": 4,
+          "maximum_page_bytes": 21997
+        },
+        {
+          "transition": "INVALIDATE",
+          "pages": 9,
+          "objects": 2,
+          "maximum_page_bytes": 23697
+        }
+      ]
+    },
+    "DENY": {
+      "scalar": {
+        "attempts": 272,
+        "phase_calls": [
+          [
+            "INITIAL_SOURCE_PROPOSAL",
+            2
+          ],
+          [
+            "RECOVER",
+            32
+          ],
+          [
+            "ENROLL",
+            38
+          ],
+          [
+            "LOGIN",
+            2
+          ],
+          [
+            "EMAIL_OTP_TOTP_GATES",
+            6
+          ],
+          [
+            "CONTEXT_CHALLENGE",
+            70
+          ],
+          [
+            "DECISION_CONSUME",
+            68
+          ],
+          [
+            "REVOKE_FINAL_OBSERVATION",
+            54
+          ]
+        ],
+        "s3_attempts": 10312,
+        "operation_counts": {
+          "get": 212,
+          "atomic_get": 0,
+          "put": 50,
+          "transact": 10
+        },
+        "material": [
+          {
+            "transition": "RECOVER",
+            "pages": 3,
+            "objects": 0,
+            "maximum_page_bytes": 13685
+          },
+          {
+            "transition": "INVALIDATE",
+            "pages": 3,
+            "objects": 2,
+            "maximum_page_bytes": 16567
+          },
+          {
+            "transition": "CHALLENGE",
+            "pages": 7,
+            "objects": 8,
+            "maximum_page_bytes": 20277
+          },
+          {
+            "transition": "DENY",
+            "pages": 9,
+            "objects": 4,
+            "maximum_page_bytes": 21997
+          },
+          {
+            "transition": "INVALIDATE",
+            "pages": 9,
+            "objects": 2,
+            "maximum_page_bytes": 23697
+          }
+        ]
+      },
+      "paired": {
+        "attempts": 174,
+        "phase_calls": [
+          [
+            "INITIAL_SOURCE_PROPOSAL",
+            1
+          ],
+          [
+            "RECOVER",
+            21
+          ],
+          [
+            "ENROLL",
+            25
+          ],
+          [
+            "LOGIN",
+            1
+          ],
+          [
+            "EMAIL_OTP_TOTP_GATES",
+            3
+          ],
+          [
+            "CONTEXT_CHALLENGE",
+            46
+          ],
+          [
+            "DECISION_CONSUME",
+            43
+          ],
+          [
+            "REVOKE_FINAL_OBSERVATION",
+            34
+          ]
+        ],
+        "s3_attempts": 10312,
+        "operation_counts": {
+          "get": 10,
+          "atomic_get": 104,
+          "put": 50,
+          "transact": 10
+        },
+        "material": [
+          {
+            "transition": "RECOVER",
+            "pages": 3,
+            "objects": 0,
+            "maximum_page_bytes": 13685
+          },
+          {
+            "transition": "INVALIDATE",
+            "pages": 3,
+            "objects": 2,
+            "maximum_page_bytes": 16567
+          },
+          {
+            "transition": "CHALLENGE",
+            "pages": 7,
+            "objects": 8,
+            "maximum_page_bytes": 20277
+          },
+          {
+            "transition": "DENY",
+            "pages": 9,
+            "objects": 4,
+            "maximum_page_bytes": 21997
+          },
+          {
+            "transition": "INVALIDATE",
+            "pages": 9,
+            "objects": 2,
+            "maximum_page_bytes": 23697
+          }
+        ]
+      }
+    }
+  },
+  "independent_all_missing_material_worst_case": 189,
+  "unallocated_new_attempt_margin": 21,
+  "worst_case_formula": "O+2*ceil(O/2)+(P+3)+3*ceil((P+3)/2)+6",
+  "commits_page_object_shape": [
+    [
+      3,
+      0
+    ],
+    [
+      3,
+      2
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      9,
+      4
+    ],
+    [
+      9,
+      2
+    ]
+  ],
+  "outside_commit_observations": 12,
+  "original_scalar_provenance": {
+    "schema_version": "nexus.g3.n01.ddb-call-provenance.v1",
+    "fixture": "TEST_ONLY",
+    "authority": "NONE",
+    "real_admission": "NO",
+    "live_calls": 0,
+    "total": 272,
+    "by_phase": {
+      "INITIAL_SOURCE_PROPOSAL": 2,
+      "FORWARD_RECOVERY": 32,
+      "NEW_SOURCE_RETIREMENT": 38,
+      "PREAUTH_BOOTSTRAP": 2,
+      "IDENTITY_AND_DECISION_GATES": 198
+    },
+    "by_method": {
+      "observe_current": 22,
+      "_retained": 68,
+      "retain_blob": 162,
+      "prepare": 10,
+      "finalize": 10
+    },
+    "by_operation": {
+      "GET": 212,
+      "PUT": 50,
+      "TRANSACT": 10
+    },
+    "by_line": {
+      "152": 2,
+      "157": 70,
+      "158": 2,
+      "170": 6,
+      "173": 2,
+      "175": 68,
+      "176": 4,
+      "179": 2,
+      "181": 62,
+      "182": 2,
+      "184": 50,
+      "185": 2
+    },
+    "calls": [
+      {
+        "index": 1,
+        "phase": "INITIAL_SOURCE_PROPOSAL",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 152
+      },
+      {
+        "index": 2,
+        "phase": "INITIAL_SOURCE_PROPOSAL",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 152
+      },
+      {
+        "index": 3,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 157
+      },
+      {
+        "index": 4,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 5,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 6,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 7,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 8,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 9,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 10,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 11,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 12,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 13,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 14,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 15,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 16,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 17,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 18,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 19,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 20,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 21,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 22,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 23,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 24,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 25,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 26,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 27,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 28,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 29,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 30,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 31,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 32,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 33,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 157
+      },
+      {
+        "index": 34,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 35,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 157
+      },
+      {
+        "index": 36,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 37,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 157
+      },
+      {
+        "index": 38,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 39,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 40,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 41,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 42,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 43,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 44,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 45,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 46,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 47,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 48,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 49,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 50,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 51,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 52,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 53,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 54,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 55,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 56,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 57,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 58,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 59,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 60,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 61,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 62,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 63,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 64,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 65,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 66,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 67,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 68,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 69,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 70,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 71,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 157
+      },
+      {
+        "index": 72,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 73,
+        "phase": "PREAUTH_BOOTSTRAP",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 158
+      },
+      {
+        "index": 74,
+        "phase": "PREAUTH_BOOTSTRAP",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 158
+      },
+      {
+        "index": 75,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 170
+      },
+      {
+        "index": 76,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 170
+      },
+      {
+        "index": 77,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 170
+      },
+      {
+        "index": 78,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 170
+      },
+      {
+        "index": 79,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 170
+      },
+      {
+        "index": 80,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 170
+      },
+      {
+        "index": 81,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 173
+      },
+      {
+        "index": 82,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 173
+      },
+      {
+        "index": 83,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 175
+      },
+      {
+        "index": 84,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 85,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 86,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 87,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 88,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 89,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 90,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 91,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 92,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 93,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 94,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 95,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 96,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 97,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 98,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 99,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 100,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 101,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 102,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 103,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 104,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 105,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 106,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 107,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 108,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 109,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 110,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 111,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 112,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 113,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 114,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 115,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 116,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 117,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 118,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 119,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 120,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 121,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 122,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 123,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 124,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 125,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 126,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 127,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 128,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 129,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 130,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 131,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 132,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 133,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 134,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 135,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 136,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 175
+      },
+      {
+        "index": 137,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 175
+      },
+      {
+        "index": 138,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 139,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 140,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 141,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 142,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 143,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 144,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 145,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 146,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 147,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 148,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 149,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 175
+      },
+      {
+        "index": 150,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 151,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 176
+      },
+      {
+        "index": 152,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 176
+      },
+      {
+        "index": 153,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 176
+      },
+      {
+        "index": 154,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 176
+      },
+      {
+        "index": 155,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 179
+      },
+      {
+        "index": 156,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 179
+      },
+      {
+        "index": 157,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 181
+      },
+      {
+        "index": 158,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 159,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 160,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 161,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 162,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 163,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 164,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 165,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 166,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 167,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 168,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 169,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 170,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 171,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 172,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 173,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 174,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 175,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 176,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 177,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 178,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 179,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 180,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 181,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 182,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 183,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 184,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 185,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 186,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 187,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 188,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 189,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 190,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 191,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 192,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 193,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 194,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 195,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 196,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 197,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 198,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 199,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 200,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 201,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 202,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 181
+      },
+      {
+        "index": 203,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 181
+      },
+      {
+        "index": 204,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 205,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 206,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 207,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 208,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 209,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 210,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 211,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 212,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 213,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 214,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 215,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 216,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 217,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 181
+      },
+      {
+        "index": 218,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 219,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 182
+      },
+      {
+        "index": 220,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 182
+      },
+      {
+        "index": 221,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 184
+      },
+      {
+        "index": 222,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 223,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 224,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 225,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 226,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 227,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 228,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 229,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 230,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 231,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 232,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 233,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 234,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 235,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 236,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 237,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 238,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 239,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 240,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 241,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 242,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 243,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 244,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 245,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 246,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 247,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 248,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 249,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 250,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 251,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 252,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "retain_blob",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 253,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 254,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 184
+      },
+      {
+        "index": 255,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 184
+      },
+      {
+        "index": 256,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 257,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 258,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 259,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 260,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 261,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 262,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 263,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 264,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 265,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 266,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 267,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 268,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 269,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 184
+      },
+      {
+        "index": 270,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 271,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "observe_current",
+        "key_class": "HEAD",
+        "fixture_line": 185
+      },
+      {
+        "index": 272,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "_retained",
+        "key_class": "BLOB",
+        "fixture_line": 185
+      }
+    ]
+  },
+  "original_paired_provenance": {
+    "schema_version": "nexus.g3.n01.ddb-call-provenance.v1",
+    "fixture": "TEST_ONLY",
+    "authority": "NONE",
+    "real_admission": "NO",
+    "live_calls": 0,
+    "total": 174,
+    "by_phase": {
+      "INITIAL_SOURCE_PROPOSAL": 1,
+      "FORWARD_RECOVERY": 21,
+      "NEW_SOURCE_RETIREMENT": 25,
+      "PREAUTH_BOOTSTRAP": 1,
+      "IDENTITY_AND_DECISION_GATES": 126
+    },
+    "by_method": {
+      "_pair_get": 104,
+      "retain_blobs": 50,
+      "prepare": 10,
+      "finalize": 10
+    },
+    "by_operation": {
+      "ATOMIC_GET": 104,
+      "PUT": 50,
+      "TRANSACT": 10,
+      "GET": 10
+    },
+    "by_line": {
+      "152": 1,
+      "157": 46,
+      "158": 1,
+      "170": 3,
+      "173": 1,
+      "175": 45,
+      "176": 2,
+      "179": 1,
+      "181": 40,
+      "182": 1,
+      "184": 32,
+      "185": 1
+    },
+    "calls": [
+      {
+        "index": 1,
+        "phase": "INITIAL_SOURCE_PROPOSAL",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 152
+      },
+      {
+        "index": 2,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 3,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 4,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 5,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 6,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 7,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 8,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 9,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 10,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 11,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 12,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 13,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 14,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 15,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 16,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 17,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 18,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 19,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 20,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 21,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 22,
+        "phase": "FORWARD_RECOVERY",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 23,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 24,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 25,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 26,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 27,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 28,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 29,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 30,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 31,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 32,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 33,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 34,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 35,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 36,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 37,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 38,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 157
+      },
+      {
+        "index": 39,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 40,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 41,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 42,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 157
+      },
+      {
+        "index": 43,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 44,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 45,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 46,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 47,
+        "phase": "NEW_SOURCE_RETIREMENT",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 157
+      },
+      {
+        "index": 48,
+        "phase": "PREAUTH_BOOTSTRAP",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 158
+      },
+      {
+        "index": 49,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 170
+      },
+      {
+        "index": 50,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 170
+      },
+      {
+        "index": 51,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 170
+      },
+      {
+        "index": 52,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 173
+      },
+      {
+        "index": 53,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 54,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 55,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 56,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 57,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 58,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 59,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 60,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 61,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 62,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 63,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 64,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 65,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 66,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 67,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 68,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 69,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 70,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 71,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 72,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 73,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 74,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 75,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 76,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 77,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 78,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 79,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 80,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 81,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 82,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 83,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 84,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 85,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 86,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 175
+      },
+      {
+        "index": 87,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 88,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 89,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 175
+      },
+      {
+        "index": 90,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 175
+      },
+      {
+        "index": 91,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 92,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 93,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 94,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 95,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 96,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 97,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 175
+      },
+      {
+        "index": 98,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 176
+      },
+      {
+        "index": 99,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 176
+      },
+      {
+        "index": 100,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 179
+      },
+      {
+        "index": 101,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 102,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 103,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 104,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 105,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 106,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 107,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 108,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 109,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 110,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 111,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 112,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 113,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 114,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 115,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 116,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 117,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 118,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 119,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 120,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 121,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 122,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 123,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 124,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 125,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 126,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 127,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 181
+      },
+      {
+        "index": 128,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 129,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 130,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 131,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 181
+      },
+      {
+        "index": 132,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 181
+      },
+      {
+        "index": 133,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 134,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 135,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 136,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 137,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 138,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 139,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 140,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 181
+      },
+      {
+        "index": 141,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 182
+      },
+      {
+        "index": 142,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 143,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 144,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 145,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 146,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 147,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 148,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 149,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 150,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 151,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 152,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 153,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 154,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 155,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 156,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 157,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 158,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 159,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 160,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 161,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "PUT",
+        "primary_method": "retain_blobs",
+        "key_class": "BLOB",
+        "fixture_line": 184
+      },
+      {
+        "index": 162,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 163,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "prepare",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 164,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "prepare",
+        "key_class": "RESERVATION",
+        "fixture_line": 184
+      },
+      {
+        "index": 165,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "GET",
+        "primary_method": "finalize",
+        "key_class": "RESERVATION",
+        "fixture_line": 184
+      },
+      {
+        "index": 166,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 167,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 168,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 169,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 170,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 171,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 172,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "TRANSACT",
+        "primary_method": "finalize",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 173,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 184
+      },
+      {
+        "index": 174,
+        "phase": "IDENTITY_AND_DECISION_GATES",
+        "operation": "ATOMIC_GET",
+        "primary_method": "_pair_get",
+        "key_class": "TRANSACTION",
+        "fixture_line": 185
+      }
+    ]
+  },
+  "current_public_key_observation": {
+    "observed_at_ms": 1791849865442,
+    "source_url": "https://test.stytch.com/v1/sessions/jwks/project-test-0f758990-01e7-4a4f-8bfd-44357610ef5d",
+    "keys": [
+      {
+        "alg": "RS256",
+        "e": "AQAB",
+        "kid": "jwk-test-c45fe918-34f4-454a-b3bb-48011acb591d",
+        "kty": "RSA",
+        "n": "4BmlA7TgEpLedgm8PM2E9WUrGfDoKYctplRTgBU47ODVt_bcbJalYQrKMnAoi2q4yTsoL6JABsJO_3TRfjdyiF4fuRWDhUtMicVcJEfDhRaosiEflyFWMVwOuhl8VaMd4cwdSFcYVhap3XalSBbOzQd8iZLL5ybRheeNt25Ic70uF7PfrxOPHfz6YpfyC4ACx5muxxIAmSBpCLCPCaYyHWBMr40ENF8iCQOXmMuO0LgALQDZqWcY15vBP65liIJ2LCVQwpyjOHOQZy1Aa5XbyX19Bq7r-Xp_Wi6S81XJhcbPVLtEUIMPYdYnoGTHZDbRBoe-aBE0Syx-07e0qPM_Qw",
+        "use": "sig"
+      }
+    ],
+    "current_keys_equal_historical": true,
+    "additional_public_metadata_not_ingested": [
+      [
+        "key_ops",
+        "x5c",
+        "x5tS256"
+      ]
+    ],
+    "private_material_present": false,
+    "authority": "NONE",
+    "real_admission": "NO"
+  },
+  "public_pricing_observation": {
+    "source_url": "https://pricing.us-east-1.amazonaws.com/offers/v1.0/aws/AmazonDynamoDB/current/ap-southeast-1/index.json",
+    "publication_date": "2026-09-11T12:44:22Z",
+    "rates": [
+      {
+        "group": "DDB-WriteUnits",
+        "unit": "WriteCapacityUnit-Hrs",
+        "usd": "0.0000000000",
+        "effective_date": "2026-08-01T00:00:00Z"
+      },
+      {
+        "group": "DDB-WriteUnits",
+        "unit": "WriteCapacityUnit-Hrs",
+        "usd": "0.0007400000",
+        "effective_date": "2026-08-01T00:00:00Z"
+      },
+      {
+        "group": "DDB-ReadUnits",
+        "unit": "ReadRequestUnits",
+        "usd": "0.0000001425",
+        "effective_date": "2026-08-01T00:00:00Z"
+      },
+      {
+        "group": "DDB-ReadUnits",
+        "unit": "ReadCapacityUnit-Hrs",
+        "usd": "0.0000000000",
+        "effective_date": "2026-08-01T00:00:00Z"
+      },
+      {
+        "group": "DDB-ReadUnits",
+        "unit": "ReadCapacityUnit-Hrs",
+        "usd": "0.0001480000",
+        "effective_date": "2026-08-01T00:00:00Z"
+      },
+      {
+        "group": "DDB-WriteUnits",
+        "unit": "WriteRequestUnits",
+        "usd": "0.0000007100",
+        "effective_date": "2026-08-01T00:00:00Z"
+      }
+    ],
+    "authority": "NONE"
+  },
+  "paid_resources_created": 0,
+  "budget_counter_reset": false,
+  "historical_checkpoints_replayed": false,
+  "historical_tests_modified": false,
+  "production_authority_created": false,
+  "d01_status": "CLOSED",
+  "d03_status": "CLOSED",
+  "n01_status": "INCOMPLETE",
+  "g3_status": "INCOMPLETE",
+  "g4_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "g6_status": "COMPLETE_PREPARATION_FAIL_CLOSED",
+  "independent_production_review": "NOT_PERFORMED",
+  "pending_owner_review_v3": "NOT_OBTAINED",
+  "forward_lifecycle_live_status": "NOT_DISPATCHED_EXPIRED_REVIEW_DENIES",
+  "retained_initial_failures": [
+    {
+      "log": "n01-atomic-focused.log",
+      "sha256": "3635c2ce20f116655cf63bdf72b80a8c7df4a961da18e25420c5a308c0dabbb9",
+      "counted_as_pass": false
+    },
+    {
+      "log": "n01-atomic-focused-v2.log",
+      "sha256": "004ac85d9b6ea857606c9f2662230a5584f3e763ae286320732ce51f98744c03",
+      "counted_as_pass": false
+    }
+  ],
+  "worst_case_operation_counts": {
+    "atomic_get": 107,
+    "get": 10,
+    "conditional_put": 62,
+    "mutation_transaction": 10
+  },
+  "pending_owner_review_v3_package_sha256": "37204b22b606bd653c66eb345a05b98d7f310abd82f86ac7dfdc86b1b690166b",
+  "source_package_reproduction": {
+    "status": "PASS",
+    "sha256": "7748ce998375405ab92d2f0576b59b25511cfd563e5737c48dc71d5443ee883a",
+    "executable_file_count": 249
+  }
+}

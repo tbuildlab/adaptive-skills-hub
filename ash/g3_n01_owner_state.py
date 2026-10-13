@@ -74,7 +74,7 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
     require(value['principal']==dict(issuer='stytch.com/'+source.PROJECT,client_id=source.PROJECT,subject=source.OWNER))
     require(value['source_kinds']==['D01','D03','OWNER_ENROLLMENT'] and value['no_automatic_redispatch']=='REQUIRED')
     selected=review.enrollment_pins(value)
-    require(selected.generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
+    require(selected.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
     require(selected.valid_from_ms<=value['issued_at_ms']<=now_ms<value['expires_at_ms']<=selected.valid_until_ms)
     require(control.digest(enrollment.canonical_bytes)==enrollment.enrollment_sha256)
     rows,root=_advance(history,now_ms=now_ms)
@@ -95,7 +95,15 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
         bindings=[row for row in rows if row['family']=='binding']
         registrations=[row for row in rows if row['family']=='registration']
         sources=[row for row in rows if row['family']=='source']
-        if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1':
+        if restart_profile=='OWNER_ATOMIC_FORWARD_V1':
+            from ash import g3_n01_owner_sdk_restart as prior
+            require(len(bindings)==len(registrations)==len(sources)==3
+                and state_pairs_retired(rows,(BINDING_ID,REGISTRATION_ID))
+                and state_pairs_retired(rows,('n01-owner-binding-restart-v1','n01-owner-only-source-restart-v1'))
+                and any(row['binding_id']==prior.BINDING_ID and row['state']=='CURRENT' for row in bindings)
+                and any(row['registration_id']==prior.REGISTRATION_ID and row['state']=='CURRENT' for row in registrations)
+                and all(row['state']=='RETIRED' for row in sources))
+        elif restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1':
             from ash import g3_n01_owner_restart as prior
             require(len(bindings)==len(registrations)==len(sources)==2
                 and any(row['binding_id']==BINDING_ID and row['state']=='RETIRED' for row in bindings)
@@ -130,12 +138,17 @@ def prepare_owner_enrollment(history,enrollment,*,now_ms,restart_profile=None):
         current_owner_authentication='NOT_YET_OBSERVED',authority='NONE',real_admission='NO'))
     digest=control.digest(assertion)
     rows.append(dict(schema_version=control.VERSION,family='source',revision=1,source_id=source_id,
-        evidence_ref=dict(ref={1:'n01-r-owner-enrollment-v1',2:'n01-r-owner-enrollment-restart-v1',3:'n01-r-owner-enrollment-sdk-repair-v1'}[generation],sha256=enrollment.enrollment_sha256),
+        evidence_ref=dict(ref={1:'n01-r-owner-enrollment-v1',2:'n01-r-owner-enrollment-restart-v1',3:'n01-r-owner-enrollment-sdk-repair-v1',4:'n01-r-owner-enrollment-atomic-v1'}[generation],sha256=enrollment.enrollment_sha256),
         assertion_sha256=digest,kind='OWNER_ENROLLMENT',principal=value['principal'],binding_id=binding_id,
         context_id=None,registration_id=registration_id,observed_at_ms=now_ms,expires_at_ms=value['expires_at_ms'],
         conclusion='PASS',state='CURRENT'))
     objects={enrollment.enrollment_sha256:enrollment.canonical_bytes,digest:assertion}
     return _prepare(history,rows,objects=objects,group='T5',transition='INVALIDATE'),objects
+
+
+def state_pairs_retired(rows,pair):
+    return (any(row['family']=='binding' and row['binding_id']==pair[0] and row['state']=='RETIRED' for row in rows)
+        and any(row['family']=='registration' and row['registration_id']==pair[1] and row['state']=='RETIRED' for row in rows))
 
 
 def current_binding_ids(rows):
@@ -150,7 +163,12 @@ def current_binding_ids(rows):
     else:
         from ash import g3_n01_owner_restart as restart
         from ash import g3_n01_owner_sdk_restart as repaired
-        if pair==(repaired.BINDING_ID,repaired.REGISTRATION_ID):
+        from ash import g3_n01_owner_atomic_restart as atomic
+        if pair==(atomic.BINDING_ID,atomic.REGISTRATION_ID):
+            require(root['authority_epoch']==atomic.EPOCH and bindings[0]['binding_generation']==atomic.GENERATION
+                and state_pairs_retired(rows,(repaired.BINDING_ID,repaired.REGISTRATION_ID))
+                and state_pairs_retired(rows,(restart.BINDING_ID,restart.REGISTRATION_ID)))
+        elif pair==(repaired.BINDING_ID,repaired.REGISTRATION_ID):
             require(root['authority_epoch']==5 and bindings[0]['binding_generation']==3
                 and any(row['family']=='binding' and row['binding_id']==restart.BINDING_ID and row['state']=='RETIRED' for row in rows)
                 and any(row['family']=='registration' and row['registration_id']==restart.REGISTRATION_ID and row['state']=='RETIRED' for row in rows))

@@ -13,18 +13,21 @@ ROOT=Path(__file__).resolve().parents[1]
 OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.py','ash/g3_n01_retained_state.py',
     'ash/g3_n01_owner_state.py','ash/g3_n01_owner_protocol.py','ash/g3_n01_owner_persistence.py',
     'ash/g3_n01_owner_ingress.py','ash/g3_n01_runtime_context.py','ash/g3_n01_stytch_transport.py',
-    'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py','ash/g3_n01_owner_restart.py','ash/g3_n01_owner_sdk_restart.py')
+    'ash/g3_n02_presentation.py','scripts/g3_n01_owner_controller.py','ash/g3_n01_owner_restart.py','ash/g3_n01_owner_sdk_restart.py','ash/g3_n01_owner_atomic_restart.py')
 
 
 def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profile=None,review_generation=1):
     from ash import g3_n01_public_review as review
     selected=review.pins(review_generation)
-    if review_generation==2 and restart_profile!='OWNER_SDK_REPAIR_FORWARD_V1':raise ValueError('N01_REVIEW_PROFILE_DENY')
+    if review_generation==2 and restart_profile not in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):raise ValueError('N01_REVIEW_PROFILE_DENY')
     codec.old.check_type(delivery_email_sha256,'h')
     if type(transport_revision) is not int or transport_revision not in (1,2,3):raise ValueError('N01_TRANSPORT_REVISION_DENY')
     from ash import g3_n01_owner_restart as restart
     restart.require_profile(restart_profile)
     restart=restart.configuration(restart_profile)
+    atomic=restart_profile=='OWNER_ATOMIC_FORWARD_V1'
+    ddb_limit=210 if atomic else 280 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 190
+    s3_limit=16000 if atomic else 10000 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 6000
     if restart_profile is not None and transport_revision!=3:raise ValueError('N01_RESTART_TRANSPORT_DENY')
     names=tuple(dict.fromkeys((*MODULES,*(name for name in EXTRA if name!='scripts/g3_n01_controller_bootstrap.py'),*OWNER_MODULES)))
     files={name:(ROOT/name).read_bytes().replace(b'\r\n',b'\n') for name in names}
@@ -53,7 +56,8 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
         'service.DELIVERY_EMAIL_SHA='+repr(delivery_email_sha256)+'\n'
         'service.CUSTODY_REVISION='+repr(transport_revision)+'\n'
         +('service.RESTART_PROFILE='+repr(restart_profile)+'\n'
-           +('service.native.MAX_DDB=280\nservice.native.MAX_S3=10000\n' if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 'service.native.MAX_DDB=190\nservice.native.MAX_S3=6000\n')
+           +'service.native.MAX_DDB='+str(ddb_limit)+'\nservice.native.MAX_S3='+str(s3_limit)+'\n'
+           +("service.PRIMARY_READ_PROFILE='PAIRED_ATOMIC_V1'\n" if atomic else '')
            +'service.native.MAX_S3_WRITES=240\nservice.native.MAX_WRITE_BYTES=8388608\n'
            if restart_profile is not None else '')+
         ('service.REVIEW_GENERATION=2\nservice.UNTIL=service.datetime.fromtimestamp('+str(selected.valid_until_ms)+'/1000,service.timezone.utc)\n' if review_generation==2 else '')+
@@ -71,9 +75,10 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
         metadata.update(review_generation=2,review_package_sha256=selected.package_sha256,review_acceptance_sha256=selected.acceptance_sha256,review_valid_until_ms=selected.valid_until_ms)
     if restart_profile is not None:
         metadata.update(restart_profile=restart_profile,expected_predecessor=restart.HEAD4,
-            maximum_ddb_attempts=280 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 190,maximum_s3_attempts=10000 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 6000,maximum_s3_writes=240,
-            maximum_new_bytes_per_backend=8388608,prior_native_ddb_attempts=134 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 66,
+            maximum_ddb_attempts=ddb_limit,maximum_s3_attempts=s3_limit,maximum_s3_writes=240,
+            maximum_new_bytes_per_backend=8388608,prior_native_ddb_attempts=204 if atomic else 134 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 66,
             recovery='EXPLICIT_FORWARD_ONLY',old_owner_authority='NEVER_RESTORED')
+    if atomic:metadata.update(primary_read_profile='PAIRED_ATOMIC_V1',maximum_read_items_per_transaction=2,approved_aggregate_ddb_attempts=512,earlier_non_owner_reserved_attempts=98)
     (destination/'artifact.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     request=dict(name='nexus-g3-qual',project='prj_xH23xMATVChdhX34OS2vjI8dfWN2',target='production',
         files=[dict(file=name,data=raw.decode(),encoding='utf-8') for name,raw in sorted(files.items())],

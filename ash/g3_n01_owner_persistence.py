@@ -39,7 +39,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
                  artifact_inventory_sha256,process_nonce,max_attempts=1000,custody_revision=1,restart_profile=None):
         super().__init__(client,registration,profile='PRODUCTION',max_attempts=max_attempts)
         require(type(public_review) is review.PublicReview)
-        require(public_review.pins.generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
+        require(public_review.pins.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
         self.public_review=public_review
         self.native_environment=native_environment
         self.artifact_inventory_sha256=artifact_inventory_sha256
@@ -69,7 +69,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
     def gate_reader(self):
         """Fresh bounded observation; the native client retains aggregate counts."""
         require(not self.retired and self.pending is None)
-        if self.restart_profile!='OWNER_SDK_REPAIR_FORWARD_V1':return self
+        if self.restart_profile not in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):return self
         return OwnerMembershipFence(self.client,self.registration,public_review=self.public_review,
             native_environment=self.native_environment,artifact_inventory_sha256=self.artifact_inventory_sha256,
             process_nonce=self.process_nonce,max_attempts=1000,custody_revision=self.custody_revision,restart_profile=self.restart_profile)
@@ -109,7 +109,7 @@ exact R-only authorization per checkpoint; restart source mismatch denies.
     def independent_recovery_authorization(self,body,ref,valid_until):
         if body['recovery_sequence']<=2:
             return custody.N01S3Fence.independent_recovery_authorization(self,body,ref,valid_until)
-        if self.restart_profile is not None and body['recovery_sequence'] in (3,5):
+        if self.restart_profile is not None and body['recovery_sequence'] in (3,5,7):
             from ash import g3_n01_owner_restart as restart
             selected=restart.configuration(self.restart_profile)
             if body['recovery_sequence']<selected.SEQUENCE:
@@ -193,7 +193,11 @@ class OwnerMembershipCommit:
             for digest,raw in objects.items():
                 require(type(raw) is bytes and 0<len(raw)<=65536 and control.digest(raw)==digest)
                 control.decode(raw)
-            history=self.fence.read(valid_until=self.valid_until)
+            # New long-history profile has a separate bounded initial observer;
+            # the writer and native aggregate counters are never reset. This is
+            # not a retry after exhaustion and does not reuse an old verdict.
+            reader=self.fence.gate_reader() if self.fence.restart_profile=='OWNER_ATOMIC_FORWARD_V1' else self.fence
+            history=reader.read(valid_until=self.valid_until)
             require(history.checkpoints[-1]==self.expected_head)
             enrolled=self.fence.current_source()
             rows=control.verify_snapshot(candidate.snapshot)
@@ -245,7 +249,9 @@ class OwnerMembershipCommit:
             material[records.domain_digest(records.PREFIX+'ledger-commit.v2',control.decode(candidate.descriptor))]=candidate.descriptor
             self.fence._begin_write(material,candidate.checkpoint)
             self.used=True  # Before any mutation; never resend an ambiguous operation.
-            for _,raw in sorted(objects.items()):self.ledger.retain_blob(raw)
+            if self.ledger.atomic_reads and objects:self.ledger.retain_blobs(tuple(raw for _,raw in sorted(objects.items())))
+            else:
+                for _,raw in sorted(objects.items()):self.ledger.retain_blob(raw)
             self.ledger.prepare(candidate)
             inventory=dict(self.fence.inventory('objects/'))
             for digest,raw in sorted(material.items()):

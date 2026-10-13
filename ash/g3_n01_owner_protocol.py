@@ -47,7 +47,9 @@ def _enrolled(rows,root,enrollment,now_ms):
     binding_id,registration_id=state.current_binding_ids(rows)
     if selected.generation==2:
         from ash import g3_n01_owner_sdk_restart as repair
-        require((binding_id,registration_id)==(repair.BINDING_ID,repair.REGISTRATION_ID) and root['authority_epoch']==repair.EPOCH)
+        from ash import g3_n01_owner_atomic_restart as atomic
+        require(((binding_id,registration_id)==(repair.BINDING_ID,repair.REGISTRATION_ID) and root['authority_epoch']==repair.EPOCH)
+            or ((binding_id,registration_id)==(atomic.BINDING_ID,atomic.REGISTRATION_ID) and root['authority_epoch']==atomic.EPOCH))
     bound=next(row for row in rows if row['family']=='binding' and row['binding_id']==binding_id)
     reg=next(row for row in rows if row['family']=='registration' and row['registration_id']==registration_id)
     require(bound['state']==reg['state']=='CURRENT' and bound['principal']==value['principal'])

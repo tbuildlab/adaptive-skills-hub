@@ -96,6 +96,12 @@ class DynamoReservations:
         item=self._get('blob#'+c.digest(raw))
         require(item==dict(self._key('blob#'+c.digest(raw)),body={'B':raw}))
 
+    def _retain_candidate(self, raws):
+        for raw in raws:self.retain_blob(raw)
+
+    def _check_material(self, raws):
+        for raw in raws:self._retained(raw)
+
     @_closed
     def enroll_genesis(self, checkpoint, snapshot):
         """Primary enrollment only. Requires independent admin/fence outside API."""
@@ -139,8 +145,7 @@ class DynamoReservations:
         require(descriptor['control_after_sha256']==candidate.snapshot.control_after_sha256)
         require({key:v for key,v in descriptor.items() if key!='control_after_sha256'}==
                 {key:v for key,v in current.items() if key not in ('schema_version','ledger_commit_sha256')})
-        for raw in (candidate.checkpoint,candidate.descriptor,candidate.snapshot.root,*candidate.snapshot.pages):
-            self.retain_blob(raw)
+        self._retain_candidate((candidate.checkpoint,candidate.descriptor,candidate.snapshot.root,*candidate.snapshot.pages))
         sort='reservation#'+f"{current['recovery_sequence']:020d}"
         reservation=dict(self._key(sort),phase={'S':'PREPARED'},
             expected_checkpoint={'B':candidate.expected_checkpoint},checkpoint={'B':candidate.checkpoint},
@@ -194,8 +199,7 @@ class DynamoReservations:
             descriptor={'B':candidate.descriptor},root={'B':candidate.snapshot.root},
             pages={'L':[{'S':c.digest(page)} for page in candidate.snapshot.pages]})
         require(self._get(sort)==expected)
-        for raw in (candidate.checkpoint,candidate.descriptor,candidate.snapshot.root,*candidate.snapshot.pages):
-            self._retained(raw)
+        self._check_material((candidate.checkpoint,candidate.descriptor,candidate.snapshot.root,*candidate.snapshot.pages))
         self.quarantined=True
         self._call('transact_write_items',ClientRequestToken=('f'+candidate.reservation_digest)[:36],
             TransactItems=[{'Update':{'TableName':self.table,'Key':self._key(sort),
@@ -216,10 +220,85 @@ class DynamoReservations:
 
 class DelegatedDynamoReservations(DynamoReservations):
     """Exact v2 transport. Config bytes/source origin still cannot create authority."""
-    def __init__(self, client, *, table_arn, instance, max_attempts):
+    def __init__(self, client, *, table_arn, instance, max_attempts, atomic_reads=False):
         super().__init__(client,table_arn=table_arn,instance=instance,max_attempts=max_attempts)
         from ash import g3_delegated_control_codec as modern_control
         from ash import g3_delegated_record_codec as modern_records
         self.control_codec=modern_control
         self.record_codec=modern_records
         self.record_version=2
+        require(type(atomic_reads) is bool)
+        self.atomic_reads=atomic_reads
+
+    def _retain_candidate(self, raws):
+        if self.atomic_reads:return self.retain_blobs(raws)
+        return super()._retain_candidate(raws)
+
+    def _check_material(self, raws):
+        if self.atomic_reads:return self._retained_many(raws)
+        return super()._check_material(raws)
+
+    @_closed
+    def observe_current(self, *, independent_checkpoint):
+        if not self.atomic_reads:return super().observe_current(independent_checkpoint=independent_checkpoint)
+        self.checkpoint_ref(independent_checkpoint)
+        expected=self.record_codec.parse_metadata(independent_checkpoint).to_dict()
+        head,blob=self._pair_get(('HEAD','blob#'+c.digest(independent_checkpoint)))
+        require(head==dict(self._key('HEAD'),phase={'S':'READY'},checkpoint={'B':independent_checkpoint},
+            sequence={'N':str(expected['recovery_sequence'])}))
+        require(expected['authority_instance']==self.instance)
+        require(blob==dict(self._key('blob#'+c.digest(independent_checkpoint)),body={'B':independent_checkpoint}))
+        self.quarantined=False
+        return PrimaryObservation(independent_checkpoint,'PRIMARY_MATCHES_INDEPENDENT_BYTES_UNQUALIFIED')
+
+    def _pair_get(self, sorts):
+        """Fresh serializable observation, at most two fixed-instance items."""
+        require(type(sorts) is tuple and 1<=len(sorts)<=2 and len(set(sorts))==len(sorts))
+        require(all(type(sort) is str and 0<len(sort)<=128 for sort in sorts))
+        result=self._call('transact_get_items',TransactItems=[
+            {'Get':{'TableName':self.table,'Key':self._key(sort)}} for sort in sorts])
+        require(type(result) is dict and type(result.get('Responses')) is list
+                and len(result['Responses'])==len(sorts))
+        items=[]
+        for sort,row in zip(sorts,result['Responses']):
+            require(row is None or type(row) is dict and set(row)<= {'Item'})
+            item=None if row is None else row.get('Item')
+            if item is not None:
+                require(type(item) is dict and all(item.get(key)==value for key,value in self._key(sort).items()))
+            items.append(item)
+        return tuple(items)
+
+    @_closed
+    def retain_blobs(self, raws):
+        """Same immutable pre/write/post checks; no observation survives return."""
+        require(type(raws) is tuple and 1<=len(raws)<=68)
+        expected={}
+        for raw in raws:
+            require(type(raw) is bytes and 0<len(raw)<=65536);c.decode(raw)
+            sort='blob#'+c.digest(raw)
+            item=dict(self._key(sort),body={'B':raw})
+            require(sort not in expected or expected[sort]==item);expected[sort]=item
+        for start in range(0,len(expected),2):
+            sorts=tuple(expected)[start:start+2]
+            before=self._pair_get(sorts)
+            missing=[]
+            for sort,item in zip(sorts,before):
+                require(item is None or item==expected[sort])
+                if item is None:missing.append(sort)
+            for sort in missing:
+                self._call('put_item',TableName=self.table,Item=expected[sort],ConditionExpression='attribute_not_exists(pk)')
+            if missing:
+                after=self._pair_get(tuple(missing))
+                require(all(item==expected[sort] for sort,item in zip(missing,after)))
+
+    @_closed
+    def _retained_many(self, raws):
+        require(type(raws) is tuple and 1<=len(raws)<=68)
+        expected={}
+        for raw in raws:
+            require(type(raw) is bytes and 0<len(raw)<=65536);c.decode(raw)
+            sort='blob#'+c.digest(raw);item=dict(self._key(sort),body={'B':raw})
+            require(sort not in expected or expected[sort]==item);expected[sort]=item
+        for start in range(0,len(expected),2):
+            sorts=tuple(expected)[start:start+2]
+            require(all(item==expected[sort] for sort,item in zip(sorts,self._pair_get(sorts))))

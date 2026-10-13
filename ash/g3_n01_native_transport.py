@@ -119,10 +119,23 @@ class NativeTransport:
                     _BUDGET['s3']+=1
                 client=self.__s3
             else:
-                require(service=='dynamodb' and operation in ('get_item','put_item','transact_write_items'))
+                require(service=='dynamodb' and operation in ('get_item','put_item','transact_write_items','transact_get_items'))
                 if operation=='get_item':
                     require(kwargs.get('TableName')==TABLE and kwargs.get('ConsistentRead') is True)
                     require(kwargs.get('Key',{}).get('pk')=={'S':'authority#'+custody.INSTANCE})
+                elif operation=='transact_get_items':
+                    require(set(kwargs)=={'TransactItems'})
+                    items=kwargs['TransactItems'];require(type(items) is list and 1<=len(items)<=2)
+                    keys=[]
+                    for item in items:
+                        require(type(item) is dict and set(item)=={'Get'})
+                        value=item['Get'];require(type(value) is dict and set(value)=={'TableName','Key'} and value['TableName']==TABLE)
+                        key=value['Key'];require(type(key) is dict and set(key)=={'pk','sk'}
+                            and key['pk']=={'S':'authority#'+custody.INSTANCE}
+                            and type(key['sk']) is dict and set(key['sk'])=={'S'}
+                            and type(key['sk']['S']) is str and 0<len(key['sk']['S'])<=128)
+                        keys.append(key['sk']['S'])
+                    require(len(keys)==len(set(keys)))
                 elif operation=='put_item':
                     require(self.__write and kwargs.get('TableName')==TABLE and kwargs.get('ConditionExpression')=='attribute_not_exists(pk)')
                     require(kwargs.get('Item',{}).get('pk')=={'S':'authority#'+custody.INSTANCE})
@@ -139,7 +152,7 @@ class NativeTransport:
                         require(_size(value)<=400000)
                 with _LOCK:
                     require(_BUDGET['ddb']<MAX_DDB)
-                    if operation!='get_item':
+                    if operation not in ('get_item','transact_get_items'):
                         size=_size(kwargs);require(_BUDGET['ddb_bytes']+size<=MAX_WRITE_BYTES)
                         _BUDGET['ddb_bytes']+=size
                     _BUDGET['ddb']+=1
@@ -166,6 +179,7 @@ class PrimaryClient:
     def get_item(self,**kwargs):return self.__parent._call('dynamodb','get_item',kwargs)
     def put_item(self,**kwargs):return self.__parent._call('dynamodb','put_item',kwargs)
     def transact_write_items(self,**kwargs):return self.__parent._call('dynamodb','transact_write_items',kwargs)
+    def transact_get_items(self,**kwargs):return self.__parent._call('dynamodb','transact_get_items',kwargs)
 
 
 class CustodyClient:

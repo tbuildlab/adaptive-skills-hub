@@ -47,12 +47,13 @@ GET_PATHS=frozenset(('/api/n01-controller','/api/n01/start','/api/n01/login','/a
 UNTIL=datetime.fromtimestamp(review.UNTIL_MS/1000,timezone.utc)
 CUSTODY_REVISION=1
 RESTART_PROFILE=None
+PRIMARY_READ_PROFILE='SCALAR_V1'
 REVIEW_GENERATION=1
 
 
 def current_review():
     selected=review.pins(REVIEW_GENERATION)
-    require(selected.generation==1 or RESTART_PROFILE=='OWNER_SDK_REPAIR_FORWARD_V1')
+    require(selected.generation==1 or RESTART_PROFILE in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
     return selected
 
 
@@ -127,7 +128,7 @@ class OwnerController:
         self.__last_wall=int(time.time()*1000);self.__last_monotonic=time.monotonic()
         self.__source_proposal=None;self.__events=[]
         try:
-            if RESTART_PROFILE=='OWNER_SDK_REPAIR_FORWARD_V1':
+            if RESTART_PROFILE in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):
                 client,identity=native_identity_client();identity.close();client=None
             self.__review=review.read_protected_review(self.__transport.custody,boot.storage_scope(),now_ms=self.__last_wall,review_generation=REVIEW_GENERATION)
             if RESTART_PROFILE is None:
@@ -168,7 +169,9 @@ class OwnerController:
         require(current_review().valid_from_ms<=self.__last_wall<=now<current_review().valid_until_ms and self.__last_monotonic<=monotonic)
         self.__last_wall=now;self.__last_monotonic=monotonic;return now
     def _ledger(self):
-        return DelegatedDynamoReservations(self.__transport.primary,table_arn=native.TABLE,instance=custody.INSTANCE,max_attempts=256)
+        require(PRIMARY_READ_PROFILE in ('SCALAR_V1','PAIRED_ATOMIC_V1'))
+        return DelegatedDynamoReservations(self.__transport.primary,table_arn=native.TABLE,instance=custody.INSTANCE,max_attempts=256,
+            atomic_reads=PRIMARY_READ_PROFILE=='PAIRED_ATOMIC_V1')
     def _fence(self):
         original=boot.storage_scope()
         if RESTART_PROFILE is not None:
