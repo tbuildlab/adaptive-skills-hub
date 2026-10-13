@@ -36,9 +36,12 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
     if auth_attempt:
         # The reviewed documentary cost package contains decimal prices; it is
         # exact-hash constrained bytes, not a runtime authority codec record.
-        pending=(ROOT/'research/nexus-production-n01-pending-bounded-authentication-continuation-owner-review-v1.json').read_bytes().strip()
-        acceptance=codec.canonical(codec.decode((ROOT/'research/nexus-production-n01-bounded-authentication-continuation-owner-acceptance-v1.json').read_bytes().strip()))
-        if codec.digest(pending)!='51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7' or codec.digest(acceptance)!='d9568152db6d3e4cbf43cf3a4fc94ec76c01bf3b173e6846235f7923336313ef':raise ValueError('N01_LIFECYCLE_AMENDMENT_DENY')
+        amendment_version=2 if selected.generation==6 else 1
+        amendment_sha='0673285cf0739b1a17cc0fee35f616718246c81cda673a1bb58def452b9793f5' if selected.generation==6 else '51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7'
+        amendment_acceptance_sha='017c2c3c6129706c123494478ae82e98bac24bf988e01e1583bb199c5af7b498' if selected.generation==6 else 'd9568152db6d3e4cbf43cf3a4fc94ec76c01bf3b173e6846235f7923336313ef'
+        pending=(ROOT/f'research/nexus-production-n01-pending-bounded-authentication-continuation-owner-review-v{amendment_version}.json').read_bytes().strip()
+        acceptance=codec.canonical(codec.decode((ROOT/f'research/nexus-production-n01-bounded-authentication-continuation-owner-acceptance-v{amendment_version}.json').read_bytes().strip()))
+        if codec.digest(pending)!=amendment_sha or codec.digest(acceptance)!=amendment_acceptance_sha:raise ValueError('N01_LIFECYCLE_AMENDMENT_DENY')
     if restart_profile is not None and transport_revision!=3:raise ValueError('N01_RESTART_TRANSPORT_DENY')
     names=tuple(dict.fromkeys((*MODULES,*(name for name in EXTRA if name!='scripts/g3_n01_controller_bootstrap.py'),*OWNER_MODULES)))
     files={name:(ROOT/name).read_bytes().replace(b'\r\n',b'\n') for name in names}
@@ -90,7 +93,8 @@ def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profi
             maximum_new_bytes_per_backend=write_bytes,prior_native_ddb_attempts=250 if auth_attempt else 204 if atomic else 134 if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1' else 66,
             recovery='EXPLICIT_FORWARD_ONLY',old_owner_authority='NEVER_RESTORED')
     if atomic:metadata.update(primary_read_profile='PAIRED_ATOMIC_V1',maximum_read_items_per_transaction=2,approved_aggregate_ddb_attempts=512,earlier_non_owner_reserved_attempts=98)
-    if auth_attempt:metadata.update(primary_read_profile='PAIRED_ATOMIC_V1',maximum_read_items_per_transaction=2,approved_aggregate_ddb_attempts=537,earlier_non_owner_reserved_attempts=98,prior_ddb_charged_conservative=348,authentication_attempt_limit=1,lifecycle_amendment_sha256='51b50acb7d2887626b9086feb0844225dce05aab78088a4c35214520e81ee4c7',owner_readiness_before_preauth='REQUIRED',independent_r_admin_s3_attempts_reserved=64,independent_r_admin_s3_writes_reserved=4,independent_r_admin_bytes_reserved=65536,total_new_s3_attempts_limit=16000)
+    if auth_attempt:metadata.update(primary_read_profile='PAIRED_ATOMIC_V1',maximum_read_items_per_transaction=2,approved_aggregate_ddb_attempts=537,earlier_non_owner_reserved_attempts=98,prior_ddb_charged_conservative=348,authentication_attempt_limit=1,lifecycle_amendment_sha256=amendment_sha,owner_readiness_before_preauth='REQUIRED',independent_r_admin_s3_attempts_reserved=64,independent_r_admin_s3_writes_reserved=4,independent_r_admin_bytes_reserved=65536,total_new_s3_attempts_limit=16000)
+    if selected.generation==6:metadata.update(operational_cutoff_ms=1791899100000,operational_cutoff_behavior='HOLD_NO_PREAUTH_IF_READINESS_INCOMPLETE')
     (destination/'artifact.json').write_text(json.dumps(metadata,indent=2)+'\n',encoding='utf-8')
     request=dict(name='nexus-g3-qual',project='prj_xH23xMATVChdhX34OS2vjI8dfWN2',target='production',
         files=[dict(file=name,data=raw.decode(),encoding='utf-8') for name,raw in sorted(files.items())],

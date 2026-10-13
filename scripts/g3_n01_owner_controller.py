@@ -58,7 +58,7 @@ def current_review():
 
 
 def native_transport(header):
-    if REVIEW_GENERATION in (3,4,5):return native.NativeTransport(header,review_generation=REVIEW_GENERATION,review_profile=RESTART_PROFILE)
+    if REVIEW_GENERATION in (3,4,5,6):return native.NativeTransport(header,review_generation=REVIEW_GENERATION,review_profile=RESTART_PROFILE)
     return native.NativeTransport(header) if REVIEW_GENERATION==1 else native.NativeTransport(header,review_generation=REVIEW_GENERATION)
 
 

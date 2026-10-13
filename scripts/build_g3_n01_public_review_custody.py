@@ -88,6 +88,7 @@ def build(destination,*,review_generation=1,restart_profile=None):
     if review_generation==4:names=('nexus-production-n01-pending-public-pin-review-atomic-v4.json',
         'nexus-production-n01-public-pin-owner-acceptance-atomic-v4.json')
     if review_generation==5:names=('nexus-production-n01-pending-public-pin-review-auth-continuation-v5.json','nexus-production-n01-public-pin-owner-acceptance-auth-continuation-v5.json')
+    if review_generation==6:names=('nexus-production-n01-pending-public-pin-review-auth-continuation-v6.json','nexus-production-n01-public-pin-owner-acceptance-auth-continuation-v6.json')
     raws=tuple(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip(b'\n'))) for name in names)
     if tuple(map(codec.digest,raws))!=(PACKAGE_SHA,ACCEPTANCE_SHA):raise ValueError('PUBLIC_REVIEW_PACKAGE_CHANGED')
     payload={PREFIX+'proposal.json':raws[0].decode(),PREFIX+'acceptance.json':raws[1].decode()}
@@ -100,6 +101,7 @@ def build(destination,*,review_generation=1,restart_profile=None):
         receipt='n01-public-review-atomic-v3-r-receipt.json' if review_generation==3 else 'n01-public-review-sdk-repair-v2-r-receipt.json'
         if review_generation==4:receipt='n01-public-review-atomic-v4-r-receipt.json'
         if review_generation==5:receipt='n01-public-review-auth-continuation-v5-r-receipt.json'
+        if review_generation==6:receipt='n01-public-review-auth-continuation-v6-r-receipt.json'
         program=program.replace('n01-public-review-r-receipt.json',receipt)
     destination.write_text(setup+program,encoding='utf-8',newline='\n')
     return dict(script_sha256=hashlib.sha256(destination.read_bytes()).hexdigest(),

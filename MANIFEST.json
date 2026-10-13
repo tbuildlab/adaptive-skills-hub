@@ -168,8 +168,8 @@
     "sha256": "6fd8478af8f645821eb8818b29298eb96c6d0f771b14146366401fe80a0f99bf"
   },
   "ash/g3_n01_owner_ingress.py": {
-    "bytes": 15732,
-    "sha256": "53d2456a00f0e483dda40771d57b10114cc50f6dfe382331d7358cf7e3087f2d"
+    "bytes": 16059,
+    "sha256": "d0ec36a5b7dde6da12c6c25f606f309a77faa2680e5fc228a65ffc625d338452"
   },
   "ash/g3_n01_owner_persistence.py": {
     "bytes": 18753,
@@ -196,8 +196,8 @@
     "sha256": "b157d97ee15e9edaa45d127370a7fa85dffa269fbb790bb323cd8f31a2707e04"
   },
   "ash/g3_n01_public_review.py": {
-    "bytes": 9669,
-    "sha256": "34016afb7f3936b6301a0d14c5854213c397f348f16614f7be6974cfbed474ee"
+    "bytes": 10407,
+    "sha256": "83aeacd3d61bc8506bf277caab372de08c0a9f081bf37c957c62f91ffc51cfde"
   },
   "ash/g3_n01_retained_state.py": {
     "bytes": 4164,
@@ -1863,6 +1863,10 @@
     "bytes": 2574,
     "sha256": "649e72226091c0a007b7865271cf78d2b16962b1ab4a34dce97a330b19868779"
   },
+  "docs/nexus-production-n01-v6-resource-hold-checkpoint-v1.md": {
+    "bytes": 6698,
+    "sha256": "2aa49f96391a4a2784a1755143d645d843fe3e57ef1e5c2bb69cc501fe835df2"
+  },
   "docs/nexus-production-n01-vercel-runtime-qualification-v1.md": {
     "bytes": 8019,
     "sha256": "80b76563accd12aa14c60461fc7266990eb1d73737c015755e3917d902b1b62c"
@@ -2123,6 +2127,10 @@
     "bytes": 980,
     "sha256": "8537175c5e30e492c8ea58116e08d8fdbdfeb7c7a78681efc40cdbffb1f6a2b3"
   },
+  "research/nexus-production-n01-bounded-authentication-continuation-owner-acceptance-v2.json": {
+    "bytes": 1340,
+    "sha256": "765938c65d47c112dc742b5a595e02f7b0297412dc3001f3d31b5e420bc4103b"
+  },
   "research/nexus-production-n01-closed-authentication-stage-evidence-v1.json": {
     "bytes": 5064,
     "sha256": "508a94a8a3d5926ca17df8861aa18510e52d4fc2629e978cd29a1c5af342add4"
@@ -2199,6 +2207,10 @@
     "bytes": 1169,
     "sha256": "6bc69ff9ff181f8e5c1cb6a1ae462b3bbed0f593ccd325815fc729214362f653"
   },
+  "research/nexus-production-n01-public-pin-owner-acceptance-auth-continuation-v6.json": {
+    "bytes": 1301,
+    "sha256": "1cca852b02a23bf07fe62d468d0ee32385de260157d0b4efdf4cc9992173d7f7"
+  },
   "research/nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json": {
     "bytes": 1092,
     "sha256": "e9b67ad315f7e11f3213f9d624e5dbf1f19bdd1c7d729fe2404d4bad6d7774c6"
@@ -2259,6 +2271,14 @@
     "bytes": 15458,
     "sha256": "48585da9a45fa12843ba69e79e974f17e77dd2a2d00b76ca1812316fcae3a7a5"
   },
+  "research/nexus-production-n01-v6-existing-resource-hold-v1.json": {
+    "bytes": 866,
+    "sha256": "9f7ee9c350e900501cee4d34deb7efb09f414dd92b7cb4cf07c4e276ce428359"
+  },
+  "research/nexus-production-n01-v6-offline-hold-qualification-v1.json": {
+    "bytes": 8614,
+    "sha256": "67b1289f616d34717e05078ac42cf071f0c5476d257b157be65c95abf46a0085"
+  },
   "research/nexus-production-n01-vercel-observed-evidence-v1.json": {
     "bytes": 2081,
     "sha256": "34c5648527abf24e0de846931a9e9634549bc4be11a353d1224f82c12e480da6"
@@ -2280,16 +2300,16 @@
     "sha256": "91a298cd96a5e6dc87fdfba9b009ce5690ff476c53a7cdf65433c61c3b3168dc"
   },
   "scripts/build_g3_n01_owner_controller.py": {
-    "bytes": 9747,
-    "sha256": "5195e3b4af41087cba951a4218263a08cc1e757d768e0d9221d50061fa563f25"
+    "bytes": 10236,
+    "sha256": "a4504d0fef7035c9a3bb38d719adacc2c22bb51f92f79a716dbbb8e385228fe8"
   },
   "scripts/build_g3_n01_owner_source_custody.py": {
-    "bytes": 9772,
-    "sha256": "89deaba491aceb90d06d8037f613a8a07f9d1523186d51881a80100804e248c1"
+    "bytes": 9968,
+    "sha256": "e46a36c84bc42e4c6d0ce0fb83f3c02315c8ec64685c8d22b6ee9ac32332c291"
   },
   "scripts/build_g3_n01_public_review_custody.py": {
-    "bytes": 6539,
-    "sha256": "58a8c163eaa36c4a89729178c0fed2644882c424534b7fa59ba5d5b96712c037"
+    "bytes": 6823,
+    "sha256": "cb7b6f234acfaa97668319bb24bf2877eeeeaba010833e3608da7c7023f44d0c"
   },
   "scripts/build_g3_n01_vercel_probe.py": {
     "bytes": 4317,
@@ -2344,8 +2364,8 @@
     "sha256": "0e171aacf85e84e1de572872fad8e5de88bc81fff050281598c81c62b4c4d616"
   },
   "scripts/g3_n01_owner_controller.py": {
-    "bytes": 31193,
-    "sha256": "d74a27b75aaa9bc413b25df59db24be4c967049a15624de546c83edaee7e22f7"
+    "bytes": 31195,
+    "sha256": "4eeeef12cf566c693739042a62084511b159d58fd92df4fd7824506052ce583e"
   },
   "scripts/g3_n01_storage_contract.py": {
     "bytes": 5667,
@@ -2642,6 +2662,10 @@
   "tests/test_g3_n01_public_review_v4.py": {
     "bytes": 9543,
     "sha256": "eb3c5b6eb0ba459295911fa53d340812fc33468ddd5f48f1232a1985037490ce"
+  },
+  "tests/test_g3_n01_public_review_v6.py": {
+    "bytes": 12267,
+    "sha256": "fd34922a3935771d8608951cd8ef18a8449de5f3480ee369a7afc6eea95cada8"
   },
   "tests/test_g3_n01_retained_state.py": {
     "bytes": 4781,

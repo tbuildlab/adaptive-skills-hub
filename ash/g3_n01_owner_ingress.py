@@ -51,15 +51,18 @@ class OwnerIngress:
         require(client.sync_client._session is transport and client.sync_client.project_id==owner.PROJECT)
         require(type(fence) is OwnerMembershipFence and type(ledger) is DelegatedDynamoReservations)
         control.old.check_type(delivery_email_sha256,'h')
+        operational_started=int(time.time()*1000) if fence.public_review.pins.generation==6 else None
+        if operational_started is not None:
+            require(operational_started<1791899100000)  # Owner's 21:45 cutoff, before PREAUTH state is allocated.
         self.__client=client;self.__transport=transport;self.__fence=fence;self.__ledger=ledger
         self.__email_sha=delivery_email_sha256
         self.__csrf=secrets.token_hex(32);self.__cookie=secrets.token_hex(32)
         self.__method=None;self.__bearer=None;self.__context=None
-        self.__started=int(time.time()*1000);self.__monotonic=time.monotonic()
+        self.__started=operational_started if operational_started is not None else int(time.time()*1000);self.__monotonic=time.monotonic()
         self.__last_wall=self.__started;self.__last_monotonic=self.__monotonic
         self.__until=min(self.__started+120000,self.__fence.public_review.valid_until_ms)
         self.__state='PREAUTH'
-        self.__bounded_attempt=self.__fence.public_review.pins.generation==5
+        self.__bounded_attempt=self.__fence.public_review.pins.generation in (5,6)
         if getattr(self,'_OwnerIngress__bounded_attempt',False):
             require(self.__fence.public_review.valid_from_ms<=self.__started
                 and self.__started+120000<=self.__fence.public_review.valid_until_ms)

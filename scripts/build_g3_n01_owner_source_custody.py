@@ -36,7 +36,7 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
     selected=review.current_pins(review_generation,restart_profile=restart_profile)
     require(review_generation==1 or review_generation==2 and restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1'
         or review_generation==4 and restart_profile=='OWNER_ATOMIC_FORWARD_V1'
-        or review_generation==5 and restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
+        or review_generation in (5,6) and restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
     from ash import g3_n01_owner_restart as restart
     restart.require_profile(restart_profile)
     restart=restart.configuration(restart_profile)
@@ -51,6 +51,7 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
     names=('nexus-production-n01-pending-public-pin-review-v1.json','nexus-production-n01-public-pin-owner-acceptance-v1.json') if review_generation==1 else ('nexus-production-n01-pending-public-pin-review-sdk-repair-v2.json','nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json')
     if review_generation==4:names=('nexus-production-n01-pending-public-pin-review-atomic-v4.json','nexus-production-n01-public-pin-owner-acceptance-atomic-v4.json')
     if review_generation==5:names=('nexus-production-n01-pending-public-pin-review-auth-continuation-v5.json','nexus-production-n01-public-pin-owner-acceptance-auth-continuation-v5.json')
+    if review_generation==6:names=('nexus-production-n01-pending-public-pin-review-auth-continuation-v6.json','nexus-production-n01-public-pin-owner-acceptance-auth-continuation-v6.json')
     public=review.verify_review(*(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip())) for name in names),now_ms=now_ms,review_generation=review_generation,restart_profile=restart_profile)
     env=dict(VERCEL_ENV='production',VERCEL_PROJECT_ID=deployment['projectId'],VERCEL_DEPLOYMENT_ID=deployment['id'],VERCEL_URL=deployment['url'])
     enrolled=source.bind_source(raw,public,native_environment=env,artifact_inventory_sha256=value['artifact_inventory_sha256'],
@@ -82,7 +83,7 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
         prefixes=(restart.SOURCE_PREFIX,restart.RECOVERY_PREFIX+f'{restart.SEQUENCE:020d}/')
     payload={prefixes[0]+'registration.json':raw.decode(),prefixes[1]+'authorization.json':protected.decode()}
     program=R_PROGRAM
-    if review_generation in (2,4,5):program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
+    if review_generation in (2,4,5,6):program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
     start=program.index('def inventory():');end=program.index('if receipt.exists():',start)
     program=program[:start]+INVENTORY+program[end:]
     program=program.replace('n01-public-review-r-receipt.json','n01-owner-source-r-receipt.json')

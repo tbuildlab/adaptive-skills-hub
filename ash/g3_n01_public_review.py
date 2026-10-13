@@ -43,7 +43,7 @@ def pins(generation=1):
 
 def enrollment_pins(value):
     generation=value['review_generation']
-    selected=auth_attempt_pins() if type(generation) is int and generation==5 else (atomic_pins() if generation==3 else current_atomic_pins()) if type(generation) is int and generation in (3,4) else pins(generation)
+    selected=auth_attempt_v6_pins() if type(generation) is int and generation==6 else auth_attempt_pins() if type(generation) is int and generation==5 else (atomic_pins() if generation==3 else current_atomic_pins()) if type(generation) is int and generation in (3,4) else pins(generation)
     require(type(value['application_generation']) is int and value['application_generation']==1
         and value['review_package_sha256']==selected.package_sha256
         and value['review_acceptance_sha256']==selected.acceptance_sha256)
@@ -79,9 +79,19 @@ def auth_attempt_pins():
         custody.APPROVALS+'public-pin-owner-review-auth-continuation-20261013-v5/',1791878400000,1791885600000)
 
 
+def auth_attempt_v6_pins():
+    """Exact v6 approval and fixed interval; v5 remains historical."""
+    return ReviewPins(6,'ae081f017a1036e33e40b06bda6d6a8020526739bafbf75ad40f859c73549df1',
+        'd114c4a36455a0e74f3e35599f24858943927cba7d5ecafcae0fa167f6d6dee3',
+        custody.APPROVALS+'public-pin-owner-review-auth-continuation-20261013-v6/',1791893700000,1791900900000)
+
+
 def current_pins(generation=1,*,restart_profile=None):
     """Current v4 selector; historical select_pins remains unchanged."""
-    if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':require(type(generation) is int and generation==5)
+    if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':require(type(generation) is int and generation in (5,6))
+    if type(generation) is int and generation==6:
+        require(restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
+        return auth_attempt_v6_pins()
     if type(generation) is int and generation==5:
         require(restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
         return auth_attempt_pins()
@@ -92,8 +102,8 @@ def current_pins(generation=1,*,restart_profile=None):
 
 
 def require_enrollment_profile(selected,restart_profile):
-    if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':require(selected.generation==5)
-    if selected.generation==5:require(restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
+    if restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1':require(selected.generation in (5,6))
+    if selected.generation in (5,6):require(restart_profile=='OWNER_AUTH_ATTEMPT_FORWARD_V1')
     elif selected.generation in (3,4):require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
     else:require(selected.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
 
@@ -124,6 +134,8 @@ class PublicReview:
         selected=current_atomic_pins()
         if self.package_sha256==selected.package_sha256:return selected
         selected=auth_attempt_pins()
+        if self.package_sha256==selected.package_sha256:return selected
+        selected=auth_attempt_v6_pins()
         if self.package_sha256==selected.package_sha256:return selected
         raise ValueError('N01_PUBLIC_REVIEW_DENY')
 
