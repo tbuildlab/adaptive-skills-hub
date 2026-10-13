@@ -304,6 +304,14 @@ def parser() -> argparse.ArgumentParser:
     plan.add_argument("--hard-context-files", type=int, default=50, help="Hard project-context file ceiling")
     plan.add_argument("--hard-context-kib", type=int, default=512, help="Hard project-context byte ceiling in KiB")
     sub.add_parser("status", help="Show current local index counts")
+    host = sub.add_parser("core-host-plan", help="Prepare one read-only Git Host workflow; no tools invoked")
+    host.add_argument("task")
+    host.add_argument("--project", required=True)
+    host.add_argument("--file", action="append", required=True, dest="files")
+    host.add_argument("--task-dir", required=True, help="Fresh output directory outside the inspected repository")
+    for name in ("core-host-next", "core-host-observe", "core-host-status"):
+        command = sub.add_parser(name, help="Local Host intent/observation bookkeeping; never executes Git")
+        command.add_argument("task_dir")
     project_core = sub.add_parser("core", help="Prepare a reusable local project profile; explicit approval required")
     project_core.add_argument("task")
     project_core.add_argument("--project", required=True)
@@ -336,6 +344,31 @@ def parser() -> argparse.ArgumentParser:
 def main() -> int:
     cli = parser()
     args = cli.parse_args()
+    if args.command.startswith("core-host-"):
+        from ash import core_host_loop as host
+        from ash.core import CoreError
+        from ash.core_host import LocalHookError
+        from ash.core_capabilities import closed_object
+        try:
+            if args.command == "core-host-plan":
+                state = host.prepare(args.task, Path(args.project), args.files, Path(args.task_dir))
+                result = host.status(Path(args.task_dir))
+            elif args.command == "core-host-next":
+                result = host.next_action(Path(args.task_dir))
+            elif args.command == "core-host-observe":
+                raw = sys.stdin.buffer.read(65537)
+                if len(raw) > 65536:
+                    raise CoreError("Host observation exceeds byte bound")
+                observation = json.loads(raw, object_pairs_hook=closed_object,
+                    parse_constant=lambda value: (_ for _ in ()).throw(CoreError("Non-finite Host observation")))
+                host.observe(Path(args.task_dir), observation)
+                result = host.status(Path(args.task_dir))
+            else:
+                result = host.status(Path(args.task_dir))
+            print(json.dumps(result, ensure_ascii=False, indent=2))
+            return 0 if result["status"] in {"prepared", "waiting_host", "completed", "completed_with_findings"} else 1
+        except (CoreError, LocalHookError, OSError, ValueError, KeyError, TypeError) as exc:
+            cli.error(str(exc))
     if args.command.startswith("managed-"):
         from ash.managed_cli import run_command
         from ash.core_host import LocalHookError

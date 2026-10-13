@@ -9,6 +9,40 @@ Use this plugin only for a substantive task. Nexus is a planning and handoff
 layer, never an execution runtime. The ChatGPT host alone owns tools, file
 writes, artifacts, validation, approvals, and the final response.
 
+## Core Host Git Maintenance v1
+
+This one local Codex Host workflow inspects a user-owned Git repository and
+returns a verified maintenance report. It does not modify repository source,
+stage, commit, push, clean, reset, deploy, contact remotes or run project tests.
+Use only explicitly declared non-secret tracked files. Keep task/output files
+outside the inspected repository. This is trusted same-user local work, not
+production authority; G3/N01 remains HOLD and REAL_ADMISSION remains NO.
+
+1. Prepare `core-host-plan` with the natural-language inspection task, exact
+   project, repeatable `--file` scope and a fresh outside `--task-dir`.
+   The existing planner discovers/loads the repository-owned narrow profile.
+   Missing coverage or integrity means BLOCKED, never forced Skill selection.
+2. Ask `core-host-next` for the next intent. On `action: null`, inspect its
+   status/inflight/receipt. Never redispatch an already-issued intent blindly.
+3. Use currently available Host tools to execute only the returned fixed Git
+   argument arrays. Preserve actual outcomes; unavailable tools, cancellation,
+   uncertainty and Host approval-required/denied are not success. Commands use
+   no optional locks, no pager, literal paths, and disabled fsmonitor/filters.
+4. Normalize observations before `core-host-observe` (bounded JSON on stdin):
+   retain repository metadata and exit codes, hash raw NUL-separated status,
+   count entries, and list exact declared tracked files. For diff-check output,
+   retain only allowed path, positive line number and closed whitespace kind;
+   discard source lines and stderr values. Nonzero error is not a finding.
+5. For `report`, write the two exact returned contents to new task-owned files
+   only; never overwrite unknown files. Observe their creation. For `verify`,
+   run fresh fixed repository/check commands. The adapter separately reopens
+   both reports, checks facts/hashes and rejects drift. Continue until terminal.
+6. Return the actual report and final receipt. `completed_with_findings` means
+   inspection finished with whitespace findings, not clean Git. Do not claim
+   execution from selection or approval from a receipt. Dangerous operations
+   remain subject to Host approval and are outside this profile even if approved.
+   Existing Core local-hook approval and Presentations mappings are unchanged.
+
 ## Post-R5 bounded capability decision
 
 For a substantive non-presentation task, after `nexus.plan_task` has produced

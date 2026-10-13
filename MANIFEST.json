@@ -55,6 +55,10 @@
     "bytes": 5360,
     "sha256": "1ce40424d668a28cf64e8ecf618c185549d2382378aa394fdb27e3f9988848ea"
   },
+  "ash/core_host_loop.py": {
+    "bytes": 18022,
+    "sha256": "d36687d42722f024dc640b16669fd433e4d07679b50977a37b6beeddac496f95"
+  },
   "ash/core_profiles.py": {
     "bytes": 10062,
     "sha256": "bb6005ae75863940671b4432e6eec830e0702224d78d16ce363f6ac468fcbbba"
@@ -822,6 +826,10 @@
   "docs/nexus-core-alpha2-local-use-v1.md": {
     "bytes": 9574,
     "sha256": "0f85ea9e29781ac3c9b5a8a0283dbf1de473488a7e1a18dc30870558cbf7a1f3"
+  },
+  "docs/nexus-core-host-execution-loop-v1.md": {
+    "bytes": 6139,
+    "sha256": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8"
   },
   "docs/nexus-core-internal-alpha-v1.md": {
     "bytes": 12709,
@@ -2036,8 +2044,8 @@
     "sha256": "517ca7f7a215f98b225f91c875675f3a6037c8bae869ab3ada68bb64874c2631"
   },
   "plugins/nexus-desktop/skills/nexus/SKILL.md": {
-    "bytes": 21799,
-    "sha256": "6b49163caa30bde4bb43d148b192c4a05cbd8475a1cebeedbd3c133dfb082a93"
+    "bytes": 24165,
+    "sha256": "c33d271cf19d3eca19a0774175c856f44ce9cfa6e6be13035ae7fb7b2bfa63ae"
   },
   "prototypes/cryptographic_attendance_v1.py": {
     "bytes": 19407,
@@ -2428,8 +2436,8 @@
     "sha256": "b9ff8e7a859f3c0048c41f183e3045868374016fac58f363eccad59281025861"
   },
   "scripts/hub.py": {
-    "bytes": 24957,
-    "sha256": "f18b618ae4b836d12f1085021e8a2cc66f59e2ef1ece8e482efea1d32bceeb03"
+    "bytes": 27059,
+    "sha256": "90a13556c2e8909a524b4b8e380162684614b79b129f8ec7b50cfa91af3af35b"
   },
   "scripts/managed_handoff_demo.py": {
     "bytes": 1990,
@@ -2522,6 +2530,10 @@
   "tests/test_core.py": {
     "bytes": 18761,
     "sha256": "035264a31ec3cdb780bd57bd45c3f8fe0fc8437b1fe341f3beba356498de2c47"
+  },
+  "tests/test_core_host_loop.py": {
+    "bytes": 14303,
+    "sha256": "cc8dd0a228d417c0a83491ae6266ecdb45502ea11bb40ef4225056c21b7b2244"
   },
   "tests/test_core_profiles.py": {
     "bytes": 14954,
