@@ -33,8 +33,9 @@ def inventory():
 
 
 def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart_profile=None,review_generation=1):
-    selected=review.pins(review_generation)
-    require(review_generation==1 or restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1')
+    selected=review.current_pins(review_generation,restart_profile=restart_profile)
+    require(review_generation==1 or review_generation==2 and restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1'
+        or review_generation==4 and restart_profile=='OWNER_ATOMIC_FORWARD_V1')
     from ash import g3_n01_owner_restart as restart
     restart.require_profile(restart_profile)
     restart=restart.configuration(restart_profile)
@@ -47,7 +48,8 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
         and deployment['native_sso_protection']=='all_except_custom_domains' and deployment['source_identity_matches']==count)
     value=observation['source_proposal'];raw=codec.canonical(value)
     names=('nexus-production-n01-pending-public-pin-review-v1.json','nexus-production-n01-public-pin-owner-acceptance-v1.json') if review_generation==1 else ('nexus-production-n01-pending-public-pin-review-sdk-repair-v2.json','nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json')
-    public=review.verify_review(*(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip())) for name in names),now_ms=now_ms,review_generation=review_generation)
+    if review_generation==4:names=('nexus-production-n01-pending-public-pin-review-atomic-v4.json','nexus-production-n01-public-pin-owner-acceptance-atomic-v4.json')
+    public=review.verify_review(*(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip())) for name in names),now_ms=now_ms,review_generation=review_generation,restart_profile=restart_profile)
     env=dict(VERCEL_ENV='production',VERCEL_PROJECT_ID=deployment['projectId'],VERCEL_DEPLOYMENT_ID=deployment['id'],VERCEL_URL=deployment['url'])
     enrolled=source.bind_source(raw,public,native_environment=env,artifact_inventory_sha256=value['artifact_inventory_sha256'],
         process_nonce=value['process_nonce'],now_ms=now_ms)
@@ -78,13 +80,14 @@ def build(observation,deployment,destination,*,now_ms,custody_revision=1,restart
         prefixes=(restart.SOURCE_PREFIX,restart.RECOVERY_PREFIX+f'{restart.SEQUENCE:020d}/')
     payload={prefixes[0]+'registration.json':raw.decode(),prefixes[1]+'authorization.json':protected.decode()}
     program=R_PROGRAM
-    if review_generation==2:program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
+    if review_generation in (2,4):program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
     start=program.index('def inventory():');end=program.index('if receipt.exists():',start)
     program=program[:start]+INVENTORY+program[end:]
     program=program.replace('n01-public-review-r-receipt.json','n01-owner-source-r-receipt.json')
     if custody_revision!=1:program=program.replace('n01-owner-source-r-receipt.json',f'n01-owner-source-v{custody_revision}-r-receipt.json')
     if restart_profile is not None:program=program.replace(f'n01-owner-source-v{custody_revision}-r-receipt.json','n01-owner-source-restart-v1-r-receipt.json')
     if restart_profile=='OWNER_SDK_REPAIR_FORWARD_V1':program=program.replace('n01-owner-source-restart-v1-r-receipt.json','n01-owner-source-sdk-repair-v1-r-receipt.json')
+    if restart_profile=='OWNER_ATOMIC_FORWARD_V1':program=program.replace('n01-owner-source-restart-v1-r-receipt.json','n01-owner-source-atomic-v4-r-receipt.json')
     program=program.replace('nexus.g3.n01.public-review-r-observation.v1','nexus.g3.n01.owner-source-r-observation.v1')
     program=program.replace('CONDITIONAL_PUBLIC_REVIEW_RETAIN','CONDITIONAL_OWNER_SOURCE_RETAIN')
     program=program.replace('PUBLIC_REVIEW_INDEPENDENTLY_RETAINED','OWNER_SOURCE_RECOVERY_INDEPENDENTLY_RETAINED')

@@ -43,7 +43,7 @@ def pins(generation=1):
 
 def enrollment_pins(value):
     generation=value['review_generation']
-    selected=atomic_pins() if type(generation) is int and generation==3 else pins(generation)
+    selected=(atomic_pins() if generation==3 else current_atomic_pins()) if type(generation) is int and generation in (3,4) else pins(generation)
     require(type(value['application_generation']) is int and value['application_generation']==1
         and value['review_package_sha256']==selected.package_sha256
         and value['review_acceptance_sha256']==selected.acceptance_sha256)
@@ -65,8 +65,23 @@ def select_pins(generation=1,*,restart_profile=None):
     return pins(generation)
 
 
+def current_atomic_pins():
+    """Separate exact v4 approval; never transfers the expired v3 approval."""
+    return ReviewPins(4,'01301b7b9652b2d54bb85402b484b9a0f519a5de311b53879e86e803ee9f315e',
+        'c01f6c6e8a5e08cd9b21ffc04746cbe485eff96b9ed4022e3a84018acc842fb0',
+        custody.APPROVALS+'public-pin-owner-review-atomic-20261013-v4/',1791870300000,1791877500000)
+
+
+def current_pins(generation=1,*,restart_profile=None):
+    """Current v4 selector; historical select_pins remains unchanged."""
+    if type(generation) is int and generation==4:
+        require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
+        return current_atomic_pins()
+    return select_pins(generation,restart_profile=restart_profile)
+
+
 def require_enrollment_profile(selected,restart_profile):
-    if selected.generation==3:require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
+    if selected.generation in (3,4):require(restart_profile=='OWNER_ATOMIC_FORWARD_V1')
     else:require(selected.generation==1 or restart_profile in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'))
 
 
@@ -93,6 +108,8 @@ class PublicReview:
             if self.package_sha256==selected.package_sha256:return selected
         selected=atomic_pins()
         if self.package_sha256==selected.package_sha256:return selected
+        selected=current_atomic_pins()
+        if self.package_sha256==selected.package_sha256:return selected
         raise ValueError('N01_PUBLIC_REVIEW_DENY')
 
     @property
@@ -105,7 +122,7 @@ class PublicReview:
 def verify_review(proposal,acceptance,*,now_ms,review_generation=1,restart_profile=None):
     """Exact bytes/interval only; caller must prove independent custody origin."""
     try:
-        selected=select_pins(review_generation,restart_profile=restart_profile)
+        selected=current_pins(review_generation,restart_profile=restart_profile)
         PACKAGE_SHA,ACCEPTANCE_SHA=selected.package_sha256,selected.acceptance_sha256
         FROM_MS,UNTIL_MS=selected.valid_from_ms,selected.valid_until_ms
         require(type(proposal) is bytes and type(acceptance) is bytes
@@ -137,7 +154,7 @@ def read_protected_review(client,storage_registration,*,now_ms,review_generation
     historical review extension, runtime/source registration or authority.
     """
     try:
-        selected=select_pins(review_generation,restart_profile=restart_profile)
+        selected=current_pins(review_generation,restart_profile=restart_profile)
         PREFIX,FROM_MS,UNTIL_MS=selected.prefix,selected.valid_from_ms,selected.valid_until_ms
         require(type(storage_registration) is custody.Registration and storage_registration.generation==2
                 and storage_registration.config_sha256==CONFIG)

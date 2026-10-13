@@ -77,7 +77,7 @@ finally:
 
 
 def build(destination,*,review_generation=1,restart_profile=None):
-    selected=review.select_pins(review_generation,restart_profile=restart_profile)
+    selected=review.current_pins(review_generation,restart_profile=restart_profile)
     PACKAGE_SHA,ACCEPTANCE_SHA,PREFIX=selected.package_sha256,selected.acceptance_sha256,selected.prefix
     names=('nexus-production-n01-pending-public-pin-review-v1.json',
            'nexus-production-n01-public-pin-owner-acceptance-v1.json')
@@ -85,6 +85,8 @@ def build(destination,*,review_generation=1,restart_profile=None):
         'nexus-production-n01-public-pin-owner-acceptance-sdk-repair-v2.json')
     if review_generation==3:names=('nexus-production-n01-pending-public-pin-review-atomic-v3.json',
         'nexus-production-n01-public-pin-owner-acceptance-atomic-v3.json')
+    if review_generation==4:names=('nexus-production-n01-pending-public-pin-review-atomic-v4.json',
+        'nexus-production-n01-public-pin-owner-acceptance-atomic-v4.json')
     raws=tuple(codec.canonical(codec.decode((ROOT/'research'/name).read_bytes().rstrip(b'\n'))) for name in names)
     if tuple(map(codec.digest,raws))!=(PACKAGE_SHA,ACCEPTANCE_SHA):raise ValueError('PUBLIC_REVIEW_PACKAGE_CHANGED')
     payload={PREFIX+'proposal.json':raws[0].decode(),PREFIX+'acceptance.json':raws[1].decode()}
@@ -95,6 +97,7 @@ def build(destination,*,review_generation=1,restart_profile=None):
     if review_generation>=2:
         program=program.replace('1791762711502',str(selected.valid_from_ms)).replace('1791791511502',str(selected.valid_until_ms))
         receipt='n01-public-review-atomic-v3-r-receipt.json' if review_generation==3 else 'n01-public-review-sdk-repair-v2-r-receipt.json'
+        if review_generation==4:receipt='n01-public-review-atomic-v4-r-receipt.json'
         program=program.replace('n01-public-review-r-receipt.json',receipt)
     destination.write_text(setup+program,encoding='utf-8',newline='\n')
     return dict(script_sha256=hashlib.sha256(destination.read_bytes()).hexdigest(),

@@ -18,7 +18,7 @@ OWNER_MODULES=('ash/g3_n01_native_transport.py','ash/g3_n01_membership_custody.p
 
 def build(destination,*,delivery_email_sha256,transport_revision=1,restart_profile=None,review_generation=1):
     from ash import g3_n01_public_review as review
-    selected=review.select_pins(review_generation,restart_profile=restart_profile)
+    selected=review.current_pins(review_generation,restart_profile=restart_profile)
     if review_generation==2 and restart_profile not in ('OWNER_SDK_REPAIR_FORWARD_V1','OWNER_ATOMIC_FORWARD_V1'):raise ValueError('N01_REVIEW_PROFILE_DENY')
     codec.old.check_type(delivery_email_sha256,'h')
     if type(transport_revision) is not int or transport_revision not in (1,2,3):raise ValueError('N01_TRANSPORT_REVISION_DENY')

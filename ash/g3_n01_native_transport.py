@@ -43,7 +43,7 @@ class NativeTransport:
         from botocore import UNSIGNED
         require(type(native_header) is str and native_header.isascii() and 0<len(native_header)<=16384)
         self.__clients=[];self.__ddb=None;self.__s3=None;self.__write=False;self.retired=False
-        self.__review=review.select_pins(review_generation,restart_profile=review_profile)
+        self.__review=review.current_pins(review_generation,restart_profile=review_profile)
         self.sts_attempts=0
         cfg=Config(retries={'total_max_attempts':1},connect_timeout=5,read_timeout=10)
         unsigned=Config(signature_version=UNSIGNED,retries={'total_max_attempts':1},connect_timeout=5,read_timeout=10)
