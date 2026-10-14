@@ -1543,6 +1543,10 @@
     "bytes": 11542,
     "sha256": "a4a7f719a92cee0cfb3071715d114a8c083d03694d2c3c7befbb56e41ebbf731"
   },
+  "docs/nexus-g4-final-acceptance-freeze-v1.md": {
+    "bytes": 11169,
+    "sha256": "2933b069d53f3ef074d796be50dba8d05e08e4aa11c5fc0ac440d5433189f911"
+  },
   "docs/nexus-g4-local-workflow-qualification-v1.md": {
     "bytes": 11343,
     "sha256": "1f592cf86a4a616d0d6f9d73b5ce15decaa7061a7c20d83a6ed27ec65d4b0591"
@@ -2150,6 +2154,10 @@
   "research/nexus-g3-n01-research-hold-freeze-v1.json": {
     "bytes": 211685,
     "sha256": "d37d0595d1d82f9e6d7067a822bb7975f9093e1702670cb8d1bdee948d7aa10b"
+  },
+  "research/nexus-g4-final-acceptance-audit-v1.json": {
+    "bytes": 6673,
+    "sha256": "b9981ed74f984e76f0b13a3698685430317656dd7ae6422fd275d0e41aadd916"
   },
   "research/nexus-g4-local-adversarial-evidence-v1.json": {
     "bytes": 3421,

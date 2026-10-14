@@ -1,0 +1,137 @@
+{
+  "schema": "nexus.g4.final-acceptance-audit.v1",
+  "timestamp_utc": "2026-10-14T04:13:28.306805+00:00",
+  "qualified_development_commit": "52d77560fc99d45936e3b253f6131449919bd088",
+  "roadmap_tag": "nexus-roadmap-v2-final",
+  "roadmap_commit": "f92b96ea01b8e32dac8bc1d51819bf0c58d55659",
+  "roadmap_sha256": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8",
+  "readbacks": {
+    "website": {
+      "status": "LOCAL_ARTIFACT_AND_EVIDENCE_VERIFIED",
+      "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+      "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+      "files_reopened": 11,
+      "checks_preserved": [
+        "accessibility",
+        "artifact_inspection",
+        "boundary",
+        "consumer_regression",
+        "core_html_check",
+        "interaction"
+      ]
+    },
+    "source_backed_report": {
+      "status": "LOCAL_ARTIFACT_AND_EVIDENCE_VERIFIED",
+      "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+      "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+      "files_reopened": 10,
+      "checks_preserved": [
+        "artifact_inspection",
+        "calculation",
+        "render",
+        "source_claim",
+        "uncertainty"
+      ]
+    }
+  },
+  "baseline_manifest_entries_unchanged": 720,
+  "qualified_manifest_entries": 746,
+  "qualified_manifest_sha256": "1e513881e87918efab6efe7aee9fe174473244332566e01ff40d1eed62cd47ac",
+  "first_sweep_log_and_retest_hashes": {
+    "focused-regression.log": "c7d3efa2452eade58c110d6816f898747bcea66d80871865eaefe470e2fb7d59",
+    "full-regression.log": "18e8370d92a46910fd0408bff95a75df4a26abaedcc34e51dfee0471542a7c79",
+    "environment-rerun-v2.log": "9e03c469da7110bdbd825e4e09f6cc2ea2ddce3a00ace5749fa2e2699f7632cf",
+    "additional-environment-rerun-v2.log": "a628736bf336af22c2c221093c46e857fadbf6a5722fa910f0f36fae8a9d1e97",
+    "library-environment-rerun-v2.log": "6cb17222556a04a7d4eaa5f5c835e4ac648cebb147b93fbffbfbf1ced0bf3e07"
+  },
+  "failed_first_sweep_unique_cases": 14,
+  "exact_same_failed_cases_retested_pass": true,
+  "effective_unique_coverage": {
+    "total": 1529,
+    "pass": 1525,
+    "skip": 4,
+    "fail": 0,
+    "error": 0,
+    "classification": "COMPLETE_DISCOVERY_WITH_CLASSIFIED_ENVIRONMENT_RETESTS",
+    "single_green_full_run": false
+  },
+  "package_sha256": "df7f3756baecf0633e6ebdf42fc53d417f72de43ffa0adf25a7a5d6de7573bf5",
+  "package_members": 260,
+  "package_reproducible": true,
+  "protected_tag_objects": [
+    "refs/tags/desktop-plugin-final 2b4cf9f3a2f9a331fd56ebe578ab9470ba8385b1",
+    "refs/tags/nexus-0.1.0-rc.1 a9e8a1308780d0236acbf569aaf257fbdfac13cc",
+    "refs/tags/nexus-0.1.0-rc.2 d56985a2d0d59c8bee7607a50f011931905928e9",
+    "refs/tags/nexus-0.1.0-rc.3 564ff1566cb5087c954eeddfa19a765f88bec8c8",
+    "refs/tags/nexus-0.1.0-rc.4 e87c704b1180b1b917585db91714096d375616a8",
+    "refs/tags/nexus-0.1.0-rc.5 8cae4b14dfc358938341702e8f12112f2d112760",
+    "refs/tags/nexus-0.1.0-rc.6 56fbbdf79c2219c57ce186a14eec165fa1e46133",
+    "refs/tags/nexus-g3-n01-research-hold-v1 e02d55be63d2a834bb26e273c8b327d61404547a",
+    "refs/tags/nexus-roadmap-v2-final 61facbdd6445daad7358457488381a4fa64bea7a",
+    "refs/tags/nexus-v2-g1-final 09f1524f6d0923750823ba716b0dd20438499cc6",
+    "refs/tags/post-r5-runtime-integration-slice1-final 3fe8bd9e23845ea3fe83f7641b77a40c6acdb6e1",
+    "refs/tags/post-r5-runtime-integration-slice2-final 85fe73e21c6f0d8337d3e155df56445ed0f3e724",
+    "refs/tags/post-r5-runtime-integration-slice3a-final 5b867bc0802515a13017e7712e318ae0ab35c066",
+    "refs/tags/post-r5-runtime-integration-slice3b-final 18f38c4383d620ddbe830b6d6ccd0c4ffc83aeae",
+    "refs/tags/post-r5-runtime-integration-slice3c-final f24e3538120019cbcef100d233edb24ca9ec383d",
+    "refs/tags/runtime-r1-final ab0e3c197d364ef654c3642f6b579dddbc35bafe",
+    "refs/tags/runtime-r2-final 0244bc0ffaeb36bb0d184ccc56ee3b5ec6aed5f4",
+    "refs/tags/runtime-r3-final f2a606631af6dd89e931509b7a5d9c808ea8677a",
+    "refs/tags/runtime-r5-final e5532a08ac679c7c6cf4b4bbb76be18e702504ce",
+    "refs/tags/v1.1-final 98cb130e0fa9fae0bf6231505f2c4dc9d62087c3",
+    "refs/tags/v1.2-final 1bd65384a153d30e91c750cbb56600fadcd2386c"
+  ],
+  "g2": "UNCHANGED_ACCEPTED_COMPLETED_FROZEN_MANAGED_SCOPE",
+  "g3_n01": "UNCHANGED_HOLD_OPTIONAL_HIGH_ASSURANCE_RESEARCH",
+  "g6": "UNCHANGED_PREPARATION_FINAL_QUALIFICATION_NOT_STARTED",
+  "production_adapter": "DENY",
+  "real_admission": "NO",
+  "historical_evidence_mutated": false,
+  "pre_freeze_audit_sha256": "45ce7fa968fe960e5e464ed7bff27724e6ebbf77a2206a17e10b95fdfd11e037",
+  "decision": "COMPLETED_FROZEN_ORIGINAL_G4_TRUSTED_LOCAL_HOST_SCOPE",
+  "final_tag": "nexus-v2-g4-final",
+  "acceptance_commit_binding": "Peeled final annotated tag; annotation records exact acceptance commit and MANIFEST digest.",
+  "owner_acceptance": {
+    "source": "CURRENT_EXPLICIT_OWNER_G4_FINAL_ACCEPTANCE_AUDIT_AND_FREEZE_INSTRUCTION",
+    "subject": "52d77560fc99d45936e3b253f6131449919bd088",
+    "condition": "ALL_ORIGINAL_MANDATORY_G4_CRITERIA_PROVEN",
+    "condition_satisfied": true,
+    "authority_scope": "G4_MILESTONE_DOCUMENTARY_ACCEPTANCE_PUSH_AND_TAG_ONLY",
+    "production_authority": false
+  },
+  "original_g4_mandatory_criteria_outstanding": [],
+  "g4_pack_adversarial_results": {
+    "website": {
+      "pass": 8,
+      "fail": 0
+    },
+    "source_backed_report": {
+      "pass": 8,
+      "fail": 0
+    },
+    "record": "research/nexus-g4-local-adversarial-evidence-v1.json"
+  },
+  "audit_regression_recheck": {
+    "command": "python -m unittest tests.test_g4_local_qualification tests.test_g4_contracts tests.test_g4_host_adapter -q",
+    "total": 49,
+    "pass": 49,
+    "skip": 0,
+    "fail": 0,
+    "error": 0,
+    "adds_to_unique_test_total": false
+  },
+  "full_regression_repeated_for_documentation_only_freeze": false,
+  "independent_production_security_review": "NOT_CLAIMED_G6_OUTSIDE_THIS_G4_FREEZE",
+  "historical_environment_skips": [
+    "Three embedded-runtime inputs unavailable",
+    "One Windows symlink fixture privilege unavailable"
+  ],
+  "retained_limitations": [
+    "Trusted same-user local Host only; not hostile-writer authenticity",
+    "Existing Chrome only; no cross-engine certification",
+    "Keyboard/semantic/contrast checks do not claim full screen-reader certification",
+    "No remote deployment, backend, authentication or production-admission qualification",
+    "No new G6 comparative value, billing settlement or final independent production review",
+    "Historical task validity and remaining budgets are not renewed"
+  ]
+}
