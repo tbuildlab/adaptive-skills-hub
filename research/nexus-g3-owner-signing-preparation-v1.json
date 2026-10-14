@@ -1,0 +1,92 @@
+{
+  "schema": "nexus.g3.owner-signing-preparation.v1",
+  "base_commit": "9b45a35bb11b490f27deed1e2e745e4faf71a2b6",
+  "state": "WAITING_FOR_THREE_NONDELEGABLE_HUMAN_ACTIONS",
+  "procedure_preparation_authorized": true,
+  "approved_proposal_sha256": "6a9fb49a874ced10ba0ea6a4aea4cd9c5d48e77c1d6f0f448551d3b7edf4504c",
+  "payload_file": "research/nexus-g3-owner-signing-decision-v1.json",
+  "external_payload": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-owner-signing-v1-20261014\\owner-approval.json",
+  "payload_sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508",
+  "subject_id": "nexus.g3.subject.v1:2a20b4b3b2d57f35832df83737c3a60896b9c8a2df9dd5fd116828f03ead222e",
+  "component_sha256": "3d86aa2dd7d4a2dae5d9233fa67b08285a2562c4ad11b4ef579df08ab749ef56",
+  "config_sha256": "6bf8495ab7c2c150302d4ad4e1f77ec708b2842d55803d48caa6e75790ab28ce",
+  "packet_directory": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-owner-signing-v1-20261014",
+  "signature_exists": false,
+  "key_generated_by_assistant": false,
+  "registration_performed": false,
+  "effective_at_utc": "2026-10-14T05:37:56Z",
+  "expires_at_utc_exclusive": "2026-10-21T05:37:56Z",
+  "dedicated_key_algorithm": "Ed25519",
+  "private_key_generation_by_assistant": false,
+  "private_key_read_by_assistant": false,
+  "signing_or_ssh_agent_called_by_assistant": false,
+  "public_key_value": "NOT_CREATED_BY_ASSISTANT_WAITING_FOR_OWNER",
+  "GitHub_registration_by_assistant": false,
+  "signature_by_assistant": false,
+  "capability_registration_performed": false,
+  "native_OpenSSH_observed_version": "OpenSSH_for_Windows_9.5p2",
+  "native_human_script_syntax": "PASS_PARSE_ONLY_NOT_EXECUTED",
+  "affected_regression": {
+    "total": 120,
+    "pass": 120,
+    "skip": 0,
+    "fail": 0,
+    "error": 0,
+    "new_tests": 13,
+    "live_owner_signature_tested": false,
+    "cryptographic_success_in_tests": "EXPLICITLY_MOCKED_NOT_AUTHORITY",
+    "log_sha256": "60d4af773ed81d424b76573f9af30199347c1b79720dc87a084f66bc16159bae",
+    "command": [
+      "D:\\DevTools\\NexusR2Python\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "tests.test_g3_owner_signing_procedure",
+      "tests.test_g3_authorization",
+      "tests.test_g3_host_approval_bridge",
+      "tests.test_core_host_loop",
+      "tests.test_g4_contracts",
+      "tests.test_g4_host_adapter",
+      "tests.test_g4_local_qualification",
+      "-q"
+    ]
+  },
+  "earlier_focused_pass_counts_retained_not_added": [
+    74,
+    119
+  ],
+  "full_repository_regression_newly_claimed": false,
+  "packet_public_files": {
+    "owner-approval.json": {
+      "bytes": 3872,
+      "sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508"
+    },
+    "Owner-Step1-CreateKey.ps1": {
+      "bytes": 1399,
+      "sha256": "40361eaeeb834058c624fcfdaadf27190838776bceab0fb412f6c482b79803f0"
+    },
+    "Owner-Step3-Sign.ps1": {
+      "bytes": 906,
+      "sha256": "47e093031b7643b49714abe951fdf52bd3c094b51ad5b9f5130f1b0a020d6466"
+    },
+    "README-Windows11.md": {
+      "bytes": 9009,
+      "sha256": "2f79e4b6699aadf52f0d136e63e77b23e45367cfad4e7713bfe5e61592085c88"
+    },
+    "REVIEW-ONLY-DO-NOT-SIGN.json": {
+      "bytes": 4494,
+      "sha256": "298bf55a749ea1446a804ebe8050ece15848b768957ebff21fe13b48c4f8349f"
+    },
+    "Verify-After-Signing.ps1": {
+      "bytes": 420,
+      "sha256": "b39fa2bfaa69a1482a543a744472f173f4695ab35fd98da15a31cb9444801a79"
+    }
+  },
+  "existing_code_and_historical_tests_changed": false,
+  "new_code": "fixed-packet public-evidence verifier outside runtime; no registration or dispatcher",
+  "g2_g4": "UNCHANGED_FROZEN",
+  "research": "UNCHANGED_HOLD",
+  "real_admission": "NO",
+  "production_adapter": "DENY"
+}

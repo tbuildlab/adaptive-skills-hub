@@ -1451,6 +1451,10 @@
     "bytes": 8951,
     "sha256": "5d072011b0a8e152178218f951f2623b22ec85d5fb4969526b9263a5a8b1b0b9"
   },
+  "docs/nexus-g3-owner-signing-windows11-v1.md": {
+    "bytes": 9009,
+    "sha256": "2f79e4b6699aadf52f0d136e63e77b23e45367cfad4e7713bfe5e61592085c88"
+  },
   "docs/nexus-g3-return-checkpoint-v1.md": {
     "bytes": 5728,
     "sha256": "6a0c4271bdeb043abd1f6867cbe2daa2290d84591bd3ae5de74595448f5b8ee3"
@@ -2171,6 +2175,14 @@
     "bytes": 10096,
     "sha256": "9f14570062565c5079d9ee7c7b70ae40de4a5d6ad7658a152c2726e2dea25729"
   },
+  "research/nexus-g3-owner-signing-decision-v1.json": {
+    "bytes": 3872,
+    "sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508"
+  },
+  "research/nexus-g3-owner-signing-preparation-v1.json": {
+    "bytes": 3728,
+    "sha256": "52f9b8a97394124f45fe4e0b7e5d5e8a224f145f011d2b03b4a1f16606884d13"
+  },
   "research/nexus-g4-final-acceptance-audit-v1.json": {
     "bytes": 6673,
     "sha256": "b9981ed74f984e76f0b13a3698685430317656dd7ae6422fd275d0e41aadd916"
@@ -2603,6 +2615,10 @@
     "bytes": 13328,
     "sha256": "f0de915950381eedd343f010c5ddd3102393bdc0d5e5928cc22613b750ab93c8"
   },
+  "scripts/verify_g3_owner_signature.py": {
+    "bytes": 7669,
+    "sha256": "235162f3d79e3c2a2c5bbf5af2f28f8f3bf9a8b0675b2d83095b692b02651cfd"
+  },
   "scripts/verify_g4_local_evidence.py": {
     "bytes": 7870,
     "sha256": "552a48b70a27839805493278aca7157fbb691367576f441569b07dcbd67fa4e2"
@@ -2866,6 +2882,10 @@
   "tests/test_g3_offline_control.py": {
     "bytes": 19333,
     "sha256": "93ca0a9a46588932a741f0bb018db28a5d61961b92c2c918f485ffcf7f379f27"
+  },
+  "tests/test_g3_owner_signing_procedure.py": {
+    "bytes": 5074,
+    "sha256": "e0d85c4b06e4d3cefa5bfb4ad0bad9e8d586d4c6e9c141b552f638257777361a"
   },
   "tests/test_g3_primary_ledger.py": {
     "bytes": 9195,
