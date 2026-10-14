@@ -1,0 +1,126 @@
+{
+  "basis": "ACTUAL_TRUSTED_LOCAL_CORE_EXECUTION_NOT_MODEL_QUALIFICATION",
+  "cases": [
+    {
+      "base_commit": "3367072c8ccdc61ff80191b3cf5bf72892773db2",
+      "blocker": null,
+      "checks_sha256": "52e959085346900718c35eb7681ce99f97c8643730015d68f721e6ef78e2ac5c",
+      "commands_used": 2,
+      "dirty_input": "?? unexamined-note.txt",
+      "frozen_original_unchanged": true,
+      "input_sha256": "eebeaa9c20e6b19b6994dc74e97239dd79c9d07c635d15302e417ee44da2f613",
+      "name": "B_existing_repository_exact_change",
+      "observed_changed_paths": [
+        "index.html"
+      ],
+      "output_sha256": "71e264077c6b9eb4f789408d9a029023808d9fd5e89dfe371e7b2b4c0a8580fc",
+      "receipt_basis": "EMBEDDED_TASK_STATE",
+      "receipt_sha256": "0b2610de2c04e6ad66b3f22f1be2c96a95959ce54e21bd19017f69be71418945",
+      "retained_state": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\observed-state-00.json",
+      "shared_consumers": [
+        "workflows.html uses the same catalog.js/site.css; both unchanged in frozen source"
+      ],
+      "state_sha256": "fece507365b7896bf1aa33df1b41a08656f865d75aa895215757c4b08a7935b2",
+      "status": "completed",
+      "task_directory": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\website-copy\\.nexus\\tasks\\01880cc39ca44c37bfd729f28d363ad5\\execution",
+      "unexamined": [
+        "Browser interaction after this text-only copy edit; frozen G4 browser evidence is separate",
+        "unexamined-note.txt",
+        "External deployment"
+      ]
+    },
+    {
+      "blocker": null,
+      "commands_used": 2,
+      "inventory_sha256": "bc011681afb3b011e75e6b5170bb14dbdb600b8f0aa116fbb685c83aa2a143ac",
+      "name": "D_pause_after_verified_effect",
+      "receipt_basis": "EMBEDDED_TASK_STATE",
+      "receipt_sha256": "ae73f9ffa8ff35921a15e1f4476c9b1133c2dfe64a4bf6088a0292a3c17707b0",
+      "retained_state": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\observed-state-01.json",
+      "state_sha256": "fd3bd09c693073efd2a4f3d093c4720e100492756107c91333a98dd46bb9eea2",
+      "status": "paused",
+      "task_directory": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\roadmap-evidence\\.nexus\\tasks\\1517225b4a8f4c1f9048fa2437b957df\\execution"
+    },
+    {
+      "artifact_sha256": "8768e49b378dd0d5afad7a02b6888867426f6023a332c6ad54ed1ba5fd7cce40",
+      "blocker": null,
+      "budgets_and_deadline_preserved": true,
+      "commands_used": 4,
+      "inventory_not_redispatched": true,
+      "name": "C_real_source_bound_report_and_D_fresh_process_resume",
+      "receipt_basis": "EMBEDDED_TASK_STATE",
+      "receipt_sha256": "c3153cccb4d8602a971f60d2bf9fa43bed9ac7a94e9da3c2c51ee07c10618437",
+      "report_path": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\roadmap-evidence\\nexus-results\\1517225b4a8f4c1f9048fa2437b957df\\summary.md",
+      "retained_state": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\observed-state-02.json",
+      "semantic_claims": "Only file metadata and explicitly quoted first lines; no invented interpretation",
+      "sources": [
+        {
+          "bytes": 68433,
+          "lines": 685,
+          "path": "nexus-roadmap-v2.md",
+          "sha256": "12161871cff7b5de955a0d66b8caf809bae89216fe4e2d3190cf053ac0de930e"
+        },
+        {
+          "bytes": 9914,
+          "lines": 121,
+          "path": "nexus-g3-original-final-acceptance-freeze-v1.md",
+          "sha256": "fcfa48e5ee909fc821fb4baf4f44b9a594ae86f75b1c591b86f993e6a32a9567"
+        },
+        {
+          "bytes": 11169,
+          "lines": 103,
+          "path": "nexus-g4-final-acceptance-freeze-v1.md",
+          "sha256": "2933b069d53f3ef074d796be50dba8d05e08e4aa11c5fc0ac440d5433189f911"
+        }
+      ],
+      "state_sha256": "4ebd31405ad165761b35680983257658b90969bf49e1dfa1fcae0634cddbf830",
+      "status": "completed",
+      "task_directory": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\roadmap-evidence\\.nexus\\tasks\\1517225b4a8f4c1f9048fa2437b957df\\execution"
+    },
+    {
+      "blocker": "exact local catalog/plan approval required",
+      "commands_used": 0,
+      "name": "A_no_opt_in_no_effect_NOT_AUTHENTICATED_G3_APPROVAL",
+      "receipt_basis": "NOT_FINAL",
+      "receipt_sha256": null,
+      "retained_state": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\observed-state-03.json",
+      "state_sha256": "42d3121033fab96390520341a15b14006751baefb4d95f67d1c75aaefe3989d3",
+      "status": "prepared",
+      "task_directory": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\roadmap-evidence\\.nexus\\tasks\\5fd7387acfd348e4a60574d546e796d7\\execution"
+    },
+    {
+      "blocker": "approved project scope drift; no dispatch",
+      "commands_used": 0,
+      "name": "A_input_substitution_before_dispatch",
+      "receipt_basis": "EMBEDDED_TASK_STATE",
+      "receipt_sha256": "6225e9df2bf0919d5d48edb27e1d4a9dd4f57b9a5c3cf6e36e76e3b7d3758c41",
+      "retained_state": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\observed-state-04.json",
+      "state_sha256": "fbb7390d7678d05221b9895dd271dcc7431f93a42d374054093d4bc879473000",
+      "status": "blocked",
+      "task_directory": "D:\\chatgpt\\安装skills\\nexus-core-g4-domain-qualification\\output\\g6-final\\local-host-attempt-02\\roadmap-evidence\\.nexus\\tasks\\5fd7387acfd348e4a60574d546e796d7\\execution"
+    }
+  ],
+  "dispatch_authority": "none",
+  "finished_utc": "2026-10-14T09:26:45.475214+00:00",
+  "independent_reviewer": "NOT_PERFORMED",
+  "logical_case_count": 5,
+  "real_admission": "NO",
+  "retained_attempts": [
+    {
+      "attempt": 1,
+      "harness_sha256": "bac1de441853867418c70e0b438692caaeb1ba56a8b2c2d458668fb53847af64",
+      "limitation": "Looked for a nonexistent receipt.json; actual Core receipt is embedded in task.json. Null was retained, never promoted.",
+      "qualification_sha256": "d22810dae233413fa14aa6d7ba38bad1f5ac27389edf79424577a426b25bf14f",
+      "status": "PASS_5_LOCAL_CASES_WITH_RECEIPT_EXPORT_LIMITATION"
+    },
+    {
+      "attempt": 2,
+      "harness_sha256": "fff4ec7e025ab9882ee08a59db8e1c5c935a65ee88b30ff1969e419b766211ac",
+      "qualification_sha256": "e9119166697478f2e2681275ba558aac58d646830875085c84e749047fda8b9e",
+      "status": "PASS_5_LOCAL_CASES_WITH_EMBEDDED_RECEIPTS_AND_PHASE_SNAPSHOTS"
+    }
+  ],
+  "schema": "nexus.g6.local-host-qualification.v1",
+  "started_utc": "2026-10-14T09:26:41.420814+00:00",
+  "status": "PASS_BOUNDED_LOCAL_CASES_ONLY"
+}

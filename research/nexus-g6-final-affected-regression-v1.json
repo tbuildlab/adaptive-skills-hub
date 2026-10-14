@@ -1,0 +1,22 @@
+{
+  "basis": "Fresh affected cumulative contract/Core regression; not new G6 live model qualification.",
+  "error": [],
+  "fail": [],
+  "historical_tests_modified": false,
+  "log_sha256": "5a041f3c92542c51555fae957016ec691d576ba6da6d9c6385839ae9830b35d1",
+  "modules": [
+    "tests.test_g6_contracts",
+    "tests.test_core",
+    "tests.test_core_profiles",
+    "tests.test_g1_profiles",
+    "tests.test_g1_selection",
+    "tests.test_g4_contracts",
+    "tests.test_g4_host_adapter",
+    "tests.test_g4_local_qualification"
+  ],
+  "pass": 173,
+  "real_admission": "NO",
+  "seconds": 180.094,
+  "skip": [],
+  "total": 173
+}

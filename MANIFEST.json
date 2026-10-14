@@ -1591,6 +1591,14 @@
     "bytes": 8193,
     "sha256": "ae320cdf9902b15932016553b0c6116e81ee4c7fc2578d5ea5c243d0a727ad29"
   },
+  "docs/nexus-g6-final-qualification-progress-v1.md": {
+    "bytes": 9633,
+    "sha256": "166a686960ed0a698ea6997184936faa4c265e81ff24691d60d50e0aa61c9aa0"
+  },
+  "docs/nexus-g6-local-model-intake-dependency-proposal-v1.md": {
+    "bytes": 5898,
+    "sha256": "34a0bc7b995d43e74e2b8dc2ca1c66a7273943f07c8621c0cf949edc04262226"
+  },
   "docs/nexus-g6-preparation-checkpoint-v1.md": {
     "bytes": 7201,
     "sha256": "0735f28fd2fcf548c14d9ddf2cd8e06a26ace2b35be9d05c113aa2d4c4a8f4f1"
@@ -2322,6 +2330,30 @@
   "research/nexus-g4-local-website-packet-v1.json": {
     "bytes": 17098,
     "sha256": "733668b5fb774484d0cbcdc0fb4fd888f5c451e17faaaf4b0615ded1f9b8268b"
+  },
+  "research/nexus-g6-final-affected-regression-v1.json": {
+    "bytes": 622,
+    "sha256": "207381841af9cf23bfab76e4fd88f7c25df87c0b184a81af99254a43fc6fdd84"
+  },
+  "research/nexus-g6-final-qualification-status-v1.json": {
+    "bytes": 5441,
+    "sha256": "5eb23792926bceb0ff4962f5aac85db5947dbc88e092d4b3fbe6595ddba07bf1"
+  },
+  "research/nexus-g6-local-host-qualification-harness-v1.py": {
+    "bytes": 10046,
+    "sha256": "fff4ec7e025ab9882ee08a59db8e1c5c935a65ee88b30ff1969e419b766211ac"
+  },
+  "research/nexus-g6-local-host-qualification-result-v1.json": {
+    "bytes": 6954,
+    "sha256": "567527b4232da76bccfede932684f06b72ceab4652922d9d351556db7ea1390b"
+  },
+  "research/nexus-g6-local-model-intake-dependency-proposal-v1.json": {
+    "bytes": 3523,
+    "sha256": "2cd5dbfa12dccafc693999960a7e7fb70ca4d1638479af1664a7ee715e3b6af3"
+  },
+  "research/nexus-g6-local-runtime-survey-v1.json": {
+    "bytes": 3622,
+    "sha256": "b00271673d4ec0870bf272d9998e4bc9aca83373147908dbdc4c96da346843c3"
   },
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,

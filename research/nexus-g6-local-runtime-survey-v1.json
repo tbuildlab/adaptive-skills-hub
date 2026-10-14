@@ -1,0 +1,107 @@
+{
+  "basis": "Bounded public metadata and local tool/model inventory; not exhaustive machine search.",
+  "candidate": {
+    "model": {
+      "bytes": 639446688,
+      "file": "Qwen3-0.6B-Q8_0.gguf",
+      "license_metadata": "apache-2.0",
+      "local_bytes_verified": false,
+      "repository": "Qwen/Qwen3-0.6B-GGUF",
+      "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+      "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+      "url": "https://huggingface.co/Qwen/Qwen3-0.6B-GGUF/resolve/23749fefcc72300e3a2ad315e1317431b06b590a/Qwen3-0.6B-Q8_0.gguf"
+    },
+    "runtime": {
+      "archive_sha256": "8708a7b81842333927f6377ac3f17ff8bba4dbe1ee0cf28dfd5e7a32e3a46b38",
+      "bytes": 19518618,
+      "tag": "b11609",
+      "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11609/llama-b11609-bin-win-cpu-x64.zip"
+    }
+  },
+  "docker": {
+    "client": "29.6.2",
+    "engine": "UNAVAILABLE_NAMED_PIPE_NOT_FOUND",
+    "models": "UNKNOWN_ENGINE_UNAVAILABLE_NOT_AN_EMPTY_MODEL_INVENTORY",
+    "reason_for_backend_unavailability": "UNKNOWN_NOT_DIAGNOSED_AS_MFA_LEGAL_OR_HARDWARE",
+    "startup_attempt": "Desktop CLI and inventory waits did not establish a usable engine; CLI waits interrupted, not qualification.",
+    "wsl_distributions_observed": [
+      "docker-desktop:Stopped:WSL2"
+    ]
+  },
+  "existing_milestones": "G2_G3_G4_UNCHANGED_FROZEN",
+  "existing_source_policy": {
+    "limits": {
+      "max_component_bytes": 268435456,
+      "max_expanded_bytes": 536870912,
+      "max_file_bytes": 33554432,
+      "max_input_bytes": 134217728
+    },
+    "mode": "quarantine_only",
+    "path": "config/ecosystem-source-policy.json",
+    "provider_policy": {
+      "accepted_intake_kinds": [
+        "pre_supplied_zip"
+      ],
+      "allowed_providers": [
+        "github"
+      ],
+      "archive_formats": [
+        "zip"
+      ],
+      "network_acquisition": "disabled"
+    },
+    "sha256": "270922566709cb87b90397591fbef9ba584f904f6bb3c0f69c554b3a7c15b041",
+    "sources": [
+      "bytedance/deer-flow",
+      "cft0808/edict",
+      "jnmetacode/agency-agents-zh",
+      "mattpocock/skills",
+      "msitarzewski/agency-agents",
+      "openai/codex",
+      "shubhamsaboo/awesome-llm-apps",
+      "tencentcloud/tencentdb-agent-memory"
+    ]
+  },
+  "loopback_model_endpoints_unavailable": [
+    "http://127.0.0.1:11434/api/tags",
+    "http://127.0.0.1:1234/v1/models"
+  ],
+  "model_downloaded": false,
+  "new_candidate_coverage": "OUTSIDE_EXISTING_SOURCE_AND_ARTIFACT_FORMAT_SIZE_COVERAGE",
+  "new_paid_infrastructure": false,
+  "observed_utc": "2026-10-14T09:30:19.288349+00:00",
+  "path_runtime_commands_absent": [
+    "ollama",
+    "lms",
+    "llama-server",
+    "llama-cli",
+    "llama-completion",
+    "podman"
+  ],
+  "private_keys_or_credentials_inspected": false,
+  "public_model_directories_absent": [
+    "~/.ollama/models/manifests",
+    "~/.cache/huggingface/hub",
+    "~/.cache/lm-studio/models",
+    "~/.lmstudio/models"
+  ],
+  "python_libraries_absent": [
+    "torch",
+    "transformers",
+    "llama_cpp",
+    "onnxruntime",
+    "gpt4all"
+  ],
+  "real_admission": "NO",
+  "runtime_archive_review": {
+    "disposition": "QUARANTINE_STATIC_OBSERVATION_ONLY; archive membership is not security or privacy qualification",
+    "downloaded_and_sha256_matched": true,
+    "executed": false,
+    "extracted": false,
+    "member_count": 51,
+    "member_manifest_sha256": "99be2fbbcaf4bb8aef8fdd1332fb507a9e368a1230d66b1c27a5e93b9848d6b7",
+    "network_or_rpc_tools_present": true
+  },
+  "runtime_executed": false,
+  "schema": "nexus.g6.local-runtime-survey.v1"
+}

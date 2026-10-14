@@ -1,0 +1,119 @@
+{
+  "G2": "UNCHANGED_COMPLETED_FROZEN",
+  "G3": "UNCHANGED_COMPLETED_FROZEN",
+  "G3_N01": "UNCHANGED_OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "G4": "UNCHANGED_COMPLETED_FROZEN",
+  "G5": "DISABLED_NOT_REQUIRED",
+  "G6_frozen": false,
+  "affected_regression": {
+    "basis": "Fresh affected cumulative contract/Core regression; not new G6 live model qualification.",
+    "error": [],
+    "fail": [],
+    "historical_tests_modified": false,
+    "log_sha256": "5a041f3c92542c51555fae957016ec691d576ba6da6d9c6385839ae9830b35d1",
+    "modules": [
+      "tests.test_g6_contracts",
+      "tests.test_core",
+      "tests.test_core_profiles",
+      "tests.test_g1_profiles",
+      "tests.test_g1_selection",
+      "tests.test_g4_contracts",
+      "tests.test_g4_host_adapter",
+      "tests.test_g4_local_qualification"
+    ],
+    "pass": 173,
+    "real_admission": "NO",
+    "seconds": 180.094,
+    "skip": [],
+    "total": 173
+  },
+  "baseline_commit": "3da89f3065d32b825f1abf27cb7b418a16366111",
+  "branch": "nexus-v2-g6-final-qualification",
+  "existing_full_coverage": {
+    "basis": "Existing reconciled full coverage, not a fresh G6 monolithic sweep. Product source/tests unchanged.",
+    "historical_skip": 4,
+    "pass": 1553,
+    "sha256": "0d9cc244fa0c28764a4eb2e8789b8cbfcf1a3808209b544674381998e1f2d95a",
+    "source": "research/nexus-g3-original-final-regression-v1.json",
+    "unique": 1557,
+    "unresolved_error": 0,
+    "unresolved_fail": 0
+  },
+  "final_owner_artifact_acceptance": "NOT_REQUESTED_NOT_READY",
+  "first_non_delegable_dependency": {
+    "kind": "ACCEPTED_SOURCE_COVERAGE_BOUNDARY",
+    "proposal": "research/nexus-g6-local-model-intake-dependency-proposal-v1.json",
+    "reason": "General Autopilot task authority and the retired exact G3 signature cannot expand frozen source coverage or approve unrelated components.",
+    "sha256": "2cd5dbfa12dccafc693999960a7e7fb70ca4d1638479af1664a7ee715e3b6af3"
+  },
+  "independent_G6_review": "NOT_PERFORMED_NOT_INFERRED_FROM_G3_REVIEW",
+  "new_files_role": "Evidence harness, qualification/readiness records and dependency proposal only.",
+  "new_local_cases": {
+    "distinct_case_count_not_doubled": true,
+    "logical_cases": 5,
+    "purpose_of_second_attempt": "Retain phase snapshots and hash embedded actual receipts, correcting an evidence-export limitation.",
+    "successful_attempts": 2
+  },
+  "new_product_features": false,
+  "observed_utc": "2026-10-14T09:30:19.288349+00:00",
+  "production_adapter": "DENY",
+  "real_admission": "NO",
+  "remaining_after_dependency_resolution": [
+    "Qualify actual useful private execution and substitution.",
+    "Separate pilot, locked fair value protocol, then comparative measurement.",
+    "Finish native A-H/A6 binding-specific coverage and consolidated defensive review.",
+    "Independent exact-scope G6 review, final affected/full regression, exact Owner artifact acceptance, authorized release and readback."
+  ],
+  "scenarios": [
+    {
+      "evidence_and_limit": "Fresh no-opt-in/input-substitution zero-effect cases; G1/G6/Core negatives. Full native multi-binding matrix outstanding.",
+      "id": "A",
+      "status": "PARTIAL_REAL_LOCAL_AND_CONTRACT_NEGATIVES"
+    },
+    {
+      "evidence_and_limit": "Existing G4 document copied to an owner-controlled Git repository, exact one-file patch, dirty unexamined file preserved, real checker and fresh readback. No new browser interaction claimed.",
+      "id": "B",
+      "status": "PARTIAL_REAL_BOUNDED_EDIT"
+    },
+    {
+      "evidence_and_limit": "Actual metadata/source-bound report from three retained documents; exact source/artifact reopen. G4 rich report remains frozen reusable evidence.",
+      "id": "C",
+      "status": "BOUNDED_DETERMINISTIC_TASK_COMPLETED"
+    },
+    {
+      "evidence_and_limit": "Completed inventory not replayed; budget/expiry preserved. Existing Core/G2 fault-injection evidence reused, not a new external publication recovery qualification.",
+      "id": "D",
+      "status": "PARTIAL_REAL_PAUSE_FRESH_PROCESS_RESUME"
+    },
+    {
+      "evidence_and_limit": "Original G3 authenticated benign component, changed-revision rejection, terminal revocation and isolation evidence retained; no retired decision replay.",
+      "id": "E",
+      "status": "REUSE_EXACT_FROZEN_G3"
+    },
+    {
+      "evidence_and_limit": "Useful actual local/private model and a second materially different qualified configuration not established. Deterministic task completion does not substitute.",
+      "id": "F",
+      "status": "NOT_SATISFIED"
+    },
+    {
+      "evidence_and_limit": "G5 stays disabled. Closed-record rejection tests do not certify whole-Host enforced no-Agent mode.",
+      "id": "G",
+      "status": "DISABLED_CONTRACT_REJECTION_ONLY"
+    },
+    {
+      "evidence_and_limit": "Reproducible development source package is available; final exact Owner acceptance, authorized production publication and post-release identity are not yet qualified.",
+      "id": "H",
+      "status": "NOT_SATISFIED"
+    }
+  ],
+  "schema": "nexus.g6.final-qualification-progress.v1",
+  "product_source_or_existing_test_changes": false,
+  "status": "IN_PROGRESS_HOLD_NEW_EXTERNAL_CAPABILITY_SCOPE",
+  "value_experiment": {
+    "measured_value": "NOT_ESTABLISHED",
+    "native_comparator": "Not weakened; no artificial comparison used to force PASS.",
+    "pilot": "NOT_RUN",
+    "protocol": "NOT_PREREGISTERED",
+    "thresholds": "NOT_INVENTED"
+  }
+}
