@@ -1219,6 +1219,10 @@
     "bytes": 12539,
     "sha256": "5d921eef87cabacc9e6f00f8773d4ac06f77a654dc641aaa427c41348f45dcc6"
   },
+  "docs/nexus-g3-approval-origin-bootstrap-proposal-v1.md": {
+    "bytes": 10901,
+    "sha256": "cd421931c35b1e808798cd14f4d8be39dd901957007428c34cb47805607b85c9"
+  },
   "docs/nexus-g3-authorization-contracts-v1.md": {
     "bytes": 13051,
     "sha256": "eab09a8438c3bb2aa76ba22e941513c177032c608d4183a8051598c8d02f8d51"
@@ -2146,6 +2150,10 @@
   "research/nexus-ecosystem-gap-scan.json": {
     "bytes": 362161,
     "sha256": "ef77cb0e37adb4d844d5f34a07e9f66935e6f5dbfb3970168db906eed513165d"
+  },
+  "research/nexus-g3-approval-origin-bootstrap-proposal-v1.json": {
+    "bytes": 5808,
+    "sha256": "6a9fb49a874ced10ba0ea6a4aea4cd9c5d48e77c1d6f0f448551d3b7edf4504c"
   },
   "research/nexus-g3-d03-zero-cost-inventory-v1.json": {
     "bytes": 7526,
