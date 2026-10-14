@@ -255,6 +255,10 @@
     "bytes": 3113,
     "sha256": "cc404479d43fa52f3832f27b349a2ea66dee1bdc57481d11bf10ea5cb3f52311"
   },
+  "ash/g6_local_model_intake.py": {
+    "bytes": 9832,
+    "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
+  },
   "ash/managed_cli.py": {
     "bytes": 2781,
     "sha256": "8b9621be5bedaf5a90e957a0fc876f14d88fe2698426a17aff663c0de60c74a3"
@@ -370,6 +374,10 @@
   "config/ecosystem-source-policy.json": {
     "bytes": 29234,
     "sha256": "21af57051edad2a032e9603b3eedcf17bf2f498d8c29cc042ffa5763b6578b53"
+  },
+  "config/nexus-g6-local-model-intake-successor-v1.json": {
+    "bytes": 9572,
+    "sha256": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65"
   },
   "config/nexus-mcp-workspaces.example.json": {
     "bytes": 146,
@@ -1595,9 +1603,21 @@
     "bytes": 9633,
     "sha256": "166a686960ed0a698ea6997184936faa4c265e81ff24691d60d50e0aa61c9aa0"
   },
+  "docs/nexus-g6-intake-successor-checkpoint-v1.md": {
+    "bytes": 6155,
+    "sha256": "b80089c4a3182155981fc2196736d0b19b43728b7b4348c28461b3b3dde7fc1e"
+  },
   "docs/nexus-g6-local-model-intake-dependency-proposal-v1.md": {
     "bytes": 5898,
     "sha256": "34a0bc7b995d43e74e2b8dc2ca1c66a7273943f07c8621c0cf949edc04262226"
+  },
+  "docs/nexus-g6-local-model-intake-successor-v1.md": {
+    "bytes": 7526,
+    "sha256": "472ba81fba30b0f0757f11590a4db3b0ae2f4d259bb0369b64c5d9e03963c6e0"
+  },
+  "docs/nexus-g6-native-execution-readiness-hold-v1.md": {
+    "bytes": 10135,
+    "sha256": "fa6519b1752bb41a121de198581dec1b92e7d490603d7c9f78df3ccdb31b209b"
   },
   "docs/nexus-g6-preparation-checkpoint-v1.md": {
     "bytes": 7201,
@@ -2339,6 +2359,10 @@
     "bytes": 5441,
     "sha256": "5eb23792926bceb0ff4962f5aac85db5947dbc88e092d4b3fbe6595ddba07bf1"
   },
+  "research/nexus-g6-intake-successor-qualification-v1.json": {
+    "bytes": 41063,
+    "sha256": "b2c2676978ee3522e0c52207e1e72103421863ad67474465b23eabf2cb4e145e"
+  },
   "research/nexus-g6-local-host-qualification-harness-v1.py": {
     "bytes": 10046,
     "sha256": "fff4ec7e025ab9882ee08a59db8e1c5c935a65ee88b30ff1969e419b766211ac"
@@ -3054,6 +3078,10 @@
   "tests/test_g6_contracts.py": {
     "bytes": 15181,
     "sha256": "42cdff6946b6c9726b9e786158378d0be1cc35f422806234a83aa036b9d79ea2"
+  },
+  "tests/test_g6_local_model_intake.py": {
+    "bytes": 9421,
+    "sha256": "ddeadadf5df25e430545f945d438588c5bbe97dac43abb7f0188d1e683fded5b"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,
