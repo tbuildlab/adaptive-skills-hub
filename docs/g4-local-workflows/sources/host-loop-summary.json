@@ -1,0 +1,40 @@
+{
+  "schema": "nexus.g4.retained-host-loop-summary.v1",
+  "observation_date": "2026-10-14",
+  "regression": {
+    "total": 228,
+    "pass": 227,
+    "skip": 1,
+    "fail": 0,
+    "error": 0
+  },
+  "execution": {
+    "task_id": "6b7a018ca78947ddb0de1ea0219fbdd2",
+    "status": "completed",
+    "verification": "passed",
+    "commands_used": 4,
+    "max_commands": 8,
+    "budget_unit": "Host action batches, not provider spend or Git process count",
+    "git_processes": 12,
+    "changed_tracked": 0,
+    "source_files_preserved": 519,
+    "index_bytes_unchanged": true,
+    "scoped_whitespace_findings": 0,
+    "files_checked": [
+      "README.md",
+      "docs/nexus-core-alpha2-local-use-v1.md"
+    ]
+  },
+  "original_sha256": {
+    "regression": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+    "e2e_proof": "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454",
+    "receipt": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6"
+  },
+  "limitations": [
+    "One historical Windows symlink privilege skip",
+    "Two declared files; untracked-file discovery excluded",
+    "Same-user local evidence, not production authority",
+    "Two preparation-only refusals occurred before any Host action",
+    "No measured financial savings; provider billing outside scope"
+  ]
+}

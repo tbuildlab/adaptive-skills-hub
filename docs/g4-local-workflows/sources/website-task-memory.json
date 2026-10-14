@@ -1,0 +1,10 @@
+{
+  "schema": "nexus.g4.local-task-memory-entry.v1",
+  "project_id": "g4-local-website",
+  "task_id": "local-workflow-20261014",
+  "rule": "Existing Host capabilities only; G2 unchanged; production DENY; G3/N01 HOLD; no G6 final qualification.",
+  "source_ref": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+  "retention": "TASK",
+  "state": "CONFIRMED_TASK_CONSTRAINT_ONLY",
+  "dispatch_authority": "none"
+}

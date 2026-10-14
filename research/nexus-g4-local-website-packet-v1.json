@@ -1,0 +1,443 @@
+{
+  "schema": "nexus.g4.local-workflow-evidence.v1",
+  "records": {
+    "pack": {
+      "schema_version": "nexus.g4.workflow-pack.v1",
+      "binding": {
+        "workspace_id": "trusted-local-host",
+        "project_id": "g4-local-website",
+        "task_id": "local-workflow-20261014",
+        "action_id": "qualify-website",
+        "execution_id": "local-host-20261014",
+        "generation": 1,
+        "incarnation": "fresh-local-artifacts-v1",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e"
+      },
+      "pack": "website",
+      "version": "v1",
+      "applicability": [
+        "local-domain-qualification"
+      ],
+      "required_capabilities": [
+        "host-file-tools",
+        "host-browser",
+        "core-file-checks"
+      ],
+      "allowed_operations": [
+        "read",
+        "write",
+        "execute"
+      ],
+      "required_evidence": [
+        "accessibility",
+        "artifact_inspection",
+        "boundary",
+        "consumer_regression",
+        "interaction"
+      ]
+    },
+    "context": {
+      "schema_version": "nexus.g4.context-manifest.v1",
+      "binding": {
+        "workspace_id": "trusted-local-host",
+        "project_id": "g4-local-website",
+        "task_id": "local-workflow-20261014",
+        "action_id": "qualify-website",
+        "execution_id": "local-host-20261014",
+        "generation": 1,
+        "incarnation": "fresh-local-artifacts-v1",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e"
+      },
+      "sources": [
+        {
+          "ref": "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1",
+          "sha256": "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "6107c92feb6c345a852ec727920fd77ba44635544fb1f7fb3dd2a23cb4cf11c7",
+          "sha256": "6107c92feb6c345a852ec727920fd77ba44635544fb1f7fb3dd2a23cb4cf11c7",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "702b222325849493eaed73ef136f6bf49be263f18533d9e1171d043e71f88969",
+          "sha256": "702b222325849493eaed73ef136f6bf49be263f18533d9e1171d043e71f88969",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+          "sha256": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+          "sha256": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b",
+          "sha256": "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594",
+          "sha256": "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        }
+      ],
+      "recipients": [
+        "local-host",
+        "owner"
+      ],
+      "omissions": [],
+      "disclosure_limits": [
+        "local-host",
+        "owner"
+      ],
+      "preserved_obligations": [
+        "703528f97aa99c6119ce365c06b4db8c5a6a9f064bad440fa43cc7e477a1d991"
+      ]
+    },
+    "impact": {
+      "schema_version": "nexus.g4.change-impact.v1",
+      "binding": {
+        "workspace_id": "trusted-local-host",
+        "project_id": "g4-local-website",
+        "task_id": "local-workflow-20261014",
+        "action_id": "qualify-website",
+        "execution_id": "local-host-20261014",
+        "generation": 1,
+        "incarnation": "fresh-local-artifacts-v1",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e"
+      },
+      "repository_id": "nexus-core-g4-domain-qualification",
+      "base_commit": "d9aa1dc3f62a6a7b7a45c7290bc51d3ca7d88c1a",
+      "changed_surfaces": [
+        "index-page",
+        "workflows-page"
+      ],
+      "dependencies": [
+        "shared-search",
+        "shared-style",
+        "source-links"
+      ],
+      "consumers": [
+        "index-page",
+        "workflows-page"
+      ],
+      "shared_contracts": [
+        "shared-search",
+        "shared-style",
+        "source-links"
+      ],
+      "validation_obligations": [
+        "accessibility",
+        "artifact_inspection",
+        "boundary",
+        "consumer_regression",
+        "core_html_check",
+        "interaction"
+      ],
+      "unexamined": []
+    },
+    "decisions": [
+      {
+        "schema_version": "nexus.g4.project-decision.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-website",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e"
+        },
+        "decision_key": "bounded-local-task",
+        "content_sha256": "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594",
+        "source_refs": [
+          "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+          "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594"
+        ],
+        "approving_authority_ref": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+        "valid_until": 1792022887,
+        "state": "CONFIRMED",
+        "supersedes": null,
+        "retention": "TASK",
+        "obligations": [
+          "703528f97aa99c6119ce365c06b4db8c5a6a9f064bad440fa43cc7e477a1d991"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "schema_version": "nexus.g4.capability-relation.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-website",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-website",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e"
+        },
+        "relation": "uses",
+        "from_endpoint": {
+          "ref": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+          "version": "v1"
+        },
+        "to_endpoint": {
+          "ref": "52caf8933795cc2cbca12f0109d766a0c98994285bf8ab1d304fc0c9e2e3c6fc",
+          "version": "v1"
+        },
+        "provenance_refs": [
+          "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9"
+        ]
+      }
+    ]
+  },
+  "oracle": {
+    "expected_binding": {
+      "workspace_id": "trusted-local-host",
+      "project_id": "g4-local-website",
+      "task_id": "local-workflow-20261014",
+      "action_id": "qualify-website",
+      "execution_id": "local-host-20261014",
+      "generation": 1,
+      "incarnation": "fresh-local-artifacts-v1",
+      "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e"
+    },
+    "now": 1791936487,
+    "permitted_operations": [
+      "read",
+      "write",
+      "execute"
+    ],
+    "permitted_recipients": [
+      "local-host",
+      "owner"
+    ],
+    "source_refs": [
+      "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1",
+      "6107c92feb6c345a852ec727920fd77ba44635544fb1f7fb3dd2a23cb4cf11c7",
+      "702b222325849493eaed73ef136f6bf49be263f18533d9e1171d043e71f88969",
+      "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+      "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+      "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b",
+      "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594"
+    ],
+    "confirmation_refs": [
+      "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9"
+    ],
+    "endpoint_versions": {
+      "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f": "v1",
+      "52caf8933795cc2cbca12f0109d766a0c98994285bf8ab1d304fc0c9e2e3c6fc": "v1"
+    },
+    "source_digests": {
+      "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1": "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1",
+      "6107c92feb6c345a852ec727920fd77ba44635544fb1f7fb3dd2a23cb4cf11c7": "6107c92feb6c345a852ec727920fd77ba44635544fb1f7fb3dd2a23cb4cf11c7",
+      "702b222325849493eaed73ef136f6bf49be263f18533d9e1171d043e71f88969": "702b222325849493eaed73ef136f6bf49be263f18533d9e1171d043e71f88969",
+      "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+      "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+      "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b": "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b",
+      "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594": "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594"
+    },
+    "task_class": "local-domain-qualification",
+    "expected_repository_id": "nexus-core-g4-domain-qualification",
+    "expected_base_commit": "d9aa1dc3f62a6a7b7a45c7290bc51d3ca7d88c1a",
+    "required_obligations": [
+      "703528f97aa99c6119ce365c06b4db8c5a6a9f064bad440fa43cc7e477a1d991"
+    ],
+    "required_consumers": [
+      "index-page",
+      "workflows-page"
+    ],
+    "required_validations": [
+      "accessibility",
+      "artifact_inspection",
+      "boundary",
+      "consumer_regression",
+      "core_html_check",
+      "interaction"
+    ],
+    "available_capabilities": [
+      "host-file-tools",
+      "host-browser",
+      "core-file-checks"
+    ],
+    "observations": {
+      "interaction": {
+        "status": "PASS",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "source_refs": [
+          "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+        ]
+      },
+      "consumer_regression": {
+        "status": "PASS",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "source_refs": [
+          "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+        ]
+      },
+      "accessibility": {
+        "status": "PASS",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "source_refs": [
+          "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+        ]
+      },
+      "boundary": {
+        "status": "PASS",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "source_refs": [
+          "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+        ]
+      },
+      "artifact_inspection": {
+        "status": "PASS",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "source_refs": [
+          "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+        ]
+      },
+      "core_html_check": {
+        "status": "PASS",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "source_refs": [
+          "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1"
+        ]
+      }
+    }
+  },
+  "files": {
+    "docs/g4-local-workflows/assets/catalog.js": {
+      "sha256": "0f90b85b25b853601b5e9ea392b2f5825e95b45a41db67138821b5c78b5cffbc",
+      "bytes": 874
+    },
+    "docs/g4-local-workflows/assets/site.css": {
+      "sha256": "e541274aa41f9a8acc3447d276c0f1619c42d0b968626e484b4f8eecb4f1d377",
+      "bytes": 2488
+    },
+    "docs/g4-local-workflows/index.html": {
+      "sha256": "eebeaa9c20e6b19b6994dc74e97239dd79c9d07c635d15302e417ee44da2f613",
+      "bytes": 4675
+    },
+    "docs/g4-local-workflows/sources/owner-task-scope.json": {
+      "sha256": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+      "bytes": 993
+    },
+    "docs/g4-local-workflows/workflows.html": {
+      "sha256": "26b769fe583170382bcef5bee21e6900c0b237a3c20228bcda77545d527e11cb",
+      "bytes": 4681
+    },
+    "docs/nexus-core-alpha2-local-use-v1.md": {
+      "sha256": "6107c92feb6c345a852ec727920fd77ba44635544fb1f7fb3dd2a23cb4cf11c7",
+      "bytes": 9753
+    },
+    "docs/nexus-core-host-execution-loop-v1.md": {
+      "sha256": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+      "bytes": 6139
+    },
+    "docs/nexus-g2-openai-structured-v3.md": {
+      "sha256": "702b222325849493eaed73ef136f6bf49be263f18533d9e1171d043e71f88969",
+      "bytes": 8478
+    },
+    "research/nexus-g4-local-core-html-evidence-v1.json": {
+      "sha256": "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1",
+      "bytes": 628
+    },
+    "research/nexus-g4-local-website-browser-evidence-v1.json": {
+      "bytes": 1681,
+      "sha256": "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+    },
+    "docs/g4-local-workflows/sources/website-task-memory.json": {
+      "bytes": 431,
+      "sha256": "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594"
+    }
+  },
+  "checks": {
+    "interaction": "research/nexus-g4-local-website-browser-evidence-v1.json",
+    "consumer_regression": "research/nexus-g4-local-website-browser-evidence-v1.json",
+    "accessibility": "research/nexus-g4-local-website-browser-evidence-v1.json",
+    "boundary": "research/nexus-g4-local-website-browser-evidence-v1.json",
+    "artifact_inspection": "research/nexus-g4-local-website-browser-evidence-v1.json",
+    "core_html_check": "research/nexus-g4-local-core-html-evidence-v1.json"
+  },
+  "artifact_paths": [
+    "docs/g4-local-workflows/index.html",
+    "docs/g4-local-workflows/workflows.html",
+    "docs/g4-local-workflows/assets/site.css",
+    "docs/g4-local-workflows/assets/catalog.js"
+  ],
+  "input_paths": [
+    "docs/g4-local-workflows/sources/owner-task-scope.json",
+    "docs/g4-local-workflows/sources/website-task-memory.json",
+    "docs/nexus-core-alpha2-local-use-v1.md",
+    "docs/nexus-core-host-execution-loop-v1.md",
+    "docs/nexus-g2-openai-structured-v3.md"
+  ],
+  "scope": {
+    "included": [
+      "two-local-pages",
+      "keyboard-and-semantic-browser-checks",
+      "shared-assets",
+      "source-links",
+      "four-declared-viewports"
+    ],
+    "excluded_unexamined": [
+      {
+        "area": "remote-deployment",
+        "reason": "Local documentation only; no external publication authorized."
+      },
+      {
+        "area": "backend-and-authentication",
+        "reason": "No backend, authentication, storage or runtime execution controls exist."
+      },
+      {
+        "area": "full-screen-reader-certification",
+        "reason": "Native semantic tree and keyboard checked; no complete assistive-technology certification claimed."
+      },
+      {
+        "area": "other-browser-engines",
+        "reason": "Only existing Chrome 154 was executed; no cross-engine claim."
+      }
+    ]
+  },
+  "memory_path": "docs/g4-local-workflows/sources/website-task-memory.json"
+}

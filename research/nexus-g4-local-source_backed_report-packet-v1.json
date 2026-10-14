@@ -1,0 +1,517 @@
+{
+  "schema": "nexus.g4.local-workflow-evidence.v1",
+  "records": {
+    "pack": {
+      "schema_version": "nexus.g4.workflow-pack.v1",
+      "binding": {
+        "workspace_id": "trusted-local-host",
+        "project_id": "g4-local-source-backed-report",
+        "task_id": "local-workflow-20261014",
+        "action_id": "qualify-source-backed-report",
+        "execution_id": "local-host-20261014",
+        "generation": 1,
+        "incarnation": "fresh-local-artifacts-v1",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+      },
+      "pack": "source_backed_report",
+      "version": "v1",
+      "applicability": [
+        "local-domain-qualification"
+      ],
+      "required_capabilities": [
+        "host-file-tools",
+        "host-browser",
+        "core-file-checks"
+      ],
+      "allowed_operations": [
+        "read",
+        "write",
+        "execute"
+      ],
+      "required_evidence": [
+        "artifact_inspection",
+        "calculation",
+        "render",
+        "source_claim",
+        "uncertainty"
+      ]
+    },
+    "context": {
+      "schema_version": "nexus.g4.context-manifest.v1",
+      "binding": {
+        "workspace_id": "trusted-local-host",
+        "project_id": "g4-local-source-backed-report",
+        "task_id": "local-workflow-20261014",
+        "action_id": "qualify-source-backed-report",
+        "execution_id": "local-host-20261014",
+        "generation": 1,
+        "incarnation": "fresh-local-artifacts-v1",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+      },
+      "sources": [
+        {
+          "ref": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+          "sha256": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "DERIVED",
+          "original_ref": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341",
+          "sha256": "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+          "sha256": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+          "sha256": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400",
+          "sha256": "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+          "sha256": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454",
+          "sha256": "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        },
+        {
+          "ref": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6",
+          "sha256": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "transformation": "ORIGINAL",
+          "original_ref": null,
+          "valid_until": 1792022887
+        }
+      ],
+      "recipients": [
+        "local-host",
+        "owner"
+      ],
+      "omissions": [],
+      "disclosure_limits": [
+        "local-host",
+        "owner"
+      ],
+      "preserved_obligations": [
+        "703528f97aa99c6119ce365c06b4db8c5a6a9f064bad440fa43cc7e477a1d991"
+      ]
+    },
+    "impact": {
+      "schema_version": "nexus.g4.change-impact.v1",
+      "binding": {
+        "workspace_id": "trusted-local-host",
+        "project_id": "g4-local-source-backed-report",
+        "task_id": "local-workflow-20261014",
+        "action_id": "qualify-source-backed-report",
+        "execution_id": "local-host-20261014",
+        "generation": 1,
+        "incarnation": "fresh-local-artifacts-v1",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+      },
+      "repository_id": "nexus-core-g4-domain-qualification",
+      "base_commit": "d9aa1dc3f62a6a7b7a45c7290bc51d3ca7d88c1a",
+      "changed_surfaces": [
+        "markdown-report",
+        "html-report"
+      ],
+      "dependencies": [
+        "source-data",
+        "metric-definitions",
+        "uncertainty-text"
+      ],
+      "consumers": [
+        "markdown-report",
+        "html-report"
+      ],
+      "shared_contracts": [
+        "source-data",
+        "metric-definitions",
+        "uncertainty-text"
+      ],
+      "validation_obligations": [
+        "artifact_inspection",
+        "calculation",
+        "render",
+        "source_claim",
+        "uncertainty"
+      ],
+      "unexamined": []
+    },
+    "decisions": [
+      {
+        "schema_version": "nexus.g4.project-decision.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-source-backed-report",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+        },
+        "decision_key": "bounded-local-task",
+        "content_sha256": "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400",
+        "source_refs": [
+          "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+          "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400"
+        ],
+        "approving_authority_ref": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+        "valid_until": 1792022887,
+        "state": "CONFIRMED",
+        "supersedes": null,
+        "retention": "TASK",
+        "obligations": [
+          "703528f97aa99c6119ce365c06b4db8c5a6a9f064bad440fa43cc7e477a1d991"
+        ]
+      }
+    ],
+    "relations": [
+      {
+        "schema_version": "nexus.g4.capability-relation.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-source-backed-report",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+        },
+        "relation": "uses",
+        "from_endpoint": {
+          "ref": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+          "version": "v1"
+        },
+        "to_endpoint": {
+          "ref": "52caf8933795cc2cbca12f0109d766a0c98994285bf8ab1d304fc0c9e2e3c6fc",
+          "version": "v1"
+        },
+        "provenance_refs": [
+          "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9"
+        ]
+      },
+      {
+        "schema_version": "nexus.g4.capability-relation.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-source-backed-report",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+        },
+        "relation": "source_of",
+        "from_endpoint": {
+          "ref": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+          "version": "v1"
+        },
+        "to_endpoint": {
+          "ref": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+          "version": "v1"
+        },
+        "provenance_refs": [
+          "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac"
+        ]
+      },
+      {
+        "schema_version": "nexus.g4.capability-relation.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-source-backed-report",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+        },
+        "relation": "source_of",
+        "from_endpoint": {
+          "ref": "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454",
+          "version": "v1"
+        },
+        "to_endpoint": {
+          "ref": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+          "version": "v1"
+        },
+        "provenance_refs": [
+          "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454"
+        ]
+      },
+      {
+        "schema_version": "nexus.g4.capability-relation.v1",
+        "binding": {
+          "workspace_id": "trusted-local-host",
+          "project_id": "g4-local-source-backed-report",
+          "task_id": "local-workflow-20261014",
+          "action_id": "qualify-source-backed-report",
+          "execution_id": "local-host-20261014",
+          "generation": 1,
+          "incarnation": "fresh-local-artifacts-v1",
+          "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+        },
+        "relation": "source_of",
+        "from_endpoint": {
+          "ref": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6",
+          "version": "v1"
+        },
+        "to_endpoint": {
+          "ref": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+          "version": "v1"
+        },
+        "provenance_refs": [
+          "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6"
+        ]
+      }
+    ]
+  },
+  "oracle": {
+    "expected_binding": {
+      "workspace_id": "trusted-local-host",
+      "project_id": "g4-local-source-backed-report",
+      "task_id": "local-workflow-20261014",
+      "action_id": "qualify-source-backed-report",
+      "execution_id": "local-host-20261014",
+      "generation": 1,
+      "incarnation": "fresh-local-artifacts-v1",
+      "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9"
+    },
+    "now": 1791936487,
+    "permitted_operations": [
+      "read",
+      "write",
+      "execute"
+    ],
+    "permitted_recipients": [
+      "local-host",
+      "owner"
+    ],
+    "source_refs": [
+      "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+      "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341",
+      "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+      "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+      "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400",
+      "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+      "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454",
+      "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6"
+    ],
+    "confirmation_refs": [
+      "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9"
+    ],
+    "endpoint_versions": {
+      "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da": "v1",
+      "52caf8933795cc2cbca12f0109d766a0c98994285bf8ab1d304fc0c9e2e3c6fc": "v1",
+      "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac": "v1",
+      "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454": "v1",
+      "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6": "v1",
+      "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973": "v1"
+    },
+    "source_digests": {
+      "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+      "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341": "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341",
+      "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+      "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+      "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400": "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400",
+      "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac",
+      "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454": "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454",
+      "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6"
+    },
+    "task_class": "local-domain-qualification",
+    "expected_repository_id": "nexus-core-g4-domain-qualification",
+    "expected_base_commit": "d9aa1dc3f62a6a7b7a45c7290bc51d3ca7d88c1a",
+    "required_obligations": [
+      "703528f97aa99c6119ce365c06b4db8c5a6a9f064bad440fa43cc7e477a1d991"
+    ],
+    "required_consumers": [
+      "markdown-report",
+      "html-report"
+    ],
+    "required_validations": [
+      "artifact_inspection",
+      "calculation",
+      "render",
+      "source_claim",
+      "uncertainty"
+    ],
+    "available_capabilities": [
+      "host-file-tools",
+      "host-browser",
+      "core-file-checks"
+    ],
+    "observations": {
+      "source_claim": {
+        "status": "PASS",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+        "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+        "source_refs": [
+          "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+        ]
+      },
+      "calculation": {
+        "status": "PASS",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+        "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+        "source_refs": [
+          "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+        ]
+      },
+      "uncertainty": {
+        "status": "PASS",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+        "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+        "source_refs": [
+          "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+        ]
+      },
+      "render": {
+        "status": "PASS",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+        "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+        "source_refs": [
+          "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+        ]
+      },
+      "artifact_inspection": {
+        "status": "PASS",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+        "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+        "source_refs": [
+          "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+        ]
+      }
+    }
+  },
+  "files": {
+    "docs/g4-local-workflows/report.html": {
+      "bytes": 3689,
+      "sha256": "19a1c92a4917f13ed1056620977472a8dcd80a2319287868abfe8908323045a9"
+    },
+    "docs/g4-local-workflows/report.md": {
+      "bytes": 3119,
+      "sha256": "6aede5660785a42f3ad2a749ff842de30bc772b2d7622b1819ce7e60851aafbc"
+    },
+    "docs/g4-local-workflows/sources/host-loop-summary.json": {
+      "sha256": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973",
+      "bytes": 1323
+    },
+    "docs/g4-local-workflows/sources/owner-task-scope.json": {
+      "sha256": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9",
+      "bytes": 993
+    },
+    "docs/nexus-core-host-execution-loop-v1.md": {
+      "sha256": "76f2c02978923190605c9b7d56f52b97ccb64dc26a2aa96b3bccf0939cd547e8",
+      "bytes": 6139
+    },
+    "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json": {
+      "bytes": 1746,
+      "sha256": "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+    },
+    "docs/g4-local-workflows/sources/source_backed_report-task-memory.json": {
+      "bytes": 444,
+      "sha256": "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400"
+    },
+    "docs/g4-local-workflows/sources/retained-regression.json": {
+      "bytes": 1496,
+      "sha256": "159492ff00ae4a99efab0e71eb1e0be613269023f5f646866dde4ef1d359b5ac"
+    },
+    "docs/g4-local-workflows/sources/retained-e2e-proof.json": {
+      "bytes": 3069,
+      "sha256": "fda45b4be841a8d6c4cd65bcb64219627c76f0457684732b99c4d00aced24454"
+    },
+    "docs/g4-local-workflows/sources/retained-receipt.json": {
+      "bytes": 1936,
+      "sha256": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6"
+    }
+  },
+  "checks": {
+    "source_claim": "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json",
+    "calculation": "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json",
+    "uncertainty": "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json",
+    "render": "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json",
+    "artifact_inspection": "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json"
+  },
+  "artifact_paths": [
+    "docs/g4-local-workflows/report.md",
+    "docs/g4-local-workflows/report.html"
+  ],
+  "input_paths": [
+    "docs/g4-local-workflows/sources/host-loop-summary.json",
+    "docs/g4-local-workflows/sources/owner-task-scope.json",
+    "docs/g4-local-workflows/sources/retained-e2e-proof.json",
+    "docs/g4-local-workflows/sources/retained-receipt.json",
+    "docs/g4-local-workflows/sources/retained-regression.json",
+    "docs/g4-local-workflows/sources/source_backed_report-task-memory.json",
+    "docs/nexus-core-host-execution-loop-v1.md"
+  ],
+  "scope": {
+    "included": [
+      "nine-retained-source-claims",
+      "independent-arithmetic",
+      "html-and-markdown-readback",
+      "declared-limitations"
+    ],
+    "excluded_unexamined": [
+      {
+        "area": "new-host-loop-execution",
+        "reason": "This report analyzes retained real observations; the old execution is not replayed."
+      },
+      {
+        "area": "billing-settlement-and-value-comparison",
+        "reason": "No cost measurement or G6 experiment is performed."
+      },
+      {
+        "area": "untracked-repository-content",
+        "reason": "Original workflow deliberately excluded untracked discovery."
+      },
+      {
+        "area": "production-authenticity",
+        "reason": "Same-user local evidence cannot certify production custody or grants."
+      }
+    ]
+  },
+  "memory_path": "docs/g4-local-workflows/sources/source_backed_report-task-memory.json"
+}

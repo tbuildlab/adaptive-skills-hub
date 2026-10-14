@@ -1,0 +1,69 @@
+{
+  "classification": "REAL_LOCAL_CODEX_HOST_REPOSITORY_E2E_POST_G2_ENHANCEMENT",
+  "commit_stage_push_clean_reset_deploy_operations": 0,
+  "files_checked": [
+    "README.md",
+    "docs/nexus-core-alpha2-local-use-v1.md"
+  ],
+  "findings_count": 0,
+  "g2_milestone": "COMPLETED_FROZEN_UNCHANGED",
+  "g3_n01": "HOLD_OPTIONAL_HIGH_ASSURANCE_RESEARCH",
+  "implementation_head": "a7b2ec93c31f19a398f7662fe3ad601d39b73d7c",
+  "index_bytes_unchanged": true,
+  "inspected_source_files_preserved": 519,
+  "native_git_processes": 12,
+  "new_commit_created": false,
+  "prior_blocked_records_host_actions": 0,
+  "prior_preparation_only_blocked_records_preserved": 2,
+  "real_admission": "NO",
+  "receipt_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-host-git-e2e-v1-20261014\\receipt.json",
+  "remote_service_calls": 0,
+  "repo": "D:\\chatgpt\\\u5b89\u88c5skills\\adaptive-skills-hub",
+  "repo_head": "792a3fd5e7d31bd35f2693569cb165fe59ef895d",
+  "report_paths": [
+    "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-host-git-e2e-v1-20261014\\report.json",
+    "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-host-git-e2e-v1-20261014\\report.md"
+  ],
+  "report_sha256": [
+    "14aad0d066bb7b3e0a7a6ef0712e9ee31f68c045d6aafb34a6c5890e2828de72",
+    "3efbc753d29f16fe6ab47ce40a700449cb2203eda2116fdd1eaf8a76cb7fb03b"
+  ],
+  "source_files_changed": 0,
+  "status": "VERIFIED_COMPLETION",
+  "task_id": "6b7a018ca78947ddb0de1ea0219fbdd2",
+  "tests": {
+    "classification": "POST_G2_CORE_ENHANCEMENT_G2_COMPLETED_FROZEN_UNCHANGED",
+    "error": 0,
+    "fail": 0,
+    "modules": [
+      "test_core_host_loop",
+      "test_core",
+      "test_core_profiles",
+      "test_v2",
+      "test_semantic_routing",
+      "test_hub",
+      "test_r4_host_handoff",
+      "test_r5_host_capability_inventory",
+      "test_r5_adaptive_enhancement",
+      "test_mcp_context_security",
+      "test_mcp_authorization"
+    ],
+    "new_focused_test_count": 12,
+    "pass": 227,
+    "seconds": 50.42200000000594,
+    "skip": [
+      {
+        "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpl7h2u1ut\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpl7h2u1ut\\\\approved-project\\\\linked'",
+        "test": "test_symlink_if_privilege_is_available_is_rejected (test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected)"
+      }
+    ],
+    "source_hashes": {
+      "ash/core_host_loop.py": "d36687d42722f024dc640b16669fd433e4d07679b50977a37b6beeddac496f95",
+      "plugins/nexus-desktop/skills/nexus/SKILL.md": "c44588f6831dfa008a98fac8e952bc5c8ee7867317d8210f5569e0efe18c6acf",
+      "scripts/hub.py": "b1430be915e1e9ba5fffe39331fbcc34fc6175707b7c0fc2bff9657959a82053",
+      "tests/test_core_host_loop.py": "cc8dd0a228d417c0a83491ae6266ecdb45502ea11bb40ef4225056c21b7b2244"
+    },
+    "total": 228
+  },
+  "workflow_host_action_batches": 4
+}

@@ -1,0 +1,34 @@
+{
+  "modules": [
+    "test_core_host_loop",
+    "test_core",
+    "test_core_profiles",
+    "test_v2",
+    "test_semantic_routing",
+    "test_hub",
+    "test_r4_host_handoff",
+    "test_r5_host_capability_inventory",
+    "test_r5_adaptive_enhancement",
+    "test_mcp_context_security",
+    "test_mcp_authorization"
+  ],
+  "total": 228,
+  "pass": 227,
+  "fail": 0,
+  "error": 0,
+  "skip": [
+    {
+      "test": "test_symlink_if_privilege_is_available_is_rejected (test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected)",
+      "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpl7h2u1ut\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpl7h2u1ut\\\\approved-project\\\\linked'"
+    }
+  ],
+  "seconds": 50.42200000000594,
+  "classification": "POST_G2_CORE_ENHANCEMENT_G2_COMPLETED_FROZEN_UNCHANGED",
+  "new_focused_test_count": 12,
+  "source_hashes": {
+    "ash/core_host_loop.py": "d36687d42722f024dc640b16669fd433e4d07679b50977a37b6beeddac496f95",
+    "scripts/hub.py": "b1430be915e1e9ba5fffe39331fbcc34fc6175707b7c0fc2bff9657959a82053",
+    "plugins/nexus-desktop/skills/nexus/SKILL.md": "c44588f6831dfa008a98fac8e952bc5c8ee7867317d8210f5569e0efe18c6acf",
+    "tests/test_core_host_loop.py": "cc8dd0a228d417c0a83491ae6266ecdb45502ea11bb40ef4225056c21b7b2244"
+  }
+}

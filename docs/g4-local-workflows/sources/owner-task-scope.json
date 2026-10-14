@@ -1,0 +1,26 @@
+{
+  "schema": "nexus.g4.owner-local-task-scope.v1",
+  "origin": "CURRENT_EXPLICIT_OWNER_TASK",
+  "objective": "Qualify existing Website and Source-backed Report packs with real bounded local workflows.",
+  "approved_constraints": [
+    "Preserve accepted G2 and completed Host Loop v1",
+    "Reuse existing Host capabilities; no new external component",
+    "Keep G3/N01 high-assurance research HOLD",
+    "Do not start G6 final qualification",
+    "Do not bypass production adapter DENY",
+    "Scoped memory; shared consumers and unexamined areas; poisoning, impact and reduction tests"
+  ],
+  "permitted_effects": [
+    "New local documentation artifacts",
+    "Local execution and browser checks",
+    "Repository-scoped G4 evidence verification and tests"
+  ],
+  "prohibited_effects": [
+    "Production admission",
+    "External deployment",
+    "Cloud resources",
+    "Authentication",
+    "Custody or ledger recovery"
+  ],
+  "authority": "TASK_SCOPE_CONTEXT_ONLY_NOT_BEARER_AUTHORITY"
+}

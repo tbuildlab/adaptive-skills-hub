@@ -1,0 +1,272 @@
+{
+  "schema": "nexus.g4.local-workflow-qualification-result.v1",
+  "classification": "REAL_BOUNDED_TRUSTED_LOCAL_HOST_WORKFLOWS_QUALIFIED_NOT_PRODUCTION_FREEZE",
+  "date": "2026-10-14",
+  "host_loop_product_checkpoint": "d9aa1dc3f62a6a7b7a45c7290bc51d3ca7d88c1a",
+  "g2_status": "ACCEPTED_COMPLETED_FROZEN_MANAGED_SCOPE_UNCHANGED",
+  "g3_n01": "HOLD_OPTIONAL_HIGH_ASSURANCE_RESEARCH",
+  "g6_final_qualification_started": false,
+  "real_admission": "NO",
+  "production_adapter": "DENY_UNCHANGED",
+  "new_external_component_adopted": false,
+  "new_paid_infrastructure": false,
+  "website": "REAL_LOCAL_WORKFLOW_VERIFIED",
+  "source_backed_report": "REAL_LOCAL_WORKFLOW_VERIFIED",
+  "domain_readbacks": {
+    "schema": "nexus.g4.local-readback-receipts.v1",
+    "packs": {
+      "website": {
+        "schema": "nexus.g4.local-verification.v1",
+        "status": "LOCAL_ARTIFACT_AND_EVIDENCE_VERIFIED",
+        "contract_verdict": {
+          "status": "PASS_STRUCTURAL_ONLY",
+          "basis": "NON_AUTHORITATIVE",
+          "dispatch_authority": "none",
+          "pack_ref": "7df3132a67d0629edb85932187ad856ff96a56bd28d65708efaea16b8a2f24ed",
+          "binding_sha256": "0e9b28209cd65fa99eea967339fcf2ed49048ec0b1ef4e8a83255a55aad34e51"
+        },
+        "pack": "website",
+        "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+        "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+        "files_reopened": 11,
+        "checks_preserved": [
+          "accessibility",
+          "artifact_inspection",
+          "boundary",
+          "consumer_regression",
+          "core_html_check",
+          "interaction"
+        ],
+        "excluded_unexamined": [
+          {
+            "area": "remote-deployment",
+            "reason": "Local documentation only; no external publication authorized."
+          },
+          {
+            "area": "backend-and-authentication",
+            "reason": "No backend, authentication, storage or runtime execution controls exist."
+          },
+          {
+            "area": "full-screen-reader-certification",
+            "reason": "Native semantic tree and keyboard checked; no complete assistive-technology certification claimed."
+          },
+          {
+            "area": "other-browser-engines",
+            "reason": "Only existing Chrome 154 was executed; no cross-engine claim."
+          }
+        ],
+        "dispatch_authority": "none",
+        "real_admission": "NO",
+        "qualification_scope": "TRUSTED_LOCAL_HOST_ONLY_NOT_PRODUCTION_ADMISSION"
+      },
+      "source_backed_report": {
+        "schema": "nexus.g4.local-verification.v1",
+        "status": "LOCAL_ARTIFACT_AND_EVIDENCE_VERIFIED",
+        "contract_verdict": {
+          "status": "PASS_STRUCTURAL_ONLY",
+          "basis": "NON_AUTHORITATIVE",
+          "dispatch_authority": "none",
+          "pack_ref": "8bf505e468b47114af63e379981e6f80b00955b0e6bc2a618821610d7070e6e2",
+          "binding_sha256": "0f1b16d5efbdff0e3498b4abb66c2e48de85e0ed43fd658dd883112ce3090ff4"
+        },
+        "pack": "source_backed_report",
+        "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+        "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+        "files_reopened": 10,
+        "checks_preserved": [
+          "artifact_inspection",
+          "calculation",
+          "render",
+          "source_claim",
+          "uncertainty"
+        ],
+        "excluded_unexamined": [
+          {
+            "area": "new-host-loop-execution",
+            "reason": "This report analyzes retained real observations; the old execution is not replayed."
+          },
+          {
+            "area": "billing-settlement-and-value-comparison",
+            "reason": "No cost measurement or G6 experiment is performed."
+          },
+          {
+            "area": "untracked-repository-content",
+            "reason": "Original workflow deliberately excluded untracked discovery."
+          },
+          {
+            "area": "production-authenticity",
+            "reason": "Same-user local evidence cannot certify production custody or grants."
+          }
+        ],
+        "dispatch_authority": "none",
+        "real_admission": "NO",
+        "qualification_scope": "TRUSTED_LOCAL_HOST_ONLY_NOT_PRODUCTION_ADMISSION"
+      }
+    },
+    "production_admission": "DENY",
+    "real_admission": "NO"
+  },
+  "actual_packet_adversarial_cases": {
+    "pass": 16,
+    "fail": 0,
+    "record": "research/nexus-g4-local-adversarial-evidence-v1.json"
+  },
+  "tests": {
+    "new_tests": 14,
+    "focused": {
+      "total": 277,
+      "pass": 276,
+      "skip": 1,
+      "fail": 0,
+      "error": 0
+    },
+    "first_full_sweep": {
+      "mode": "full",
+      "source_root": "C:\\Users\\DEYONG~1\\AppData\\Local\\Temp\\nexus-g4-local-full-final-gnxcm5ie\\source",
+      "total": 1529,
+      "pass": 1511,
+      "skip": [
+        {
+          "test": "test_real_clean_bootstrap_without_system_python (test_github_distribution.GitHubDistributionTests.test_real_clean_bootstrap_without_system_python)",
+          "reason": "real embedded runtime inputs are not configured"
+        },
+        {
+          "test": "test_real_plugin_bootstrap_without_codex_prepares_host_managed_source (test_github_distribution.GitHubDistributionTests.test_real_plugin_bootstrap_without_codex_prepares_host_managed_source)",
+          "reason": "real embedded runtime inputs are not configured"
+        },
+        {
+          "test": "test_real_plugin_health_without_system_python_or_codex (test_github_distribution.GitHubDistributionTests.test_real_plugin_health_without_system_python_or_codex)",
+          "reason": "real embedded runtime inputs are not configured"
+        },
+        {
+          "test": "test_symlink_if_privilege_is_available_is_rejected (test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected)",
+          "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpuk_3nemm\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpuk_3nemm\\\\approved-project\\\\linked'"
+        }
+      ],
+      "fail": 7,
+      "error": 7,
+      "seconds": 3984.328,
+      "new_test_count": 14,
+      "production_qualification_performed": false
+    },
+    "environment_retests": [
+      {
+        "classification": "UNCHANGED_HISTORICAL_SYNTHETIC_TESTS_WITH_EXISTING_FIXTURE_CLOCK_AND_LOCAL_GIT_METADATA",
+        "names": [
+          "test_g3_n01_atomic_reads.AtomicContinuationTests.test_new_artifact_is_head_eight_only_and_does_not_reset_aggregate",
+          "test_g3_n01_auth_continuation.AuthContinuationTests.test_builder_keeps_cumulative_cost_and_separate_one_attempt",
+          "test_g3_n01_live_budget.LiveBudgetTests.test_attempt_bound_includes_injected_ack_loss_and_no_retry",
+          "test_g3_n01_live_budget.LiveBudgetTests.test_fixed_error_does_not_copy_backend_private_message",
+          "test_g3_n01_owner_controller.OwnerControllerTests.test_complete_owner_only_durability_stays_inside_original_backend_bounds",
+          "test_g3_n01_owner_controller.OwnerControllerTests.test_missing_independent_source_quarantines_before_mutation_without_retry",
+          "test_g3_n01_owner_controller.OwnerControllerTests.test_real_durability_composition_model_finalizes_recovery_and_source_as_none"
+        ],
+        "total": 7,
+        "pass": 7,
+        "skip": [],
+        "fail": 0,
+        "error": 0,
+        "seconds": 46.953,
+        "live_review_renewed": false,
+        "production_bindings_created": false,
+        "production_admission": "DENY",
+        "source_tests_changed": false
+      },
+      {
+        "names": [
+          "tests.test_g3_n01_public_review.PublicReviewTests.test_duplicate_missing_corrupt_expired_or_legacy_custody_denies",
+          "tests.test_g3_n01_source_enrollment.SourceEnrollmentTests.test_missing_ambiguous_expired_unavailable_source_custody_denies",
+          "tests.test_g3_n01_vercel_probe.RuntimeProbeTests.test_cached_success_still_none_not_owner_context",
+          "tests.test_g3_n01_vercel_probe.RuntimeProbeTests.test_unknown_outcome_is_sanitized_terminal_no_retry"
+        ],
+        "total": 4,
+        "pass": 4,
+        "fail": 0,
+        "error": 0,
+        "expired_retention_negative_controls_preserved": true,
+        "production_review_or_deadline_changed": false
+      },
+      {
+        "names": [
+          "tests.test_runtime_decision.RuntimeDecisionTests.test_malformed_or_execution_claiming_envelope_is_rejected",
+          "tests.test_runtime_decision.RuntimeDecisionTests.test_permission_and_mechanism_mismatch_are_incompatible",
+          "tests.test_runtime_decision.RuntimeDecisionTests.test_verified_local_skill_is_selected_but_never_reported_executed"
+        ],
+        "total": 3,
+        "pass": 3,
+        "fail": 0,
+        "error": 0,
+        "existing_historical_fixture_skill_bytes_restored": true,
+        "source_sha256": "e71de849347050c2c573c1cf24d742d5a13459557ecffa6e562f08006f46b5b7",
+        "new_external_component_adopted": false,
+        "skill_executed": false
+      }
+    ],
+    "effective_unique_coverage": {
+      "total": 1529,
+      "pass": 1525,
+      "skip": 4,
+      "fail": 0,
+      "error": 0,
+      "classification": "COMPLETE_DISCOVERY_WITH_CLASSIFIED_ENVIRONMENT_RETESTS",
+      "single_green_full_run": false
+    },
+    "reruns_not_double_counted": true,
+    "historical_tests_or_security_contracts_changed": false
+  },
+  "host_loop_reuse": {
+    "status": "VERIFIED_COMPLETION",
+    "source": "UNCHANGED_ACCEPTED_HOST_LOOP_V1",
+    "task_id": "db5be3eb7e664854b01f24d813952fc1",
+    "files": [
+      "docs/g4-local-workflows/index.html",
+      "docs/g4-local-workflows/report.md"
+    ],
+    "commands_used": 4,
+    "ceiling": 8,
+    "actual_git_processes": 12,
+    "whitespace_findings": 0,
+    "report_sha256": [
+      {
+        "bytes": 1082,
+        "path": "report.json",
+        "sha256": "6948ac4b12bb3d0fc09f3bf9902f29ac3ab10825919d6d965ccb4b4dbc213cce"
+      },
+      {
+        "bytes": 240,
+        "path": "report.md",
+        "sha256": "06c1279dae292b162adb40b9c0bcbd36e9e2c1ddcdc6a4680e6761326a89c656"
+      }
+    ],
+    "scope": "G4_LOCAL_ARTIFACT_READONLY_INSPECTION_BEFORE_COMMIT",
+    "staged_changes_observed": 26,
+    "actual_receipt": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g4-qualified-artifact-inspection-v1-20261014\\receipt.json",
+    "post_g2_checkpoint": "d9aa1dc3f62a6a7b7a45c7290bc51d3ca7d88c1a",
+    "production_admission": "DENY",
+    "wrapper_display_error": "CHECK_WAS_COMMITTED; NO_CHECK_REPLAY; ONLY_POST_SUCCESS_DISPLAY_USED_WRONG_CLOSED_CLI_FIELD"
+  },
+  "source_package": {
+    "status": "PASS",
+    "sha256": "df7f3756baecf0633e6ebdf42fc53d417f72de43ffa0adf25a7a5d6de7573bf5",
+    "members": 260,
+    "reproducible": true,
+    "new_verifier_in_package": true,
+    "bounded_host_harness_in_package": true,
+    "local_documentation_workflow_artifacts": "RETAINED_IN_GIT_SOURCE_NOT_PORTABLE_INSTALL_ALLOWLIST",
+    "production_admission": "DENY"
+  },
+  "baseline_static_subjects_preserved": 720,
+  "original_production_head_preserved": "a7b2ec93c31f19a398f7662fe3ad601d39b73d7c",
+  "historical_output_records_preserved": 1515,
+  "owner_milestone_acceptance": "NOT_CLAIMED",
+  "independent_production_security_review": "NOT_CLAIMED",
+  "g4_final_tag_created": false,
+  "live_or_owner_authentication_performed": false,
+  "log_hashes": {
+    "focused-regression.log": "c7d3efa2452eade58c110d6816f898747bcea66d80871865eaefe470e2fb7d59",
+    "full-regression.log": "18e8370d92a46910fd0408bff95a75df4a26abaedcc34e51dfee0471542a7c79",
+    "environment-rerun-v2.log": "9e03c469da7110bdbd825e4e09f6cc2ea2ddce3a00ace5749fa2e2699f7632cf",
+    "additional-environment-rerun-v2.log": "a628736bf336af22c2c221093c46e857fadbf6a5722fa910f0f36fae8a9d1e97",
+    "library-environment-rerun-v2.log": "6cb17222556a04a7d4eaa5f5c835e4ac648cebb147b93fbffbfbf1ced0bf3e07"
+  }
+}

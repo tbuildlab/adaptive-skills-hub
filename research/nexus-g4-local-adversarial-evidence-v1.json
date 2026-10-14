@@ -1,0 +1,124 @@
+{
+  "schema": "nexus.g4.local-adversarial-evidence.v1",
+  "subjects": {
+    "website": "733668b5fb774484d0cbcdc0fb4fd888f5c451e17faaaf4b0615ded1f9b8268b",
+    "source_backed_report": "4bfe8eebf754869855872ebbad820a7e0238485581f329cfbab9402082128371"
+  },
+  "checks": [
+    {
+      "pack": "website",
+      "case": "cross-project-memory",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_MEMORY_SCOPE"
+    },
+    {
+      "pack": "website",
+      "case": "missing-shared-consumer",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_IMPACT_COVERAGE"
+    },
+    {
+      "pack": "website",
+      "case": "omitted-original-observation",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_REDUCTION_LOSS"
+    },
+    {
+      "pack": "website",
+      "case": "optional-original-failure",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_MEASUREMENT_NOT_PASS"
+    },
+    {
+      "pack": "website",
+      "case": "in-scope-unexamined",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_IMPACT_UNKNOWN"
+    },
+    {
+      "pack": "website",
+      "case": "artifact-corruption",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_BYTES_CHANGED"
+    },
+    {
+      "pack": "website",
+      "case": "source-corruption",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_BYTES_CHANGED"
+    },
+    {
+      "pack": "website",
+      "case": "missing-original-check",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "LOCAL_READBACK_REJECTED"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "cross-project-memory",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_MEMORY_SCOPE"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "missing-shared-consumer",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_IMPACT_COVERAGE"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "omitted-original-observation",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_REDUCTION_LOSS"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "optional-original-failure",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_MEASUREMENT_NOT_PASS"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "in-scope-unexamined",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_IMPACT_UNKNOWN"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "artifact-corruption",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_BYTES_CHANGED"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "source-corruption",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "G4_LOCAL_BYTES_CHANGED"
+    },
+    {
+      "pack": "source_backed_report",
+      "case": "missing-original-check",
+      "expected": "DENY_OR_HOLD",
+      "observed": "DENY_OR_HOLD",
+      "reason": "LOCAL_READBACK_REJECTED"
+    }
+  ],
+  "pass": 16,
+  "fail": 0,
+  "dispatch_authority": "none"
+}

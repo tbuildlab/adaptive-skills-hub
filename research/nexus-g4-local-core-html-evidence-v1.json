@@ -1,0 +1,27 @@
+{
+  "schema": "nexus.g4.host-measurements.v1",
+  "pack": "website",
+  "checks": {
+    "core_html_check": {
+      "status": "PASS",
+      "measurements": {
+        "checker": "fixed-html.v1",
+        "checks": [
+          {
+            "path": "docs/g4-local-workflows/index.html",
+            "contains": true,
+            "title_present": true,
+            "duplicate_ids": []
+          },
+          {
+            "path": "docs/g4-local-workflows/workflows.html",
+            "contains": true,
+            "title_present": true,
+            "duplicate_ids": []
+          }
+        ],
+        "passed": true
+      }
+    }
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "schema": "nexus.g4.local-readback-receipts.v1",
+  "packs": {
+    "website": {
+      "schema": "nexus.g4.local-verification.v1",
+      "status": "LOCAL_ARTIFACT_AND_EVIDENCE_VERIFIED",
+      "contract_verdict": {
+        "status": "PASS_STRUCTURAL_ONLY",
+        "basis": "NON_AUTHORITATIVE",
+        "dispatch_authority": "none",
+        "pack_ref": "7df3132a67d0629edb85932187ad856ff96a56bd28d65708efaea16b8a2f24ed",
+        "binding_sha256": "0e9b28209cd65fa99eea967339fcf2ed49048ec0b1ef4e8a83255a55aad34e51"
+      },
+      "pack": "website",
+      "artifact_sha256": "3f0ac451dc35fd9e4a5aef69080164b37cc19405c14b844d1ca3e01de2bb101f",
+      "input_sha256": "c1d39e25cfb7224fe220eb720564b8eec164d79b63e9479b36de28ff1ded8c4e",
+      "files_reopened": 11,
+      "checks_preserved": [
+        "accessibility",
+        "artifact_inspection",
+        "boundary",
+        "consumer_regression",
+        "core_html_check",
+        "interaction"
+      ],
+      "excluded_unexamined": [
+        {
+          "area": "remote-deployment",
+          "reason": "Local documentation only; no external publication authorized."
+        },
+        {
+          "area": "backend-and-authentication",
+          "reason": "No backend, authentication, storage or runtime execution controls exist."
+        },
+        {
+          "area": "full-screen-reader-certification",
+          "reason": "Native semantic tree and keyboard checked; no complete assistive-technology certification claimed."
+        },
+        {
+          "area": "other-browser-engines",
+          "reason": "Only existing Chrome 154 was executed; no cross-engine claim."
+        }
+      ],
+      "dispatch_authority": "none",
+      "real_admission": "NO",
+      "qualification_scope": "TRUSTED_LOCAL_HOST_ONLY_NOT_PRODUCTION_ADMISSION"
+    },
+    "source_backed_report": {
+      "schema": "nexus.g4.local-verification.v1",
+      "status": "LOCAL_ARTIFACT_AND_EVIDENCE_VERIFIED",
+      "contract_verdict": {
+        "status": "PASS_STRUCTURAL_ONLY",
+        "basis": "NON_AUTHORITATIVE",
+        "dispatch_authority": "none",
+        "pack_ref": "8bf505e468b47114af63e379981e6f80b00955b0e6bc2a618821610d7070e6e2",
+        "binding_sha256": "0f1b16d5efbdff0e3498b4abb66c2e48de85e0ed43fd658dd883112ce3090ff4"
+      },
+      "pack": "source_backed_report",
+      "artifact_sha256": "e1ecc3d7b375fb81f528cfc0314b1b57f16cd02d33234eb476bae991d6f2b9da",
+      "input_sha256": "3e90c19a224d0a67c4649d2e21f451931370001000dd372944d407905d4327c9",
+      "files_reopened": 10,
+      "checks_preserved": [
+        "artifact_inspection",
+        "calculation",
+        "render",
+        "source_claim",
+        "uncertainty"
+      ],
+      "excluded_unexamined": [
+        {
+          "area": "new-host-loop-execution",
+          "reason": "This report analyzes retained real observations; the old execution is not replayed."
+        },
+        {
+          "area": "billing-settlement-and-value-comparison",
+          "reason": "No cost measurement or G6 experiment is performed."
+        },
+        {
+          "area": "untracked-repository-content",
+          "reason": "Original workflow deliberately excluded untracked discovery."
+        },
+        {
+          "area": "production-authenticity",
+          "reason": "Same-user local evidence cannot certify production custody or grants."
+        }
+      ],
+      "dispatch_authority": "none",
+      "real_admission": "NO",
+      "qualification_scope": "TRUSTED_LOCAL_HOST_ONLY_NOT_PRODUCTION_ADMISSION"
+    }
+  },
+  "production_admission": "DENY",
+  "real_admission": "NO"
+}

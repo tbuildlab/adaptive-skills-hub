@@ -1,0 +1,72 @@
+{
+  "schema": "nexus.g4.host-measurements.v1",
+  "pack": "website",
+  "checks": {
+    "interaction": {
+      "status": "PASS",
+      "measurements": {
+        "real_browser": true,
+        "filters_and_keyboard_activation": true,
+        "consumers_tested": [
+          "index.html",
+          "workflows.html"
+        ],
+        "source_bytes_unchanged": true
+      }
+    },
+    "consumer_regression": {
+      "status": "PASS",
+      "measurements": {
+        "shared_assets": [
+          "assets/catalog.js",
+          "assets/site.css"
+        ],
+        "consumers_tested": [
+          "index.html",
+          "workflows.html"
+        ],
+        "source_bytes_unchanged": true
+      }
+    },
+    "accessibility": {
+      "status": "PASS",
+      "measurements": {
+        "keyboard_checks": 6,
+        "semantic_tree_checks": 2,
+        "normal_text_contrast_ratio_hundredths": [
+          1264,
+          712,
+          675
+        ],
+        "viewport_widths": [
+          320,
+          768,
+          1024,
+          1440
+        ],
+        "full_screen_reader_certification": false,
+        "source_bytes_unchanged": true
+      }
+    },
+    "boundary": {
+      "status": "PASS",
+      "measurements": {
+        "empty_query": true,
+        "no_results": true,
+        "html_query_not_executed": true,
+        "maxlength_120": true,
+        "no_network_or_persistence_api": true,
+        "source_bytes_unchanged": true
+      }
+    },
+    "artifact_inspection": {
+      "status": "PASS",
+      "measurements": {
+        "pages_reopened": 2,
+        "document_overflow": false,
+        "checked_local_resources": 14,
+        "source_bytes_unchanged": true
+      }
+    }
+  }
+}

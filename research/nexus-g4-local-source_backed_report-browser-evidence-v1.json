@@ -1,0 +1,66 @@
+{
+  "schema": "nexus.g4.host-measurements.v1",
+  "pack": "source_backed_report",
+  "checks": {
+    "source_claim": {
+      "status": "PASS",
+      "measurements": {
+        "claims_checked": 9,
+        "source_fields_reopened": true,
+        "original_bytes_pinned": true,
+        "derived_projection_checked": true,
+        "source_total": 228,
+        "source_pass": 227,
+        "source_skip": 1,
+        "source_bytes_unchanged": true
+      }
+    },
+    "calculation": {
+      "status": "PASS",
+      "measurements": {
+        "total_recomputed": 228,
+        "batch_utilization_percent": 50,
+        "remaining_batches_at_completion": 4,
+        "git_processes_separate_from_batches": true,
+        "source_bytes_unchanged": true
+      }
+    },
+    "uncertainty": {
+      "status": "PASS",
+      "measurements": {
+        "skip_not_pass": true,
+        "untracked_scope_excluded": true,
+        "same_user_limit_declared": true,
+        "financial_savings_not_claimed": true,
+        "expired_budget_not_renewed": true,
+        "source_bytes_unchanged": true
+      }
+    },
+    "render": {
+      "status": "PASS",
+      "measurements": {
+        "numeric_cells_not_split": true,
+        "horizontally_scrollable_named_table_region": true,
+        "real_browser": true,
+        "viewport_widths": [
+          320,
+          768,
+          1024,
+          1440
+        ],
+        "document_overflow": false,
+        "table_caption_and_headers": true,
+        "source_bytes_unchanged": true
+      }
+    },
+    "artifact_inspection": {
+      "status": "PASS",
+      "measurements": {
+        "html_reopened": true,
+        "markdown_reopened": true,
+        "source_links_status": 200,
+        "source_bytes_unchanged": true
+      }
+    }
+  }
+}

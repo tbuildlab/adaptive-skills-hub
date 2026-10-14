@@ -787,6 +787,58 @@
     "bytes": 4964,
     "sha256": "e09531cd6477ec24ffa5bffb2e815f603e1e22d4105e968c3262aed9c43914e6"
   },
+  "docs/g4-local-workflows/assets/catalog.js": {
+    "bytes": 874,
+    "sha256": "0f90b85b25b853601b5e9ea392b2f5825e95b45a41db67138821b5c78b5cffbc"
+  },
+  "docs/g4-local-workflows/assets/site.css": {
+    "bytes": 2488,
+    "sha256": "e541274aa41f9a8acc3447d276c0f1619c42d0b968626e484b4f8eecb4f1d377"
+  },
+  "docs/g4-local-workflows/index.html": {
+    "bytes": 4675,
+    "sha256": "eebeaa9c20e6b19b6994dc74e97239dd79c9d07c635d15302e417ee44da2f613"
+  },
+  "docs/g4-local-workflows/report.html": {
+    "bytes": 3689,
+    "sha256": "19a1c92a4917f13ed1056620977472a8dcd80a2319287868abfe8908323045a9"
+  },
+  "docs/g4-local-workflows/report.md": {
+    "bytes": 3119,
+    "sha256": "6aede5660785a42f3ad2a749ff842de30bc772b2d7622b1819ce7e60851aafbc"
+  },
+  "docs/g4-local-workflows/sources/host-loop-summary.json": {
+    "bytes": 1323,
+    "sha256": "10550c3175e62eb9ae1209a43e0f99a0cec05c5f178042d68e6389fb3a672973"
+  },
+  "docs/g4-local-workflows/sources/owner-task-scope.json": {
+    "bytes": 993,
+    "sha256": "899f4d7a21d3ca0d34c49ab2b12d529dcad79992de2ad3c7b1894a541ba3d3e9"
+  },
+  "docs/g4-local-workflows/sources/retained-e2e-proof.json": {
+    "bytes": 3000,
+    "sha256": "dbae03e09df5ef246d914779fbc92627c67535088aff12e32407a860503ba47b"
+  },
+  "docs/g4-local-workflows/sources/retained-receipt.json": {
+    "bytes": 1936,
+    "sha256": "e61d24f24e635eee98dbad60edce13dd00955201a9913b14c3aada22f14f36c6"
+  },
+  "docs/g4-local-workflows/sources/retained-regression.json": {
+    "bytes": 1462,
+    "sha256": "e3572b58b115b136d911da6c4b312de5b2596457d28b4d99da1ba38353219005"
+  },
+  "docs/g4-local-workflows/sources/source_backed_report-task-memory.json": {
+    "bytes": 444,
+    "sha256": "9cd5c3b6b11c2df627185fd401b4125cf2ca6b88fb11fafa77370a46619cc400"
+  },
+  "docs/g4-local-workflows/sources/website-task-memory.json": {
+    "bytes": 431,
+    "sha256": "28a3222b30092d5cc8855eb3fc5076a58696dbfdfa89a933a973ec664dc38594"
+  },
+  "docs/g4-local-workflows/workflows.html": {
+    "bytes": 4681,
+    "sha256": "26b769fe583170382bcef5bee21e6900c0b237a3c20228bcda77545d527e11cb"
+  },
   "docs/github-distribution-architecture.md": {
     "bytes": 10025,
     "sha256": "dd085121546cd44f39c47d5d2478618e75e4a948668ed7738d1da7261a8af2e2"
@@ -1491,6 +1543,10 @@
     "bytes": 11542,
     "sha256": "a4a7f719a92cee0cfb3071715d114a8c083d03694d2c3c7befbb56e41ebbf731"
   },
+  "docs/nexus-g4-local-workflow-qualification-v1.md": {
+    "bytes": 11343,
+    "sha256": "1f592cf86a4a616d0d6f9d73b5ce15decaa7061a7c20d83a6ed27ec65d4b0591"
+  },
   "docs/nexus-g4-preparation-checkpoint-v1.md": {
     "bytes": 6223,
     "sha256": "2f9e4460b08b5a017f84803207d4afa5fc3dde8592be483cabfbe03744c7f753"
@@ -2095,6 +2151,42 @@
     "bytes": 211685,
     "sha256": "d37d0595d1d82f9e6d7067a822bb7975f9093e1702670cb8d1bdee948d7aa10b"
   },
+  "research/nexus-g4-local-adversarial-evidence-v1.json": {
+    "bytes": 3421,
+    "sha256": "2abf06eb5f2e9f8d6e764dca1821f76e07ddf5ea17432a5ed398b977b1a96af2"
+  },
+  "research/nexus-g4-local-core-html-evidence-v1.json": {
+    "bytes": 628,
+    "sha256": "12d2610f792dd75df40eacc42c19bf334e259910b8370ef51fb4c4a51d1edde1"
+  },
+  "research/nexus-g4-local-qualification-result-v1.json": {
+    "bytes": 12118,
+    "sha256": "b7f61ac3cb5480bb912ee00f37dc9b96998c2a70f4f1fa71e5e80fc4d5c024e1"
+  },
+  "research/nexus-g4-local-readback-receipts-v1.json": {
+    "bytes": 3570,
+    "sha256": "8c719a2eec299d2b2f7fffe3677e4b2bafda18f3c157338ff4b0d9563d6c7b6f"
+  },
+  "research/nexus-g4-local-scoped-memory-v1.json": {
+    "bytes": 954,
+    "sha256": "8961ecdad6cc6ca5377c72e8066c3c1b90f6c184ed0c44c6a7a102f6a070a1b3"
+  },
+  "research/nexus-g4-local-source_backed_report-browser-evidence-v1.json": {
+    "bytes": 1746,
+    "sha256": "bec22620cd7d1dbc671a9abddb31bcbbb1b9d034d19a993804626850a4635341"
+  },
+  "research/nexus-g4-local-source_backed_report-packet-v1.json": {
+    "bytes": 20833,
+    "sha256": "4bfe8eebf754869855872ebbad820a7e0238485581f329cfbab9402082128371"
+  },
+  "research/nexus-g4-local-website-browser-evidence-v1.json": {
+    "bytes": 1681,
+    "sha256": "bc2512412212fe6bff03dbcab37b9c322f696185c18b27e185932991b875375b"
+  },
+  "research/nexus-g4-local-website-packet-v1.json": {
+    "bytes": 17098,
+    "sha256": "733668b5fb774484d0cbcdc0fb4fd888f5c451e17faaaf4b0615ded1f9b8268b"
+  },
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,
     "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
@@ -2463,6 +2555,10 @@
     "bytes": 11777,
     "sha256": "fd0d2ced6643b75bc811115fc8eb82b7aaeb97d3efa56ce4dfd0738c6cb845f6"
   },
+  "scripts/qualify_g4_local_browser.cjs": {
+    "bytes": 12667,
+    "sha256": "8008a76ddaf0c593b5eed963a655dc64512ec284cac89066b8089b6f9b37917f"
+  },
   "scripts/rebase_release.py": {
     "bytes": 6629,
     "sha256": "5fd060a7e1d0ffcbe84a72e088725b1ec2aaebd2681cfe8b071cd6524152aa24"
@@ -2482,6 +2578,10 @@
   "scripts/setup_nexus.py": {
     "bytes": 13328,
     "sha256": "f0de915950381eedd343f010c5ddd3102393bdc0d5e5928cc22613b750ab93c8"
+  },
+  "scripts/verify_g4_local_evidence.py": {
+    "bytes": 7870,
+    "sha256": "552a48b70a27839805493278aca7157fbb691367576f441569b07dcbd67fa4e2"
   },
   "sources.json": {
     "bytes": 7870,
@@ -2762,6 +2862,10 @@
   "tests/test_g4_host_adapter.py": {
     "bytes": 10452,
     "sha256": "41fa800302bcdfb18489846be87fce61908277f6da60f9a8667e66037fe956d6"
+  },
+  "tests/test_g4_local_qualification.py": {
+    "bytes": 11156,
+    "sha256": "bdf8673730fc002246f9f599809f50879260e9023941e319be672d9613335493"
   },
   "tests/test_g6_contracts.py": {
     "bytes": 15181,
