@@ -1,0 +1,42 @@
+{
+  "all_21_raw_hashes_verified": true,
+  "component_approval_created": false,
+  "execution_authority": "none",
+  "finding": {
+    "id": "G3-LOCAL-RELOCATED-CHECKOUT-REPLAY",
+    "repair": "trusted-code retirement of the exact already-spent signed decision before enrollment and every eligibility query",
+    "severity": "HIGH",
+    "status": "RESOLVED_IN_REVIEWED_VERSION"
+  },
+  "first_pass_status": "FAIL_ONE_HIGH",
+  "independent_first_pass_checks": [
+    "retained SSHSIG Ed25519 signature equation",
+    "subject/configuration/review binding",
+    "grant ID and registration reconstruction",
+    "10 structured Host record canonical hashes and Markdown hash",
+    "4 batches and 12 Git processes reconciliation"
+  ],
+  "limitations": [
+    "reviewer did not independently requery live GitHub or run native OpenSSH",
+    "reviewer did not execute tests or qualification",
+    "Host harness source was outside the 21-file scope",
+    "assurance is the declared exact-packet trusted-Host scope, not a reusable approval service or older vulnerable versions"
+  ],
+  "owner_authorized_read_only_reviewer": true,
+  "production_admission": "DENY",
+  "real_admission": "NO",
+  "reviewer": "/root/g3_independent_review",
+  "reviewer_is_implementer": false,
+  "schema": "nexus.g3.independent-review-result.v2",
+  "scope_sha256": "e1c43dff4e27a9200427bd7f1705cad90f5194f32cf159d1f02449add7b530b1",
+  "status": "PASS_BOUNDED_SUCCESSOR_REVIEW",
+  "successor_checks": [
+    "exact retirement digest",
+    "pre-I/O enrollment rejection",
+    "every-query retirement gate",
+    "relocated and missing-marker test coverage",
+    "isolated synthetic overrides only"
+  ],
+  "unresolved_critical": 0,
+  "unresolved_high": 0
+}

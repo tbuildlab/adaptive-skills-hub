@@ -1435,6 +1435,14 @@
     "bytes": 12031,
     "sha256": "d685b42f1bebb4d7fc9902f07c091c2ba1e747fc769b8bf74ac83d71c887ca1c"
   },
+  "docs/nexus-g3-independent-review-first-pass-v1.md": {
+    "bytes": 3063,
+    "sha256": "ad1c586b8dd35fba081f9852cc5bbcd70205cdfc5a05648a6e530b07430315a0"
+  },
+  "docs/nexus-g3-independent-review-successor-v2.md": {
+    "bytes": 2804,
+    "sha256": "7058567c9f147a3e97598a564cc9c6dd1b35d9c49d2f815f3869e2c2522d311a"
+  },
   "docs/nexus-g3-live-qualification-setup-plan-v1.md": {
     "bytes": 46921,
     "sha256": "6ff9dcfdf9ae65da634fa0aa0b2cbc150e2e6c2eab9993afdac4eb301136f7a7"
@@ -1462,6 +1470,10 @@
   "docs/nexus-g3-reuse-survey-v1.md": {
     "bytes": 59772,
     "sha256": "551791adac2516cad2acc318d7d28fa19a4b859d2c1cf99dab19b803c9ca372c"
+  },
+  "docs/nexus-g3-signed-local-qualification-v1.md": {
+    "bytes": 7137,
+    "sha256": "e6ad77f51809484677db9bad8e9403e824469fee825fcb1172c44605d1c1973c"
   },
   "docs/nexus-g3-u1-architecture-consistency-review-v1.md": {
     "bytes": 8040,
@@ -2163,6 +2175,18 @@
     "bytes": 7526,
     "sha256": "852cefe5ba3c0b50afb65955805fc41e66042f87fe30b61db2466d7f7c1d6cb2"
   },
+  "research/nexus-g3-independent-review-result-v2.json": {
+    "bytes": 1711,
+    "sha256": "00c3e26274c6dc3a13c621e298b0e2d09f71334f9c18bbfa7428c27b0ae5978c"
+  },
+  "research/nexus-g3-independent-review-scope-v1.json": {
+    "bytes": 3670,
+    "sha256": "9e90cfc2b664020f9c2adbba004ca8bf401dced7086bb605037e30aa9cac9c7d"
+  },
+  "research/nexus-g3-independent-review-scope-v2.json": {
+    "bytes": 3875,
+    "sha256": "e1c43dff4e27a9200427bd7f1705cad90f5194f32cf159d1f02449add7b530b1"
+  },
   "research/nexus-g3-n01-hold-preserved-manifest-v1.json": {
     "bytes": 114050,
     "sha256": "82cca074d9c5bca0e084e360fa176eea11690a49a385f5ca9ea5434ec6504265"
@@ -2175,13 +2199,65 @@
     "bytes": 10096,
     "sha256": "9f14570062565c5079d9ee7c7b70ae40de4a5d6ad7658a152c2726e2dea25729"
   },
+  "research/nexus-g3-owner-detached-signature-v1.sshsig": {
+    "bytes": 318,
+    "sha256": "00201f9eb048aa4c701d686440b2f1dff0e80eb6eb21ce52e8801baa0bbd813b"
+  },
+  "research/nexus-g3-owner-signature-observation-v1.json": {
+    "bytes": 1308,
+    "sha256": "6cfb6db4f3cc1ef0bfa8cd3d9acd3efd1d0b3fc405a17db7104c816358886d99"
+  },
   "research/nexus-g3-owner-signing-decision-v1.json": {
     "bytes": 3872,
     "sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508"
   },
+  "research/nexus-g3-owner-signing-key-v1.pub": {
+    "bytes": 119,
+    "sha256": "2320878224c33bf546424f58969e0f8d8825340c1cb5cef12b07ce384e333754"
+  },
   "research/nexus-g3-owner-signing-preparation-v1.json": {
     "bytes": 3728,
     "sha256": "52f9b8a97394124f45fe4e0b7e5d5e8a224f145f011d2b03b4a1f16606884d13"
+  },
+  "research/nexus-g3-signed-local-approval-projection-v1.json": {
+    "bytes": 995,
+    "sha256": "b05f250a74986e94e3bb3aa0d68a211b29ff84c869cee21bb371501b178076e9"
+  },
+  "research/nexus-g3-signed-local-harness-readback-v1.json": {
+    "bytes": 775,
+    "sha256": "bfcc438cf800f8a96dd104495bd1fa6029729334839caad7ac68ecd829ef9737"
+  },
+  "research/nexus-g3-signed-local-host-driver-v1.py": {
+    "bytes": 4443,
+    "sha256": "aa5d1019b8b7950da0bd0fb9118cee11b50c7d4e82579540176d64f3fb3f471c"
+  },
+  "research/nexus-g3-signed-local-host-evidence-v1.json": {
+    "bytes": 19877,
+    "sha256": "32fc096571d42c2a1b574efd1e400e9330bad13c435b934ae4e19e6732ff0218"
+  },
+  "research/nexus-g3-signed-local-host-harness-v1.py": {
+    "bytes": 4646,
+    "sha256": "d41a7cbe18b8745a4a492cd303046ab1f654864b29bbd35ba93c474596f48abe"
+  },
+  "research/nexus-g3-signed-local-origin-readback-v1.json": {
+    "bytes": 676,
+    "sha256": "97eb4e62f4165ed31cb51a566a35bef5a5b0f56503f7bca7c0c59c001753937a"
+  },
+  "research/nexus-g3-signed-local-qualification-v1.json": {
+    "bytes": 5876,
+    "sha256": "c4f05fe7da6ae58104a421944303a032f7c196c87783e9e5bef6bd9d2caa803b"
+  },
+  "research/nexus-g3-signed-local-registration-v1.json": {
+    "bytes": 1080,
+    "sha256": "8871927958e8aaff83db3861a28212ae962e7a86afaaac06069382a5e8635301"
+  },
+  "research/nexus-g3-signed-local-revocation-v1.json": {
+    "bytes": 802,
+    "sha256": "542abc6b0c22455dcd282c099cbbb9a5001cfead3576eb230331aa55d640656f"
+  },
+  "research/nexus-g3-signed-packet-retirement-check-v1.json": {
+    "bytes": 472,
+    "sha256": "3b9eef81302d38d509d7f57769ec8629ceb66d44f397baff44f2b06bc82fcc4f"
   },
   "research/nexus-g4-final-acceptance-audit-v1.json": {
     "bytes": 6673,
@@ -2563,6 +2639,10 @@
     "bytes": 683,
     "sha256": "b9ff8e7a859f3c0048c41f183e3045868374016fac58f363eccad59281025861"
   },
+  "scripts/g3_signed_local_approval.py": {
+    "bytes": 7693,
+    "sha256": "c8f535859f28c18e82c8927492f95b60e6ab5e95a4f0638f6f5cfe50de072880"
+  },
   "scripts/hub.py": {
     "bytes": 27059,
     "sha256": "90a13556c2e8909a524b4b8e380162684614b79b129f8ec7b50cfa91af3af35b"
@@ -2894,6 +2974,10 @@
   "tests/test_g3_production_metadata.py": {
     "bytes": 19911,
     "sha256": "62a8ff584c8fc2f61c687097a08aa6fd7332f37345fad3c660699668e6484ee9"
+  },
+  "tests/test_g3_signed_local_approval.py": {
+    "bytes": 9237,
+    "sha256": "a86a8bc86754abc9ac5760775e2a6a9d7a2c4e2a041ca18085f8bf2549ba97b0"
   },
   "tests/test_g3_transition_protocol.py": {
     "bytes": 4888,

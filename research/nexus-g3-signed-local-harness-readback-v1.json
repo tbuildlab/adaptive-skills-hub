@@ -1,0 +1,14 @@
+{
+  "research/nexus-g3-signed-local-host-driver-v1.py": {
+    "copied_from": "output/g4-local/native_host_action.py",
+    "independent_review_coverage": "outside the original21-file reviewer scope; not represented as reviewed",
+    "purpose": "RETAINED_SOURCE_EVIDENCE_ONLY_DO_NOT_RERUN",
+    "raw_sha256": "aa5d1019b8b7950da0bd0fb9118cee11b50c7d4e82579540176d64f3fb3f471c"
+  },
+  "research/nexus-g3-signed-local-host-harness-v1.py": {
+    "copied_from": "output/g3-signed-original-v1/run_real_qualification.py",
+    "independent_review_coverage": "outside the original21-file reviewer scope; not represented as reviewed",
+    "purpose": "RETAINED_SOURCE_EVIDENCE_ONLY_DO_NOT_RERUN",
+    "raw_sha256": "d41a7cbe18b8745a4a492cd303046ab1f654864b29bbd35ba93c474596f48abe"
+  }
+}

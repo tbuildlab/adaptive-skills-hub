@@ -1,0 +1,612 @@
+{
+  "actual_git_processes": 12,
+  "execution_authority": "none",
+  "kind": "PUBLIC_READBACK_ONLY_NOT_BEARER_AUTHORITY",
+  "private_or_raw_source_content_retained": false,
+  "real_admission": "NO",
+  "records": {
+    "check-native-trace.json": {
+      "raw_sha256": "730416c754fbae58fc7055bf9ec19819dd5db3471810c48121e35d860470bd37",
+      "record": {
+        "actual_git_processes": 2,
+        "commands": [
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "diff",
+              "--no-ext-diff",
+              "--no-textconv",
+              "--check",
+              "--",
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ],
+            "exit_code": 0,
+            "key": "unstaged",
+            "stderr_present": false,
+            "stdout_bytes": 0
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "diff",
+              "--no-ext-diff",
+              "--no-textconv",
+              "--cached",
+              "--check",
+              "--",
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ],
+            "exit_code": 0,
+            "key": "staged",
+            "stderr_present": false,
+            "stdout_bytes": 0
+          }
+        ],
+        "host_status": "ok",
+        "observation_sha256": "6b6cac7b571462eba3a0f54fa25ff580de2212b900343a7a630d36bffa016aa3",
+        "raw_source_or_stderr_retained": false,
+        "stage": "check"
+      }
+    },
+    "check-observation.json": {
+      "raw_sha256": "6b6cac7b571462eba3a0f54fa25ff580de2212b900343a7a630d36bffa016aa3",
+      "record": {
+        "action_id": "1f4815fd0ccd4ff3bc97d06df41bd50e",
+        "data": {
+          "staged": {
+            "exit_code": 0,
+            "findings": []
+          },
+          "unstaged": {
+            "exit_code": 0,
+            "findings": []
+          }
+        },
+        "host_status": "ok",
+        "stage": "check",
+        "task_id": "227700897d8249ec8f783ac37b66f8df"
+      }
+    },
+    "inspect-native-trace.json": {
+      "raw_sha256": "ce68f4f6a78af72e92006ad4a65050f3dc89888eeabab0073ca2a5d269e359aa",
+      "record": {
+        "actual_git_processes": 4,
+        "commands": [
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "rev-parse",
+              "--show-toplevel"
+            ],
+            "exit_code": 0,
+            "key": "root",
+            "stderr_present": false,
+            "stdout_bytes": 59
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "rev-parse",
+              "--verify",
+              "HEAD"
+            ],
+            "exit_code": 0,
+            "key": "head",
+            "stderr_present": false,
+            "stdout_bytes": 41
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "status",
+              "--porcelain=v1",
+              "-z",
+              "--untracked-files=no"
+            ],
+            "exit_code": 0,
+            "key": "status",
+            "stderr_present": false,
+            "stdout_bytes": 0
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "ls-files",
+              "-z",
+              "--",
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ],
+            "exit_code": 0,
+            "key": "tracked",
+            "stderr_present": false,
+            "stdout_bytes": 35
+          }
+        ],
+        "host_status": "ok",
+        "observation_sha256": "a9585204ea28cc3d4f20f93bc0b70934b48acad016566417abf01a0b44fcb4ba",
+        "raw_source_or_stderr_retained": false,
+        "stage": "inspect"
+      }
+    },
+    "inspect-observation.json": {
+      "raw_sha256": "a9585204ea28cc3d4f20f93bc0b70934b48acad016566417abf01a0b44fcb4ba",
+      "record": {
+        "action_id": "6bcbbb4bbc634065953882bee0243414",
+        "data": {
+          "changed_tracked": 0,
+          "head": "bd0decabd9e671513f04fea92035b4b64f287875",
+          "root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+          "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "tracked_files": [
+            "README.md",
+            "docs/nexus-roadmap-v2.md"
+          ]
+        },
+        "host_status": "ok",
+        "stage": "inspect",
+        "task_id": "227700897d8249ec8f783ac37b66f8df"
+      }
+    },
+    "receipt.json": {
+      "raw_sha256": "0daf38e20dc675155508a1d581a38d91a5fc904d506551f62b4d672209cdb969",
+      "record": {
+        "artifact_root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task",
+        "artifacts": [
+          {
+            "bytes": 1003,
+            "path": "report.json",
+            "sha256": "91b2c397521dab340cdb8ae7789fe3748d09e4521ba3170e6a36e4f02d9aaca0"
+          },
+          {
+            "bytes": 239,
+            "path": "report.md",
+            "sha256": "f138ee3b17196e663661117a9ad34a75b25bac78811a71736f6fde4c2bbd7931"
+          }
+        ],
+        "blocker": null,
+        "budget": {
+          "max_artifact_bytes": 1048576,
+          "max_attempts": 1,
+          "max_commands": 8,
+          "max_output_bytes": 65536,
+          "max_replans": 0,
+          "step_seconds": 20,
+          "total_seconds": 600
+        },
+        "budget_unit": "Host action batches, not provider spend or Git process count",
+        "checks": {
+          "staged": {
+            "exit_code": 0,
+            "findings": []
+          },
+          "unstaged": {
+            "exit_code": 0,
+            "findings": []
+          }
+        },
+        "commands_used": 4,
+        "completed_steps": [
+          "inspect",
+          "check",
+          "report",
+          "verify"
+        ],
+        "files": [
+          "README.md",
+          "docs/nexus-roadmap-v2.md"
+        ],
+        "real_admission": "NO",
+        "repository": {
+          "changed_tracked": 0,
+          "head": "bd0decabd9e671513f04fea92035b4b64f287875",
+          "root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+          "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "tracked_files": [
+            "README.md",
+            "docs/nexus-roadmap-v2.md"
+          ]
+        },
+        "schema": "nexus.core.host-git-receipt.v1",
+        "scope": "trusted local Host read-only Git inspection",
+        "selected_skill": {
+          "name": "nexus-git-maintenance-readonly",
+          "origin_sha256": "c44588f6831dfa008a98fac8e952bc5c8ee7867317d8210f5569e0efe18c6acf",
+          "path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task\\skill\\SKILL.md",
+          "sha256": "2929122d5d92da30c76c3e908ce233c79650409f375e6e9961789506db770333"
+        },
+        "states": [
+          "selected",
+          "loaded_verified",
+          "host_action_requested",
+          "host_result_observed",
+          "report_reopened",
+          "fresh_repository_checked",
+          "verified_completion"
+        ],
+        "status": "completed",
+        "task": "Inspect this local Git repository changes and whitespace checks, then return a maintenance report.",
+        "task_id": "227700897d8249ec8f783ac37b66f8df",
+        "verification": "passed"
+      }
+    },
+    "report-native-trace.json": {
+      "raw_sha256": "2be493688fc92218a734af34905ec608748f5ffeaf07c7ff178ced42221c78d4",
+      "record": {
+        "actual_git_processes": 0,
+        "commands": [],
+        "host_status": "ok",
+        "observation_sha256": "a286f859b1fa6d3b8daa6971f2069749b81f0f8d257c0071c0a4346bfe40947c",
+        "raw_source_or_stderr_retained": false,
+        "stage": "report"
+      }
+    },
+    "report-observation.json": {
+      "raw_sha256": "a286f859b1fa6d3b8daa6971f2069749b81f0f8d257c0071c0a4346bfe40947c",
+      "record": {
+        "action_id": "6fefaa835e9b4b51b0ea48d2a3b40999",
+        "data": {
+          "files": [
+            "report.json",
+            "report.md"
+          ]
+        },
+        "host_status": "ok",
+        "stage": "report",
+        "task_id": "227700897d8249ec8f783ac37b66f8df"
+      }
+    },
+    "report.json": {
+      "raw_sha256": "91b2c397521dab340cdb8ae7789fe3748d09e4521ba3170e6a36e4f02d9aaca0",
+      "record": {
+        "checks": {
+          "staged": {
+            "exit_code": 0,
+            "findings": []
+          },
+          "unstaged": {
+            "exit_code": 0,
+            "findings": []
+          }
+        },
+        "files": [
+          "README.md",
+          "docs/nexus-roadmap-v2.md"
+        ],
+        "findings_count": 0,
+        "repo": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+        "repository": {
+          "changed_tracked": 0,
+          "head": "bd0decabd9e671513f04fea92035b4b64f287875",
+          "root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+          "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "tracked_files": [
+            "README.md",
+            "docs/nexus-roadmap-v2.md"
+          ]
+        },
+        "schema": "nexus.core.host-git-report.v1",
+        "scope": "Read-only tracked Git metadata and explicit non-secret file checks",
+        "selected_skill": {
+          "name": "nexus-git-maintenance-readonly",
+          "origin_sha256": "c44588f6831dfa008a98fac8e952bc5c8ee7867317d8210f5569e0efe18c6acf",
+          "path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task\\skill\\SKILL.md",
+          "sha256": "2929122d5d92da30c76c3e908ce233c79650409f375e6e9961789506db770333"
+        },
+        "task_id": "227700897d8249ec8f783ac37b66f8df"
+      }
+    },
+    "report.md": {
+      "raw_sha256": "f138ee3b17196e663661117a9ad34a75b25bac78811a71736f6fde4c2bbd7931",
+      "text": "# Git maintenance inspection\n\nHEAD: bd0decabd9e671513f04fea92035b4b64f287875\n\nChanged tracked entries: 0\n\nAllowed files checked: 2\n\nWhitespace findings: 0\n\nInspection only; no source edits or Git mutations. Detailed evidence: report.json.\n"
+    },
+    "verify-native-trace.json": {
+      "raw_sha256": "bf586a6ffdfa49ba7cffee302b801d8dc65679c732d518b90af380894f1e6e40",
+      "record": {
+        "actual_git_processes": 6,
+        "commands": [
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "rev-parse",
+              "--show-toplevel"
+            ],
+            "exit_code": 0,
+            "key": "root",
+            "stderr_present": false,
+            "stdout_bytes": 59
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "rev-parse",
+              "--verify",
+              "HEAD"
+            ],
+            "exit_code": 0,
+            "key": "head",
+            "stderr_present": false,
+            "stdout_bytes": 41
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "status",
+              "--porcelain=v1",
+              "-z",
+              "--untracked-files=no"
+            ],
+            "exit_code": 0,
+            "key": "status",
+            "stderr_present": false,
+            "stdout_bytes": 0
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "ls-files",
+              "-z",
+              "--",
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ],
+            "exit_code": 0,
+            "key": "tracked",
+            "stderr_present": false,
+            "stdout_bytes": 35
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "diff",
+              "--no-ext-diff",
+              "--no-textconv",
+              "--check",
+              "--",
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ],
+            "exit_code": 0,
+            "key": "unstaged",
+            "stderr_present": false,
+            "stdout_bytes": 0
+          },
+          {
+            "argv": [
+              "git",
+              "--no-optional-locks",
+              "--no-pager",
+              "--literal-pathspecs",
+              "-c",
+              "color.ui=false",
+              "-c",
+              "core.quotePath=false",
+              "-c",
+              "core.fsmonitor=false",
+              "-c",
+              "core.untrackedCache=false",
+              "-C",
+              "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+              "diff",
+              "--no-ext-diff",
+              "--no-textconv",
+              "--cached",
+              "--check",
+              "--",
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ],
+            "exit_code": 0,
+            "key": "staged",
+            "stderr_present": false,
+            "stdout_bytes": 0
+          }
+        ],
+        "host_status": "ok",
+        "observation_sha256": "ee2c93256d7d097c4d8659d801439e17f5dd76b9bbefb0625770b1e7788e191f",
+        "raw_source_or_stderr_retained": false,
+        "report_readback": [
+          {
+            "path": "report.json",
+            "sha256": "91b2c397521dab340cdb8ae7789fe3748d09e4521ba3170e6a36e4f02d9aaca0"
+          },
+          {
+            "path": "report.md",
+            "sha256": "f138ee3b17196e663661117a9ad34a75b25bac78811a71736f6fde4c2bbd7931"
+          }
+        ],
+        "stage": "verify"
+      }
+    },
+    "verify-observation.json": {
+      "raw_sha256": "ee2c93256d7d097c4d8659d801439e17f5dd76b9bbefb0625770b1e7788e191f",
+      "record": {
+        "action_id": "71f91dea197744a4abc9d22f6fece1ae",
+        "data": {
+          "checks": {
+            "staged": {
+              "exit_code": 0,
+              "findings": []
+            },
+            "unstaged": {
+              "exit_code": 0,
+              "findings": []
+            }
+          },
+          "repository": {
+            "changed_tracked": 0,
+            "head": "bd0decabd9e671513f04fea92035b4b64f287875",
+            "root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+            "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "tracked_files": [
+              "README.md",
+              "docs/nexus-roadmap-v2.md"
+            ]
+          }
+        },
+        "host_status": "ok",
+        "stage": "verify",
+        "task_id": "227700897d8249ec8f783ac37b66f8df"
+      }
+    }
+  },
+  "schema": "nexus.g3.signed-local-host-evidence.v1",
+  "task_binding": {
+    "host_task_directory": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task",
+    "host_task_id": "227700897d8249ec8f783ac37b66f8df",
+    "input_hashes": {
+      "README.md": "277492fd58585b8dc94ec60a9c4545ba636046759630440b17b10e932658ff14",
+      "docs/nexus-roadmap-v2.md": "12161871cff7b5de955a0d66b8caf809bae89216fe4e2d3190cf053ac0de930e"
+    },
+    "logical_task_id": "original-g3-readonly-qualification-v1",
+    "not_a_general_dispatch_grant": true,
+    "real_admission": "NO",
+    "repo": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+    "task_authority": "current-explicit-Owner-task-and-Host-readonly-tool-authorization"
+  }
+}

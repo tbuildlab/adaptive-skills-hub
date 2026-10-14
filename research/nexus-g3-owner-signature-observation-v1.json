@@ -1,0 +1,28 @@
+{
+  "g3_freeze": "NOT_YET",
+  "historical_unsigned_records_preserved": true,
+  "independent_review": "NOT_OBTAINED",
+  "observed_at_utc": "2026-10-14T06:26:15.373881+00:00",
+  "private_material_read": false,
+  "public_key_sha256": "8609febe84d5341e99875f0751c71934f48c8ca4a0858a840037e14d3fb55501",
+  "real_admission": "NO",
+  "registration_performed_by_this_observation": false,
+  "schema": "nexus.g3.owner-signature-observation.v1",
+  "signature_sha256": "00201f9eb048aa4c701d686440b2f1dff0e80eb6eb21ce52e8801baa0bbd813b",
+  "verification": {
+    "dispatch_authority": "none",
+    "github_login": "TDY0225",
+    "github_signing_key_id": 1242636,
+    "github_user_id": 223441940,
+    "key_fingerprint": "SHA256:5FV4/OvvMPzivK/4YIolW2kPQBGoik/llHbviTDpf98",
+    "namespace": "nexus-g3-approval-v1",
+    "payload_sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508",
+    "principal": "github-user-223441940",
+    "proposal_sha256": "6a9fb49a874ced10ba0ea6a4aea4cd9c5d48e77c1d6f0f448551d3b7edf4504c",
+    "real_admission": "NO",
+    "record_kind": "READBACK_ONLY_NOT_BEARER_AUTHORITY",
+    "registration_created": false,
+    "status": "SIGNATURE_AND_BOUND_DECISION_VERIFIED",
+    "subject_id": "nexus.g3.subject.v1:2a20b4b3b2d57f35832df83737c3a60896b9c8a2df9dd5fd116828f03ead222e"
+  }
+}

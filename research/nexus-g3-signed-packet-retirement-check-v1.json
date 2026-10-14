@@ -1,0 +1,11 @@
+{
+  "adapter_sha256": "c8f535859f28c18e82c8927492f95b60e6ab5e95a4f0638f6f5cfe50de072880",
+  "existing_host_records_unchanged": true,
+  "new_registration_or_reservation": false,
+  "production_resources_used": false,
+  "real_admission": "NO",
+  "real_task_replayed": false,
+  "schema": "nexus.g3.signed-packet-retirement-check.v1",
+  "status": "DENY_SIGNED_APPROVAL_RETIRED",
+  "terminal_payload_sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508"
+}

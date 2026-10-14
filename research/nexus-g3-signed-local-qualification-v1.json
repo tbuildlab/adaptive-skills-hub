@@ -1,0 +1,168 @@
+{
+  "g3_freeze": "NOT_YET",
+  "independent_final_review": "NOT_OBTAINED",
+  "observed_at_utc": "2026-10-14T06:27:05.566024+00:00",
+  "origin": "REAL_GITHUB_ACCOUNT_SIGNING_KEY_AND_NATIVE_OPENSSH_VERIFICATION",
+  "payload_sha256": "064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508",
+  "positive_eligibility_queries": 4,
+  "post_revocation": {
+    "dispatch_authority": "none",
+    "execution_requires": [
+      "current-task-authority",
+      "Host-authority",
+      "G1",
+      "G2"
+    ],
+    "real_admission": "NO",
+    "reason": "DENY_OR_UNKNOWN_CURRENT_APPROVAL",
+    "status": "DENY"
+  },
+  "production_adapter": "UNCHANGED_DENY",
+  "qualification_adapter_sha256": "9dd702dbedda86347aa7fe77e73939b099178c460ef6844d7ce1a3c41026eec7",
+  "qualification_host_driver_sha256": "aa5d1019b8b7950da0bd0fb9118cee11b50c7d4e82579540176d64f3fb3f471c",
+  "real_admission": "NO",
+  "receipt": {
+    "artifact_root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task",
+    "artifacts": [
+      {
+        "bytes": 1003,
+        "path": "report.json",
+        "sha256": "91b2c397521dab340cdb8ae7789fe3748d09e4521ba3170e6a36e4f02d9aaca0"
+      },
+      {
+        "bytes": 239,
+        "path": "report.md",
+        "sha256": "f138ee3b17196e663661117a9ad34a75b25bac78811a71736f6fde4c2bbd7931"
+      }
+    ],
+    "blocker": null,
+    "budget": {
+      "max_artifact_bytes": 1048576,
+      "max_attempts": 1,
+      "max_commands": 8,
+      "max_output_bytes": 65536,
+      "max_replans": 0,
+      "step_seconds": 20,
+      "total_seconds": 600
+    },
+    "budget_unit": "Host action batches, not provider spend or Git process count",
+    "checks": {
+      "staged": {
+        "exit_code": 0,
+        "findings": []
+      },
+      "unstaged": {
+        "exit_code": 0,
+        "findings": []
+      }
+    },
+    "commands_used": 4,
+    "completed_steps": [
+      "inspect",
+      "check",
+      "report",
+      "verify"
+    ],
+    "files": [
+      "README.md",
+      "docs/nexus-roadmap-v2.md"
+    ],
+    "real_admission": "NO",
+    "repository": {
+      "changed_tracked": 0,
+      "head": "bd0decabd9e671513f04fea92035b4b64f287875",
+      "root": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+      "status_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked_files": [
+        "README.md",
+        "docs/nexus-roadmap-v2.md"
+      ]
+    },
+    "schema": "nexus.core.host-git-receipt.v1",
+    "scope": "trusted local Host read-only Git inspection",
+    "selected_skill": {
+      "name": "nexus-git-maintenance-readonly",
+      "origin_sha256": "c44588f6831dfa008a98fac8e952bc5c8ee7867317d8210f5569e0efe18c6acf",
+      "path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task\\skill\\SKILL.md",
+      "sha256": "2929122d5d92da30c76c3e908ce233c79650409f375e6e9961789506db770333"
+    },
+    "states": [
+      "selected",
+      "loaded_verified",
+      "host_action_requested",
+      "host_result_observed",
+      "report_reopened",
+      "fresh_repository_checked",
+      "verified_completion"
+    ],
+    "status": "completed",
+    "task": "Inspect this local Git repository changes and whitespace checks, then return a maintenance report.",
+    "task_id": "227700897d8249ec8f783ac37b66f8df",
+    "verification": "passed"
+  },
+  "receipt_sha256": "0daf38e20dc675155508a1d581a38d91a5fc904d506551f62b4d672209cdb969",
+  "registration": {
+    "applicability": [
+      "git-maintenance-readonly"
+    ],
+    "approval_id": "nexus.g3.grant.v1:3773646cbc0980270e9568b8198e5fb758a19ad2e153de5cfde0353233e0b822",
+    "capability_id": "nexus/read-only-git-maintenance",
+    "config": {
+      "allowed_effects": [
+        "read-tracked-git-metadata",
+        "inspect-explicit-nonsecret-files",
+        "write-evidence-outside-inspected-repository"
+      ],
+      "max_host_batches": 8,
+      "max_replans": 0,
+      "prohibited_effects": [
+        "edit-inspected-source",
+        "stage",
+        "commit",
+        "push",
+        "reset",
+        "clean",
+        "network-from-inspected-capability",
+        "install",
+        "deploy",
+        "production-admission"
+      ],
+      "task_id": "original-g3-readonly-qualification-v1",
+      "workflow": "core-host-git-maintenance-v1"
+    },
+    "execution_authority": "none",
+    "mechanism": "existing-core-host-loop-v1",
+    "real_admission": "NO",
+    "schema": "nexus.g3.signed-local-registration.v1",
+    "scope": {
+      "operations": [
+        "read"
+      ],
+      "project_id": "nexus-original-g3-qualification",
+      "task_classes": [
+        "git-maintenance-readonly"
+      ],
+      "task_id": "original-g3-readonly-qualification-v1",
+      "workspace_id": "trusted-local-host"
+    },
+    "subject_id": "nexus.g3.subject.v1:2a20b4b3b2d57f35832df83737c3a60896b9c8a2df9dd5fd116828f03ead222e"
+  },
+  "restart": "DENY_ALREADY_RESERVED_NO_RESTORATION",
+  "schema": "nexus.g3.signed-local-qualification.v1",
+  "status": "PASS_SIGNED_LOCAL_QUALIFICATION_NOT_FINAL_FREEZE",
+  "subject_id": "nexus.g3.subject.v1:2a20b4b3b2d57f35832df83737c3a60896b9c8a2df9dd5fd116828f03ead222e",
+  "task_binding": {
+    "host_task_directory": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-g3-signed-local-e2e-20261014\\task",
+    "host_task_id": "227700897d8249ec8f783ac37b66f8df",
+    "input_hashes": {
+      "README.md": "277492fd58585b8dc94ec60a9c4545ba636046759630440b17b10e932658ff14",
+      "docs/nexus-roadmap-v2.md": "12161871cff7b5de955a0d66b8caf809bae89216fe4e2d3190cf053ac0de930e"
+    },
+    "logical_task_id": "original-g3-readonly-qualification-v1",
+    "not_a_general_dispatch_grant": true,
+    "real_admission": "NO",
+    "repo": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification",
+    "task_authority": "current-explicit-Owner-task-and-Host-readonly-tool-authorization"
+  },
+  "test_fixture_origin": false
+}

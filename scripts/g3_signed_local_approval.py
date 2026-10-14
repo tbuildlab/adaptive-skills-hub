@@ -1,0 +1,137 @@
+"""One exact signed G3 local qualification; no execution or production grant.
+
+The trusted local Host owns this single-use lifecycle. Public readback files are
+evidence only and cannot restore it. This is not malicious-Host isolation or a
+replacement for the separately frozen production adapter.
+"""
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import subprocess
+import time
+
+from scripts import verify_g3_owner_signature as origin
+from ash import core_capabilities as files, g3_grant_codec as codec
+
+# The sole real approved task completed and its signed terminal instruction was
+# applied. Bind that retirement to trusted code, not a checkout-relative marker.
+# This is not caller-configurable and does not approve any other packet.
+RETIRED_DECISIONS = frozenset({
+    '064f3e9609239cb5f859f13111dde5ed6cfd29c031407712d54aad5514c0f508',
+})
+
+
+def _bytes(value):
+    return codec._canonical(value) + b'\n'
+
+
+class LocalQualification:
+    """In-process approval/registration projection for the fixed signed packet.
+
+    Nothing accepts serialized approval, registration, or eligibility as input
+    authority. Every positive query re-verifies current independent origin and
+    exact component/review bytes. A reserved attempt is never resumed/reissued.
+    """
+
+    def __init__(self, payload, signature, public_key):
+        origin.require(origin.PAYLOAD_SHA not in RETIRED_DECISIONS, 'SIGNED_APPROVAL_RETIRED')
+        self._paths = (payload, signature, public_key)
+        proof = origin.verify(*self._paths)
+        raw = origin.bounded(payload, 65536)
+        origin.require(origin.sha(raw) == origin.PAYLOAD_SHA, 'PAYLOAD_DIGEST')
+        self._body = codec.parse_input(raw)
+        self._subject = codec.subject(self._body['subject'])
+        self._active = False
+        self._revocation = None
+        # Fixed Host-owned one-shot location: not a caller-selected trust store.
+        # Existence (including a partial/crashed reservation) always refuses.
+        directory = files.safe_path(origin.ROOT, 'output/g3-signed-local-once-v1')
+        directory.mkdir(parents=True, exist_ok=True)
+        origin.require(not directory.is_symlink()
+                       and not (getattr(directory.stat(), 'st_file_attributes', 0) & 0x400), 'HOST_RECORD_PATH')
+        self._directory = directory
+        marker = directory / (origin.PAYLOAD_SHA + '.reserved')
+        try:
+            with marker.open('xb') as stream:
+                stream.write(_bytes({'payload_sha256': origin.PAYLOAD_SHA,
+                                     'restoration': 'DENY', 'real_admission': 'NO'}))
+                stream.flush()
+                os.fsync(stream.fileno())
+        except FileExistsError:
+            raise origin.Denied('ATTEMPT_ALREADY_RESERVED_NO_RESTART') from None
+        self._grant = codec.approval_grant({
+            'schema_version': codec.GRANT_SCHEMA,
+            'capability_id': self._body['subject']['capability_id'],
+            'subject_id': self._subject.subject_id,
+            'subject_sha256': self._subject.subject_id.split(':')[1],
+            'scope': self._body['scope'],
+            'effective_at': self._body['effective_at'], 'expires_at': self._body['expires_at'],
+            'issuer_ref': origin.PRINCIPAL,
+            'decision_evidence': {'ref': 'owner-signed-decision-v1', 'sha256': origin.PAYLOAD_SHA},
+            'review': {'subject_id': self._subject.subject_id,
+                       'evidence': {'ref': 'owner-reviewed-local-component-v1',
+                                    'sha256': self._body['review_evidence_sha256']},
+                       'provenance_ref': 'repository-owned-core-host-git-v1'}})
+        self._registration = _bytes({
+            'schema': 'nexus.g3.signed-local-registration.v1',
+            'approval_id': self._grant.grant_id, 'subject_id': self._subject.subject_id,
+            'capability_id': self._body['subject']['capability_id'],
+            'scope': self._body['scope'], 'config': self._body['config'],
+            'applicability': ['git-maintenance-readonly'],
+            'mechanism': 'existing-core-host-loop-v1',
+            'execution_authority': 'none', 'real_admission': 'NO'})
+        files.write(directory, 'origin-readback.json', _bytes(proof))
+        files.write(directory, 'approval-projection.json', self._grant.canonical_body + b'\n')
+        files.write(directory, 'registration.json', self._registration)
+        self._active = True
+
+    def registration(self):
+        """Return a descriptive copy, not a bearer object."""
+        return json.loads(self._registration)
+
+    def eligibility(self, requested_subject, scope, registration):
+        """Capability approval only. Current task/Host/G1/G2 gates remain separate."""
+        result = {'status': 'DENY', 'dispatch_authority': 'none', 'real_admission': 'NO',
+                  'execution_requires': ['current-task-authority', 'Host-authority', 'G1', 'G2']}
+        try:
+            origin.require(origin.PAYLOAD_SHA not in RETIRED_DECISIONS, 'SIGNED_APPROVAL_RETIRED')
+            origin.require(self._active and self._revocation is None, 'REVOKED_OR_INACTIVE')
+            origin.require(self._body['effective_at'] <= time.time() < self._body['expires_at'],
+                           'DECISION_VALIDITY')
+            origin.require(codec.subject(requested_subject) == self._subject, 'SUBJECT_MISMATCH')
+            origin.require(_bytes(scope) == _bytes(self._body['scope']), 'SCOPE_MISMATCH')
+            origin.require(_bytes(registration) == self._registration, 'REGISTRATION_TAMPER')
+            origin.require(files.read_bytes(self._directory, 'registration.json') == self._registration,
+                           'REGISTRATION_TAMPER')
+            # No cached JSON result can substitute for this live verification.
+            origin.verify(*self._paths)
+            result.update(status='CAPABILITY_ELIGIBLE_ONLY', reason='SIGNED_EXACT_CURRENT_LOCAL_APPROVAL')
+        except (OSError, ValueError, KeyError, TypeError, subprocess.SubprocessError):
+            result['reason'] = 'DENY_OR_UNKNOWN_CURRENT_APPROVAL'
+        return result
+
+    def revoke(self, outcome, evidence_sha256):
+        """Apply only the explicit, already signed end-of-task instruction."""
+        origin.require(outcome in {'verified-completion', 'failure', 'cancellation', 'unknown'},
+                       'REVOCATION_TRIGGER')
+        origin.require(type(evidence_sha256) is str and len(evidence_sha256) == 64
+                       and all(c in '0123456789abcdef' for c in evidence_sha256), 'REVOCATION_EVIDENCE')
+        # Invalidate memory before I/O: failed persistence cannot leave eligibility.
+        self._active = False
+        if self._revocation is not None:
+            return self._revocation.to_dict()
+        self._revocation = codec.revocation({
+            'schema_version': codec.REVOCATION_SCHEMA, 'grant_id': self._grant.grant_id,
+            'effective_at': int(time.time()), 'issuer_ref': origin.PRINCIPAL,
+            'decision_evidence': {'ref': 'owner-signed-revocation-instruction-v1',
+                                  'sha256': origin.PAYLOAD_SHA},
+            'reason': 'bounded-qualification-terminal'})
+        record = {'revocation': self._revocation.to_dict(),
+                  'revocation_id': self._revocation.revocation_id,
+                  'trigger': outcome, 'trigger_evidence_sha256': evidence_sha256,
+                  'signed_instruction_sha256': origin.PAYLOAD_SHA,
+                  'restoration': 'DENY', 'dispatch_authority': 'none', 'real_admission': 'NO'}
+        files.write(self._directory, 'revocation.json', _bytes(record))
+        return self._revocation.to_dict()
