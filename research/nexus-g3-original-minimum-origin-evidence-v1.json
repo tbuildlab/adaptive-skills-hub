@@ -1,0 +1,218 @@
+{
+  "schema": "nexus.g3.original.minimum-origin-evidence.v1",
+  "status": "BLOCKED_VERIFIED_APPROVAL_ORIGIN_MISSING",
+  "g3_freeze_decision": "NOT_READY",
+  "base_commit": "a13505729bf719f25aab38ac10440562fdf59220",
+  "owner_mandate_sha256": "553b660f398e0630d0497ca01cc4b0ec300af0bcab8ba8767ef9a4787851e5ab",
+  "origin_preflight": {
+    "schema": "nexus.g3.original.origin-preflight.v1",
+    "timestamp_utc": "2026-10-14T05:03:08.096519+00:00",
+    "base_commit": "a13505729bf719f25aab38ac10440562fdf59220",
+    "base_tree": "c1150593ba9703c2c7e92739820aa0e1414600c7",
+    "historical_standard": "nexus-roadmap-v2-final:docs/nexus-roadmap-v2.md:G3 fields 4,8,10,12,15,16",
+    "observed_existing_local_subject": {
+      "path": "plugins/nexus-desktop/skills/nexus/SKILL.md",
+      "raw_bytes_sha256": "c44588f6831dfa008a98fac8e952bc5c8ee7867317d8210f5569e0efe18c6acf",
+      "subject_id": "nexus.g3.subject.v1:f1bd4c93e1ed577746f3560ad3cd49a2ca2a17fb09593a3751615edd4969ccc0",
+      "status": "OBSERVED_NOT_APPROVED",
+      "kind": "local_adapter",
+      "new_external_component": false
+    },
+    "negative_origin_probes": [
+      {
+        "classification": "UNTRUSTED_CANDIDATE_NEGATIVE_ONLY",
+        "claimed_issuer": "owner",
+        "all_supplied_eligibility_flags": true,
+        "flags_are_not_runtime_observations": true,
+        "result": {
+          "status": "NOT_ELIGIBLE",
+          "reason_codes": [
+            "G3_APPROVAL_ORIGIN_UNVERIFIED"
+          ],
+          "subject_id": "nexus.g3.subject.v1:f1bd4c93e1ed577746f3560ad3cd49a2ca2a17fb09593a3751615edd4969ccc0",
+          "grant_id": null,
+          "request_sha256": "4859ce20feccac8e17d9689e19b8392d0c33a050c43e00e62da7afa693420d5c",
+          "evaluated_at": 1791954188,
+          "basis": "REAL_ADMISSION_DISABLED",
+          "schema_version": "nexus.g3.eligibility-decision.v1",
+          "dispatch_authority": "none"
+        },
+        "approval_issued": false,
+        "registration_created": false
+      },
+      {
+        "classification": "UNTRUSTED_CANDIDATE_NEGATIVE_ONLY",
+        "claimed_issuer": "reviewer",
+        "all_supplied_eligibility_flags": true,
+        "flags_are_not_runtime_observations": true,
+        "result": {
+          "status": "NOT_ELIGIBLE",
+          "reason_codes": [
+            "G3_APPROVAL_ORIGIN_UNVERIFIED"
+          ],
+          "subject_id": "nexus.g3.subject.v1:f1bd4c93e1ed577746f3560ad3cd49a2ca2a17fb09593a3751615edd4969ccc0",
+          "grant_id": null,
+          "request_sha256": "4859ce20feccac8e17d9689e19b8392d0c33a050c43e00e62da7afa693420d5c",
+          "evaluated_at": 1791954188,
+          "basis": "REAL_ADMISSION_DISABLED",
+          "schema_version": "nexus.g3.eligibility-decision.v1",
+          "dispatch_authority": "none"
+        },
+        "approval_issued": false,
+        "registration_created": false
+      },
+      {
+        "classification": "UNTRUSTED_CANDIDATE_NEGATIVE_ONLY",
+        "claimed_issuer": "test-fixture",
+        "all_supplied_eligibility_flags": true,
+        "flags_are_not_runtime_observations": true,
+        "result": {
+          "status": "NOT_ELIGIBLE",
+          "reason_codes": [
+            "G3_APPROVAL_ORIGIN_UNVERIFIED"
+          ],
+          "subject_id": "nexus.g3.subject.v1:f1bd4c93e1ed577746f3560ad3cd49a2ca2a17fb09593a3751615edd4969ccc0",
+          "grant_id": null,
+          "request_sha256": "4859ce20feccac8e17d9689e19b8392d0c33a050c43e00e62da7afa693420d5c",
+          "evaluated_at": 1791954188,
+          "basis": "REAL_ADMISSION_DISABLED",
+          "schema_version": "nexus.g3.eligibility-decision.v1",
+          "dispatch_authority": "none"
+        },
+        "approval_issued": false,
+        "registration_created": false
+      }
+    ],
+    "changed_bytes_produce_different_subject_id": true,
+    "new_subject_id_for_changed_bytes": "nexus.g3.subject.v1:1e8cab80af2b80817754e92307f5f0ddb65d40e507dea136c64cdb843a845a76",
+    "source_files_reopened": {
+      "ash/g3_authorization.py": {
+        "bytes": 8422,
+        "raw_sha256": "0da4739f9afe06b55f0bc9ad8a3f6756a4e791a3573aaddfad3625a57a1b3e8d"
+      },
+      "ash/g3_host_approval_bridge.py": {
+        "bytes": 13075,
+        "raw_sha256": "892d2f9e47581db647980296c5be9d8f99f045cae42ae6047b6215776f6320d6"
+      },
+      "ash/core.py": {
+        "bytes": 26663,
+        "raw_sha256": "36921f5c151c3c5d7e8ff7c172a50e942333f79b0d7af2d1983a00dbf013d53b"
+      },
+      "ash/core_host_loop.py": {
+        "bytes": 18022,
+        "raw_sha256": "d36687d42722f024dc640b16669fd433e4d07679b50977a37b6beeddac496f95"
+      },
+      "ash/ecosystem_bridge.py": {
+        "bytes": 103517,
+        "raw_sha256": "cd9c146b9f9d547c490bff534b81097f24a9640c69c3748634cd39976c10d1ed"
+      },
+      "ash/g3_grant_codec.py": {
+        "bytes": 8474,
+        "raw_sha256": "20c065c9a75e4f2f4cd2f942a2b4ec542643d26cd8b185bf4925efd5e5d987b5"
+      },
+      "docs/nexus-roadmap-v2.md": {
+        "bytes": 68433,
+        "raw_sha256": "12161871cff7b5de955a0d66b8caf809bae89216fe4e2d3190cf053ac0de930e"
+      },
+      "docs/nexus-g4-final-acceptance-freeze-v1.md": {
+        "bytes": 11169,
+        "raw_sha256": "2933b069d53f3ef074d796be50dba8d05e08e4aa11c5fc0ac440d5433189f911"
+      },
+      "docs/nexus-g3-n01-optional-high-assurance-research-hold-v1.md": {
+        "bytes": 4411,
+        "raw_sha256": "b6ca9810638ed3fe9f7fcf92be102201973764318b92a52559c5335d69aafed6"
+      }
+    },
+    "approval_origin": "NOT_QUALIFIED_FROM_AVAILABLE_INTERFACES",
+    "core_hash_opt_in": "TASK_OPT_IN_NOT_AUTHENTICATED_G3_ISSUER",
+    "host_approval_bridge": "OFFLINE_CONTRACT_ONLY_OWNER_AUTHENTICATED_FALSE",
+    "host_git_loop": "NO_G3_ISSUER_OR_REGISTRATION_INTERFACE",
+    "tool_inventory_scope": "CURRENT_SURFACED_TOOLS_ONLY_NOT_GLOBAL_HOST_ENUMERATION",
+    "independent_review_tool": "CI_DIAGNOSTICS_ONLY_NOT_AN_APPROVAL_ISSUER_OR_COMPLETED_REVIEW",
+    "positive_g3_workflow": "NOT_RUN_BLOCKED_BEFORE_REAL_APPROVAL",
+    "approval_record_issued": false,
+    "registration_created": false,
+    "production_binding_created": false,
+    "real_admission": "NO",
+    "frozen_research_resumed": false,
+    "g4_tag_target": "a13505729bf719f25aab38ac10440562fdf59220",
+    "g3_research_hold_tag_target": "8c76fb1920064064937ee39c6474e534fece3b60",
+    "earliest_original_mandatory_blocker": "VERIFIED_APPROVAL_ORIGIN_AND_EXPLICITLY_ACCEPTED_ISSUER_BOUNDARY",
+    "d04_executor_exclusion_added_as_gate": false,
+    "n01_or_distributed_custody_required_by_this_finding": false
+  },
+  "focused_regression": {
+    "schema": "nexus.g3.original.focused-regression.v1",
+    "command": [
+      "D:\\DevTools\\NexusR2Python\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "-m",
+      "unittest",
+      "tests.test_g3_authorization",
+      "tests.test_g3_host_approval_bridge",
+      "tests.test_core_host_loop",
+      "tests.test_g4_contracts",
+      "tests.test_g4_host_adapter",
+      "tests.test_g4_local_qualification",
+      "-v"
+    ],
+    "total": 107,
+    "pass": 107,
+    "skip": 0,
+    "fail": 0,
+    "error": 0,
+    "exit": 0,
+    "seconds": 27.344,
+    "log_sha256": "1460daaa9cade36966cfbb934e5a884139c30843f3c147fc8f27f34ec1242eca",
+    "new_tests": 0,
+    "live_approval_or_registration": false,
+    "n01_or_cloud_qualification": false
+  },
+  "full_repository_regression_newly_claimed": false,
+  "new_source_modules": [],
+  "source_or_historical_tests_changed": false,
+  "new_approval_or_registration_issued": false,
+  "current_mandatory_earliest_blocker": "Roadmap G3 fields 4,8,12,15: verified exact-subject approval origin and accepted issuer/security boundary",
+  "dependent_unproven_gates": [
+    "real benign approval and registration",
+    "real revoke-to-ineligibility linkage",
+    "independent origin/binding/revocation/isolation final review"
+  ],
+  "g2": "UNCHANGED_COMPLETED_FROZEN_MANAGED_SCOPE",
+  "g4": "UNCHANGED_COMPLETED_FROZEN",
+  "g3_n01_research": "UNCHANGED_HOLD_OPTIONAL_HIGH_ASSURANCE_RESEARCH",
+  "g6_final_qualification": "NOT_STARTED_GATED_BY_UNFROZEN_G3",
+  "real_admission": "NO",
+  "production_adapter": "DENY",
+  "g3_final_tag_created": false,
+  "g6_final_tag_created": false,
+  "new_paid_resources": false,
+  "new_provider_executions": 0,
+  "new_authentication_attempts": 0,
+  "new_dynamodb_s3_or_iam_operations": 0,
+  "protected_tag_objects": [
+    "refs/tags/desktop-plugin-final 2b4cf9f3a2f9a331fd56ebe578ab9470ba8385b1",
+    "refs/tags/nexus-0.1.0-rc.1 a9e8a1308780d0236acbf569aaf257fbdfac13cc",
+    "refs/tags/nexus-0.1.0-rc.2 d56985a2d0d59c8bee7607a50f011931905928e9",
+    "refs/tags/nexus-0.1.0-rc.3 564ff1566cb5087c954eeddfa19a765f88bec8c8",
+    "refs/tags/nexus-0.1.0-rc.4 e87c704b1180b1b917585db91714096d375616a8",
+    "refs/tags/nexus-0.1.0-rc.5 8cae4b14dfc358938341702e8f12112f2d112760",
+    "refs/tags/nexus-0.1.0-rc.6 56fbbdf79c2219c57ce186a14eec165fa1e46133",
+    "refs/tags/nexus-g3-n01-research-hold-v1 e02d55be63d2a834bb26e273c8b327d61404547a",
+    "refs/tags/nexus-roadmap-v2-final 61facbdd6445daad7358457488381a4fa64bea7a",
+    "refs/tags/nexus-v2-g1-final 09f1524f6d0923750823ba716b0dd20438499cc6",
+    "refs/tags/nexus-v2-g4-final bf731fd3debeb715be4a5206f9b12a7e945a866c",
+    "refs/tags/post-r5-runtime-integration-slice1-final 3fe8bd9e23845ea3fe83f7641b77a40c6acdb6e1",
+    "refs/tags/post-r5-runtime-integration-slice2-final 85fe73e21c6f0d8337d3e155df56445ed0f3e724",
+    "refs/tags/post-r5-runtime-integration-slice3a-final 5b867bc0802515a13017e7712e318ae0ab35c066",
+    "refs/tags/post-r5-runtime-integration-slice3b-final 18f38c4383d620ddbe830b6d6ccd0c4ffc83aeae",
+    "refs/tags/post-r5-runtime-integration-slice3c-final f24e3538120019cbcef100d233edb24ca9ec383d",
+    "refs/tags/runtime-r1-final ab0e3c197d364ef654c3642f6b579dddbc35bafe",
+    "refs/tags/runtime-r2-final 0244bc0ffaeb36bb0d184ccc56ee3b5ec6aed5f4",
+    "refs/tags/runtime-r3-final f2a606631af6dd89e931509b7a5d9c808ea8677a",
+    "refs/tags/runtime-r5-final e5532a08ac679c7c6cf4b4bbb76be18e702504ce",
+    "refs/tags/v1.1-final 98cb130e0fa9fae0bf6231505f2c4dc9d62087c3",
+    "refs/tags/v1.2-final 1bd65384a153d30e91c750cbb56600fadcd2386c"
+  ]
+}

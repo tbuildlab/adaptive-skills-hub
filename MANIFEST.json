@@ -1443,6 +1443,10 @@
     "bytes": 8792,
     "sha256": "69ed8ba2ca53985a31c3ebfbf88f5d0e3f4efeac82ed53b826484171fa3fb451"
   },
+  "docs/nexus-g3-original-minimum-origin-admissibility-v1.md": {
+    "bytes": 8951,
+    "sha256": "5d072011b0a8e152178218f951f2623b22ec85d5fb4969526b9263a5a8b1b0b9"
+  },
   "docs/nexus-g3-return-checkpoint-v1.md": {
     "bytes": 5728,
     "sha256": "6a0c4271bdeb043abd1f6867cbe2daa2290d84591bd3ae5de74595448f5b8ee3"
@@ -2154,6 +2158,10 @@
   "research/nexus-g3-n01-research-hold-freeze-v1.json": {
     "bytes": 211685,
     "sha256": "d37d0595d1d82f9e6d7067a822bb7975f9093e1702670cb8d1bdee948d7aa10b"
+  },
+  "research/nexus-g3-original-minimum-origin-evidence-v1.json": {
+    "bytes": 10096,
+    "sha256": "9f14570062565c5079d9ee7c7b70ae40de4a5d6ad7658a152c2726e2dea25729"
   },
   "research/nexus-g4-final-acceptance-audit-v1.json": {
     "bytes": 6673,
