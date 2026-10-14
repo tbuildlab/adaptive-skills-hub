@@ -2616,8 +2616,8 @@
     "sha256": "f0de915950381eedd343f010c5ddd3102393bdc0d5e5928cc22613b750ab93c8"
   },
   "scripts/verify_g3_owner_signature.py": {
-    "bytes": 7669,
-    "sha256": "235162f3d79e3c2a2c5bbf5af2f28f8f3bf9a8b0675b2d83095b692b02651cfd"
+    "bytes": 7787,
+    "sha256": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6"
   },
   "scripts/verify_g4_local_evidence.py": {
     "bytes": 7870,
@@ -2884,8 +2884,8 @@
     "sha256": "93ca0a9a46588932a741f0bb018db28a5d61961b92c2c918f485ffcf7f379f27"
   },
   "tests/test_g3_owner_signing_procedure.py": {
-    "bytes": 5074,
-    "sha256": "e0d85c4b06e4d3cefa5bfb4ad0bad9e8d586d4c6e9c141b552f638257777361a"
+    "bytes": 5244,
+    "sha256": "c2c84ccbb87ce1e14b8805cd777c7ff756fd68747ef84aeb8a0532b0190bdf42"
   },
   "tests/test_g3_primary_ledger.py": {
     "bytes": 9195,

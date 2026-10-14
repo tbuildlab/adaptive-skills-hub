@@ -45,12 +45,14 @@ class OwnerSigningProcedureTests(unittest.TestCase):
             return result, process
 
     def test_mocked_success_is_nonbearer_and_uses_exact_stdin_bytes(self):
-        result, process = self.check()
+        with patch.dict('os.environ', {'WINDIR': r'C:\untrusted-caller-choice'}):
+            result, process = self.check()
         self.assertEqual(result['record_kind'], 'READBACK_ONLY_NOT_BEARER_AUTHORITY')
         self.assertFalse(result['registration_created'])
         self.assertEqual(result['real_admission'], 'NO')
         self.assertEqual(process.call_args.kwargs['input'], self.raw)
         command = process.call_args.args[0]
+        self.assertEqual(command[0], r'C:\Windows\System32\OpenSSH\ssh-keygen.exe')
         self.assertEqual(command[1:3], ['-Y', 'verify'])
         self.assertIn(verifier.NAMESPACE, command)
         self.assertIn(verifier.PRINCIPAL, command)

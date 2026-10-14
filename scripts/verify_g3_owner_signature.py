@@ -7,7 +7,6 @@ import base64
 from email.utils import parsedate_to_datetime
 import hashlib
 import json
-import os
 from pathlib import Path
 import subprocess
 import sys
@@ -113,7 +112,9 @@ def verify(payload_path, signature_path, public_path):
     matches = [entry for entry in keys if type(entry) is dict
                and type(entry.get('key')) is str and ' '.join(entry['key'].split()[:2]) == key]
     require(len(matches) == 1 and type(matches[0].get('id')) is int, 'SIGNING_KEY_MEMBERSHIP')
-    executable = Path(os.environ.get('WINDIR', r'C:\Windows')) / 'System32/OpenSSH/ssh-keygen.exe'
+    # This is the exact native executable inspected for this Windows procedure;
+    # a caller-controlled environment must not select a replacement verifier.
+    executable = Path(r'C:\Windows\System32\OpenSSH\ssh-keygen.exe')
     require(executable.is_file(), 'OPENSSH_UNAVAILABLE')
     with tempfile.TemporaryDirectory(prefix='nexus-g3-public-verification-') as temporary:
         directory = Path(temporary)
