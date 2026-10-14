@@ -1,0 +1,156 @@
+{
+  "G2": "UNCHANGED_FROZEN",
+  "G3_N01_HIGH_ASSURANCE": "UNCHANGED_OPTIONAL_RESEARCH_HOLD",
+  "G4": "UNCHANGED_FROZEN",
+  "conditional_owner_authorization": "current Owner instruction: verify signature then complete original G3 qualification/freeze and proceed to G6, contingent on original gates",
+  "criteria": [
+    {
+      "evidence": "research/nexus-g3-owner-signature-observation-v1.json; research/nexus-g3-signed-local-approval-projection-v1.json; research/nexus-g3-signed-local-registration-v1.json",
+      "original_requirement": "explicit benign exact approval and registration",
+      "status": "SATISFIED_IN_DECLARED_LOCAL_SCOPE"
+    },
+    {
+      "evidence": "scripts/verify_g3_owner_signature.py; signed decision bundle; independent review result v2",
+      "original_requirement": "verified issuer and exact component/revision/review/config binding",
+      "status": "SATISFIED"
+    },
+    {
+      "evidence": "research/nexus-g3-signed-local-host-evidence-v1.json; retained real Host harness; tests/test_g3_signed_local_approval.py",
+      "original_requirement": "current capability eligibility separate from current task/Host/G1/G2 execution authority",
+      "status": "SATISFIED_NO_DISPATCH_GRANT"
+    },
+    {
+      "evidence": "tests/test_g3_authorization.py; tests/test_g3_signed_local_approval.py",
+      "original_requirement": "changed revision cannot inherit approval",
+      "status": "SATISFIED"
+    },
+    {
+      "evidence": "research/nexus-g3-signed-local-revocation-v1.json; exact packet retirement pin; tests/test_g3_signed_local_approval.py; independent successor review",
+      "original_requirement": "revocation blocks subsequent eligibility including normal checkout relocation",
+      "status": "SATISFIED_REPAIRED_HIGH"
+    },
+    {
+      "evidence": "tests/test_g3_authorization.py; tests/test_g3_host_approval_bridge.py; unchanged ash production DENY modules",
+      "original_requirement": "quarantine and negative inputs cannot manufacture authority",
+      "status": "SATISFIED"
+    },
+    {
+      "evidence": "research/nexus-g3-independent-review-scope-v2.json; research/nexus-g3-independent-review-result-v2.json; original failed review preserved",
+      "original_requirement": "independent review of origin, subject binding, revocation, quarantine isolation",
+      "status": "SATISFIED_BOUNDED_SCOPE"
+    },
+    {
+      "evidence": "full-regression.log/json plus exact environment retests and post-retirement affected regression",
+      "original_requirement": "relevant full regression and explicit environment skip classification",
+      "status": "SATISFIED_RECONCILED_UNIQUE_COVERAGE"
+    }
+  ],
+  "decision": "COMPLETED_FROZEN_ORIGINAL_G3_CONTROLLED_LOCAL_SCOPE",
+  "excluded": [
+    "general reusable approval service",
+    "arbitrary third-party capability registration",
+    "old vulnerable adapter versions",
+    "independent malicious-Host exclusion",
+    "N01/PREAUTH/public-pin/DynamoDB/custody/ledger recovery",
+    "production adapter positive admission"
+  ],
+  "g6_final_qualification": "AUTHORIZED_NEXT_AFTER_G3_TAG_READBACK_NOT_YET_STARTED",
+  "independent_review_result": "research/nexus-g3-independent-review-result-v2.json",
+  "known_limitations": [
+    "One exact fixed Owner-signed local capability; no blanket approval, generic issuer service, or production dispatch",
+    "The actual approval is now permanently retired; no live run is repeated and no authority is restored",
+    "First live run and first reviewer source bytes are retained; final code includes independently reviewed post-run hardening/retirement",
+    "Independent Agent review did not independently requery GitHub or inspect the external Host harness; parent ran native verification; reviewer independently verified retained Ed25519 signature and exact scoped source",
+    "Full results are a reconciled unique-case coverage set, not one monolithic green sweep",
+    "Four unchanged environment skips: three unconfigured real embedded-runtime inputs and one Windows symlink privilege"
+  ],
+  "manifest_and_final_tag_binding": "The annotated tag binds the acceptance commit and final MANIFEST; a commit cannot embed its own hash.",
+  "observed_at_utc": "2026-10-14T07:33:53.687947+00:00",
+  "proposed_final_tag": "nexus-v2-g3-final",
+  "qualified_development_commit": "0203ba910fc77b3ca3b9f34d684be17315494174",
+  "real_admission": "NO",
+  "regression": {
+    "basis": "full original sweep plus exact environment retests plus all current affected cases after security repair; not a single monolithic green run",
+    "evidence_sha256": {
+      "full-regression.json": "56911ffa44e04aec7e2b99fb31c5b2ec06dc95ab431634f90f3d6512b5ca085d",
+      "full-regression.log": "c6d7c3afab215450c16b668fe552fa6c20cbc067cb257c7f4c802b5cf61713b1",
+      "governance-cli-environment-retest.json": "5e0f27d21055d519204dc12b9449636b27a5a71e0f6f6f8beaa4626adf5f1af9",
+      "governance-cli-environment-retest.log": "18b66bb1be1a36dec22717ba5e761667e23d958e17305727cb3d5ddbe41580e6",
+      "governance-cli-line-ending-diagnostic.json": "ae54628179b55d0ed033f14b28267e2f0c69df5aa7227f8d21bbb3131b961dc2",
+      "initial-environment-reconciled.json": "67a91c5ac213c1ed0410f0775a213107968f8b8343870b2291027d49d3c0855f",
+      "initial-environment-reconciled.log": "2df12724bd3ab1cc91306d888d6aa1531836e7e07073c8cef2d4e218cc9e1203",
+      "post-retirement-affected-regression.log": "2c6ceec8316283b3cfe09dec59874640a239e1237dc695fad11f780223a0228f",
+      "snapshot-json-lf-environment-repair.json": "03cff16382fe6c8e68df025311e91d67939ebc153a19996ff2643feda8221ec7"
+    },
+    "exact_environment_cases_reconciled": [
+      "test_build_g3_n01_public_review_custody.PublicReviewOperationTests.test_exact_operation_retains_only_two_public_documents_with_seven_day_bound",
+      "test_build_g3_n01_public_review_custody.PublicReviewOperationTests.test_existing_exact_versions_are_read_without_rewriting",
+      "test_build_g3_n01_public_review_custody.PublicReviewOperationTests.test_unexpected_existing_key_denies_without_write",
+      "test_build_g3_n01_public_review_custody.PublicReviewOperationTests.test_unknown_ack_never_retries_and_preserves_attempt_receipt",
+      "test_build_g3_n01_public_review_custody.PublicReviewOperationTests.test_wrong_account_denies_before_any_custody_operation",
+      "test_ecosystem_isolation_package.EcosystemIsolationTests.test_private_package_is_byte_reproducible_and_excludes_mutable_data",
+      "test_governance_real_evidence_application.RealEvidenceApplicationTests.test_actual_unmocked_cli_enable_repeat_disable"
+    ],
+    "first_full": {
+      "error": 6,
+      "fail": 1,
+      "pass": 1544,
+      "skip": 4,
+      "total": 1555
+    },
+    "historical_case_clock_fixture_only": [
+      "test_g3_n01_atomic_reads.AtomicContinuationTests.test_new_artifact_is_head_eight_only_and_does_not_reset_aggregate",
+      "test_g3_n01_auth_continuation.AuthContinuationTests.test_builder_keeps_cumulative_cost_and_separate_one_attempt",
+      "test_g3_n01_live_budget.LiveBudgetTests.test_attempt_bound_includes_injected_ack_loss_and_no_retry",
+      "test_g3_n01_live_budget.LiveBudgetTests.test_fixed_error_does_not_copy_backend_private_message",
+      "test_g3_n01_owner_controller.OwnerControllerTests.test_complete_owner_only_durability_stays_inside_original_backend_bounds",
+      "test_g3_n01_owner_controller.OwnerControllerTests.test_missing_independent_source_quarantines_before_mutation_without_retry",
+      "test_g3_n01_owner_controller.OwnerControllerTests.test_real_durability_composition_model_finalizes_recovery_and_source_as_none",
+      "test_g3_n01_public_review.PublicReviewTests.test_duplicate_missing_corrupt_expired_or_legacy_custody_denies",
+      "test_g3_n01_source_enrollment.SourceEnrollmentTests.test_missing_ambiguous_expired_unavailable_source_custody_denies",
+      "test_g3_n01_vercel_probe.RuntimeProbeTests.test_cached_success_still_none_not_owner_context",
+      "test_g3_n01_vercel_probe.RuntimeProbeTests.test_unknown_outcome_is_sanitized_terminal_no_retry"
+    ],
+    "historical_test_source_modified": false,
+    "new_cases_after_full_snapshot": [
+      "test_g3_signed_local_approval.SignedLocalApprovalTests.test_production_retirement_blocks_fresh_relocated_checkout_before_any_io",
+      "test_g3_signed_local_approval.SignedLocalApprovalTests.test_retirement_blocks_existing_instance_even_when_marker_is_missing"
+    ],
+    "pass": 1553,
+    "post_repair_affected": {
+      "error": 0,
+      "fail": 0,
+      "pass": 135,
+      "skip": 0,
+      "total": 135
+    },
+    "qualified_current_source_commit": "0203ba910fc77b3ca3b9f34d684be17315494174",
+    "real_admission": "NO",
+    "schema": "nexus.g3.original-unique-regression-reconciliation.v1",
+    "skip": [
+      {
+        "id": "test_github_distribution.GitHubDistributionTests.test_real_clean_bootstrap_without_system_python",
+        "reason": "real embedded runtime inputs are not configured"
+      },
+      {
+        "id": "test_github_distribution.GitHubDistributionTests.test_real_plugin_bootstrap_without_codex_prepares_host_managed_source",
+        "reason": "real embedded runtime inputs are not configured"
+      },
+      {
+        "id": "test_github_distribution.GitHubDistributionTests.test_real_plugin_health_without_system_python_or_codex",
+        "reason": "real embedded runtime inputs are not configured"
+      },
+      {
+        "id": "test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected",
+        "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpysd9_c5v\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmpysd9_c5v\\\\approved-project\\\\linked'"
+      }
+    ],
+    "total_unique_current_cases": 1557,
+    "unresolved_error": 0,
+    "unresolved_fail": 0
+  },
+  "roadmap_sha256_lf": "e803515ea2342c13b548601e01ba015e6827aa5d6a55c98562533d1ef77d8ba8",
+  "roadmap_tag": "nexus-roadmap-v2-final",
+  "schema": "nexus.g3.original-final-acceptance-audit.v1",
+  "supported_scope": "one exact signed local repository-owned capability on the current trusted Windows Host; spent approval permanently retired"
+}

@@ -1,0 +1,16 @@
+{
+  "nexus-g3-retired-first-review-adapter-v1.txt": {
+    "current_authority": "NONE",
+    "outside_repaired_version_assurance": true,
+    "purpose": "RETIRED_AUDIT_SOURCE_ONLY_DO_NOT_EXECUTE",
+    "raw_sha256": "05d345359b41cf5b08a3d96b469f75550fb861d54f693d9a8c933d9cd49f941b",
+    "source": "original retained first-review source snapshot"
+  },
+  "nexus-g3-retired-real-run-adapter-v1.txt": {
+    "current_authority": "NONE",
+    "outside_repaired_version_assurance": true,
+    "purpose": "RETIRED_AUDIT_SOURCE_ONLY_DO_NOT_EXECUTE",
+    "raw_sha256": "9dd702dbedda86347aa7fe77e73939b099178c460ef6844d7ce1a3c41026eec7",
+    "source": "byte-identical reconstruction from the first-review snapshot using the disclosed one-line serializer change; matches the original real-run digest"
+  }
+}

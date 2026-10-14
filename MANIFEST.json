@@ -1455,6 +1455,10 @@
     "bytes": 8792,
     "sha256": "69ed8ba2ca53985a31c3ebfbf88f5d0e3f4efeac82ed53b826484171fa3fb451"
   },
+  "docs/nexus-g3-original-final-acceptance-freeze-v1.md": {
+    "bytes": 9914,
+    "sha256": "fcfa48e5ee909fc821fb4baf4f44b9a594ae86f75b1c591b86f993e6a32a9567"
+  },
   "docs/nexus-g3-original-minimum-origin-admissibility-v1.md": {
     "bytes": 8951,
     "sha256": "5d072011b0a8e152178218f951f2623b22ec85d5fb4969526b9263a5a8b1b0b9"
@@ -2195,6 +2199,14 @@
     "bytes": 211685,
     "sha256": "d37d0595d1d82f9e6d7067a822bb7975f9093e1702670cb8d1bdee948d7aa10b"
   },
+  "research/nexus-g3-original-final-acceptance-audit-v1.json": {
+    "bytes": 10274,
+    "sha256": "3d447f56e1ec424c93ebde8abbb3cbd487672e8da84da520f50ce943610333d5"
+  },
+  "research/nexus-g3-original-final-regression-v1.json": {
+    "bytes": 5375,
+    "sha256": "0d9cc244fa0c28764a4eb2e8789b8cbfcf1a3808209b544674381998e1f2d95a"
+  },
   "research/nexus-g3-original-minimum-origin-evidence-v1.json": {
     "bytes": 10096,
     "sha256": "9f14570062565c5079d9ee7c7b70ae40de4a5d6ad7658a152c2726e2dea25729"
@@ -2218,6 +2230,18 @@
   "research/nexus-g3-owner-signing-preparation-v1.json": {
     "bytes": 3728,
     "sha256": "52f9b8a97394124f45fe4e0b7e5d5e8a224f145f011d2b03b4a1f16606884d13"
+  },
+  "research/nexus-g3-retired-first-review-adapter-v1.txt": {
+    "bytes": 7157,
+    "sha256": "05d345359b41cf5b08a3d96b469f75550fb861d54f693d9a8c933d9cd49f941b"
+  },
+  "research/nexus-g3-retired-real-run-adapter-v1.txt": {
+    "bytes": 7200,
+    "sha256": "9dd702dbedda86347aa7fe77e73939b099178c460ef6844d7ce1a3c41026eec7"
+  },
+  "research/nexus-g3-retired-source-retention-v1.json": {
+    "bytes": 790,
+    "sha256": "e72c822335d500d5e3f5e4bbad3e1c134439231c8c6d9edd28a81cbd7c1ab98c"
   },
   "research/nexus-g3-signed-local-approval-projection-v1.json": {
     "bytes": 995,
