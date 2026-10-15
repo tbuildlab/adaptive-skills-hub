@@ -1,0 +1,33 @@
+{
+  "candidate_executions": 0,
+  "credentials_settings_caches_copied": false,
+  "files": [
+    {
+      "bytes": 334121776,
+      "destination_path": "output/g6-fixed-host-snapshot-v1/bin/codex.exe",
+      "destination_regular_nonreparse_single_link_checked": true,
+      "destination_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e",
+      "source_five_field_stability_checked": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\OpenAI\\Codex\\bin\\9614f1d9b40d9c4f\\codex.exe",
+      "source_sha256": "e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e"
+    },
+    {
+      "bytes": 8204592,
+      "destination_path": "output/g6-fixed-host-snapshot-v1/bin/codex-command-runner.exe",
+      "destination_regular_nonreparse_single_link_checked": true,
+      "destination_sha256": "bdf5160289bc4d64bc2fa38c43f9679558b3a4386226adc66a0af741e41424b7",
+      "source_five_field_stability_checked": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\OpenAI\\Codex\\bin\\9614f1d9b40d9c4f\\codex-command-runner.exe",
+      "source_sha256": "bdf5160289bc4d64bc2fa38c43f9679558b3a4386226adc66a0af741e41424b7"
+    }
+  ],
+  "inventory_exact_two": true,
+  "model_loads": 0,
+  "new_paid_service": false,
+  "new_sandbox_or_vm": false,
+  "qualification": "NOT_YET_PROVEN_BY_UNINSTRUMENTED_COMPLETE_GUARD",
+  "real_admission": "NO",
+  "schema": "nexus.g6.fixed-host-snapshot-provenance.v1",
+  "scope": "Exact two-file existing Host-location reuse only; no fallback, setup, cached settings or credentials.",
+  "status": "COPIED_EXACT_BYTES_NOT_QUALIFIED"
+}

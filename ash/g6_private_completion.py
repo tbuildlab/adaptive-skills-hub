@@ -15,10 +15,10 @@ from .ecosystem_storage import stable_read_bytes
 
 ROOT = Path(__file__).resolve().parents[1]
 _LOADED_SHA = hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n', b'\n')).hexdigest()
-WORK = 'output/g6-local-retention-once-v1'
-PACKET = 'output/g6-local-retention-owner-signing-v1/decision.json'
-REVIEW = 'research/nexus-g6-local-retention-independent-review-v1.json'
-PUBLIC_WORK = 'output/g6-local-retention-public-v2'
+WORK = 'output/g6-local-retention-once-v2'
+PACKET = 'output/g6-local-retention-owner-signing-v2/decision.json'
+REVIEW = 'research/nexus-g6-local-retention-independent-review-v2.json'
+PUBLIC_WORK = 'output/g6-local-retention-public-v3'
 END = b'END_G6_AUDIT'
 SOURCES = (
     ('v1', 'output/g6-native-private-once-v1/disposition.json',
@@ -68,6 +68,10 @@ def prompt():
                b'NATIVE_BOUNDED_RESULT_OBSERVED use outcome PUBLIC_ONLY_PASS.\n'
                b'Every retired record has action KEEP. Copy retained_bytes into bytes.\n'
                b'Do not delete, reset or replay any record. No explanations or code fences.\n'
+               b'Plain ASCII CSV, not Markdown. Never output backticks. '
+               b'No spaces before or after commas. Example of formatting only:\n'
+               b'attempt,outcome,action,bytes\nexample,QUARANTINE,KEEP,7\n'
+               b'Do not include the example row. Use the real source records below.\n'
                b'After the three data rows, write END_G6_AUDIT on its own line.\n'
                b'Source records: ' + data + b'\n/no_think')
     return (b'<|im_start|>user\n' + request + b'<|im_end|>\n'
@@ -119,12 +123,13 @@ def native_plan():
 def owner_intent():
     material_names = (*binding.owner_intent()['material'],
                       'ash/g6_private_completion.py', 'tests/test_g6_private_completion.py',
-                      'scripts/qualify_g6_private_completion.py')
+                      'scripts/qualify_g6_private_completion.py',
+                      'research/nexus-g6-fixed-host-snapshot-provenance-v1.json')
     material = {name: binding.normalized_sha(ROOT / name) for name in material_names}
     config = native_plan()
     subject = {'schema_version': codec.SUBJECT_SCHEMA, 'kind': 'local_adapter',
-               'provider': 'repository', 'source_ref': 'repository-owned-g6-local-retention-v1',
-               'revision': 'g6-local-retention-binding-v1',
+               'provider': 'repository', 'source_ref': 'repository-owned-g6-local-retention-v2',
+               'revision': 'g6-local-retention-binding-v2',
                'capability_id': 'nexus/g6-local-retention-qualification', 'action': 'execute',
                'content_sha256': hashlib.sha256(codec._canonical(material)).hexdigest(),
                'config_sha256': hashlib.sha256(codec._canonical(config)).hexdigest()}
@@ -133,7 +138,7 @@ def owner_intent():
             'material': material, 'config': config,
             'issuer': {'provider': 'github', 'login': 'TDY0225', 'user_id': 223441940,
                        'principal': 'github-user-223441940'}, 'namespace': 'nexus-g3-approval-v1',
-            'purpose': 'APPROVE_ONE_G6_LOCAL_RETENTION_QUALIFICATION', 'max_attempts': 1,
+            'purpose': 'APPROVE_ONE_G6_LOCAL_RETENTION_QUALIFICATION_V2', 'max_attempts': 1,
             'terminal': 'RETIRE_ON_COMPLETION_FAILURE_CANCEL_OR_UNKNOWN',
             'automatic_retry': False, 'capability_registration': False, 'real_admission': 'NO'}
 

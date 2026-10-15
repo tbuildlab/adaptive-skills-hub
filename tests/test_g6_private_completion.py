@@ -94,6 +94,47 @@ class LocalRetentionTests(unittest.TestCase):
                 with self.assertRaisesRegex(binding.BindingHold, 'OWNER_EXACT_SUBJECT'):
                     binding._verify_native_owner('private')
 
+    def test_consumed_local_retention_decision_rejects_new_snapshot_subject(self):
+        intent = private.owner_intent()
+        raw = (binding.ROOT / 'research/nexus-g6-local-retention-owner-decision-v1.json').read_bytes()
+        self.assertNotEqual(json.loads(raw)['subject_id'], intent['subject_id'])
+        with patch.object(private, 'owner_intent', return_value=intent), \
+             patch.object(binding, 'stable_read_bytes', return_value=raw):
+            with self.assertRaisesRegex(binding.BindingHold, 'OWNER_EXACT_SUBJECT'):
+                binding._verify_native_owner('private')
+
+    def test_snapshot_paths_are_only_same_pinned_two_hosts_without_installed_fallback(self):
+        self.assertEqual(binding.HOST.parent, binding.RUNNER.parent)
+        self.assertEqual(binding.HOST.parent, binding.ROOT / 'output/g6-fixed-host-snapshot-v1/bin')
+        self.assertEqual(binding.HOST.name, 'codex.exe')
+        self.assertEqual(binding.RUNNER.name, 'codex-command-runner.exe')
+        self.assertIn('research/nexus-g6-fixed-host-snapshot-provenance-v1.json',
+                      private.owner_intent()['material'])
+
+    def test_multilink_snapshot_denies_before_use_and_releases_open_file(self):
+        with tempfile.TemporaryDirectory() as folder:
+            host = Path(folder) / 'public-host'
+            raw = b'PUBLIC_HOST_FIXTURE'
+            host.write_bytes(raw)
+            with patch.object(binding, 'HOST', host), \
+                 patch.object(binding, 'HOST_SHA', hashlib.sha256(raw).hexdigest()), \
+                 patch.object(binding.storage, '_win_identity', return_value=(1, b'PUBLIC_ID', len(raw), 100, 2)):
+                entered = False
+                with self.assertRaisesRegex(binding.BindingHold, 'HOST_SNAPSHOT_SINGLE_LINK'):
+                    with binding._held_installed_host(host, binding.HOST_SHA):
+                        entered = True
+                self.assertFalse(entered)
+            host.unlink()  # No leaked stable file handle after this denial.
+
+    def test_generation_format_repair_preserves_the_original_exact_acceptance(self):
+        prompt = private.prompt()
+        self.assertIn(b'Never output backticks', prompt)
+        self.assertIn(b'No spaces before or after commas', prompt)
+        self.assertNotIn(private.expected_report(), prompt)
+        exact = private.expected_report() + private.END
+        for changed in (b'```csv\n' + exact, exact.replace(b',', b', '), b'PUBLIC_EXTRA\n' + exact):
+            self.assertIsNone(private.verified_report(changed))
+
     def test_changed_loaded_private_code_denies_before_source_observation(self):
         with patch.object(binding, 'normalized_sha', return_value='0' * 64), \
              patch.object(private, 'stable_read_bytes') as read:

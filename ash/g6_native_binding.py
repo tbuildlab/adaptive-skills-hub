@@ -25,7 +25,7 @@ from .g6_local_model_intake import load_policy
 
 ROOT = Path(__file__).resolve().parents[1]
 _LOADED_BINDING_SHA=hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()
-HOST = Path('C:/Users/De Yong/AppData/Local/OpenAI/Codex/bin/9614f1d9b40d9c4f/codex.exe')
+HOST = ROOT / 'output/g6-fixed-host-snapshot-v1/bin/codex.exe'
 HOST_SHA = 'e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e'
 RUNNER=HOST.parent/'codex-command-runner.exe'
 RUNNER_SHA='bdf5160289bc4d64bc2fa38c43f9679558b3a4386226adc66a0af741e41424b7'
@@ -41,7 +41,7 @@ PUBLIC_MARKER_CASES=frozenset({'native_marker','native_marker_noise','native_mar
 PRIVATE_PUBLIC_CASES=frozenset({'retention_report','retention_noise','retention_wrong','retention_missing'})
 PUBLIC_CASES=PUBLIC_CASES|PRIVATE_PUBLIC_CASES
 FIXTURE = ROOT / 'research/nexus-g6-native-public-fixture-v1.py'
-WORK = 'output/g6-native-binding-public-v26'
+WORK = 'output/g6-native-binding-public-v27'
 NATIVE_WORK = 'output/g6-native-public-once-v3'
 OWNER_PACKET = 'output/g6-native-owner-signing-v3/decision.json'
 OWNER_REVIEW = 'research/nexus-g6-fixed-native-independent-review-v3.json'
@@ -403,10 +403,10 @@ def _write_state(directory, value):
 
 @contextmanager
 def _held_installed_host(path=HOST,expected=HOST_SHA,*,diagnostics=None):
-    """Installed Host may have package-manager hardlinks; deny mutation by handle.
+    """Hold only the exact two-file Host snapshot; no installed-path fallback.
 
-    Candidate/input hardlink policy is unchanged. This exception is confined to
-    the exact already-installed trusted Host, not an intake or dispatch fallback.
+    Single-link destinations add a precondition. All five identity dimensions
+    remain checked after use, including link count; hashes alone never suffice.
     """
     import msvcrt
     require((path,expected) in ((HOST,HOST_SHA),(RUNNER,RUNNER_SHA)),'TRUSTED_HOST_COMPONENT')
@@ -419,6 +419,7 @@ def _held_installed_host(path=HOST,expected=HOST_SHA,*,diagnostics=None):
         handle=storage._win_handle(path,directory=False)
         before=storage._win_identity(handle)
         with os.fdopen(msvcrt.open_osfhandle(handle,os.O_RDONLY|os.O_BINARY),'rb') as stream:
+            require(before[-1]==1,'HOST_SNAPSHOT_SINGLE_LINK')
             digest=hashlib.sha256()
             while chunk:=stream.read(1048576): digest.update(chunk)
             require(digest.hexdigest()==expected,'HOST_IDENTITY')

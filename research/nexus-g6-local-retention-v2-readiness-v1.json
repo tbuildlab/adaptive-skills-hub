@@ -1,0 +1,85 @@
+{
+  "baseline_head": "bf44605fe41a7c1fc1b6bcae8e7d044f422db663",
+  "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+  "candidate_executions_added_after_failure": 0,
+  "failed_attempt": "output/g6-local-retention-once-v1; QUARANTINE/RETIRED unchanged",
+  "format_repair": "Generation-only unfenced/no-comma-whitespace reminder with unrelated formatting example; exact source-derived acceptance unchanged. No new model execution verifies compliance yet.",
+  "full_repository": "NOT_RERUN_AT_THIS_PREPARATION_GATE; final sweep after actual remaining G6 qualification",
+  "historical_attempt_files_unchanged": 57,
+  "host_snapshot": {
+    "current_uninstrumented_guard": "public_qualification shared18 and transport4 above",
+    "five_identity_dimensions_still_enforced": true,
+    "instrumented_lead": "output/g6-fixed-host-snapshot-v1/instrumented-public-lead.json; feasibility only, not full qualification",
+    "inventory_exact_two": true,
+    "provenance": "research/nexus-g6-fixed-host-snapshot-provenance-v1.json",
+    "same_original_host_hashes": true,
+    "single_link_regular_noreparse_held_and_rechecked": true
+  },
+  "issuer_public_readback": {
+    "authority_issued": false,
+    "fingerprint": "SHA256:5FV4/OvvMPzivK/4YIolW2kPQBGoik/llHbviTDpf98",
+    "login": "TDY0225",
+    "observed_at_epoch": 1792050058,
+    "only_public_key_read": true,
+    "signing_key_id": 1242636,
+    "user_id": 223441940
+  },
+  "local_binding_sha256": "1bd7086320a46081687b5e3953465dda99222cd171141f1f4e72c2b9d9b3fe18",
+  "model_loads_added_after_failure": 0,
+  "n01_resumed": false,
+  "new_reservation_absent": true,
+  "new_signing_packet_absent": true,
+  "original_installed_link_count_cause": "UNKNOWN; no waiver or claim byte modification",
+  "public_qualification": {
+    "shared": {
+      "cases": 18,
+      "lf_sha256": "e10c9f375cee92846a7cad3450bb87989a3a45fd9bdafc132d422c6b503de938",
+      "pass": 18,
+      "path": "output/g6-native-binding-public-v27/qualification.json",
+      "sha256": "b3f36eb82f2b157fb1a67a5db2dc14dd9f7f088f4958b77e92144872321d90ca",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    "transport": {
+      "cases": 4,
+      "lf_sha256": "4b7b8bd4cf03233905b65f17138043e69b5b56739f422580d364ca5db9928bb2",
+      "pass": 4,
+      "path": "output/g6-local-retention-public-v3/qualification.json",
+      "sha256": "eac36c42701035a91e53c7e0ed635a33019fb688a809f8bfce47280ef3d7a5a4",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    }
+  },
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+      "elapsed_seconds": 154.172,
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "2780c269ede7380d60650a402391fb108a0cd3fda44a2da8b64af699c792270d",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion"
+      ],
+      "pass": 165,
+      "skip": 0,
+      "total": 165
+    },
+    "focused": {
+      "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "b966cecd290595a0763afb05b395dd504860c983d1565b3bd03eb79e9d347fbb",
+      "pass": 60,
+      "skip": 0,
+      "total": 60
+    }
+  },
+  "schema": "nexus.g6.local-retention-v2-readiness.v1",
+  "status": "PASS_PUBLIC_READINESS_ONLY"
+}

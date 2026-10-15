@@ -1,0 +1,109 @@
+{
+  "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+  "decision": "PASS_SIGNING_READINESS",
+  "files": {
+    "ash/g6_native_binding.py": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+    "ash/g6_private_completion.py": "1bd7086320a46081687b5e3953465dda99222cd171141f1f4e72c2b9d9b3fe18",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65",
+    "docs/nexus-g6-local-retention-snapshot-format-repair-v2.md": "23f0dddc476fca5c5188e8dfde27562118323bf26f12291fb2355526c67c88c8",
+    "research/nexus-g6-fixed-host-snapshot-provenance-v1.json": "d79bdd3f37d373401c61304176080d76e3b2ae98234305187b97d411c2c5213f",
+    "research/nexus-g6-fixed-prompt-contract-v1.json": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500",
+    "research/nexus-g6-local-retention-v2-readiness-v1.json": "61d15825b87cf3ebb64cea255dc414c593804f4790969581ef2e5d310a9bc5f5",
+    "research/nexus-g6-native-public-fixture-v1.py": "b4539ae98bfdd887a18d325cb4c38ad50a46530d56791b04b3d9615a8b848e51",
+    "research/nexus-g6-public-path-probe-v1.cpp": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1",
+    "scripts/qualify_g6_native_binding.py": "64ed22955e71bf4e32d7d4b7ce89bf9fb6282570bb6ceb2316f565682d8bd5e2",
+    "scripts/qualify_g6_private_completion.py": "fb067d59636ebc8e06504190286ec9db15806274a7cc1884fd3a38d51699acdc",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g6_native_binding.py": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5",
+    "tests/test_g6_private_completion.py": "e1588f16baeeb8f33c85310501087a56cef11f431a08ac527d2ef6b38159b5ee"
+  },
+  "g2_g3_g4_changed": false,
+  "limits": [
+    "Original installed-file link-count cause UNKNOWN; snapshot does not retroactively qualify/explain failed-v1. Future identity changes quarantine.",
+    "Generation reminders do not guarantee future compliance; actual usefulness needs separately signed real run and reopened artifact.",
+    "PUBLIC records with local-only routing do not qualify confidential-corpus processing.",
+    "Substitution, fair comparative value, remaining G6 evidence, final review/regression and Owner release acceptance remain separate.",
+    "Focused60 overlaps affected165; no new final full repository sweep claimed."
+  ],
+  "local_binding_sha256": "1bd7086320a46081687b5e3953465dda99222cd171141f1f4e72c2b9d9b3fe18",
+  "n01_resumed": false,
+  "properties_verified": [
+    "Exact two existing Host components independently match hashes/sizes and are regular nonreparse single-link files.",
+    "Snapshot is a new qualified Host-location configuration, with no installed fallback, setup, settings/cache copy or alternate runtime.",
+    "Initial single-link precondition and all five post-use identity checks remain enforced.",
+    "Uninstrumented complete guard public18 and CSV transport4 match current sealed binding.",
+    "Generation-only format reminder supplies no complete expected answer and changes no acceptance.",
+    "Source extraction, strict CSV verifier and report/receipt functions AST-identical to failed-v1 baseline.",
+    "Fresh subject/purpose/packet/review and exclusive reservation reject retired approval reuse.",
+    "All57 historical attempt files independently rehashed unchanged; fresh reservation/packet absent at review.",
+    "Historical Core/native tests, issuer, intake policy and storage helpers unchanged."
+  ],
+  "public_qualification": {
+    "shared": {
+      "cases": 18,
+      "lf_sha256": "e10c9f375cee92846a7cad3450bb87989a3a45fd9bdafc132d422c6b503de938",
+      "pass": 18,
+      "path": "output/g6-native-binding-public-v27/qualification.json",
+      "sha256": "b3f36eb82f2b157fb1a67a5db2dc14dd9f7f088f4958b77e92144872321d90ca",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    "transport": {
+      "cases": 4,
+      "lf_sha256": "4b7b8bd4cf03233905b65f17138043e69b5b56739f422580d364ca5db9928bb2",
+      "pass": 4,
+      "path": "output/g6-local-retention-public-v3/qualification.json",
+      "sha256": "eac36c42701035a91e53c7e0ed635a33019fb688a809f8bfce47280ef3d7a5a4",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    }
+  },
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+      "elapsed_seconds": "154.172",
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "2780c269ede7380d60650a402391fb108a0cd3fda44a2da8b64af699c792270d",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion"
+      ],
+      "pass": 165,
+      "skip": 0,
+      "total": 165
+    },
+    "focused": {
+      "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "b966cecd290595a0763afb05b395dd504860c983d1565b3bd03eb79e9d347fbb",
+      "pass": 60,
+      "skip": 0,
+      "total": 60
+    }
+  },
+  "regression_measurement_note": "Exact elapsed float remains in sealed readiness evidence; review uses decimal string for unchanged strict G3 codec.",
+  "remaining_material_findings": [],
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_actions": {
+    "authentication_calls": 0,
+    "candidate_executions": 0,
+    "files_modified": false,
+    "model_loads": 0,
+    "native_replay_calls": 0,
+    "raw_task_output_report_printed": false,
+    "signing_calls": 0,
+    "tests_rerun": 0
+  },
+  "reviewer_role": "independent_read_only_not_implementer",
+  "schema": "nexus.g6.local-retention-independent-review.v2",
+  "scope": "Prepare one fresh exact-subject signing package for repaired fixed local-retention v2 only; not execution authority.",
+  "scope_digest_definition": "Sorted compact ASCII JSON of fourteen relative paths to LF-normalized SHA256 hashes.",
+  "scope_sha256": "2e71c0a655ea8cf461c2fbb553db10bc5eb30eb7b339185086b7623201419e9b"
+}

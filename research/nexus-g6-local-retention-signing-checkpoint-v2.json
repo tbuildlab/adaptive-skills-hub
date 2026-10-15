@@ -1,0 +1,136 @@
+{
+  "baseline_head": "bf44605fe41a7c1fc1b6bcae8e7d044f422db663",
+  "capability_registrations": 0,
+  "current_issuer_readback": "TDY0225/223441940, signing-key1242636 and existing public fingerprint match; no private-key read or authority issued",
+  "failed_local_v1": "QUARANTINE_RETIRED_UNCHANGED; no accepted CSV; original link-count cause UNKNOWN",
+  "full_repository": "NOT_RUN_THIS_READINESS; retained historical sweep not relabeled current final qualification",
+  "g2_g3_g4": "UNCHANGED_COMPLETED_FROZEN",
+  "g5": "DISABLED",
+  "hardware_energy_cost": "UNMEASURED",
+  "historical_attempt_files_unchanged": 57,
+  "independent_review": {
+    "decision": "PASS_SIGNING_READINESS",
+    "package_coherence": "PASS_PACKAGE_COHERENCE",
+    "remaining_material_findings": [],
+    "review_sha256": "f30e8179073a745abd6b29fc4b3a7695905908114253f5ce4499cad9b8174d83",
+    "reviewer": "/root/g6_binding_independent_review",
+    "scope_sha256": "2e71c0a655ea8cf461c2fbb553db10bc5eb30eb7b339185086b7623201419e9b"
+  },
+  "manifest": {
+    "boundary": "Tracked files plus7explicit new records in external static snapshot; no historical runtime/Git fixture mutation.",
+    "entries": 853,
+    "existing_changed_paths": [
+      "ash/g6_native_binding.py",
+      "ash/g6_private_completion.py",
+      "tests/test_g6_private_completion.py"
+    ],
+    "prior_entries": 846,
+    "prior_unchanged_entries": 843
+  },
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_candidate_executions_after_failure": 0,
+  "new_cloud_resources": 0,
+  "new_model_loads_after_failure": 0,
+  "new_paid_services": 0,
+  "new_private_inputs_processed": false,
+  "package_identity": {
+    "approval": "NOT_OBTAINED",
+    "component_sha256": "26f85de4ab24f75a50884a929390c3692b3ba692b002e596821190823cd5b7d5",
+    "configuration_sha256": "4d2a0cecf2c892712e5e6e8a4473e059e309ab503d342f2bff59fc1b1b492a03",
+    "effective_at": 1792063380,
+    "expires_at": 1792149780,
+    "new_reservation_absent": true,
+    "payload_sha256": "4005ca3a11a309853a48a71c5b3f853c8419d0e250c2ba523861862ed3704539",
+    "real_admission": "NO",
+    "review_sha256": "f30e8179073a745abd6b29fc4b3a7695905908114253f5ce4499cad9b8174d83",
+    "scope_sha256": "2e71c0a655ea8cf461c2fbb553db10bc5eb30eb7b339185086b7623201419e9b",
+    "subject_id": "nexus.g3.subject.v1:640d9c5b323524bf9ef7463775a8e75ddc2f1b9a2bcfbeb364afad42840be6a5",
+    "window_myt": [
+      "2026-10-15 19:23",
+      "2026-10-16 19:23"
+    ]
+  },
+  "preserved_unsigned_package_failure": {
+    "authority_created": false,
+    "finding": "Review duration float rejected by unchanged strict G3 codec before crypto.",
+    "old_payload_sha256": "6e3d342d50bb3114ebed6f9b22cd47074b728c8e02d3350253bf842644c4fc4e",
+    "path": "output/g6-local-retention-v2-preparation-v1/first-package-codec-failure",
+    "repair": "Unsigned review metadata duration changed to decimal string; sealed measurement and execution scope unchanged.",
+    "verification": "Actual strict codec parses corrected payload and review; independent coherence re-review passed."
+  },
+  "public_qualification": {
+    "shared": {
+      "cases": 18,
+      "lf_sha256": "e10c9f375cee92846a7cad3450bb87989a3a45fd9bdafc132d422c6b503de938",
+      "pass": 18,
+      "path": "output/g6-native-binding-public-v27/qualification.json",
+      "sha256": "b3f36eb82f2b157fb1a67a5db2dc14dd9f7f088f4958b77e92144872321d90ca",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    "transport": {
+      "cases": 4,
+      "lf_sha256": "4b7b8bd4cf03233905b65f17138043e69b5b56739f422580d364ca5db9928bb2",
+      "pass": 4,
+      "path": "output/g6-local-retention-public-v3/qualification.json",
+      "sha256": "eac36c42701035a91e53c7e0ed635a33019fb688a809f8bfce47280ef3d7a5a4",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    }
+  },
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+      "elapsed_seconds": 154.172,
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "2780c269ede7380d60650a402391fb108a0cd3fda44a2da8b64af699c792270d",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion"
+      ],
+      "pass": 165,
+      "skip": 0,
+      "total": 165
+    },
+    "focused": {
+      "binding_sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438",
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "b966cecd290595a0763afb05b395dd504860c983d1565b3bd03eb79e9d347fbb",
+      "pass": 60,
+      "skip": 0,
+      "total": 60
+    }
+  },
+  "remaining_g6_gates": [
+    "Actual useful local-only model completion under fresh exact-subject signature",
+    "Material execution-configuration substitution on stable common tasks/policy",
+    "Remaining original A-H/A6 evidence reconciliation and restricted combinations",
+    "Separate pilot then locked fair value protocol/comparison with capable native Host baseline",
+    "Final independent G6 security/release review and Critical/High resolution",
+    "Final full repository regression and exact source/artifact/manifest identity",
+    "Exact final Owner artifact/release acceptance then authorized freeze and remote verification"
+  ],
+  "retained_limits": [
+    "Original installed-file link-count cause UNKNOWN; snapshot does not retroactively qualify/explain failed-v1. Future identity changes quarantine.",
+    "Generation reminders do not guarantee future compliance; actual usefulness needs separately signed real run and reopened artifact.",
+    "PUBLIC records with local-only routing do not qualify confidential-corpus processing.",
+    "Substitution, fair comparative value, remaining G6 evidence, final review/regression and Owner release acceptance remain separate.",
+    "Focused60 overlaps affected165; no new final full repository sweep claimed."
+  ],
+  "schema": "nexus.g6.local-retention-signing-checkpoint.v2",
+  "signature": "NOT_OBTAINED",
+  "source_package": {
+    "candidate_model_host_runtime_evidence_excluded": true,
+    "members": 273,
+    "reproduced_twice": true,
+    "sha256": "1e9baa7c0bfe5caad1a19389713363860a3d3d3ef87a69ff89e0ea89ae85e98e"
+  },
+  "status": "PASS_SIGNING_READINESS_PENDING_OWNER_SIGNATURE"
+}
