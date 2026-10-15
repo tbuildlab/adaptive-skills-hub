@@ -35,16 +35,18 @@ NATIVE = frozenset({'ggml-base.dll', 'ggml-cpu-x64.dll', 'ggml.dll', 'libomp.dll
                     'llama-completion.exe', 'llama.dll'})
 PUBLIC_CASES = frozenset({'success', 'io', 'overflow', 'stderr_overflow', 'nonzero',
                           'partial', 'timeout', 'cancel', 'cpu', 'memory', 'processes',
-                          'controller_failure', 'late_output', 'path_diagnostic'})
+                          'controller_failure', 'late_output', 'path_diagnostic',
+                          'native_marker', 'native_marker_noise', 'native_marker_missing', 'native_marker_eog'})
+PUBLIC_MARKER_CASES=frozenset({'native_marker','native_marker_noise','native_marker_missing','native_marker_eog'})
 FIXTURE = ROOT / 'research/nexus-g6-native-public-fixture-v1.py'
-WORK = 'output/g6-native-binding-public-v22'
-NATIVE_WORK = 'output/g6-native-public-once-v2'
-OWNER_PACKET = 'output/g6-native-owner-signing-v2/decision.json'
-OWNER_REVIEW = 'research/nexus-g6-fixed-native-independent-review-v2.json'
-PUBLIC_PATH_PROBE = ROOT / 'output/g6-public-path-probe-build-v4/probe.exe'
-PUBLIC_PATH_PROBE_SHA = '83391b8ecf6b9f6eda29667947b5da4f2e5378f1dc993a70297075218cc1e49b'
+WORK = 'output/g6-native-binding-public-v24'
+NATIVE_WORK = 'output/g6-native-public-once-v3'
+OWNER_PACKET = 'output/g6-native-owner-signing-v3/decision.json'
+OWNER_REVIEW = 'research/nexus-g6-fixed-native-independent-review-v3.json'
+PUBLIC_PATH_PROBE = ROOT / 'output/g6-public-path-probe-build-v5/probe.exe'
+PUBLIC_PATH_PROBE_SHA = 'aeb75e69ed169eea7f23fdfbdfec6f46f5bec94f47636a5afb42fb3f3c8f4362'
 PUBLIC_PATH_SOURCE = ROOT / 'research/nexus-g6-public-path-probe-v1.cpp'
-PUBLIC_PATH_SOURCE_SHA = 'ac7d76123bbf359caa97c599d7ccb4c5a3995513a3d5443f21501cae748bd5a3'
+PUBLIC_PATH_SOURCE_SHA = 'd9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1'
 RETIRED_PUBLIC_INPUT = ROOT / 'output/g6-native-private-once-v1/input/task.txt'
 PUBLIC_PATH_CHECKS = ('cwd_pinned', 'original_wide_read', 'original_utf8_narrow_open_denied',
     'copy_absolute_wide_read', 'copy_absolute_utf8_narrow_denied',
@@ -54,8 +56,15 @@ PUBLIC_PATH_CHECKS = ('cwd_pinned', 'original_wide_read', 'original_utf8_narrow_
     'bom_is_content_not_open_failure', 'wrong_cwd_relative_denied',
     'cwd_switch_absolute_wide_still_reads', 'cwd_switch_relative_denied',
     'unlisted_read_denied', 'outside_read_denied',
-    'writes_denied', 'sentinel_excluded', 'stdout_pipe', 'stderr_pipe')
-NATIVE_PROMPT=b'Output only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think\n'
+    'writes_denied', 'sentinel_excluded', 'stdout_pipe', 'stderr_pipe',
+    'fixed_framing_read', 'file_parser_lf_exact', 'fixed_stop_argument', 'prompt_history_no_early_stop')
+EXPECTED_NATIVE_RESULT=b'PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE'
+LEGACY_PUBLIC_PROMPT=b'Output only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think\n'
+# Fixed one-user/no-tools branch of the exact model's embedded Qwen3 template.
+# No template engine, downloaded code evaluation, private input or generic API.
+MODEL_PROMPT=(b'<|im_start|>user\n'+LEGACY_PUBLIC_PROMPT[:-1]+b'<|im_end|>\n'
+              b'<|im_start|>assistant\n<think>\n\n</think>\n\n')
+NATIVE_PROMPT=MODEL_PROMPT+b'\n'  # -f removes precisely one terminal LF.
 ENV_NAMES = ('SystemRoot', 'WINDIR', 'USERPROFILE', 'SystemDrive', 'COMSPEC', 'PATHEXT',
              'LOCALAPPDATA', 'APPDATA', 'PROGRAMDATA', 'ALLUSERSPROFILE', 'PUBLIC',
              'ProgramFiles', 'ProgramFiles(x86)', 'ProgramW6432', 'CommonProgramFiles',
@@ -102,6 +111,8 @@ def native_plan():
             'host_material':{str(HOST):HOST_SHA,str(RUNNER):RUNNER_SHA},
             'input':str(prompt),'model_blob':str(model),'result_directory':str(directory/'result'),
             'input_sha256':hashlib.sha256(NATIVE_PROMPT).hexdigest(),
+            'effective_prompt_sha256':hashlib.sha256(MODEL_PROMPT).hexdigest(),
+            'prompt_format':'fixed Qwen3 one-user ChatML / non-thinking; no template runtime',
             'filesystem':{':root':'deny','C:/Windows/System32':'read',binary.as_posix():'read',
                           model.as_posix():'read',prompt.as_posix():'read'},
             # Pinned CWD resolves this ASCII-only path to the same held exact file.
@@ -109,7 +120,8 @@ def native_plan():
             # paths under a non-UTF-8 Windows ACP. No ACL or input bytes change.
             'candidate_arguments':['-m',str(model),'-f','../input/task.txt','-n','128','-c','1024',
                                    '-t','2','-tb','2','-s','42','--temp','0','--offline',
-                                   '-no-cnv','--simple-io','--no-display-prompt'],
+                                   '-no-cnv','--simple-io','--no-display-prompt',
+                                   '-r',EXPECTED_NATIVE_RESULT.decode('ascii')],
             'output': 'local-bounded-stdout-stderr-pipes-only; no native filesystem writes',
             'network': False, 'telemetry_overrides': list(TELEMETRY),
             'limits':{'job_memory_bytes':2*1024**3,'active_processes':8,'user_cpu_seconds':120,
@@ -154,7 +166,8 @@ def _arguments(binary, data, result, case, sentinel, port, *, role='public'):
             if role=='public' else [plan['executable'],*plan['candidate_arguments']])
     if role=='public' and case=='path_diagnostic':
         target=[str(binary/'probe.exe'),str(RETIRED_PUBLIC_INPUT),str(data.parent),
-                r'..\input\spaced public.txt',str(sentinel),*native_plan()['candidate_arguments'][2:4]]
+                r'..\input\spaced public.txt',str(sentinel),*native_plan()['candidate_arguments'][2:4],
+                *native_plan()['candidate_arguments'][-2:]]
     argv += ['sandbox', '--include-managed-config', '--permission-profile', 'g6fixed',
              '--cd', str(binary), '--', *target]
     return argv, fs
@@ -165,7 +178,7 @@ def _prepare_public_path_probe(binary,data):
     require(normalized_sha(PUBLIC_PATH_SOURCE)==PUBLIC_PATH_SOURCE_SHA,'PUBLIC_PATH_SOURCE')
     raw=stable_read_bytes(PUBLIC_PATH_PROBE,maximum_bytes=1048576)
     require(hashlib.sha256(raw).hexdigest()==PUBLIC_PATH_PROBE_SHA,'PUBLIC_PATH_BINARY')
-    require(stable_read_bytes(RETIRED_PUBLIC_INPUT,maximum_bytes=256)==NATIVE_PROMPT,
+    require(stable_read_bytes(RETIRED_PUBLIC_INPUT,maximum_bytes=256)==LEGACY_PUBLIC_PROMPT,
             'RETIRED_PUBLIC_INPUT_CHANGED')
     with (binary/'probe.exe').open('xb') as out: out.write(raw)
     for name,content in {'public.txt':NATIVE_PROMPT,'task.txt':NATIVE_PROMPT,'crlf.txt':NATIVE_PROMPT.replace(b'\n',b'\r\n'),
@@ -179,12 +192,13 @@ def owner_intent():
     names=('ash/g6_native_binding.py','scripts/qualify_g6_native_binding.py',
            'research/nexus-g6-native-public-fixture-v1.py','tests/test_g6_native_binding.py',
            'config/nexus-g6-local-model-intake-successor-v1.json',
-           'scripts/verify_g3_owner_signature.py','research/nexus-g6-public-path-probe-v1.cpp')
+           'scripts/verify_g3_owner_signature.py','research/nexus-g6-public-path-probe-v1.cpp',
+           'research/nexus-g6-fixed-prompt-contract-v1.json')
     material={name:normalized_sha(ROOT/name) for name in names}
     config=native_plan()
     subject={'schema_version':codec.SUBJECT_SCHEMA,'kind':'local_adapter','provider':'repository',
-             'source_ref':'repository-owned-g6-fixed-native-qualification-v2',
-             'revision':'g6-fixed-native-binding-v2','capability_id':'nexus/g6-fixed-native-qualification',
+             'source_ref':'repository-owned-g6-fixed-native-qualification-v3',
+             'revision':'g6-fixed-native-binding-v3','capability_id':'nexus/g6-fixed-native-qualification',
              'action':'execute','content_sha256':hashlib.sha256(codec._canonical(material)).hexdigest(),
              'config_sha256':hashlib.sha256(codec._canonical(config)).hexdigest()}
     return {'schema':'nexus.g6.native-owner-qualification-decision.v1','subject':subject,
@@ -270,6 +284,11 @@ def public_attempt(case):
 def native_attempt():
     """No plaintext/JSON opt-in: fresh independent signature is checked inside."""
     return _fixed_attempt('native','qualification')
+
+
+def _native_result_matches(stdout):
+    """Unchanged strict acceptance; no token/label/noise normalization."""
+    return stdout.strip()==EXPECTED_NATIVE_RESULT
 
 
 class _Collector:
@@ -367,7 +386,7 @@ def _write_state(directory, value):
 
 
 @contextmanager
-def _held_installed_host(path=HOST,expected=HOST_SHA):
+def _held_installed_host(path=HOST,expected=HOST_SHA,*,diagnostics=None):
     """Installed Host may have package-manager hardlinks; deny mutation by handle.
 
     Candidate/input hardlink policy is unchanged. This exception is confined to
@@ -388,9 +407,25 @@ def _held_installed_host(path=HOST,expected=HOST_SHA):
             while chunk:=stream.read(1048576): digest.update(chunk)
             require(digest.hexdigest()==expected,'HOST_IDENTITY')
             yield
-            require(storage._win_identity(msvcrt.get_osfhandle(stream.fileno()))==before,'HOST_CHANGED')
+            after=storage._win_identity(msvcrt.get_osfhandle(stream.fileno()))
+            if after!=before and diagnostics is not None:
+                diagnostics['host_stability_failure_component']='codex' if path==HOST else 'runner'
+                diagnostics['host_identity_changed_fields']={n:a!=b for n,a,b in zip(
+                    ('volume','file_id','size','last_write','link_count'),before,after)}
+            require(after==before,'HOST_CHANGED')
     finally:
         for handle in reversed(parents): storage._win_close(handle)
+
+
+def _record_binding_failure(state,error,winerror):
+    """Closed diagnostics only; preserve a primary outcome, never turn it PASS."""
+    allowed={'HOST_CHANGED','HOST_IDENTITY','LOADED_BINDING_REVISION_CHANGED',
+             'JOB_NOT_QUIESCENT','JOB_TERMINATE','COLLECTOR_NOT_CLOSED',
+             'OWNER_EXPIRED_OR_STALE_BEFORE_RESUME'}
+    code=str(error) if type(error) is BindingHold and str(error) in allowed else 'OTHER_FAILURE'
+    state.update(status='QUARANTINE',pre_failure_reason=state.get('reason'),
+                 reason='BINDING_OR_HOST_FAILURE',binding_failure_code=code,
+                 exception_class=type(error).__name__,winerror=winerror)
 
 
 def _fixed_attempt(role,case):
@@ -464,8 +499,8 @@ def _fixed_attempt(role,case):
         eligibility_observed=verified_owner[3] if role=='native' else time.monotonic()
         with ExitStack() as held:
             state['stage']='HELD_HOST'
-            held.enter_context(_held_installed_host())
-            held.enter_context(_held_installed_host(RUNNER,RUNNER_SHA))
+            held.enter_context(_held_installed_host(diagnostics=state))
+            held.enter_context(_held_installed_host(RUNNER,RUNNER_SHA,diagnostics=state))
             inputs=([binary/'fixture.py',binary/'public-backend.dll',data/'public.txt'] if role=='public' else
                     [*(binary/m['path'] for m in plan['members']),binary/'LICENSE-LLVM-OpenMP',data/'task.txt'])
             if role=='public' and case=='path_diagnostic':
@@ -476,9 +511,10 @@ def _fixed_attempt(role,case):
                     (1048576 if case=='path_diagnostic' else 65536)))
                 if role=='public' and case=='path_diagnostic':
                     from .g6_local_model_intake import _hash_input
-                    expected_content=(b'\xef\xbb\xbf'+NATIVE_PROMPT if path.name=='bom.txt' else
+                    expected_content=(LEGACY_PUBLIC_PROMPT if path==RETIRED_PUBLIC_INPUT else
+                                      b'\xef\xbb\xbf'+NATIVE_PROMPT if path.name=='bom.txt' else
                                       NATIVE_PROMPT.replace(b'\n',b'\r\n') if path.name=='crlf.txt' else NATIVE_PROMPT)
-                    expected=({'bytes':285184,'sha256':PUBLIC_PATH_PROBE_SHA} if path.name=='probe.exe' else
+                    expected=({'bytes':289280,'sha256':PUBLIC_PATH_PROBE_SHA} if path.name=='probe.exe' else
                               {'bytes':len(expected_content),'sha256':hashlib.sha256(expected_content).hexdigest()})
                     _hash_input(handle,expected,0)
                 if role=='native':
@@ -576,8 +612,8 @@ def _fixed_attempt(role,case):
             reason=reason or ('OUTPUT_LIMIT' if collector.overflow.is_set() else None)
             stdout=(result/'stdout.bin').read_bytes()
             parsed=None
-            if role=='native' and reason is None and code==0:
-                if stdout.strip()!=b'PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE': reason='UNVERIFIED_NATIVE_RESULT'
+            if (role=='native' or case in PUBLIC_MARKER_CASES) and reason is None and code==0:
+                if not _native_result_matches(stdout): reason='UNVERIFIED_NATIVE_RESULT'
                 else: parsed={'status':'PUBLIC_FIXTURE_COMPLETE'}
             elif reason is None and code==0:
                 try: parsed=json.loads(stdout)
@@ -617,7 +653,7 @@ def _fixed_attempt(role,case):
                     'unlisted_backend_denied')}
             completed=True
     except Exception as error:
-        state.update(status='QUARANTINE',reason='BINDING_OR_HOST_FAILURE',exception_class=type(error).__name__,winerror=c.get_last_error())
+        _record_binding_failure(state,error,c.get_last_error())
     finally:
         if not completed: state.update(status='QUARANTINE',reason='BINDING_OR_HOST_FAILURE')
         if job: k.CloseHandle(job)

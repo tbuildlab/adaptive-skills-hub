@@ -18,6 +18,12 @@ if case=='child':
         os.write(1,b'PUBLIC_LATE\n'); time.sleep(.1)
     raise SystemExit(0)
 result={'status':'PUBLIC_FIXTURE_COMPLETE'}
+if case in ('native_marker','native_marker_noise','native_marker_missing','native_marker_eog'):
+    marker=b'PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE'
+    payload={'native_marker':marker+b'\n', 'native_marker_noise':b'PUBLIC_EXTRA '+marker+b' EXTRA\n',
+             'native_marker_missing':b'/\r\n'*127+b'\r\n\r\n',
+             'native_marker_eog':marker+b' [end of text]\n'}[case]
+    os.write(1,payload); raise SystemExit(0)
 if case in ('success','io'):
     result['exact_read']=(root/'input/public.txt').read_bytes()==b'PUBLIC_ONLY_FINITE_INPUT'
     for name,path in [('unlisted_denied',root/'input/unlisted.txt'),('outside_denied',root/'outside.txt')]:

@@ -61,8 +61,9 @@ def controller_failure():
 
 def main():
     results={}
-    expected_verified={'success','io','memory','processes','path_diagnostic'}
-    cases=['success','io','overflow','stderr_overflow','nonzero','partial','timeout','cancel','cpu','memory','processes','late_output','path_diagnostic']
+    expected_verified={'success','io','memory','processes','path_diagnostic','native_marker'}
+    cases=['success','io','overflow','stderr_overflow','nonzero','partial','timeout','cancel','cpu','memory','processes','late_output','path_diagnostic',
+           'native_marker','native_marker_noise','native_marker_missing','native_marker_eog']
     for case in cases:
         try:
             result=binding.public_attempt(case)
@@ -74,6 +75,8 @@ def main():
             if case=='cpu': passed=passed and result['user_cpu_100ns']>=10000000 and result['returncode']!=0
             if case=='path_diagnostic':
                 passed=passed and all(result.get('public_path_checks',{}).get(n) is True for n in binding.PUBLIC_PATH_CHECKS)
+            if case in binding.PUBLIC_MARKER_CASES-{'native_marker'}:
+                passed=passed and result['reason']=='UNVERIFIED_NATIVE_RESULT'
             if case=='late_output':
                 raw=(ROOT/binding.WORK/case/'result/stdout.bin').read_bytes()
                 observed=raw.startswith(b'{"status":"PUBLIC_FIXTURE_COMPLETE"}\n') and b'PUBLIC_LATE\n' in raw

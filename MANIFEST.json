@@ -260,8 +260,8 @@
     "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
   },
   "ash/g6_native_binding.py": {
-    "bytes": 39574,
-    "sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab"
+    "bytes": 42005,
+    "sha256": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50"
   },
   "ash/managed_cli.py": {
     "bytes": 2781,
@@ -1627,6 +1627,10 @@
     "bytes": 5331,
     "sha256": "9387f95fdbd3be5337a5e0c82956347ecae56217f4752de884d041538bd0403e"
   },
+  "docs/nexus-g6-fixed-native-owner-signing-v3.md": {
+    "bytes": 6366,
+    "sha256": "1555a9a4a01c75f9bda3cb7fd61ff5ca6f4f07bae91ca9224f0a36f0cca8913f"
+  },
   "docs/nexus-g6-intake-successor-checkpoint-v1.md": {
     "bytes": 6155,
     "sha256": "b80089c4a3182155981fc2196736d0b19b43728b7b4348c28461b3b3dde7fc1e"
@@ -1642,6 +1646,10 @@
   "docs/nexus-g6-native-execution-readiness-hold-v1.md": {
     "bytes": 10135,
     "sha256": "fa6519b1752bb41a121de198581dec1b92e7d490603d7c9f78df3ccdb31b209b"
+  },
+  "docs/nexus-g6-native-prompt-framing-repair-v1.md": {
+    "bytes": 5373,
+    "sha256": "181437d4f8e7a1726be97ad09ed97bc33cc6c7d9902868d44cc181c13fd4c34a"
   },
   "docs/nexus-g6-preparation-checkpoint-v1.md": {
     "bytes": 7201,
@@ -2399,6 +2407,10 @@
     "bytes": 3718,
     "sha256": "5d6a7f50bfa5a55d286d63283e5945dc9ba3445066d8523a169e9d9841c131db"
   },
+  "research/nexus-g6-fixed-native-independent-review-v3.json": {
+    "bytes": 4418,
+    "sha256": "8cd65f91a47a88ab57976f78ca649d4f1f30e1a30b7e66f9acf3f364570b6c01"
+  },
   "research/nexus-g6-fixed-native-once-result-v1.json": {
     "bytes": 6032,
     "sha256": "21ac7b18b3216b751c2729212433bae4126133298550635419d6805321ade634"
@@ -2414,6 +2426,14 @@
   "research/nexus-g6-fixed-native-public-qualification-v2.json": {
     "bytes": 45257,
     "sha256": "dec608d87b1c62bc90d6557b4df206d0a0bca239abfda34d5705a191217cc0c9"
+  },
+  "research/nexus-g6-fixed-native-public-qualification-v3.json": {
+    "bytes": 58212,
+    "sha256": "1a0f0b1c62da1ae8e26751bb894086dc985ec7e4a056ee1cbe13c62b22d25038"
+  },
+  "research/nexus-g6-fixed-prompt-contract-v1.json": {
+    "bytes": 2385,
+    "sha256": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500"
   },
   "research/nexus-g6-intake-successor-qualification-v1.json": {
     "bytes": 41063,
@@ -2435,6 +2455,14 @@
     "bytes": 3622,
     "sha256": "b00271673d4ec0870bf272d9998e4bc9aca83373147908dbdc4c96da346843c3"
   },
+  "research/nexus-g6-native-framing-regression-v1.json": {
+    "bytes": 2384,
+    "sha256": "edf21b24f8450b9aa71d94010fdb00915b81bf89b3ffe89a9d84aaf661ca17f6"
+  },
+  "research/nexus-g6-native-framing-signing-checkpoint-v3.json": {
+    "bytes": 5347,
+    "sha256": "22912154b84994499362df49d861bf221b8ba49f2c7140b50db3e58a77e33ef2"
+  },
   "research/nexus-g6-native-owner-decision-v1.json": {
     "bytes": 6199,
     "sha256": "2c60341e61cc652acc26ff4697ecd1ed4ebe0c693901f51bdd03f2fb67579a9a"
@@ -2443,9 +2471,17 @@
     "bytes": 6208,
     "sha256": "a0c3d94b47197837a8ad6e1ab4f6b207707d19c081ca096cb17f1da8632382de"
   },
+  "research/nexus-g6-native-owner-decision-v3.json": {
+    "bytes": 6547,
+    "sha256": "1f819d4d3a7f1508b2dd681b8b35fd4c51415619981a82f925f785101dd6fcd6"
+  },
+  "research/nexus-g6-native-prompt-diagnosis-v1.json": {
+    "bytes": 6064,
+    "sha256": "a7005b01610488df177fd74109685e66375cfdf0963d4f6e4ecba794a01e1fe3"
+  },
   "research/nexus-g6-native-public-fixture-v1.py": {
-    "bytes": 4909,
-    "sha256": "2ab493e191d059d0062174b519268be8682f9d49e711b366bcb12d34d0e39132"
+    "bytes": 5336,
+    "sha256": "52ce5750dee7bb156585036975379275dcde51a5e0c57a970762a8fd5df17a90"
   },
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,
@@ -2464,8 +2500,8 @@
     "sha256": "c7702083c9d65174f6cd0a6dd18db5dd9fe9a2138a678733fa96eb1e6283f9cf"
   },
   "research/nexus-g6-public-path-probe-v1.cpp": {
-    "bytes": 6132,
-    "sha256": "ac7d76123bbf359caa97c599d7ccb4c5a3995513a3d5443f21501cae748bd5a3"
+    "bytes": 7156,
+    "sha256": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1"
   },
   "research/nexus-n01-cached-retained-schema-analysis-v1.json": {
     "bytes": 30286,
@@ -2840,8 +2876,8 @@
     "sha256": "8008a76ddaf0c593b5eed963a655dc64512ec284cac89066b8089b6f9b37917f"
   },
   "scripts/qualify_g6_native_binding.py": {
-    "bytes": 6855,
-    "sha256": "6086bc72838124995ee66b4885fed1c089c896af3864fcaf32b2d23b5bacfe38"
+    "bytes": 7114,
+    "sha256": "64ed22955e71bf4e32d7d4b7ce89bf9fb6282570bb6ceb2316f565682d8bd5e2"
   },
   "scripts/rebase_release.py": {
     "bytes": 6629,
@@ -3172,8 +3208,8 @@
     "sha256": "ddeadadf5df25e430545f945d438588c5bbe97dac43abb7f0188d1e683fded5b"
   },
   "tests/test_g6_native_binding.py": {
-    "bytes": 12633,
-    "sha256": "7c466947e769b0ea75754d39b781c18012e216c97c2084483844fd0b0e8e5ddb"
+    "bytes": 17074,
+    "sha256": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,

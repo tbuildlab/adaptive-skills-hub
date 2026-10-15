@@ -1,0 +1,124 @@
+{
+  "affected_tests": {
+    "binding_sha256": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50",
+    "elapsed_seconds": 169.75,
+    "error": 0,
+    "fail": 0,
+    "log_sha256": "5ac34abceae0832e3c7bc989be4960afa16d61ac2c0109b68a987a4b3127ba1b",
+    "modules": [
+      "tests.test_core",
+      "tests.test_core_host_loop",
+      "tests.test_core_profiles",
+      "tests.test_g3_signed_local_approval",
+      "tests.test_g6_contracts",
+      "tests.test_g6_local_model_intake",
+      "tests.test_g6_native_binding"
+    ],
+    "pass": 147,
+    "skip": 0,
+    "total": 147
+  },
+  "baseline_head": "f0504ee476ccd69e12806d9f965cdeacdafadb50",
+  "candidate_executions_added": 0,
+  "capability_registrations": 0,
+  "changed_manifest_paths": [
+    "ash/g6_native_binding.py",
+    "research/nexus-g6-native-public-fixture-v1.py",
+    "research/nexus-g6-public-path-probe-v1.cpp",
+    "scripts/qualify_g6_native_binding.py",
+    "tests/test_g6_native_binding.py"
+  ],
+  "core_python_hook_changed": false,
+  "first_pass_hold_retained": {
+    "pass": 17,
+    "path": "output/g6-native-binding-public-v23/qualification.json",
+    "relabeled": false,
+    "status": "HOLD",
+    "total": 18
+  },
+  "focused_tests": {
+    "binding_sha256": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50",
+    "error": 0,
+    "fail": 0,
+    "log_sha256": "a5942bcac23d513e18bfabaab07e7676c55d440cb71ca52ef101aaf85a794af5",
+    "pass": 42,
+    "skip": 0,
+    "total": 42
+  },
+  "full_repository_regression_current_source": "NOT_RUN_THIS_REPAIR; required after actual remaining G6 qualification gates",
+  "g2_g3_g4_changed": false,
+  "g5_enabled": false,
+  "independent_review": {
+    "decision": "PASS_SIGNING_READINESS",
+    "reviewer": "/root/g6_binding_independent_review",
+    "sha256": "8cd65f91a47a88ab57976f78ca649d4f1f30e1a30b7e66f9acf3f364570b6c01",
+    "subsequent_package_coherence": "PASS; canonical/current-intent/window/review/scope and unsigned state independently rechecked"
+  },
+  "manifest_entries": 831,
+  "manifest_source": "External static snapshot of exact tracked and nine explicit new files; original runtime Git fixtures/history remain untouched.",
+  "model_loads_added": 0,
+  "n01_high_assurance_research_resumed": false,
+  "new_cloud_resources": 0,
+  "new_manifest_paths": [
+    "docs/nexus-g6-fixed-native-owner-signing-v3.md",
+    "docs/nexus-g6-native-prompt-framing-repair-v1.md",
+    "research/nexus-g6-fixed-native-independent-review-v3.json",
+    "research/nexus-g6-fixed-native-public-qualification-v3.json",
+    "research/nexus-g6-fixed-prompt-contract-v1.json",
+    "research/nexus-g6-native-framing-regression-v1.json",
+    "research/nexus-g6-native-owner-decision-v3.json",
+    "research/nexus-g6-native-prompt-diagnosis-v1.json",
+    "research/nexus-g6-native-framing-signing-checkpoint-v3.json"
+  ],
+  "new_paid_services": 0,
+  "owner_signature": "NOT_OBTAINED",
+  "package_identity": {
+    "approval": "NOT_OBTAINED",
+    "component_sha256": "b1fddf3f419b489cd13a99089e3d62aba997104eeee89786dda61a7b14eab780",
+    "config_sha256": "1da9e84fcaf0d1a4dc2b217330bea5617d91ac5b7108d840a5cd28f582a55b64",
+    "effective_at": 1792046400,
+    "expires_at": 1792132800,
+    "fixed_window_myt": [
+      "2026-10-15 14:40",
+      "2026-10-16 14:40"
+    ],
+    "native_attempt_absent": true,
+    "payload_sha256": "1f819d4d3a7f1508b2dd681b8b35fd4c51415619981a82f925f785101dd6fcd6",
+    "real_admission": "NO",
+    "review_sha256": "8cd65f91a47a88ab57976f78ca649d4f1f30e1a30b7e66f9acf3f364570b6c01",
+    "subject_id": "nexus.g3.subject.v1:49fd2291573105ec5b07a6430febd4ea4797356c67eb0813296fc0ac7c963cd9"
+  },
+  "prior_manifest_entries": 822,
+  "prior_unchanged_manifest_entries": 817,
+  "private_inputs_processed": 0,
+  "provider_model_calls": 0,
+  "public_composition": {
+    "cases": 18,
+    "fail": 0,
+    "label": "PASS_PUBLIC_COMPOSITION_ONLY",
+    "native_path_checks": 28,
+    "pass": 18,
+    "retained_path": "research/nexus-g6-fixed-native-public-qualification-v3.json",
+    "sha256": "1a0f0b1c62da1ae8e26751bb894086dc985ec7e4a056ee1cbe13c62b22d25038"
+  },
+  "real_admission": "NO",
+  "retained_limitations": [
+    "Numerical cause of v2 repeated slashes remains unproven; configuration omission is source-supported but future success is not guaranteed.",
+    "Public composition and source inspection do not prove native inference or private usefulness.",
+    "Historical v23 remains HOLD with unknown Host component/field.",
+    "CPU enforcement is periodic; guarded wall deadline includes bounded termination/drain.",
+    "Fresh one-shot signature cannot authorize private/value/release or register a capability."
+  ],
+  "retired_attempt_files_unchanged": 28,
+  "schema": "nexus.g6.native-framing-signing-checkpoint.v3",
+  "scope_sha256": "86aefbc431d93dbe6b72d2831df78104724abad822deaa6583b122c1549debc5",
+  "source_package": {
+    "excludes_candidates_models_runtime_evidence": true,
+    "existing_allowed_research": "research/nexus-ecosystem-gap-scan.json",
+    "initial_audit_assertion": "Blanket no-research audit assertion corrected to existing package allowlist; no package-policy or source change.",
+    "members": 270,
+    "reproduced_twice": true,
+    "sha256": "16fcaab51eb846e140b596e4c673f2afd42fafe8d447244f6cbf6f7014a01d58"
+  },
+  "status": "SIGNING_READY_NATIVE_EXECUTION_PENDING_OWNER"
+}

@@ -6,7 +6,9 @@
 #include <iostream>
 #include <string>
 
-static const std::string prompt = "Output only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think\n";
+static const std::string legacy_prompt = "Output only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think\n";
+static const std::string model_prompt = "<|im_start|>user\nOutput only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n";
+static const std::string prompt = model_prompt + "\n";
 static std::string utf8(const std::wstring & value) {
     int size = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, value.data(),
                                   static_cast<int>(value.size()), nullptr, 0, nullptr, nullptr);
@@ -52,7 +54,7 @@ static DWORD sentinel_path(HANDLE handle, wchar_t * buffer, DWORD size) {
     }
 }
 int wmain(int argc, wchar_t ** argv) {
-    if (argc != 7) return 9;
+    if (argc != 9) return 9;
     std::wstring original = argv[1], root = argv[2];
     std::wstring bin = root + L"\\bin", input = root + L"\\input\\public.txt";
     wchar_t cwd[32768] = {};
@@ -62,11 +64,11 @@ int wmain(int argc, wchar_t ** argv) {
     if (std::wstring(argv[3]) != L"..\\input\\spaced public.txt") return 11;
     if (std::wstring(argv[5]) != L"-f" || std::wstring(argv[6]) != L"../input/task.txt") return 13;
     int original_error = 0;
-    bool original_narrow = narrow_read(utf8(original), prompt, &original_error);
+    bool original_narrow = narrow_read(utf8(original), legacy_prompt, &original_error);
     std::cout << "{\"status\":\"PUBLIC_FIXTURE_COMPLETE\",\"windows_acp\":" << GetACP()
               << ",\"original_narrow_errno\":" << original_error;
     flag("cwd_pinned", true);
-    flag("original_wide_read", wide_read(original, prompt));
+    flag("original_wide_read", wide_read(original, legacy_prompt));
     flag("original_utf8_narrow_open_denied", !original_narrow && original_error == ENOENT);
     flag("copy_absolute_wide_read", wide_read(input, prompt));
     flag("copy_absolute_utf8_narrow_denied", !narrow_read(utf8(input), prompt));
@@ -78,6 +80,17 @@ int wmain(int argc, wchar_t ** argv) {
     flag("relative_slash_read", narrow_read("../input/public.txt", prompt));
     flag("relative_dot_read", narrow_read(".\\..\\input\\public.txt", prompt));
     flag("fixed_native_plan_prompt_read", narrow_read(utf8(argv[6]), prompt));
+    flag("fixed_framing_read", narrow_read(utf8(argv[6]), model_prompt + "\n"));
+    std::ifstream framed_file(utf8(argv[6]));
+    char framed_data[256]; framed_file.read(framed_data, sizeof(framed_data));
+    std::string effective(framed_data, static_cast<size_t>(framed_file.gcount()));
+    if (!effective.empty() && effective.back() == '\n') effective.pop_back();
+    flag("file_parser_lf_exact", effective == model_prompt);
+    std::string stop = "PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE";
+    flag("fixed_stop_argument", std::wstring(argv[7]) == L"-r" && utf8(argv[8]) == stop);
+    size_t marker_pos = effective.find(stop);
+    flag("prompt_history_no_early_stop", marker_pos != std::string::npos &&
+         effective.size() - marker_pos - stop.size() > 2);
     flag("quoted_argument_roundtrip", narrow_read(utf8(argv[3]), prompt));
     flag("lf_read", narrow_read("../input/public.txt", prompt));
     flag("crlf_text_normalized", narrow_read("../input/crlf.txt", prompt));

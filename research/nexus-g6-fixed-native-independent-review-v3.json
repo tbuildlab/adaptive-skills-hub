@@ -1,0 +1,60 @@
+{
+  "affected_log_sha256": "5ac34abceae0832e3c7bc989be4960afa16d61ac2c0109b68a987a4b3127ba1b",
+  "affected_tests": "147/147 PASS; 0 SKIP/FAIL/ERROR",
+  "binding_sha256": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50",
+  "decision": "PASS_SIGNING_READINESS",
+  "files": {
+    "ash/g6_native_binding.py": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65",
+    "docs/nexus-g6-native-prompt-framing-repair-v1.md": "181437d4f8e7a1726be97ad09ed97bc33cc6c7d9902868d44cc181c13fd4c34a",
+    "research/nexus-g6-fixed-native-public-qualification-v3.json": "1a0f0b1c62da1ae8e26751bb894086dc985ec7e4a056ee1cbe13c62b22d25038",
+    "research/nexus-g6-fixed-prompt-contract-v1.json": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500",
+    "research/nexus-g6-native-prompt-diagnosis-v1.json": "a7005b01610488df177fd74109685e66375cfdf0963d4f6e4ecba794a01e1fe3",
+    "research/nexus-g6-native-public-fixture-v1.py": "52ce5750dee7bb156585036975379275dcde51a5e0c57a970762a8fd5df17a90",
+    "research/nexus-g6-public-path-probe-v1.cpp": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1",
+    "scripts/qualify_g6_native_binding.py": "64ed22955e71bf4e32d7d4b7ce89bf9fb6282570bb6ceb2316f565682d8bd5e2",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g6_native_binding.py": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5"
+  },
+  "focused_log_sha256": "a5942bcac23d513e18bfabaab07e7676c55d440cb71ca52ef101aaf85a794af5",
+  "focused_tests": "42/42 PASS; 0 SKIP/FAIL/ERROR",
+  "g2_g3_g4_changed": false,
+  "historical_first_pass": "v23 remains 17/18 HOLD; unknown Host component/field retained and not dismissed or relabeled.",
+  "limits": [
+    "Exact numerical cause of slash repetition and future model success remain unproven.",
+    "Public fixture/source evidence is not successful inference, private usefulness or G6 completion.",
+    "Fresh authenticated exact-subject signature is mandatory before one fixed PUBLIC attempt.",
+    "Every terminal outcome retires; no automatic retry or restoration from receipts.",
+    "Existing periodic CPU and bounded deadline cleanup limitations remain unchanged."
+  ],
+  "n01_resumed": false,
+  "public_composition": "18/18 PASS_PUBLIC_COMPOSITION_ONLY; 28/28 C++ path/framing checks; replay denied",
+  "public_qualification_normalized_sha256": "1a0f0b1c62da1ae8e26751bb894086dc985ec7e4a056ee1cbe13c62b22d25038",
+  "public_qualification_raw_sha256": "137dcf369bc29c4960f28114c9dd60a6616fb97f47106c4c3ca322a328892b60",
+  "real_admission": "NO",
+  "remaining_material_findings": [],
+  "retired_attempt_files_independently_unchanged": 28,
+  "reviewed_properties": [
+    "Fixed framing matches the exact pinned model-template branch; metadata and template hashes match the prompt contract.",
+    "Additional transport LF compensates the vendor single-LF trim; existing PUBLIC user request is preserved.",
+    "Fixed reverse-prompt marker stops on generated content without grammar forcing or interaction.",
+    "Unchanged strict marker predicate rejects wrong, missing, prefix/trailing, duplicate and EOG-label outputs.",
+    "MXC, pre-resume Job assignment, strict handles, limits, filesystem, loader/environment and local output/network restrictions remain enforced.",
+    "Fresh v3 subject/packet/review/reservation identities deny reuse of both retired decisions.",
+    "All five Host identity dimensions remain checked; diagnostics preserve earlier outcome and quarantine."
+  ],
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_actions": {
+    "authentication_calls": 0,
+    "authority_issued": false,
+    "candidate_executions": 0,
+    "files_modified": false,
+    "model_loads": 0,
+    "tests_executed": 0
+  },
+  "reviewer_role": "independent_read_only_subagent_not_implementer",
+  "schema": "nexus.g6.fixed-native-independent-review.v3",
+  "scope": "Prepare one NEW exact-subject signing package for one fixed PUBLIC-prompt native qualification only; no execution authority.",
+  "scope_digest_definition": "Sorted compact ASCII JSON mapping eleven relative paths to LF-normalized SHA256 values.",
+  "scope_sha256": "86aefbc431d93dbe6b72d2831df78104724abad822deaa6583b122c1549debc5"
+}

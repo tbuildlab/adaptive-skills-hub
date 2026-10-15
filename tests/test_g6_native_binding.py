@@ -79,18 +79,20 @@ class FixedNativeBindingTests(unittest.TestCase):
                 binding._arguments(binary,binary.parent/'input',binary.parent/'result','qualification',0,0,role='native')
 
     def test_retired_packet_and_directory_are_not_reused(self):
-        self.assertNotEqual(binding.NATIVE_WORK,'output/g6-native-private-once-v1')
-        self.assertNotEqual(binding.OWNER_PACKET,'output/g6-native-owner-signing-v1/decision.json')
-        self.assertNotEqual(binding.OWNER_REVIEW,'research/nexus-g6-fixed-native-independent-review-v1.json')
-        self.assertEqual(binding.owner_intent()['subject']['revision'],'g6-fixed-native-binding-v2')
+        for version,attempt in ((1,'private'),(2,'public')):
+            self.assertNotEqual(binding.NATIVE_WORK,f'output/g6-native-{attempt}-once-v{version}')
+            self.assertNotEqual(binding.OWNER_PACKET,f'output/g6-native-owner-signing-v{version}/decision.json')
+            self.assertNotEqual(binding.OWNER_REVIEW,f'research/nexus-g6-fixed-native-independent-review-v{version}.json')
+        self.assertEqual(binding.owner_intent()['subject']['revision'],'g6-fixed-native-binding-v3')
 
     def test_actual_retired_owner_payload_cannot_authorize_repaired_subject(self):
-        old=(binding.ROOT/'research/nexus-g6-native-owner-decision-v1.json').read_bytes()
         expected=binding.owner_intent()
-        with patch.object(binding,'owner_intent',return_value=expected), \
-             patch.object(binding,'stable_read_bytes',return_value=old):
-            with self.assertRaisesRegex(binding.BindingHold,'OWNER_EXACT_SUBJECT'):
-                binding._verify_native_owner()
+        for version in (1,2):
+            old=(binding.ROOT/f'research/nexus-g6-native-owner-decision-v{version}.json').read_bytes()
+            with patch.object(binding,'owner_intent',return_value=expected), \
+                 patch.object(binding,'stable_read_bytes',return_value=old):
+                with self.assertRaisesRegex(binding.BindingHold,'OWNER_EXACT_SUBJECT'):
+                    binding._verify_native_owner()
 
     def test_substituted_public_probe_denies_before_copy_or_old_input_read(self):
         with tempfile.TemporaryDirectory() as folder, \
@@ -105,12 +107,75 @@ class FixedNativeBindingTests(unittest.TestCase):
         args,fs=binding._arguments(binary,directory/'input',directory/'result','path_diagnostic',0,0)
         command=args[args.index('--')+1:]
         self.assertEqual(command[0],str(binary/'probe.exe'))
-        self.assertEqual(command[-2:],['-f','../input/task.txt'])
+        self.assertEqual(command[-4:],['-f','../input/task.txt','-r',binding.EXPECTED_NATIVE_RESULT.decode()])
         self.assertNotIn(str(binding.PYTHON.parent),fs)
         self.assertNotIn(str(binding.PYTHON),args)
         self.assertTrue(all('model.gguf' not in name and 'native-private-once-v1/bin' not in name for name in fs))
         self.assertEqual(fs[binding.RETIRED_PUBLIC_INPUT.as_posix()],'read')
         self.assertEqual(fs[':root'],'deny')
+
+    def test_fixed_framing_preserves_user_request_and_exact_vendor_lf_semantics(self):
+        contract=json.loads((binding.ROOT/'research/nexus-g6-fixed-prompt-contract-v1.json').read_bytes())
+        self.assertEqual(binding.MODEL_PROMPT,contract['model_prompt'].encode())
+        self.assertEqual(binding.LEGACY_PUBLIC_PROMPT[:-1],contract['user_request'].encode())
+        self.assertEqual(binding.NATIVE_PROMPT[:-1],binding.MODEL_PROMPT)
+        self.assertNotEqual(binding.NATIVE_PROMPT.rstrip(b'\n'),binding.MODEL_PROMPT)
+        self.assertEqual(binding.MODEL_PROMPT.count(b'<|im_start|>'),2)
+        self.assertTrue(binding.MODEL_PROMPT.endswith(b'assistant\n<think>\n\n</think>\n\n'))
+        self.assertEqual(contract['eos_token_id'],151645)
+        self.assertEqual(contract['model_sha256'],binding.native_plan()['model']['sha256'])
+        self.assertNotIn(b'\\n',binding.MODEL_PROMPT)
+
+    def test_exact_output_rejects_wrong_prefix_trailing_eog_and_old_slash_result(self):
+        marker=binding.EXPECTED_NATIVE_RESULT
+        self.assertTrue(binding._native_result_matches(marker+b'\r\n'))
+        for bad in (b'',b'wrong',b'prefix '+marker,marker+b' trailing',marker+b' [end of text]\n',
+                    b'/\r\n'*127+b'\r\n\r\n',marker+marker):
+            self.assertFalse(binding._native_result_matches(bad))
+
+    def test_fixed_stop_does_not_trigger_from_prompt_history(self):
+        marker=binding.EXPECTED_NATIVE_RESULT
+        for history in (binding.MODEL_PROMPT,binding.MODEL_PROMPT.replace(b'<|im_start|>',b'').replace(b'<|im_end|>',b'')):
+            for length in range(1,len(history)+1):
+                suffix=history[-length:]
+                self.assertEqual(suffix.find(marker,max(0,len(suffix)-len(marker)-2)),-1)
+        self.assertGreaterEqual(marker.find(marker,max(0,len(marker)-len(marker)-2)),0)
+
+    def test_stop_is_not_grammar_forcing_or_interactive_authority(self):
+        args=binding.native_plan()['candidate_arguments']
+        self.assertEqual(args[-2:],['-r',binding.EXPECTED_NATIVE_RESULT.decode()])
+        self.assertIn('-no-cnv',args)
+        self.assertNotIn('--grammar',args)
+        self.assertNotIn('-i',args)
+        self.assertNotIn('--interactive',args)
+
+    def test_failure_diagnostics_keep_primary_timeout_and_do_not_disclose_messages(self):
+        state={'reason':'TIMEOUT','status':'QUARANTINE'}
+        binding._record_binding_failure(state,binding.BindingHold('HOST_CHANGED'),0)
+        self.assertEqual(state['pre_failure_reason'],'TIMEOUT')
+        self.assertEqual(state['binding_failure_code'],'HOST_CHANGED')
+        self.assertEqual(state['status'],'QUARANTINE')
+        for error in (binding.BindingHold('PUBLIC_UNREVIEWED_VALUE'),ValueError('PUBLIC_UNREVIEWED_VALUE')):
+            state={'reason':'TIMEOUT'}; binding._record_binding_failure(state,error,0)
+            self.assertNotIn('PUBLIC_UNREVIEWED_VALUE',json.dumps(state))
+            self.assertEqual(state['binding_failure_code'],'OTHER_FAILURE')
+
+    @unittest.skipUnless(os.name=='nt','Windows stable identity comparison')
+    def test_every_host_identity_dimension_still_denies_with_boolean_only_diagnostics(self):
+        import hashlib
+        with tempfile.TemporaryDirectory() as folder:
+            host=Path(folder)/'public-host'; raw=b'PUBLIC_HOST_FIXTURE';host.write_bytes(raw)
+            digest=hashlib.sha256(raw).hexdigest(); before=(1,b'PUBLIC_ID',len(raw),100,1)
+            for index in range(5):
+                after=list(before);after[index]=b'CHANGED_ID' if index==1 else before[index]+1
+                observed={}
+                with patch.object(binding,'HOST',host),patch.object(binding,'HOST_SHA',digest), \
+                     patch.object(binding.storage,'_win_identity',side_effect=[before,tuple(after)]):
+                    with self.assertRaisesRegex(binding.BindingHold,'HOST_CHANGED'):
+                        with binding._held_installed_host(host,digest,diagnostics=observed):pass
+                self.assertEqual(sum(observed['host_identity_changed_fields'].values()),1)
+                self.assertTrue(all(type(v) is bool for v in observed['host_identity_changed_fields'].values()))
+                self.assertNotIn('CHANGED_ID',json.dumps(observed))
 
     def test_changed_loaded_binding_is_rejected(self):
         with patch.object(binding,'normalized_sha',return_value='0'*64):

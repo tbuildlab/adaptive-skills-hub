@@ -1,0 +1,59 @@
+{
+  "add_bos": false,
+  "authority": "NONE",
+  "candidate_executions_this_diagnosis": 0,
+  "causal_limit": "Missing declared framing is a proven configuration defect; exact numerical cause of slash repetition is not proven. No new native success is inferred.",
+  "chat_template_sha256": "57f1fd00f0013a2be96aa79b857391f27e23df5b5f847072b524c897e24d0361",
+  "eos_token_id": 151645,
+  "file_transport": "one additional LF, removed once by pinned -f callback",
+  "input_role": "one fixed PUBLIC user message",
+  "metadata_observation_sha256": "d0f07f34f44b31fee91ffb55e9d71c25be28464867fdb598aa17ffd9039e0ebe",
+  "model_prompt": "<|im_start|>user\nOutput only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "model_sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031",
+  "observed_v2": {
+    "generated_budget": 128,
+    "prompt_evaluation_tokens": 13,
+    "required_marker_count": 0,
+    "slash_count": 127,
+    "status": "QUARANTINE_RETIRED_UNCHANGED",
+    "stdout_bytes": 387
+  },
+  "output_acceptance": "UNCHANGED: raw stdout.strip() must equal exact marker; prefix/wrong/trailing/EOG text rejects",
+  "raw_integrity_hash_read_entire_artifact": true,
+  "real_admission": "NO",
+  "schema": "nexus.g6.fixed-public-prompt-contract.v1",
+  "sources": {
+    "arguments": {
+      "path": "output/g6-public-path-source-v1/arg.cpp",
+      "sha256": "449cd9be39dd477c751a8575e99b4deee737ae85a698e1c8bac7c22f28a9d151"
+    },
+    "completion": {
+      "sha256": "0dde1fed7b17e9b37ad0cf3e125210dd1c316364cf2924f24d0f41c38538677b",
+      "url": "https://github.com/ggml-org/llama.cpp/blob/fcac19079f3f2985fe74ed845f0880e7e9a8030a/tools/completion/completion.cpp"
+    }
+  },
+  "stop_argument": [
+    "-r",
+    "PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE"
+  ],
+  "template_branch": {
+    "add_generation_prompt": true,
+    "enable_thinking": false,
+    "messages": 1,
+    "system_message": false,
+    "tools": false
+  },
+  "tensor_data_decoded": false,
+  "user_request": "Output only PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE.\n/no_think",
+  "vocab_tokens": {
+    "128247": "</s>",
+    "14": "/",
+    "151643": "<|endoftext|>",
+    "151644": "<|im_start|>",
+    "151645": "<|im_end|>",
+    "151646": "<|object_ref_start|>",
+    "151647": "<|object_ref_end|>",
+    "151667": "<think>",
+    "151668": "</think>"
+  }
+}

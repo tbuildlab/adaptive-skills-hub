@@ -1,0 +1,95 @@
+{
+  "baseline_head": "f0504ee476ccd69e12806d9f965cdeacdafadb50",
+  "candidate_executions_this_task": 0,
+  "first_pass_host_hold": {
+    "changed_component_or_field": "UNPROVEN",
+    "earliest_observed": "16.032s foreground deadline reached before fixture output; 2 processes; exit259 sampled pre-kill; quiescent0",
+    "later_guard_failure": "HOST_CHANGED inferred from fixed post-yield BindingHold source path; original audit did not retain component/field",
+    "not_claimed": "Not proven to be benign transient or framing regression; no relabel to PASS.",
+    "path": "output/g6-native-binding-public-v23/qualification.json",
+    "repair": "Preserve primary closed reason and allowlisted secondary error/component/boolean identity fields; every identity dimension still rejects.",
+    "result": "17/18 HOLD"
+  },
+  "fresh_diagnostic_limit": "v24-diagnostic was diagnostic only; numeric-handle reuse observations are not held Host mutation proof.",
+  "g2_g3_g4_changed": false,
+  "minimal_repairs": [
+    "Use only the fixed one-user/no-tools/non-thinking branch of embedded template; no Jinja evaluation.",
+    "One transport LF compensates the vendor -f callback removing one LF.",
+    "Fixed -r marker terminates after generated marker, before EOG transport label; no grammar forcing or output cleanup."
+  ],
+  "n01_resumed": false,
+  "native_v3_reserved": false,
+  "new_signing_package_created": false,
+  "private_inputs_processed": false,
+  "prompt_contract_sha256": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500",
+  "proven_configuration_defects": [
+    "-no-cnv sends bare user content as raw continuation and omits the exact Instruct model template framing.",
+    "Pinned noninteractive natural EOG appends a stdout label, incompatible with unchanged strict marker-only acceptance."
+  ],
+  "public_evidence": {
+    "cases": 18,
+    "normalized_sha256": "1a0f0b1c62da1ae8e26751bb894086dc985ec7e4a056ee1cbe13c62b22d25038",
+    "path": "output/g6-native-binding-public-v24/qualification.json",
+    "path_framing_checks": 28,
+    "raw_sha256": "137dcf369bc29c4960f28114c9dd60a6616fb97f47106c4c3ca322a328892b60",
+    "source_sha256": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50"
+  },
+  "raw_integrity_hashes_read_public_artifact_bytes": true,
+  "real_admission": "NO",
+  "retired_original_file_sha256": {
+    "v1": {
+      "bin/LICENSE-LLVM-OpenMP": "fdad1758a9e1f9d5a81e18879b3406772115edc92c24bfa36b70c654f325e8e4",
+      "bin/ggml-base.dll": "1c23fd2ad42c74f89ccdd5a8d44b9ec4874d45b94c053a146d394c99ee741122",
+      "bin/ggml-cpu-x64.dll": "1312d4e5ce7dabeef7b13754a205837b005f64d3decac365f1752204d6c36e54",
+      "bin/ggml.dll": "57e644ee4760875715e710fc3b124b926cbcfacdbe1835f4cb91230a30c7b5ba",
+      "bin/libomp.dll": "a12116ba72d1d6820407cf30be23da04ce79d6bb8a71a5ee71759c5a1faa6f1c",
+      "bin/llama-common.dll": "9ccffac45285ac720d5d13dfb2227b9f3cbec808f469c3136dc1461359b11b5e",
+      "bin/llama-completion-impl.dll": "e975b9ab242b371c6f32953fe520745637b592b7048fabaa91386e9d5705f88b",
+      "bin/llama-completion.exe": "3683e8763d7ace0fea04798ab917befec696073e4a1b589ab9e950bae91142c8",
+      "bin/llama.dll": "58967aa7ea27ef05a135305590c36a8cbc01362a01c4af2063a57cddf7c086ec",
+      "disposition.json": "4faf6db8803665af8a3dcd96c26337606d94538dfc14084f89d4312e858f155b",
+      "input/task.txt": "4a3c1b45d8fd7716490ce0204e038ab93818d517adfa9da46716ff06a4e0cd75",
+      "result/sentinel": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result/stderr.bin": "386d7baca5dcf75a4997e4b61184e784b5f27a63d52b72eef0da1377ade6385f",
+      "result/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "v2": {
+      "bin/LICENSE-LLVM-OpenMP": "fdad1758a9e1f9d5a81e18879b3406772115edc92c24bfa36b70c654f325e8e4",
+      "bin/ggml-base.dll": "1c23fd2ad42c74f89ccdd5a8d44b9ec4874d45b94c053a146d394c99ee741122",
+      "bin/ggml-cpu-x64.dll": "1312d4e5ce7dabeef7b13754a205837b005f64d3decac365f1752204d6c36e54",
+      "bin/ggml.dll": "57e644ee4760875715e710fc3b124b926cbcfacdbe1835f4cb91230a30c7b5ba",
+      "bin/libomp.dll": "a12116ba72d1d6820407cf30be23da04ce79d6bb8a71a5ee71759c5a1faa6f1c",
+      "bin/llama-common.dll": "9ccffac45285ac720d5d13dfb2227b9f3cbec808f469c3136dc1461359b11b5e",
+      "bin/llama-completion-impl.dll": "e975b9ab242b371c6f32953fe520745637b592b7048fabaa91386e9d5705f88b",
+      "bin/llama-completion.exe": "3683e8763d7ace0fea04798ab917befec696073e4a1b589ab9e950bae91142c8",
+      "bin/llama.dll": "58967aa7ea27ef05a135305590c36a8cbc01362a01c4af2063a57cddf7c086ec",
+      "disposition.json": "edec34055bb2a1333faffa6f585e054685ae05c6e9f511d4a6f770fd0cc09639",
+      "input/task.txt": "4a3c1b45d8fd7716490ce0204e038ab93818d517adfa9da46716ff06a4e0cd75",
+      "result/sentinel": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result/stderr.bin": "075c8b2aaf9da6aafbc5a5f22b2bf72378a32cea865362c80510a3d85c5449fa",
+      "result/stdout.bin": "9f60c1f3139722ddd11b4c9841c83c44acfa205114f1fc6e03d6379fa5c83410"
+    }
+  },
+  "schema": "nexus.g6.fixed-public-prompt-diagnosis.v1",
+  "status": "PUBLIC_PROTOCOL_REPAIR_QUALIFIED_NATIVE_UNPROVEN",
+  "tensor_values_decoded": false,
+  "unchanged_controls": [
+    "Exact marker raw equality",
+    "Eight native files / CPU backend / model pin",
+    "Read-only exact files, fixed CWD/relative path/environment/handles",
+    "MXC/Job before resume and all limits",
+    "Local bounded output, network/export disabled",
+    "Fresh signature / reservation / terminal retirement"
+  ],
+  "unproven": "Exact numerical cause of repeated slash generation and future model success remain unproven.",
+  "v2_observation": {
+    "generation_limit": 128,
+    "marker_count": 0,
+    "prompt_tokens": 13,
+    "slash_count": 127,
+    "state": "QUARANTINE_RETIRED_UNCHANGED",
+    "stderr_sha256": "075c8b2aaf9da6aafbc5a5f22b2bf72378a32cea865362c80510a3d85c5449fa",
+    "stdout_bytes": 387,
+    "stdout_sha256": "9f60c1f3139722ddd11b4c9841c83c44acfa205114f1fc6e03d6379fa5c83410"
+  }
+}
