@@ -1,0 +1,47 @@
+{
+  "schema": "nexus.g6.fixed-native-independent-review.v1",
+  "decision": "PASS_SIGNING_READINESS",
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_role": "independent_read_only_subagent_not_implementer",
+  "scope": "Prepare one exact-subject Owner signing package for the fixed public-prompt native qualification only.",
+  "binding_sha256": "5eab2c5951d1c8b68b6f713318c82423263a9049da72c5d25657a80f53462bf0",
+  "scope_sha256": "fe403b77fd50b518af346c7030effd75acd425e7542c976a0d6f4e6489d9dd0f",
+  "scope_digest_definition": "SHA256 of sorted compact ASCII JSON mapping these five relative paths to their raw SHA256 values.",
+  "files": {
+    "ash/g6_native_binding.py": "5eab2c5951d1c8b68b6f713318c82423263a9049da72c5d25657a80f53462bf0",
+    "research/nexus-g6-native-public-fixture-v1.py": "2ab493e191d059d0062174b519268be8682f9d49e711b366bcb12d34d0e39132",
+    "scripts/qualify_g6_native_binding.py": "fff39eac1dd8ed43ff037e8521e22db5a0545da4f4e430c91df145abf2cf63d3",
+    "tests/test_g6_native_binding.py": "5fdea6702e049b46eb80b94540684f06b1ca290e9b7b33a04a69f02d14269005",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65"
+  },
+  "existing_issuer_helper_sha256": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+  "public_qualification_sha256": "29d2ed9965b4d5e3d88b2fac05997dfcd1f36ea7884a6eaefb564b5b5e1eafa2",
+  "public_qualification": "13/13 PASS_PUBLIC_COMPOSITION_ONLY; read back, not rerun by reviewer.",
+  "initial_review_scope_sha256": "793fe94ff1191b302139c3f377eea9a432d5884320bea1deee0fee3406ba8ff4",
+  "second_review_scope_sha256": "dc027ef55c4d91d348c2649294e267e119ab6e431869b84758c54c660e10f1ad",
+  "resolved_findings": [
+    "Native plan was disconnected: both closed roles now consume one actual guarded runner.",
+    "Startup cancellation only: running public main/child readiness and quiescence now observed.",
+    "Signed expiry before resume: exact UTC bounds and original origin-observation freshness checked immediately before resume.",
+    "False post-crash no-execution evidence: conservative attempted/UNKNOWN state persisted before resume.",
+    "Native negative coverage: changed subject/material, rejected signature, expiry, freshness, reserved replay and changed loaded source covered."
+  ],
+  "remaining_material_findings": [],
+  "reviewer_actions": {
+    "files_modified": false,
+    "fixture_executions": 0,
+    "candidate_executions": 0,
+    "model_loads": 0,
+    "authentication_calls": 0,
+    "authority_issued": false
+  },
+  "limits": [
+    "No actual native/model/private execution qualification is established by public fixtures.",
+    "No useful private completion, registration, value experiment, production release or G6 acceptance.",
+    "Windows user-CPU enforcement is periodic; wall-time initiates bounded termination/cleanup, not zero scheduling overshoot.",
+    "Independent review is not an authenticated Owner decision; fresh signature remains mandatory."
+  ],
+  "real_admission": "NO",
+  "g2_g3_g4_status_changed": false,
+  "n01_high_assurance_research_resumed": false
+}
