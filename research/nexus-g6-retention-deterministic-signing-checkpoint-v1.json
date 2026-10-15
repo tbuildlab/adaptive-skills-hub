@@ -1,0 +1,141 @@
+{
+  "baseline_head": "517e2d22b09ec697939981eccfd54e9784abe73b",
+  "capability_registration": false,
+  "full_repository": "NOT_RUN_THIS_SIGNING_READINESS; final after remaining G6 qualification/review",
+  "g2_g3_g4": "UNCHANGED_COMPLETED_FROZEN",
+  "g5": "DISABLED",
+  "independent_review": {
+    "decision": "PASS_SIGNING_READINESS",
+    "package_coherence": "PASS_PACKAGE_COHERENCE",
+    "remaining_material_findings": [],
+    "review_sha256": "41c3a986e115a3a1d27a6242037273a9583f1bf5dc700d797307df6461df81b2",
+    "reviewer": "/root/g6_binding_independent_review",
+    "scope_sha256": "79781f9cdf0c5b4953fa3f276a74f08bf15a4e845e61f3c3612074d7cbba2545"
+  },
+  "intended_scope": "One fixed zero-inference real retention substitution, identical1050byte input/source/predicate to completed local-model task.",
+  "local_hardware_energy_cost": "UNMEASURED",
+  "manifest": {
+    "boundary": "Tracked plus13explicit new source/qualification records in external static snapshot; prior runtime/Git fixture bytes retained untouched.",
+    "entries": 868,
+    "existing_changed_paths": [
+      "ash/g6_native_binding.py",
+      "ash/g6_private_completion.py",
+      "scripts/qualify_g6_native_binding.py"
+    ],
+    "prior_entries": 855,
+    "prior_unchanged_entries": 852
+  },
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_cloud_resources": 0,
+  "new_model_invocations": 0,
+  "new_paid_services": 0,
+  "new_private_data_processed": false,
+  "new_real_substitution_executions": 0,
+  "new_reservation_absent": true,
+  "package_identity": {
+    "component_sha256": "55d4f7a502c5a2df38b348cfa7f5123952178adf8c883faf016055a59b9105a0",
+    "configuration_sha256": "bdba092b127f6d14e15f8095ddd6b4398b5c6b845adfd9b09428f4dc16fb2a4c",
+    "effective_at": 1792067280,
+    "expires_at": 1792153680,
+    "new_reservation_absent": true,
+    "payload_sha256": "b6547d4eed4328984c0e197656f6f007ca847ab754b8045ebb4cf293824fd1aa",
+    "real_admission": "NO",
+    "review_sha256": "41c3a986e115a3a1d27a6242037273a9583f1bf5dc700d797307df6461df81b2",
+    "scope_sha256": "79781f9cdf0c5b4953fa3f276a74f08bf15a4e845e61f3c3612074d7cbba2545",
+    "signature": "NOT_OBTAINED",
+    "subject_id": "nexus.g3.subject.v1:812a6322434fdc34583da048b63930426fb551ff1afceee7800cfe7b90387072",
+    "window_myt": [
+      "2026-10-15 20:28",
+      "2026-10-16 20:28"
+    ]
+  },
+  "preservation": {
+    "initial_controller_failures": "Two HOLD fixture sets retained; Windows HANDLE/PID confusion fixed, original6second observation restored.",
+    "initial_pin_failure": "Retained original interpreter hardlink rejection; no check relaxed.",
+    "past_attempt_files_unchanged": 73,
+    "same_buffer_finding": "Former20file seal preserved; exact read buffer hash/parse/copy repaired and independently re-reviewed.",
+    "superseded_review_scope_buffers": 20
+  },
+  "public_qualification": [
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 18,
+      "path": "output/g6-native-binding-public-v29/qualification.json",
+      "sha256": "efd04a469da7153af34d33011e9f58cc2de8288d67dd20d09f4138832f222aa7",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 4,
+      "path": "output/g6-local-retention-public-v5/qualification.json",
+      "sha256": "1b56a531ade480a1ee8b46b6a08980819029be480e36a0e0ee645205aa92648f",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    },
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 6,
+      "path": "output/g6-retention-deterministic-public-v5/qualification.json",
+      "sha256": "0a0664d3ba809d8e4eaebdfe998ef4d04c536c77431c804d6516e424069dc452",
+      "status": "PASS_PUBLIC_DETERMINISTIC_COMPOSITION_ONLY"
+    }
+  ],
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "elapsed_seconds": 93.922,
+      "error": 0,
+      "fail": 0,
+      "kind": "affected",
+      "log_sha256": "6cbfecff1823245bbc133ce58325686cad30bf5852bd68e39152e5ec329eb866",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution"
+      ],
+      "pass": 184,
+      "skip": 0,
+      "total": 184
+    },
+    "focused": {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "elapsed_seconds": 1.39,
+      "error": 0,
+      "fail": 0,
+      "kind": "focused",
+      "log_sha256": "95a40bc907a703b0dc65887632bbeef040126322c62243635b6338066f50ec07",
+      "modules": [
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution"
+      ],
+      "pass": 63,
+      "skip": 0,
+      "total": 63
+    }
+  },
+  "remaining_g6_gates": [
+    "Fresh signed actual deterministic common-task operation and substitution evidence reconciliation",
+    "Remaining applicable refusal/wrong-subject/config/input/artifact/replacement and A-H/A6 reconciliation",
+    "Separate pilot then locked fair native/Nexus comparison; identical Host/model/input/policy/criteria, no posthoc thresholds",
+    "Final independent G6 security/release review and genuine Critical/High resolution",
+    "Final focused/affected/full regression, exact package/artifact/MANIFEST identity",
+    "Exact final Owner release acceptance, authorized annotated final tag/push and remote verification"
+  ],
+  "schema": "nexus.g6.deterministic-retention-signing-checkpoint.v1",
+  "signature": "NOT_OBTAINED",
+  "source_package": {
+    "members": 276,
+    "reproduced_twice": true,
+    "runtime_model_private_data_signature_and_qualification_evidence_excluded": true,
+    "scope": "Portable Core/source distribution; G6 qualification-only native operations depend on separately bound local artifacts and are not autoactivated or generally portable.",
+    "sha256": "9ba847285e54b63e371f6918b421048b338dcb1593ec494385ab5860db2e789f"
+  },
+  "status": "PASS_SIGNING_READINESS_PENDING_OWNER_SIGNATURE"
+}

@@ -1,0 +1,453 @@
+{
+  "arguments": [
+    "-I",
+    "-S",
+    "-B"
+  ],
+  "credentials_or_user_settings_copied": false,
+  "executable": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-deterministic-host-runtime-v1\\python.exe",
+  "files": [
+    {
+      "bytes": 7440,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/copyreg.cpython-312.pyc",
+      "sha256": "a0315815819534648d856cdf983e66b2f1e5edd655bb93bb146265c0ba2ee859",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\copyreg.cpython-312.pyc"
+    },
+    {
+      "bytes": 80385,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/enum.cpython-312.pyc",
+      "sha256": "f58dadce85e60b91ed05882c308acaf99486b5e8f28485bf7b3e9de1d0fd1d55",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\enum.cpython-312.pyc"
+    },
+    {
+      "bytes": 40383,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/functools.cpython-312.pyc",
+      "sha256": "f4650363317094cadfa6f41dca6720672eb06154cc7ffac5cc22d577d8428bcd",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\functools.cpython-312.pyc"
+    },
+    {
+      "bytes": 1082,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/keyword.cpython-312.pyc",
+      "sha256": "f299f6edff0645fd62635d80a8ee6ca3cb541f0e6b0d16dc85187cc971a714fe",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\keyword.cpython-312.pyc"
+    },
+    {
+      "bytes": 17393,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/operator.cpython-312.pyc",
+      "sha256": "158329d1890a5705c1d7b94b17ec37df30f40723fe4969e7e2abee9c171714d7",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\operator.cpython-312.pyc"
+    },
+    {
+      "bytes": 10267,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/reprlib.cpython-312.pyc",
+      "sha256": "c7bb2619cc94c19f95f5e3016aa7e496c23e2df553fef38c2e166a5316e156df",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\reprlib.cpython-312.pyc"
+    },
+    {
+      "bytes": 14986,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/__pycache__/types.cpython-312.pyc",
+      "sha256": "312382501973d2a7a0f938145d192a3bed76026b036717585a6418fdc627500b",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\__pycache__\\types.cpython-312.pyc"
+    },
+    {
+      "bytes": 33262,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/_collections_abc.py",
+      "sha256": "d0c7b4810d0d6e22968223599e2051aa2148c8ce435cad8798644e7b682a9147",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\_collections_abc.py"
+    },
+    {
+      "bytes": 6726,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/abc.py",
+      "sha256": "d51c54428495cd62a5da4360315fa84f692b5aa9db21be986b3e14a83f7cf288",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\abc.py"
+    },
+    {
+      "bytes": 37999,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/codecs.py",
+      "sha256": "000cf1d683c677ed3de6d8e284376f81def4b91f93d68ee41bdf07c4e04cea77",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\codecs.py"
+    },
+    {
+      "bytes": 53970,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/collections/__init__.py",
+      "sha256": "58d1f234b7845ff280f8a195a795f206bc62ce42732caecaf06e6a133ddd6f15",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\collections\\__init__.py"
+    },
+    {
+      "bytes": 72978,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/collections/__pycache__/__init__.cpython-312.pyc",
+      "sha256": "85426773360496e903820844f1424e067a27b66d43d7026840e2b13c86fc62f9",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\collections\\__pycache__\\__init__.cpython-312.pyc"
+    },
+    {
+      "bytes": 7831,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/copyreg.py",
+      "sha256": "ea2363638fe83e8e5b007013a821841371a615d99414b3c2f8f19152ca109a07",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\copyreg.py"
+    },
+    {
+      "bytes": 6058,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/__init__.py",
+      "sha256": "8b997e9f7beef09de01c34ac34191866d3ab25e17164e08f411940b070bc3e74",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\__init__.py"
+    },
+    {
+      "bytes": 5816,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/__pycache__/__init__.cpython-312.pyc",
+      "sha256": "a87d7fc88ef7808dcf63fdfd5a75a770f1cc45d4a3c90f01e582b3e4f141e6a9",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\__pycache__\\__init__.cpython-312.pyc"
+    },
+    {
+      "bytes": 12449,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/__pycache__/aliases.cpython-312.pyc",
+      "sha256": "e07c36779ad027b12c6000fc4cb0ca020038a4a98aef1de70291528f89e19b0b",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\__pycache__\\aliases.cpython-312.pyc"
+    },
+    {
+      "bytes": 3175,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/__pycache__/cp1252.cpython-312.pyc",
+      "sha256": "74cc57678077bd12a7bd41425413e39f81f0bd665098bf0f460bf099b798ceb5",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\__pycache__\\cp1252.cpython-312.pyc"
+    },
+    {
+      "bytes": 2188,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/__pycache__/utf_8.cpython-312.pyc",
+      "sha256": "b3821413aba95b319434234dee84b631b0a739ea03186ab933602a265da8a2a3",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\__pycache__\\utf_8.cpython-312.pyc"
+    },
+    {
+      "bytes": 16228,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/aliases.py",
+      "sha256": "1893cfb597bc5eafd38ef03ac85d8874620112514eb42660408811929cc0d6f8",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\aliases.py"
+    },
+    {
+      "bytes": 13818,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/cp1252.py",
+      "sha256": "7acb7b80c29d9ffda0fe79540509439537216df3a259973d54e1fb23c34e7519",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\cp1252.py"
+    },
+    {
+      "bytes": 1047,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/encodings/utf_8.py",
+      "sha256": "9c54c7db8ce0722ca4ddb5f45d4e170357e37991afb3fcdc091721bf6c09257e",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\encodings\\utf_8.py"
+    },
+    {
+      "bytes": 83648,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/enum.py",
+      "sha256": "5f6126ee55609a8fc27be206803703597e2efdcaad1fb80ab975ecd0e63cd6aa",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\enum.py"
+    },
+    {
+      "bytes": 38949,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/functools.py",
+      "sha256": "f0ca5dd563498f8971e410fe9f37083cfcff2052a0f48efcfbe07d6975754864",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\functools.py"
+    },
+    {
+      "bytes": 71155,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/importlib/_bootstrap_external.py",
+      "sha256": "255750f5267b487dbb99b1deed48b50a4524f4dbba38d40aa0f9cd5a063f7c62",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\importlib\\_bootstrap_external.py"
+    },
+    {
+      "bytes": 3681,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/io.py",
+      "sha256": "d70646d9c063dd0ac4293591639de75a100731d9f091f916fbca4857cd8a044e",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\io.py"
+    },
+    {
+      "bytes": 14379,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/__init__.py",
+      "sha256": "feb17670e443e5db2723f217727dcc5d5e155c40e4e6935b16061c88542f24e7",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__init__.py"
+    },
+    {
+      "bytes": 13656,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/__pycache__/__init__.cpython-312.pyc",
+      "sha256": "7e9a197cc8c093a3ae5eda4bcd0bfccad9cb6a948d6fa4dab2bd6d7fbd290e9b",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__pycache__\\__init__.cpython-312.pyc"
+    },
+    {
+      "bytes": 13954,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/__pycache__/decoder.cpython-312.pyc",
+      "sha256": "6ddef814298cccf680bfc4c50e6a20a9e9a0542f32dd70319efa6b197a1ea56a",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__pycache__\\decoder.cpython-312.pyc"
+    },
+    {
+      "bytes": 15129,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/__pycache__/encoder.cpython-312.pyc",
+      "sha256": "238a3e0dc888382ba64b0d1f6e1dc75837330de191b4b1c6974b6560928ee7d2",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__pycache__\\encoder.cpython-312.pyc"
+    },
+    {
+      "bytes": 3371,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/__pycache__/scanner.cpython-312.pyc",
+      "sha256": "4c0631d578eb6b2b1ee9a11167f7c926f89cee201d2cd8229c727971b643f768",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__pycache__\\scanner.cpython-312.pyc"
+    },
+    {
+      "bytes": 12882,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/decoder.py",
+      "sha256": "9f4cc83197bf1b13fee3ce71a044a4b4987a7eeecd8768206abd31a78e0a3d16",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\decoder.py"
+    },
+    {
+      "bytes": 16518,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/encoder.py",
+      "sha256": "497cc84d2b3936f2a25ec6e561a9a3266c4bc4c9661f5841c3b6ec31eaa0edb9",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\encoder.py"
+    },
+    {
+      "bytes": 2507,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/json/scanner.py",
+      "sha256": "b2577f9db9f69a0a27f251776349238b17b8b214a01128e7477b0f7d8e24a186",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\scanner.py"
+    },
+    {
+      "bytes": 1137,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/keyword.py",
+      "sha256": "1f28f509383273238ad86eda04a96343fa0dc10eeaf3189439959d75cdac0a0b",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\keyword.py"
+    },
+    {
+      "bytes": 11432,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/operator.py",
+      "sha256": "c57b6816cfddfa6e4a126583fca0a2563234018daec2cfb9b5142d855546955c",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\operator.py"
+    },
+    {
+      "bytes": 16700,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/__init__.py",
+      "sha256": "778cdca1fe51cddb7671d7a158c6bdecee1b7967e9f4a0ddf41cfb5320568c42",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\__init__.py"
+    },
+    {
+      "bytes": 17971,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/__pycache__/__init__.cpython-312.pyc",
+      "sha256": "4292c547d2e300bb2860b4d1e83b0b8ecb6c6afee09c2a3a0780d662ea698fcf",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\__pycache__\\__init__.cpython-312.pyc"
+    },
+    {
+      "bytes": 1857,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/__pycache__/_casefix.cpython-312.pyc",
+      "sha256": "d50fc1830caf9b5d4e8cfc00dc1e8a84c9acffa79241fbb5637548e1ded8052e",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\__pycache__\\_casefix.cpython-312.pyc"
+    },
+    {
+      "bytes": 26535,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/__pycache__/_compiler.cpython-312.pyc",
+      "sha256": "17a327865697bae6c2090cf22f42d85db58b101b7e8c82ff385b5d4ea0881c12",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\__pycache__\\_compiler.cpython-312.pyc"
+    },
+    {
+      "bytes": 5344,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/__pycache__/_constants.cpython-312.pyc",
+      "sha256": "8637de8de3a3e5e54f52bc831d26ee32d4beca42ddcfa38637f2570a07591fa7",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\__pycache__\\_constants.cpython-312.pyc"
+    },
+    {
+      "bytes": 41988,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/__pycache__/_parser.cpython-312.pyc",
+      "sha256": "35f8394a3bcea30977e33e6389c5d01e13e557be35611c18844eec6472e340c4",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\__pycache__\\_parser.cpython-312.pyc"
+    },
+    {
+      "bytes": 5550,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/_casefix.py",
+      "sha256": "b0dee234e5f8096fc9c1b035ec52d0b1b50cc1f3aea20b360b8be902e53ac752",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\_casefix.py"
+    },
+    {
+      "bytes": 27169,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/_compiler.py",
+      "sha256": "618f17add086b1dc5314a4e68e9b02a7072cbfb0a401791fd5963dabcd03098c",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\_compiler.py"
+    },
+    {
+      "bytes": 6150,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/_constants.py",
+      "sha256": "8df304954ca75dcd98b9f1f5e3cb5347adc6eaccfc461a94ab914e1b0085e9ab",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\_constants.py"
+    },
+    {
+      "bytes": 42281,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/re/_parser.py",
+      "sha256": "bcc84f06d54e2d28506350a60bc1aaaa0efda4221f4ceeb05b2d0f48c712c479",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\re\\_parser.py"
+    },
+    {
+      "bytes": 7362,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/reprlib.py",
+      "sha256": "53c0c775acd2c7ea3405271e2b8619a5fdc0567a63f263199d594626616184cd",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\reprlib.py"
+    },
+    {
+      "bytes": 11326,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/types.py",
+      "sha256": "d7ce485ecd8d4d1531d8f710e538b4d1a49378afacb6ff9231e48c645a9fa95e",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\types.py"
+    },
+    {
+      "bytes": 28552,
+      "destination_singlelink_regular": true,
+      "relative_path": "Lib/zipimport.py",
+      "sha256": "6e3d94c0d4e0622a6a034e8212e41be78aa702d6e18100e2769c05413fbf7e7a",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\zipimport.py"
+    },
+    {
+      "bytes": 104952,
+      "destination_singlelink_regular": true,
+      "relative_path": "python.exe",
+      "sha256": "4d6f5f81a4bca11191c4c7c6b43632694d0a4ce74e068619d8fdc161d469859a",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\python.exe"
+    },
+    {
+      "bytes": 70376,
+      "destination_singlelink_regular": true,
+      "relative_path": "python3.dll",
+      "sha256": "fb975a606e7fbf74f64260e3f60c3490b4f74a183c0926fd6ed1ac4c52ac7b1c",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\python3.dll"
+    },
+    {
+      "bytes": 6945272,
+      "destination_singlelink_regular": true,
+      "relative_path": "python312.dll",
+      "sha256": "9a0e3435aaa680d868150f87ab3e388ad2eebc22f87e036155c7b4eda8cd2120",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\python312.dll"
+    },
+    {
+      "bytes": 120400,
+      "destination_singlelink_regular": true,
+      "relative_path": "vcruntime140.dll",
+      "sha256": "052ad6a20d375957e82aa6a3c441ea548d89be0981516ca7eb306e063d5027f4",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\vcruntime140.dll"
+    },
+    {
+      "bytes": 49776,
+      "destination_singlelink_regular": true,
+      "relative_path": "vcruntime140_1.dll",
+      "sha256": "6a99bc0128e0c7d6cbbf615fcc26909565e17d4ca3451b97f8987f9c6acbc6c8",
+      "source_five_field_stability": true,
+      "source_path": "C:\\Users\\De Yong\\AppData\\Local\\Programs\\Python\\Python312\\vcruntime140_1.dll"
+    },
+    {
+      "bytes": 11,
+      "destination_singlelink_regular": true,
+      "relative_path": "python312._pth",
+      "sha256": "359a23202862362b83a1411210eaa242e6f6326ab732377926565184cbe4a03d",
+      "source": "Explicit isolated module-search configuration; no import site or external path.",
+      "source_path": null
+    }
+  ],
+  "new_installation": false,
+  "new_model_or_backend": false,
+  "original_interpreter_hardlink_count": 2,
+  "original_link_policy_relaxed": false,
+  "real_admission": "NO",
+  "schema": "nexus.g6.deterministic-host-runtime-pins.v1",
+  "snapshot": "output/g6-deterministic-host-runtime-v1",
+  "status": "COPIED_PINNED_EXISTING_HOST_SUBSET_NOT_QUALIFIED",
+  "total_bytes": 8277451,
+  "version": "3.12.10"
+}

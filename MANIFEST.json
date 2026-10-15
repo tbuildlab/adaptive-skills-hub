@@ -260,12 +260,16 @@
     "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
   },
   "ash/g6_native_binding.py": {
-    "bytes": 44240,
-    "sha256": "90ce33c3c0292371a17a5925e00b23aa2d6b80444df595569bd3724bd6ee2438"
+    "bytes": 48524,
+    "sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8"
   },
   "ash/g6_private_completion.py": {
     "bytes": 9830,
-    "sha256": "1bd7086320a46081687b5e3953465dda99222cd171141f1f4e72c2b9d9b3fe18"
+    "sha256": "a4a7dbba722f0354b50fe04c81a7bb014bb192d43b8da158e20d1741cdc358eb"
+  },
+  "ash/g6_retention_substitution.py": {
+    "bytes": 10462,
+    "sha256": "b7c48a48bcdd8be4af337d470345de71d23fa8000e8081f08baffdd3383030dc"
   },
   "ash/managed_cli.py": {
     "bytes": 2781,
@@ -1691,6 +1695,14 @@
     "bytes": 5615,
     "sha256": "22e388484c9797358f2b778cdc8689f19b746da46850ff48be04f097c9ad59b4"
   },
+  "docs/nexus-g6-retention-deterministic-binding-v1.md": {
+    "bytes": 8172,
+    "sha256": "33b78de0264fcaa86feaef92bafc59fe6e332e8ef2e011586b376d512061362e"
+  },
+  "docs/nexus-g6-retention-deterministic-owner-signing-v1.md": {
+    "bytes": 8165,
+    "sha256": "5833aabe77b13fd3d555eab21cc1c4e1ea359e176f616e27fd09cb4f7d03431a"
+  },
   "docs/nexus-g6-scope-and-reuse-v1.md": {
     "bytes": 9123,
     "sha256": "69fab902a8cdad1e0a5c6f89fe8839aa96222d8418d7cd290b3bc29feb6cc4a6"
@@ -2419,6 +2431,10 @@
     "bytes": 17098,
     "sha256": "733668b5fb774484d0cbcdc0fb4fd888f5c451e17faaaf4b0615ded1f9b8268b"
   },
+  "research/nexus-g6-deterministic-host-runtime-pins-v1.json": {
+    "bytes": 21191,
+    "sha256": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1"
+  },
   "research/nexus-g6-final-affected-regression-v1.json": {
     "bytes": 622,
     "sha256": "207381841af9cf23bfab76e4fd88f7c25df87c0b184a81af99254a43fc6fdd84"
@@ -2590,6 +2606,34 @@
   "research/nexus-g6-public-path-probe-v1.cpp": {
     "bytes": 7156,
     "sha256": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1"
+  },
+  "research/nexus-g6-retention-deterministic-independent-review-v1.json": {
+    "bytes": 6716,
+    "sha256": "41c3a986e115a3a1d27a6242037273a9583f1bf5dc700d797307df6461df81b2"
+  },
+  "research/nexus-g6-retention-deterministic-owner-decision-v1.json": {
+    "bytes": 24183,
+    "sha256": "b6547d4eed4328984c0e197656f6f007ca847ab754b8045ebb4cf293824fd1aa"
+  },
+  "research/nexus-g6-retention-deterministic-public-probe-v1.py": {
+    "bytes": 2346,
+    "sha256": "0fa40d0326e58c5b07f120b76b20298b11814306beb6c238887c1d776a8da643"
+  },
+  "research/nexus-g6-retention-deterministic-readiness-v1.json": {
+    "bytes": 4533,
+    "sha256": "ae33ce95a38a8e872bc853c2072dd389861b66e082cda8def7e099da85a01241"
+  },
+  "research/nexus-g6-retention-deterministic-readiness-v2.json": {
+    "bytes": 5388,
+    "sha256": "691f439004e6835ccea76bfeaa80ee01fde0820747d45083c755623bda04c428"
+  },
+  "research/nexus-g6-retention-deterministic-signing-checkpoint-v1.json": {
+    "bytes": 6398,
+    "sha256": "063b68b29158e6e240eee030d788af70c7b750858175b1d65db189de1c3fd692"
+  },
+  "research/nexus-g6-retention-deterministic-worker-v1.py": {
+    "bytes": 2212,
+    "sha256": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d"
   },
   "research/nexus-n01-cached-retained-schema-analysis-v1.json": {
     "bytes": 30286,
@@ -2964,12 +3008,16 @@
     "sha256": "8008a76ddaf0c593b5eed963a655dc64512ec284cac89066b8089b6f9b37917f"
   },
   "scripts/qualify_g6_native_binding.py": {
-    "bytes": 7114,
-    "sha256": "64ed22955e71bf4e32d7d4b7ce89bf9fb6282570bb6ceb2316f565682d8bd5e2"
+    "bytes": 7870,
+    "sha256": "a9d7de56df05b9b9490b20aeacb72b1e6ddcc4284ec47d2681757a329672f407"
   },
   "scripts/qualify_g6_private_completion.py": {
     "bytes": 1998,
     "sha256": "fb067d59636ebc8e06504190286ec9db15806274a7cc1884fd3a38d51699acdc"
+  },
+  "scripts/qualify_g6_retention_substitution.py": {
+    "bytes": 2660,
+    "sha256": "be374d7f41ae4c279b762b7ed948b0a8e651a5543bda3ed0323cff144cdc3dda"
   },
   "scripts/rebase_release.py": {
     "bytes": 6629,
@@ -3306,6 +3354,10 @@
   "tests/test_g6_private_completion.py": {
     "bytes": 12932,
     "sha256": "e1588f16baeeb8f33c85310501087a56cef11f431a08ac527d2ef6b38159b5ee"
+  },
+  "tests/test_g6_retention_substitution.py": {
+    "bytes": 13106,
+    "sha256": "a6fe6b21de3db99eea331a6809b8b50c267cf150bdc8eaccb3e4dbda0c2d2f0b"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,

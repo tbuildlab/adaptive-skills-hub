@@ -18,7 +18,7 @@ _LOADED_SHA = hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n', b'\n')
 WORK = 'output/g6-local-retention-once-v2'
 PACKET = 'output/g6-local-retention-owner-signing-v2/decision.json'
 REVIEW = 'research/nexus-g6-local-retention-independent-review-v2.json'
-PUBLIC_WORK = 'output/g6-local-retention-public-v3'
+PUBLIC_WORK = 'output/g6-local-retention-public-v5'
 END = b'END_G6_AUDIT'
 SOURCES = (
     ('v1', 'output/g6-native-private-once-v1/disposition.json',

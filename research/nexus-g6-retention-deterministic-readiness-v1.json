@@ -1,0 +1,109 @@
+{
+  "baseline_head": "517e2d22b09ec697939981eccfd54e9784abe73b",
+  "binding_sha256": "4b7989592883aebb3abc7c978ad3b50ac9891ae0c8d6ebd2d2129cd55f7c6e58",
+  "comparison_or_value_experiment": "NOT_RUN_NOT_LOCKED; substitution is not value evidence",
+  "full_repository": "NOT_RERUN_THIS_PREPARATION; final after mandatory qualification",
+  "g2_g3_g4": "UNCHANGED_FROZEN",
+  "g5": "DISABLED",
+  "historical_attempt_files_unchanged": 73,
+  "model_invocations_added": 0,
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_owner_packet_absent": true,
+  "new_reservation_absent": true,
+  "preserved_failure_records": [
+    "output/g6-deterministic-substitution-preparation-v1/first-preparation-failure.json",
+    "output/g6-deterministic-substitution-preparation-v1/runtime-hardlink-failure.json",
+    "output/g6-deterministic-substitution-preparation-v1/first-public-failure-preservation.json",
+    "output/g6-deterministic-substitution-preparation-v1/failure-root-cause-addendum.json"
+  ],
+  "private_inputs_processed": false,
+  "public_qualification": [
+    {
+      "binding_sha256": "4b7989592883aebb3abc7c978ad3b50ac9891ae0c8d6ebd2d2129cd55f7c6e58",
+      "cases": 18,
+      "path": "output/g6-native-binding-public-v28/qualification.json",
+      "sha256": "b1c5f04b71ed2feddc988377d17bcdc03c792c63b7fa2b45d7df3f813f3c37fe",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    {
+      "binding_sha256": "4b7989592883aebb3abc7c978ad3b50ac9891ae0c8d6ebd2d2129cd55f7c6e58",
+      "cases": 4,
+      "path": "output/g6-local-retention-public-v4/qualification.json",
+      "sha256": "e5a69cb26a9a92a4e874fcd7fcaadf3032b160ac35767cffb0206afe31e108df",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    },
+    {
+      "binding_sha256": "4b7989592883aebb3abc7c978ad3b50ac9891ae0c8d6ebd2d2129cd55f7c6e58",
+      "cases": 6,
+      "path": "output/g6-retention-deterministic-public-v3/qualification.json",
+      "sha256": "2c4dc72a78b4ca6a91c458b2c37b0c0b803943e3c95ebf05b26ec5e92ecf4237",
+      "status": "PASS_PUBLIC_DETERMINISTIC_COMPOSITION_ONLY"
+    }
+  ],
+  "real_admission": "NO",
+  "real_substitution_executions_added": 0,
+  "regression": {
+    "affected": {
+      "binding_sha256": "4b7989592883aebb3abc7c978ad3b50ac9891ae0c8d6ebd2d2129cd55f7c6e58",
+      "elapsed_seconds": 92.14,
+      "error": 0,
+      "fail": 0,
+      "kind": "affected",
+      "log_sha256": "0ebbcb0b1d6bbcd7fa624aa04f543b2b6526075908a49a4dd30f207db2840cba",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution"
+      ],
+      "pass": 183,
+      "skip": 0,
+      "total": 183
+    },
+    "focused": {
+      "binding_sha256": "4b7989592883aebb3abc7c978ad3b50ac9891ae0c8d6ebd2d2129cd55f7c6e58",
+      "elapsed_seconds": 1.578,
+      "error": 0,
+      "fail": 0,
+      "kind": "focused",
+      "log_sha256": "a2ccfe41b5e32337e1e1265dd1a19179d9a5c6a0572fb8ff23cfe98865dd417f",
+      "modules": [
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution"
+      ],
+      "pass": 62,
+      "skip": 0,
+      "total": 62
+    }
+  },
+  "runtime_pins_sha256": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1",
+  "runtime_version": "3.12.10",
+  "same_source_hashes": [
+    {
+      "path": "output/g6-native-private-once-v1/disposition.json",
+      "sha256": "4faf6db8803665af8a3dcd96c26337606d94538dfc14084f89d4312e858f155b"
+    },
+    {
+      "path": "output/g6-native-public-once-v2/disposition.json",
+      "sha256": "edec34055bb2a1333faffa6f585e054685ae05c6e9f511d4a6f770fd0cc09639"
+    },
+    {
+      "path": "output/g6-native-public-once-v3/disposition.json",
+      "sha256": "2e557402a45a93fac5792eb77b498884f97b0dc8ca1c3426ed0bf938a76a4007"
+    }
+  ],
+  "same_task_input_sha256": "14d9767532747a249f2a1de2f1af6c678618f9d3bc50844212cb10767182f553",
+  "schema": "nexus.g6.deterministic-retention-readiness.v1",
+  "snapshot_bytes": 8277451,
+  "snapshot_files": 54,
+  "status": "PASS_PUBLIC_READINESS_ONLY_NOT_REAL_SUBSTITUTION",
+  "strict_output_verifier": "UNCHANGED",
+  "substitution_sha256": "25c5ab8f05f42db4b0c44e0181e3e94351ca8687de91b66821b9cf440dfb8243",
+  "worker_sha256": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d"
+}

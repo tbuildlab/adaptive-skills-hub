@@ -1,0 +1,126 @@
+{
+  "baseline_head": "517e2d22b09ec697939981eccfd54e9784abe73b",
+  "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+  "comparison_or_value_experiment": "NOT_RUN_NOT_LOCKED; substitution is not value evidence",
+  "full_repository": "NOT_RERUN_THIS_PREPARATION; final after mandatory qualification",
+  "g2_g3_g4": "UNCHANGED_FROZEN",
+  "g5": "DISABLED",
+  "historical_attempt_files_unchanged": 73,
+  "issuer_readback": {
+    "authority_created": false,
+    "fingerprint": "SHA256:5FV4/OvvMPzivK/4YIolW2kPQBGoik/llHbviTDpf98",
+    "login": "TDY0225",
+    "private_key_read": false,
+    "signing_key_id": 1242636,
+    "status": "CURRENT_PUBLIC_KEY_MATCH",
+    "user_id": 223441940
+  },
+  "model_invocations_added": 0,
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_owner_packet_absent": true,
+  "new_reservation_absent": true,
+  "preserved_failure_records": [
+    "output/g6-deterministic-substitution-preparation-v1/first-preparation-failure.json",
+    "output/g6-deterministic-substitution-preparation-v1/runtime-hardlink-failure.json",
+    "output/g6-deterministic-substitution-preparation-v1/first-public-failure-preservation.json",
+    "output/g6-deterministic-substitution-preparation-v1/failure-root-cause-addendum.json"
+  ],
+  "private_inputs_processed": false,
+  "public_qualification": [
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 18,
+      "path": "output/g6-native-binding-public-v29/qualification.json",
+      "sha256": "efd04a469da7153af34d33011e9f58cc2de8288d67dd20d09f4138832f222aa7",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 4,
+      "path": "output/g6-local-retention-public-v5/qualification.json",
+      "sha256": "1b56a531ade480a1ee8b46b6a08980819029be480e36a0e0ee645205aa92648f",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    },
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 6,
+      "path": "output/g6-retention-deterministic-public-v5/qualification.json",
+      "sha256": "0a0664d3ba809d8e4eaebdfe998ef4d04c536c77431c804d6516e424069dc452",
+      "status": "PASS_PUBLIC_DETERMINISTIC_COMPOSITION_ONLY"
+    }
+  ],
+  "real_admission": "NO",
+  "real_substitution_executions_added": 0,
+  "regression": {
+    "affected": {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "elapsed_seconds": 93.922,
+      "error": 0,
+      "fail": 0,
+      "kind": "affected",
+      "log_sha256": "6cbfecff1823245bbc133ce58325686cad30bf5852bd68e39152e5ec329eb866",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution"
+      ],
+      "pass": 184,
+      "skip": 0,
+      "total": 184
+    },
+    "focused": {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "elapsed_seconds": 1.39,
+      "error": 0,
+      "fail": 0,
+      "kind": "focused",
+      "log_sha256": "95a40bc907a703b0dc65887632bbeef040126322c62243635b6338066f50ec07",
+      "modules": [
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution"
+      ],
+      "pass": 63,
+      "skip": 0,
+      "total": 63
+    }
+  },
+  "runtime_pins_sha256": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1",
+  "runtime_version": "3.12.10",
+  "same_buffer_identity_repair": {
+    "decision": "FIXED_HASH_PARSE_OR_COPY_EXACT_SAME_STABLE_BUFFER",
+    "finding": "Hash/read and hash/copy two-read window in pin metadata and worker/probe preparation.",
+    "new_negative": "Substituted worker buffer rejects before file write; mutated pin buffer rejects before parse.",
+    "prior_scope_directory": "output/g6-deterministic-substitution-preparation-v1/superseded-scope-v1",
+    "prior_scope_sha256": "2877d333370edbe240e40c3555b304ecf3b78d5d106977dbb157e0467d105af7",
+    "prior_source_buffers_preserved": 20
+  },
+  "same_source_hashes": [
+    {
+      "path": "output/g6-native-private-once-v1/disposition.json",
+      "sha256": "4faf6db8803665af8a3dcd96c26337606d94538dfc14084f89d4312e858f155b"
+    },
+    {
+      "path": "output/g6-native-public-once-v2/disposition.json",
+      "sha256": "edec34055bb2a1333faffa6f585e054685ae05c6e9f511d4a6f770fd0cc09639"
+    },
+    {
+      "path": "output/g6-native-public-once-v3/disposition.json",
+      "sha256": "2e557402a45a93fac5792eb77b498884f97b0dc8ca1c3426ed0bf938a76a4007"
+    }
+  ],
+  "same_task_input_sha256": "14d9767532747a249f2a1de2f1af6c678618f9d3bc50844212cb10767182f553",
+  "schema": "nexus.g6.deterministic-retention-readiness.v1",
+  "snapshot_bytes": 8277451,
+  "snapshot_files": 54,
+  "status": "PASS_PUBLIC_READINESS_ONLY_NOT_REAL_SUBSTITUTION",
+  "strict_output_verifier": "UNCHANGED",
+  "substitution_sha256": "b7c48a48bcdd8be4af337d470345de71d23fa8000e8081f08baffdd3383030dc",
+  "worker_sha256": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d"
+}

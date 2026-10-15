@@ -40,8 +40,11 @@ PUBLIC_CASES = frozenset({'success', 'io', 'overflow', 'stderr_overflow', 'nonze
 PUBLIC_MARKER_CASES=frozenset({'native_marker','native_marker_noise','native_marker_missing','native_marker_eog'})
 PRIVATE_PUBLIC_CASES=frozenset({'retention_report','retention_noise','retention_wrong','retention_missing'})
 PUBLIC_CASES=PUBLIC_CASES|PRIVATE_PUBLIC_CASES
+DETERMINISTIC_PUBLIC_CASES=frozenset({'deterministic_report','deterministic_invalid','deterministic_io',
+    'deterministic_cancel','deterministic_timeout','deterministic_controller_failure'})
+PUBLIC_CASES=PUBLIC_CASES|DETERMINISTIC_PUBLIC_CASES
 FIXTURE = ROOT / 'research/nexus-g6-native-public-fixture-v1.py'
-WORK = 'output/g6-native-binding-public-v27'
+WORK = 'output/g6-native-binding-public-v29'
 NATIVE_WORK = 'output/g6-native-public-once-v3'
 OWNER_PACKET = 'output/g6-native-owner-signing-v3/decision.json'
 OWNER_REVIEW = 'research/nexus-g6-fixed-native-independent-review-v3.json'
@@ -97,7 +100,10 @@ def _source_gate():
 
 def native_plan(role='native'):
     """Pinned inert plan only. Creating this data does not extract or dispatch."""
-    require(role in ('native','private'),'CLOSED_NATIVE_ROLE')
+    require(role in ('native','private','deterministic'),'CLOSED_NATIVE_ROLE')
+    if role=='deterministic':
+        from . import g6_retention_substitution as deterministic
+        return deterministic.native_plan()
     if role=='private':
         from . import g6_private_completion as private
         return private.native_plan()
@@ -149,14 +155,18 @@ def _environment(result):
 
 def _arguments(binary, data, result, case, sentinel, port, *, role='public'):
     # Public Python runtime allowance is explicit and never part of native_plan.
-    require(role in ('public','native','private'),'CLOSED_ROLE')
+    require(role in ('public','native','private','deterministic'),'CLOSED_ROLE')
     fs = {':root': 'deny', 'C:/Windows/System32': 'read', PYTHON.parent.as_posix(): 'read',
           binary.as_posix(): 'read', (data/'public.txt').as_posix(): 'read'}
     if role!='public':
         plan=native_plan(role); fs=plan['filesystem']
         require(str(binary)==plan['cwd'],'NATIVE_CWD')
-        require((binary/plan['candidate_arguments'][3]).resolve()==Path(plan['input']).resolve(),
+        input_argument=plan['candidate_arguments'][-1] if role=='deterministic' else plan['candidate_arguments'][3]
+        require((binary/input_argument).resolve()==Path(plan['input']).resolve(),
                 'NATIVE_PROMPT_PATH_BINDING')
+    elif case in DETERMINISTIC_PUBLIC_CASES:
+        from . import g6_retention_substitution as deterministic
+        plan=deterministic.public_plan(binary,data,result,case); fs=plan['filesystem']
     elif case=='path_diagnostic':
         fs={':root':'deny','C:/Windows/System32':'read',binary.as_posix():'read',
             RETIRED_PUBLIC_INPUT.as_posix():'read',
@@ -170,6 +180,8 @@ def _arguments(binary, data, result, case, sentinel, port, *, role='public'):
     argv.extend(['-c','shell_environment_policy.set.PATH='+json.dumps(r'C:\Windows\System32')])
     target=([str(PYTHON),'-I',str(binary/'fixture.py'),case,str(data.parent),str(sentinel),str(port)]
             if role=='public' else [plan['executable'],*plan['candidate_arguments']])
+    if role=='public' and case in DETERMINISTIC_PUBLIC_CASES:
+        target=[plan['executable'],*plan['candidate_arguments']]
     if role=='public' and case=='path_diagnostic':
         target=[str(binary/'probe.exe'),str(RETIRED_PUBLIC_INPUT),str(data.parent),
                 r'..\input\spaced public.txt',str(sentinel),*native_plan()['candidate_arguments'][2:4],
@@ -221,10 +233,13 @@ def _verify_native_owner(role='native'):
     from scripts import verify_g3_owner_signature as issuer
     from . import g3_grant_codec as codec
     import tempfile
-    require(role in ('native','private'),'CLOSED_NATIVE_ROLE')
+    require(role in ('native','private','deterministic'),'CLOSED_NATIVE_ROLE')
     if role=='private':
         from . import g6_private_completion as private
         packet,review_path,expected=private.PACKET,private.REVIEW,private.owner_intent()
+    elif role=='deterministic':
+        from . import g6_retention_substitution as deterministic
+        packet,review_path,expected=deterministic.PACKET,deterministic.REVIEW,deterministic.owner_intent()
     else:
         packet,review_path,expected=OWNER_PACKET,OWNER_REVIEW,owner_intent()
     path=ROOT/packet
@@ -271,6 +286,10 @@ def _native_resume_gate(proof,observed):
 
 def _prepare_native(binary,data,role='native'):
     """Only after fresh signature AND exclusive reservation; never called by fixtures."""
+    if role=='deterministic':
+        from . import g6_retention_substitution as deterministic
+        deterministic.prepare(binary,data)
+        return
     from . import g6_local_model_intake as intake
     plan=native_plan(role); policy=intake.load_policy()
     archive=ROOT/'output/g6-final/llama-b11609-bin-win-cpu-x64.zip'
@@ -446,24 +465,31 @@ def _record_binding_failure(state,error,winerror):
 
 
 def _fixed_attempt(role,case):
-    """Two closed roles consume one guard; neither accepts caller commands."""
-    require(role in ('public','native','private'),'CLOSED_ROLE')
+    """Fixed closed tasks consume one guard; no caller-supplied commands/plans."""
+    require(role in ('public','native','private','deterministic'),'CLOSED_ROLE')
     require(case in PUBLIC_CASES if role=='public' else case=='qualification','PUBLIC_CASE')
     _source_gate()
-    if role=='private':
+    if role in ('private','deterministic'):
         from . import g6_private_completion as private
         private.source_gate()
+    deterministic_case=role=='deterministic' or case in DETERMINISTIC_PUBLIC_CASES
+    if deterministic_case:
+        from . import g6_retention_substitution as deterministic
+        deterministic.source_gate()
+    lifecycle_case=case.removeprefix('deterministic_') if deterministic_case else case
     require(os.name == 'nt', 'WINDOWS_REQUIRED')
     if role!='public': _verify_native_owner(role)  # Before materialization/reservation.
     import _winapi
     import msvcrt
     c, w, k, Extended, Accounting = _windows()
     if role=='public':
-        if case in PRIVATE_PUBLIC_CASES:
+        if case in DETERMINISTIC_PUBLIC_CASES:
+            name=deterministic.PUBLIC_WORK+'/'+case
+        elif case in PRIVATE_PUBLIC_CASES:
             from . import g6_private_completion as private
             name=private.PUBLIC_WORK+'/'+case
         else: name=WORK+'/'+case
-    else: name=NATIVE_WORK if role=='native' else private.WORK
+    else: name=NATIVE_WORK if role=='native' else deterministic.WORK if role=='deterministic' else private.WORK
     parent = safe_path(ROOT, Path(name).parent.as_posix()); parent.mkdir(parents=True, exist_ok=True)
     directory = safe_path(ROOT,name)
     try:
@@ -478,7 +504,10 @@ def _fixed_attempt(role,case):
     _write_state(directory, state)
     binary=directory/'bin'; data=directory/'input'; result=directory/'result'
     for path in (binary, data, result): path.mkdir()
-    if role=='public':
+    if role=='public' and deterministic_case:
+        deterministic.prepare(binary,data,public_case=case)
+        (directory/'outside.txt').write_bytes(b'PUBLIC_OUTSIDE')
+    elif role=='public':
         (binary/'fixture.py').write_bytes(stable_read_bytes(FIXTURE, maximum_bytes=32768))
         (data/'public.txt').write_bytes(b'PUBLIC_ONLY_FINITE_INPUT')
         (data/'unlisted.txt').write_bytes(b'PUBLIC_UNLISTED')
@@ -496,7 +525,7 @@ def _fixed_attempt(role,case):
         _prepare_native(binary,data,role)
     job=hp=ht=None; handles=[]; collector=_Collector(result); started=time.monotonic()
     completed=False; listener=None; stop=threading.Event(); connections=[]; network_thread=None
-    wall = 7.0 if case == 'timeout' else 16.0
+    wall = 7.0 if lifecycle_case == 'timeout' else 16.0
     cpu = 1 if case == 'cpu' else 8
     memory = 384*1024**2 if case == 'memory' else 2*1024**3
     active = 8
@@ -529,8 +558,16 @@ def _fixed_attempt(role,case):
             state['stage']='HELD_HOST'
             held.enter_context(_held_installed_host(diagnostics=state))
             held.enter_context(_held_installed_host(RUNNER,RUNNER_SHA,diagnostics=state))
-            inputs=([binary/'fixture.py',binary/'public-backend.dll',data/'public.txt'] if role=='public' else
-                    [*(binary/m['path'] for m in plan['members']),binary/'LICENSE-LLVM-OpenMP',data/'task.txt'])
+            if deterministic_case:
+                inputs=[binary/'retention.py',data/'task.txt']
+                if role=='public': inputs.append(binary/'probe.py')
+                from .g6_local_model_intake import _hash_input
+                for pin in deterministic.verify_runtime_inventory():
+                    runtime_input=held.enter_context(open_stable_input(deterministic.RUNTIME/pin['relative_path'],maximum_bytes=33554432))
+                    _hash_input(runtime_input,pin,0)
+            else:
+                inputs=([binary/'fixture.py',binary/'public-backend.dll',data/'public.txt'] if role=='public' else
+                        [*(binary/m['path'] for m in plan['members']),binary/'LICENSE-LLVM-OpenMP',data/'task.txt'])
             if role=='public' and case=='path_diagnostic':
                 inputs=[binary/'probe.exe',RETIRED_PUBLIC_INPUT,
                         *(data/name for name in ('public.txt','task.txt','crlf.txt','bom.txt','spaced public.txt'))]
@@ -545,18 +582,27 @@ def _fixed_attempt(role,case):
                     expected=({'bytes':289280,'sha256':PUBLIC_PATH_PROBE_SHA} if path.name=='probe.exe' else
                               {'bytes':len(expected_content),'sha256':hashlib.sha256(expected_content).hexdigest()})
                     _hash_input(handle,expected,0)
-                if role!='public':
+                if role=='deterministic':
+                    from .g6_local_model_intake import _hash_input
+                    content=(deterministic.ROOT/deterministic.WORKER).read_bytes().replace(b'\r\n',b'\n')
+                    expected=({'bytes':len(content),'sha256':plan['worker_sha256']} if path.name=='retention.py' else
+                              {'bytes':len(private.prompt()),'sha256':plan['input_sha256']})
+                    _hash_input(handle,expected,0)
+                elif role!='public':
                     from .g6_local_model_intake import _hash_input
                     expected=next((m for m in load_policy()['runtime']['members'] if m['path']==path.name),None)
                     if path.name=='task.txt': expected={'bytes':len(private.prompt()) if role=='private' else len(NATIVE_PROMPT),
                                                        'sha256':plan['input_sha256']}
                     require(expected is not None,'NATIVE_INPUT_IDENTITY')
                     _hash_input(handle,expected,0)
-            if role!='public':
+            if role in ('native','private'):
                 from .g6_local_model_intake import _hash_input
                 model=held.enter_context(open_stable_input(Path(plan['model_blob']),maximum_bytes=650000000))
                 _hash_input(model,plan['model'],0)
                 require({p.name for p in binary.iterdir()}==NATIVE|{'LICENSE-LLVM-OpenMP'},'NATIVE_LOADER_INVENTORY')
+            elif deterministic_case:
+                expected_names={'retention.py','probe.py'} if role=='public' else {'retention.py'}
+                require({p.name for p in binary.iterdir()}==expected_names,'DETERMINISTIC_LOADER_INVENTORY')
             job=k.CreateJobObjectW(None, None); require(job, 'JOB_CREATE')
             state['stage']='JOB_LIMIT_SETUP'
             flags=w.DWORD(); require(k.GetHandleInformation(job,c.byref(flags)) and not flags.value & 1, 'JOB_HANDLE_INHERIT')
@@ -600,7 +646,10 @@ def _fixed_attempt(role,case):
                 handle_allowlist_count=3,job_handle_inherited=False,filesystem=fs,
                 telemetry_overrides=list(TELEMETRY),environment_names=sorted(_environment(result)))
             state['stage']='PERSIST_BOUND_STATE'
-            if role!='public':
+            if role=='deterministic':
+                state.update(deterministic_execution_attempted=True,model_loaded=False,
+                             input_classification=plan['input_classification'])
+            elif role!='public':
                 state.update(candidate_execution_attempted=True,candidate_executed='UNKNOWN_NOT_SELF_CERTIFIED',
                              model_loaded='UNKNOWN_NOT_SELF_CERTIFIED',
                              input_classification=plan.get('input_classification','FIXED_PUBLIC_PROMPT'))
@@ -609,6 +658,7 @@ def _fixed_attempt(role,case):
             _source_gate()
             if role!='public': _native_resume_gate(verified_owner,eligibility_observed)
             if role=='private': private.source_gate()
+            if deterministic_case: deterministic.source_gate()
             require(k.ResumeThread(ht)!=0xffffffff,'RESUME')
             _winapi.CloseHandle(ht); ht=None
             reason=None
@@ -616,7 +666,7 @@ def _fixed_attempt(role,case):
             ready_at=None
             while k.WaitForSingleObject(hp,0)==258:
                 elapsed=time.monotonic()-started
-                if role=='public' and case in ('cancel','timeout') and ready_at is None:
+                if role=='public' and lifecycle_case in ('cancel','timeout') and ready_at is None:
                     try:
                         with (result/'stdout.bin').open('rb') as stream: ready=json.loads(stream.read(256))
                         if isinstance(ready,dict) and len(ready.get('public_pids',[]))==2:
@@ -624,7 +674,7 @@ def _fixed_attempt(role,case):
                     except (OSError,ValueError): pass
                 if collector.overflow.is_set(): reason='OUTPUT_LIMIT'
                 elif collector.error.is_set(): reason='COLLECTOR_ERROR'
-                elif (directory/'cancel.request').exists() or (case=='cancel' and ready_at is not None and time.monotonic()-ready_at>=.2): reason='CANCELLED'
+                elif (directory/'cancel.request').exists() or (lifecycle_case=='cancel' and ready_at is not None and time.monotonic()-ready_at>=.2): reason='CANCELLED'
                 elif elapsed>=wall: reason='TIMEOUT'
                 if reason: break
                 time.sleep(.01)
@@ -643,7 +693,10 @@ def _fixed_attempt(role,case):
             reason=reason or ('OUTPUT_LIMIT' if collector.overflow.is_set() else None)
             stdout=(result/'stdout.bin').read_bytes()
             parsed=None
-            if (role=='private' or case in PRIVATE_PUBLIC_CASES) and reason is None and code==0:
+            if role=='public' and case=='deterministic_report' and reason is None and code==0:
+                if stdout!=deterministic.PUBLIC_EXPECTED: reason='UNVERIFIED_DETERMINISTIC_PUBLIC_RESULT'
+                else: parsed={'status':'PUBLIC_FIXTURE_COMPLETE'}
+            elif (role in ('private','deterministic') or case in PRIVATE_PUBLIC_CASES) and reason is None and code==0:
                 from . import g6_private_completion as private
                 if private.verified_report(stdout) is None: reason='UNVERIFIED_PRIVATE_RESULT'
                 else: parsed={'status':'PUBLIC_FIXTURE_COMPLETE'}
@@ -665,7 +718,10 @@ def _fixed_attempt(role,case):
                 reason='PUBLIC_RESOURCE_CONTROL_FAILED'
             if reason is None and case=='path_diagnostic' and not all(parsed.get(n) is True for n in PUBLIC_PATH_CHECKS):
                 reason='PUBLIC_PATH_DIAGNOSTIC_FAILED'
+            if reason is None and case=='deterministic_io' and (not parsed.get('checks') or not all(v is True for v in parsed['checks'].values())):
+                reason='PUBLIC_DETERMINISTIC_CONTROL_FAILED'
             state.update(status=('PUBLIC_FIXTURE_VERIFIED' if role=='public' else
+                                 'DETERMINISTIC_RETENTION_RESULT_OBSERVED' if role=='deterministic' else
                                  'LOCAL_RETENTION_RESULT_OBSERVED' if role=='private' else 'NATIVE_BOUNDED_RESULT_OBSERVED') if reason is None else 'QUARANTINE',
                          reason=reason or ('PUBLIC_ONLY' if role=='public' else 'NATIVE_RESULT_NOT_FINAL_G6_ACCEPTANCE'),returncode=code,job_active_after_termination=0,
                          user_cpu_100ns=account.TotalUserTime,total_processes=account.TotalProcesses,
@@ -674,6 +730,7 @@ def _fixed_attempt(role,case):
                          stderr_sha256=hashlib.sha256((result/'stderr.bin').read_bytes()).hexdigest(),
                          sandbox_network_connections=len(connections),sentinel_file_unchanged=os.fstat(sentinel).st_size==0)
             if role=='public' and isinstance(parsed,dict):
+                if case=='deterministic_io': state['deterministic_public_checks']=parsed.get('checks')
                 if case=='path_diagnostic':
                     state['public_path_checks']={n:parsed.get(n) is True for n in PUBLIC_PATH_CHECKS}
                     state['windows_acp']=parsed.get('windows_acp')
@@ -712,7 +769,10 @@ def reconcile_public(case):
     """Interrupted reserved attempts remain retired; no execution/retry path."""
     require(case in PUBLIC_CASES,'PUBLIC_CASE')
     work=WORK
-    if case in PRIVATE_PUBLIC_CASES:
+    if case in DETERMINISTIC_PUBLIC_CASES:
+        from . import g6_retention_substitution as deterministic
+        work=deterministic.PUBLIC_WORK
+    elif case in PRIVATE_PUBLIC_CASES:
         from . import g6_private_completion as private
         work=private.PUBLIC_WORK
     directory=safe_path(ROOT,work+'/'+case)

@@ -1,0 +1,107 @@
+{
+  "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+  "decision": "PASS_SIGNING_READINESS",
+  "files": {
+    "ash/g6_native_binding.py": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+    "ash/g6_private_completion.py": "a4a7dbba722f0354b50fe04c81a7bb014bb192d43b8da158e20d1741cdc358eb",
+    "ash/g6_retention_substitution.py": "b7c48a48bcdd8be4af337d470345de71d23fa8000e8081f08baffdd3383030dc",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65",
+    "docs/nexus-g6-retention-deterministic-binding-v1.md": "33b78de0264fcaa86feaef92bafc59fe6e332e8ef2e011586b376d512061362e",
+    "research/nexus-g6-deterministic-host-runtime-pins-v1.json": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1",
+    "research/nexus-g6-fixed-host-snapshot-provenance-v1.json": "d79bdd3f37d373401c61304176080d76e3b2ae98234305187b97d411c2c5213f",
+    "research/nexus-g6-fixed-prompt-contract-v1.json": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500",
+    "research/nexus-g6-native-public-fixture-v1.py": "b4539ae98bfdd887a18d325cb4c38ad50a46530d56791b04b3d9615a8b848e51",
+    "research/nexus-g6-public-path-probe-v1.cpp": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1",
+    "research/nexus-g6-retention-deterministic-public-probe-v1.py": "0fa40d0326e58c5b07f120b76b20298b11814306beb6c238887c1d776a8da643",
+    "research/nexus-g6-retention-deterministic-readiness-v2.json": "691f439004e6835ccea76bfeaa80ee01fde0820747d45083c755623bda04c428",
+    "research/nexus-g6-retention-deterministic-worker-v1.py": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d",
+    "scripts/qualify_g6_native_binding.py": "a9d7de56df05b9b9490b20aeacb72b1e6ddcc4284ec47d2681757a329672f407",
+    "scripts/qualify_g6_private_completion.py": "fb067d59636ebc8e06504190286ec9db15806274a7cc1884fd3a38d51699acdc",
+    "scripts/qualify_g6_retention_substitution.py": "be374d7f41ae4c279b762b7ed948b0a8e651a5543bda3ed0323cff144cdc3dda",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g6_native_binding.py": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5",
+    "tests/test_g6_private_completion.py": "e1588f16baeeb8f33c85310501087a56cef11f431a08ac527d2ef6b38159b5ee",
+    "tests/test_g6_retention_substitution.py": "a6fe6b21de3db99eea331a6809b8b50c267cf150bdc8eaccb3e4dbda0c2d2f0b"
+  },
+  "g2_g3_g4": "UNCHANGED_FROZEN",
+  "g5": "DISABLED",
+  "limits": [
+    "Public readiness, not actual second configuration success or confidential-corpus qualification.",
+    "Material substitution is not comparative value; future native/Nexus value arms require sameHost/model and a separate pilot/locked protocol.",
+    "Existing periodic CPU and guarded wall plus bounded cleanup limits remain; no zero-overshoot claim.",
+    "Public/fixture/receipt bytes cannot authorize dispatch or release.",
+    "Final A-H/A6 reconciliation, independent G6 review/full regression and exact Owner release acceptance remain."
+  ],
+  "n01": "HOLD",
+  "properties_verified": [
+    "Same-buffer pins hash/parse and worker/probe hash/copy repair; substituted buffer rejects before write; superseded20 source buffers preserved.",
+    "Exact54 files8277451bytes; singlelink/regular/nonreparse, fixed _pth, no installed fallback.",
+    "Closed executable/args/role, no model allowance; separate explicit zero-inference policy interpretation.",
+    "Existing fresh GitHub-bound signature, exact subject/material/configuration, bounded expiry and resume freshness; consumed decisions reject.",
+    "Existing suspended Job assignment/readback, threehandle allowlist, local bounded collector, disabled network/exporters and allterminal retirement.",
+    "Same1050byte retained input14d9767532747a249f2a1de2f1af6c678618f9d3bc50844212cb10767182f553 and strict report acceptance.",
+    "Actual public path/environment/I/O and live descendant cancellation/timeout/controller death proof under snapshot; original6second observer retained.",
+    "All73 predecessor files unchanged; new real reservation and Owner packet absent at review."
+  ],
+  "public_qualification": [
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 18,
+      "path": "output/g6-native-binding-public-v29/qualification.json",
+      "sha256": "efd04a469da7153af34d33011e9f58cc2de8288d67dd20d09f4138832f222aa7",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 4,
+      "path": "output/g6-local-retention-public-v5/qualification.json",
+      "sha256": "1b56a531ade480a1ee8b46b6a08980819029be480e36a0e0ee645205aa92648f",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    },
+    {
+      "binding_sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8",
+      "cases": 6,
+      "path": "output/g6-retention-deterministic-public-v5/qualification.json",
+      "sha256": "0a0664d3ba809d8e4eaebdfe998ef4d04c536c77431c804d6516e424069dc452",
+      "status": "PASS_PUBLIC_DETERMINISTIC_COMPOSITION_ONLY"
+    }
+  ],
+  "real_admission": "NO",
+  "regression_counts": {
+    "affected": {
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "6cbfecff1823245bbc133ce58325686cad30bf5852bd68e39152e5ec329eb866",
+      "pass": 184,
+      "skip": 0,
+      "total": 184
+    },
+    "focused": {
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "95a40bc907a703b0dc65887632bbeef040126322c62243635b6338066f50ec07",
+      "pass": 63,
+      "skip": 0,
+      "total": 63
+    }
+  },
+  "remaining_material_findings": [],
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_actions": {
+    "authentication_calls": 0,
+    "candidate_executions": 0,
+    "edits": false,
+    "model_loads": 0,
+    "native_replays": 0,
+    "raw_task_output_report_printed": false,
+    "signing_calls": 0,
+    "tests_rerun": 0
+  },
+  "reviewer_role": "independent_read_only_not_implementer",
+  "runtime_pins_sha256": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1",
+  "schema": "nexus.g6.deterministic-retention-independent-review.v1",
+  "scope": "Prepare one fresh exact-subject signing packet for fixed real deterministic retention operation only; no execution/release authority.",
+  "scope_sha256": "79781f9cdf0c5b4953fa3f276a74f08bf15a4e845e61f3c3612074d7cbba2545",
+  "substitution_sha256": "b7c48a48bcdd8be4af337d470345de71d23fa8000e8081f08baffdd3383030dc",
+  "worker_sha256": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d"
+}

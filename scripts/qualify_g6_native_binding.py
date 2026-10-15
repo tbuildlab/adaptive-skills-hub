@@ -13,19 +13,27 @@ if str(ROOT) not in sys.path: sys.path.insert(0,str(ROOT))
 from ash import g6_native_binding as binding
 
 
-def controller_failure():
+def controller_failure(case='controller_failure'):
     # This is the only controller process this driver is allowed to terminate.
+    if case not in ('controller_failure','deterministic_controller_failure'):
+        raise ValueError('CLOSED_PUBLIC_CONTROLLER_CASE')
     command=[sys.executable,'-X','utf8','-c',
-             "from ash.g6_native_binding import public_attempt; public_attempt('controller_failure')"]
+             f"from ash.g6_native_binding import public_attempt; public_attempt('{case}')"]
     process=subprocess.Popen(command,cwd=ROOT,stdin=subprocess.DEVNULL,
                              stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
-    directory=ROOT/binding.WORK/'controller_failure'; handles=[]; record={}; stage='PUBLIC_READINESS'
+    work=binding.WORK
+    if case=='deterministic_controller_failure':
+        from ash import g6_retention_substitution as deterministic
+        work=deterministic.PUBLIC_WORK
+    directory=ROOT/work/case; handles=[]; record={}; stage='PUBLIC_READINESS'
     k=c.WinDLL(r'C:\Windows\System32\kernel32.dll',use_last_error=True)
     k.OpenProcess.argtypes=[w.DWORD,w.BOOL,w.DWORD]; k.OpenProcess.restype=w.HANDLE
     k.WaitForSingleObject.argtypes=[w.HANDLE,w.DWORD]; k.WaitForSingleObject.restype=w.DWORD
     k.CloseHandle.argtypes=[w.HANDLE]; k.CloseHandle.restype=w.BOOL
     try:
-        deadline=time.monotonic()+6
+        readiness_window=6
+        readiness_started=time.monotonic()
+        deadline=readiness_started+readiness_window
         while time.monotonic()<deadline:
             output=directory/'result/stdout.bin'
             if output.exists():
@@ -47,12 +55,15 @@ def controller_failure():
         process.terminate(); process.wait(timeout=3)
         after=[k.WaitForSingleObject(handle,3000)==0 for handle in handles]
         stage='RECONCILE_INTERRUPTED_ATTEMPT'
-        disposition=binding.reconcile_public('controller_failure')
+        disposition=binding.reconcile_public(case)
         record={'status':'PASS_PUBLIC_CONTROLLER_FAILURE' if all(before) and all(after) and disposition['status']=='QUARANTINE' else 'HOLD_CONTROLLER_FAILURE',
                 'both_alive_before_controller_death':before,'both_signalled_after_controller_death':after,
-                'disposition':disposition['status'],'automatic_retry':False}
+                'disposition':disposition['status'],'automatic_retry':False,
+                'readiness_window_seconds':readiness_window,'readiness_observed_seconds':round(time.monotonic()-readiness_started,3)}
     except Exception as error:
-        record={'status':'HOLD_CONTROLLER_FAILURE','automatic_retry':False,'stage':stage,'error_class':type(error).__name__}
+        allowed={'CONTROLLER_DID_NOT_REACH_PUBLIC_CHILDREN','PUBLIC_CHILDREN_NOT_OBSERVED','PUBLIC_CHILD_HANDLE'}
+        record={'status':'HOLD_CONTROLLER_FAILURE','automatic_retry':False,'stage':stage,'error_class':type(error).__name__,
+                'failure_code':str(error) if type(error) is RuntimeError and str(error) in allowed else 'OTHER_PUBLIC_DRIVER_FAILURE'}
     finally:
         if process.poll() is None: process.terminate(); process.wait(timeout=3)
         for handle in handles: k.CloseHandle(handle)
