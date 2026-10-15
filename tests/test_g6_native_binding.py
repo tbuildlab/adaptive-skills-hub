@@ -44,12 +44,12 @@ class FixedNativeBindingTests(unittest.TestCase):
             with patch.object(binding,'_prepare_native') as prepare:
                 with self.assertRaises(ValueError): binding.native_attempt()
                 prepare.assert_not_called()
-                self.assertFalse((Path(folder)/'output/g6-native-private-once-v1').exists())
+                self.assertFalse((Path(folder)/binding.NATIVE_WORK).exists())
 
     @unittest.skipUnless(os.name=='nt','Windows native reservation')
     def test_native_reservation_denies_even_with_test_only_verifier_projection(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(binding,'ROOT',Path(folder)):
-            reserved=Path(folder)/'output/g6-native-private-once-v1'; reserved.mkdir(parents=True)
+            reserved=Path(folder)/binding.NATIVE_WORK; reserved.mkdir(parents=True)
             with patch.object(binding,'_verify_native_owner',return_value=('TEST_ONLY',100,200,10)), \
                  patch.object(binding,'_prepare_native') as prepare:
                 with self.assertRaisesRegex(binding.BindingHold,'ATTEMPT_RESERVED_NO_REPLAY'): binding.native_attempt()
@@ -61,6 +61,56 @@ class FixedNativeBindingTests(unittest.TestCase):
                 with self.assertRaises(binding.BindingHold): binding._native_resume_gate(('PUBLIC_DIGEST',100,200),10)
         with patch.object(binding.time,'time',return_value=199.9), patch.object(binding.time,'monotonic',return_value=11):
             binding._native_resume_gate(('PUBLIC_DIGEST',100,200),10)
+
+    def test_relative_prompt_resolves_to_held_exact_input_without_permission_expansion(self):
+        plan=binding.native_plan()
+        relative=plan['candidate_arguments'][3]
+        self.assertEqual(relative,'../input/task.txt')
+        self.assertTrue(relative.isascii())
+        self.assertEqual((Path(plan['cwd'])/relative).resolve(),Path(plan['input']).resolve())
+        self.assertEqual(plan['filesystem'][Path(plan['input']).as_posix()],'read')
+        self.assertNotIn(Path(plan['input']).parent.as_posix(),plan['filesystem'])
+
+    def test_changed_relative_target_is_denied_before_launch(self):
+        plan=binding.native_plan(); plan['candidate_arguments'][3]='../input/other.txt'
+        binary=Path(plan['cwd'])
+        with patch.object(binding,'native_plan',return_value=plan):
+            with self.assertRaisesRegex(binding.BindingHold,'NATIVE_PROMPT_PATH_BINDING'):
+                binding._arguments(binary,binary.parent/'input',binary.parent/'result','qualification',0,0,role='native')
+
+    def test_retired_packet_and_directory_are_not_reused(self):
+        self.assertNotEqual(binding.NATIVE_WORK,'output/g6-native-private-once-v1')
+        self.assertNotEqual(binding.OWNER_PACKET,'output/g6-native-owner-signing-v1/decision.json')
+        self.assertNotEqual(binding.OWNER_REVIEW,'research/nexus-g6-fixed-native-independent-review-v1.json')
+        self.assertEqual(binding.owner_intent()['subject']['revision'],'g6-fixed-native-binding-v2')
+
+    def test_actual_retired_owner_payload_cannot_authorize_repaired_subject(self):
+        old=(binding.ROOT/'research/nexus-g6-native-owner-decision-v1.json').read_bytes()
+        expected=binding.owner_intent()
+        with patch.object(binding,'owner_intent',return_value=expected), \
+             patch.object(binding,'stable_read_bytes',return_value=old):
+            with self.assertRaisesRegex(binding.BindingHold,'OWNER_EXACT_SUBJECT'):
+                binding._verify_native_owner()
+
+    def test_substituted_public_probe_denies_before_copy_or_old_input_read(self):
+        with tempfile.TemporaryDirectory() as folder, \
+             patch.object(binding,'normalized_sha',return_value=binding.PUBLIC_PATH_SOURCE_SHA), \
+             patch.object(binding,'stable_read_bytes',return_value=b'PUBLIC_CHANGED_BINARY'):
+            with self.assertRaisesRegex(binding.BindingHold,'PUBLIC_PATH_BINARY'):
+                binding._prepare_public_path_probe(Path(folder),Path(folder))
+            self.assertEqual(list(Path(folder).iterdir()),[])
+
+    def test_public_native_path_probe_has_no_model_candidate_or_python_allowance(self):
+        directory=binding.ROOT/binding.WORK/'path_diagnostic'; binary=directory/'bin'
+        args,fs=binding._arguments(binary,directory/'input',directory/'result','path_diagnostic',0,0)
+        command=args[args.index('--')+1:]
+        self.assertEqual(command[0],str(binary/'probe.exe'))
+        self.assertEqual(command[-2:],['-f','../input/task.txt'])
+        self.assertNotIn(str(binding.PYTHON.parent),fs)
+        self.assertNotIn(str(binding.PYTHON),args)
+        self.assertTrue(all('model.gguf' not in name and 'native-private-once-v1/bin' not in name for name in fs))
+        self.assertEqual(fs[binding.RETIRED_PUBLIC_INPUT.as_posix()],'read')
+        self.assertEqual(fs[':root'],'deny')
 
     def test_changed_loaded_binding_is_rejected(self):
         with patch.object(binding,'normalized_sha',return_value='0'*64):

@@ -1,0 +1,55 @@
+{
+  "affected_log_sha256": "605267927977f56aa87b119aa861461ca1c27f69641a095a835d319208750d1e",
+  "affected_tests": "141/141 PASS; 0 SKIP/FAIL/ERROR",
+  "binding_sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab",
+  "decision": "PASS_SIGNING_READINESS",
+  "files": {
+    "ash/g6_native_binding.py": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65",
+    "docs/nexus-g6-prompt-path-root-cause-and-repair-v1.md": "22e388484c9797358f2b778cdc8689f19b746da46850ff48be04f097c9ad59b4",
+    "research/nexus-g6-fixed-native-public-qualification-v2.json": "dec608d87b1c62bc90d6557b4df206d0a0bca239abfda34d5705a191217cc0c9",
+    "research/nexus-g6-native-public-fixture-v1.py": "2ab493e191d059d0062174b519268be8682f9d49e711b366bcb12d34d0e39132",
+    "research/nexus-g6-prompt-path-root-cause-v1.json": "c7702083c9d65174f6cd0a6dd18db5dd9fe9a2138a678733fa96eb1e6283f9cf",
+    "research/nexus-g6-public-path-probe-v1.cpp": "ac7d76123bbf359caa97c599d7ccb4c5a3995513a3d5443f21501cae748bd5a3",
+    "scripts/qualify_g6_native_binding.py": "6086bc72838124995ee66b4885fed1c089c896af3864fcaf32b2d23b5bacfe38",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g6_native_binding.py": "7c466947e769b0ea75754d39b781c18012e216c97c2084483844fd0b0e8e5ddb"
+  },
+  "focused_tests": "36/36 PASS",
+  "g2_g3_g4_changed": false,
+  "limits": [
+    "Public surrogate/source evidence is not successful vendor parser/model execution.",
+    "Fresh authenticated exact-subject signature is required before one native PUBLIC attempt.",
+    "Retire on success, failure, cancel or unknown; no automatic retry.",
+    "No private usefulness, registration, release authority or G6 completion.",
+    "Existing periodic CPU and bounded wall cleanup semantics remain unchanged."
+  ],
+  "n01_resumed": false,
+  "public_composition": "14/14 PASS_PUBLIC_COMPOSITION_ONLY; 24/24 path checks",
+  "public_qualification_normalized_sha256": "dec608d87b1c62bc90d6557b4df206d0a0bca239abfda34d5705a191217cc0c9",
+  "public_qualification_raw_sha256": "25ab53e0ae028838bd098d54bb878fcf3b6758c50e21645664635d6963c0b051",
+  "real_admission": "NO",
+  "remaining_material_findings": [],
+  "resolved_documentary_finding": "Pinned vendor source line ranges corrected against exact retained raw source; no execution bytes changed.",
+  "retired_attempt_files_independently_unchanged": 14,
+  "reviewed_properties": [
+    "Original wide read succeeds while UTF8 narrow ifstream fails ENOENT at ACP1252.",
+    "Repaired ASCII -f filename resolves from pinned CWD to same exact held input; no parent-directory permission.",
+    "MXC/Job/strict stdio/limits/local collection/network/export restrictions remain intact.",
+    "Fresh v2 subject, packet, review and exclusive reservation prevent retired decision/path reuse."
+  ],
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_actions": {
+    "authentication_calls": 0,
+    "authority_issued": false,
+    "candidate_executions": 0,
+    "files_modified": false,
+    "model_loads": 0,
+    "tests_executed": 0
+  },
+  "reviewer_role": "independent_read_only_subagent_not_implementer",
+  "schema": "nexus.g6.fixed-native-independent-review.v2",
+  "scope": "Prepare one NEW exact-subject signing package for a fixed PUBLIC-prompt native qualification only; no execution authority.",
+  "scope_digest_definition": "Sorted compact ASCII JSON mapping ten relative paths to LF-normalized SHA256 values.",
+  "scope_sha256": "0bec18ac78d38601b02e72639a63825aaef4bb8b7c30c3c7ab9799485d56ad78"
+}

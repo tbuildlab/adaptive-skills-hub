@@ -1,0 +1,23 @@
+{
+  "binding_sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab",
+  "elapsed_seconds": 285.234,
+  "error": 0,
+  "fail": 0,
+  "full_repository_regression": "NOT_RUN_THIS_BOUNDED_PATH_REPAIR",
+  "log_path": "output/g6-path-repair-regression-v2/affected.log",
+  "log_sha256": "605267927977f56aa87b119aa861461ca1c27f69641a095a835d319208750d1e",
+  "modules": [
+    "tests.test_core",
+    "tests.test_core_host_loop",
+    "tests.test_core_profiles",
+    "tests.test_g3_signed_local_approval",
+    "tests.test_g6_contracts",
+    "tests.test_g6_local_model_intake",
+    "tests.test_g6_native_binding"
+  ],
+  "pass": 141,
+  "schema": "nexus.g6.prompt-path-affected-regression.v1",
+  "scope": "Core/Host loop/profiles, synthetic original G3 issuer/approval regression, G6 contracts/intake/native binding; no N01 runtime or live cloud operation.",
+  "skip": 0,
+  "total": 141
+}

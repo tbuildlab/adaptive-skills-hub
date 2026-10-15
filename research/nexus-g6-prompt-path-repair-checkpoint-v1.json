@@ -1,0 +1,101 @@
+{
+  "baseline_head": "870e9621050b0dfa082d6378e1a79db22c7237c3",
+  "binding_sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab",
+  "candidate_executions_this_task": 0,
+  "capability_registration": false,
+  "changed_prior_manifest_paths": [
+    "ash/g6_native_binding.py",
+    "scripts/qualify_g6_native_binding.py",
+    "tests/test_g6_native_binding.py"
+  ],
+  "core_python_hook_changed": false,
+  "current_source_regression": {
+    "affected": {
+      "binding_sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab",
+      "elapsed_seconds": 285.234,
+      "error": 0,
+      "fail": 0,
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding"
+      ],
+      "pass": 141,
+      "skip": 0,
+      "total": 141
+    },
+    "focused": {
+      "binding_sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab",
+      "error": 0,
+      "fail": 0,
+      "pass": 36,
+      "skip": 0,
+      "total": 36
+    },
+    "full_repository": "NOT_RUN_THIS_BOUNDED_PATH_REPAIR",
+    "public_composition": {
+      "lf_record_sha256": "dec608d87b1c62bc90d6557b4df206d0a0bca239abfda34d5705a191217cc0c9",
+      "pass": 14,
+      "path_checks": 24,
+      "total": 14
+    }
+  },
+  "g2_g3_g4_changed": false,
+  "historical_first_passes": [
+    "Real native v1 QUARANTINE / RETIRED unchanged (14 files).",
+    "Public v20 partial CWD-restore failure retained; not PASS.",
+    "Public v21 C++ invalid-handle exception retained; 13/14, not PASS.",
+    "Intermediate affected139PASS retained separately, superseded for current bytes by141PASS."
+  ],
+  "independent_review": {
+    "decision": "PASS_SIGNING_READINESS",
+    "record_sha256": "5d6a7f50bfa5a55d286d63283e5945dc9ba3445066d8523a169e9d9841c131db",
+    "reviewer": "/root/g6_binding_independent_review",
+    "scope_sha256": "0bec18ac78d38601b02e72639a63825aaef4bb8b7c30c3c7ab9799485d56ad78"
+  },
+  "manifest_entries": 820,
+  "minimal_fix": "ASCII ../input/task.txt from fixed bin CWD, canonical equality to held exact input; no ACL expansion",
+  "model_loads_this_task": 0,
+  "n01_resumed": false,
+  "native_v2_reservation_created": false,
+  "new_cloud_resources": 0,
+  "new_paid_services": 0,
+  "next_action": "Owner personally signs exact v2 payload; verification-only must pass before one fixed PUBLIC native attempt. All terminal states retire; no automatic retry.",
+  "owner_packet": {
+    "approval": "NOT_OBTAINED",
+    "canonical_payload_sha256": "a0c3d94b47197837a8ad6e1ab4f6b207707d19c081ca096cb17f1da8632382de",
+    "native_v2_reserved": false,
+    "real_admission": "NO",
+    "review_sha256": "5d6a7f50bfa5a55d286d63283e5945dc9ba3445066d8523a169e9d9841c131db",
+    "signature_created_by_implementer": false,
+    "subject_id": "nexus.g3.subject.v1:d0c2519768cfb709b385c2ce4152a117198bf00766482cc843648061f02cc694",
+    "window": "2026-10-15 10:54 to 2026-10-16 10:54 Asia/Kuala_Lumpur, end excluded"
+  },
+  "owner_packet_independent_coherence": {
+    "decision": "PASS",
+    "native_reservation_absent_at_review": true,
+    "reviewer": "/root/g6_binding_independent_review",
+    "scope": "Exact unsigned v2 canonical bytes/subject/review/fixed window/owner_intent copies; no auth or dispatch.",
+    "signature_absent_at_review": true
+  },
+  "owner_signature": "NOT_OBTAINED",
+  "prior_manifest_entries_unchanged": 808,
+  "private_input_processing": false,
+  "production_release": false,
+  "real_admission": "NO",
+  "root_cause": "UTF8 absolute -f filename consumed by narrow ifstream at Windows ACP1252",
+  "schema": "nexus.g6.public-prompt-path-repair-checkpoint.v1",
+  "source_package": {
+    "members": 270,
+    "path": "D:\\chatgpt\\\u5b89\u88c5skills\\output\\g6-public-prompt-path-repair-checkpoint-v1\\source-final.zip",
+    "reproduced": true,
+    "scope": "Unchanged repository portable-source allowlist; research evidence/native artifacts are not portable install members.",
+    "sha256": "eea9f5a9624f808174fafd7648b6cf1c70365bf09fcedae0bd1dbf9a520db1f3"
+  },
+  "status": "PUBLIC_PATH_REPAIR_QUALIFIED_SIGNING_READY_NATIVE_NOT_RUN",
+  "value_experiment": false
+}

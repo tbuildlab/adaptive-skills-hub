@@ -61,8 +61,8 @@ def controller_failure():
 
 def main():
     results={}
-    expected_verified={'success','io','memory','processes'}
-    cases=['success','io','overflow','stderr_overflow','nonzero','partial','timeout','cancel','cpu','memory','processes','late_output']
+    expected_verified={'success','io','memory','processes','path_diagnostic'}
+    cases=['success','io','overflow','stderr_overflow','nonzero','partial','timeout','cancel','cpu','memory','processes','late_output','path_diagnostic']
     for case in cases:
         try:
             result=binding.public_attempt(case)
@@ -72,6 +72,8 @@ def main():
             if case=='timeout': passed=passed and result['reason']=='TIMEOUT' and result.get('public_tree_ready') is True
             if case=='cancel': passed=passed and result['reason']=='CANCELLED' and result.get('public_tree_ready') is True
             if case=='cpu': passed=passed and result['user_cpu_100ns']>=10000000 and result['returncode']!=0
+            if case=='path_diagnostic':
+                passed=passed and all(result.get('public_path_checks',{}).get(n) is True for n in binding.PUBLIC_PATH_CHECKS)
             if case=='late_output':
                 raw=(ROOT/binding.WORK/case/'result/stdout.bin').read_bytes()
                 observed=raw.startswith(b'{"status":"PUBLIC_FIXTURE_COMPLETE"}\n') and b'PUBLIC_LATE\n' in raw
@@ -94,6 +96,8 @@ def main():
             'binding_sha256':binding.normalized_sha(ROOT/'ash/g6_native_binding.py'),
             'fixture_sha256':binding.normalized_sha(binding.FIXTURE),
             'harness_sha256':binding.normalized_sha(Path(__file__)),
+            'path_probe_source_sha256':binding.normalized_sha(binding.PUBLIC_PATH_SOURCE),
+            'path_probe_binary_sha256':binding.PUBLIC_PATH_PROBE_SHA,
             'candidate_executed':False,'model_loaded':False,'private_input_processed':False,
             'signing_package_created':False,'real_admission':'NO'}
     target=ROOT/binding.WORK/'qualification.json'

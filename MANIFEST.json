@@ -260,8 +260,8 @@
     "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
   },
   "ash/g6_native_binding.py": {
-    "bytes": 34966,
-    "sha256": "5eab2c5951d1c8b68b6f713318c82423263a9049da72c5d25657a80f53462bf0"
+    "bytes": 39574,
+    "sha256": "36e8ae911d7e63eeb9bb301c433a2213dce22b27a74e19a08c3715dc843331ab"
   },
   "ash/managed_cli.py": {
     "bytes": 2781,
@@ -1619,6 +1619,10 @@
     "bytes": 4521,
     "sha256": "ae93c1b39331b64e8a58a2fcd6bc1216e6b98312ff951dda746e5254016c228c"
   },
+  "docs/nexus-g6-fixed-native-owner-signing-v2.md": {
+    "bytes": 5331,
+    "sha256": "9387f95fdbd3be5337a5e0c82956347ecae56217f4752de884d041538bd0403e"
+  },
   "docs/nexus-g6-intake-successor-checkpoint-v1.md": {
     "bytes": 6155,
     "sha256": "b80089c4a3182155981fc2196736d0b19b43728b7b4348c28461b3b3dde7fc1e"
@@ -1638,6 +1642,10 @@
   "docs/nexus-g6-preparation-checkpoint-v1.md": {
     "bytes": 7201,
     "sha256": "0735f28fd2fcf548c14d9ddf2cd8e06a26ace2b35be9d05c113aa2d4c4a8f4f1"
+  },
+  "docs/nexus-g6-prompt-path-root-cause-and-repair-v1.md": {
+    "bytes": 5615,
+    "sha256": "22e388484c9797358f2b778cdc8689f19b746da46850ff48be04f097c9ad59b4"
   },
   "docs/nexus-g6-scope-and-reuse-v1.md": {
     "bytes": 9123,
@@ -2383,6 +2391,10 @@
     "bytes": 3143,
     "sha256": "2c9a983aa8c07f74d233142c2ed37a72ee682de4c50aec9bb768c961dee0e2ca"
   },
+  "research/nexus-g6-fixed-native-independent-review-v2.json": {
+    "bytes": 3718,
+    "sha256": "5d6a7f50bfa5a55d286d63283e5945dc9ba3445066d8523a169e9d9841c131db"
+  },
   "research/nexus-g6-fixed-native-once-result-v1.json": {
     "bytes": 6032,
     "sha256": "21ac7b18b3216b751c2729212433bae4126133298550635419d6805321ade634"
@@ -2390,6 +2402,10 @@
   "research/nexus-g6-fixed-native-public-qualification-v1.json": {
     "bytes": 39594,
     "sha256": "bb1f86fa74447837d4987c377b3a17874620584c545e0e2e35095b23d7d5357f"
+  },
+  "research/nexus-g6-fixed-native-public-qualification-v2.json": {
+    "bytes": 45257,
+    "sha256": "dec608d87b1c62bc90d6557b4df206d0a0bca239abfda34d5705a191217cc0c9"
   },
   "research/nexus-g6-intake-successor-qualification-v1.json": {
     "bytes": 41063,
@@ -2415,6 +2431,10 @@
     "bytes": 6199,
     "sha256": "2c60341e61cc652acc26ff4697ecd1ed4ebe0c693901f51bdd03f2fb67579a9a"
   },
+  "research/nexus-g6-native-owner-decision-v2.json": {
+    "bytes": 6208,
+    "sha256": "a0c3d94b47197837a8ad6e1ab4f6b207707d19c081ca096cb17f1da8632382de"
+  },
   "research/nexus-g6-native-public-fixture-v1.py": {
     "bytes": 4909,
     "sha256": "2ab493e191d059d0062174b519268be8682f9d49e711b366bcb12d34d0e39132"
@@ -2422,6 +2442,22 @@
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,
     "sha256": "cf175f660e9e9bb76e3e91317d1fa91856e8d90563be101e9e5535acecf9f3d8"
+  },
+  "research/nexus-g6-prompt-path-affected-regression-v1.json": {
+    "bytes": 891,
+    "sha256": "7534692cef6bfe7605a98e893f57ef30259b284c46f12bea1bc9d601351ad748"
+  },
+  "research/nexus-g6-prompt-path-repair-checkpoint-v1.json": {
+    "bytes": 4303,
+    "sha256": "e398aa1946ab21370c5dc698476b2efc1bf31bb194138d71e093471954a9a823"
+  },
+  "research/nexus-g6-prompt-path-root-cause-v1.json": {
+    "bytes": 6609,
+    "sha256": "c7702083c9d65174f6cd0a6dd18db5dd9fe9a2138a678733fa96eb1e6283f9cf"
+  },
+  "research/nexus-g6-public-path-probe-v1.cpp": {
+    "bytes": 6132,
+    "sha256": "ac7d76123bbf359caa97c599d7ccb4c5a3995513a3d5443f21501cae748bd5a3"
   },
   "research/nexus-n01-cached-retained-schema-analysis-v1.json": {
     "bytes": 30286,
@@ -2796,8 +2832,8 @@
     "sha256": "8008a76ddaf0c593b5eed963a655dc64512ec284cac89066b8089b6f9b37917f"
   },
   "scripts/qualify_g6_native_binding.py": {
-    "bytes": 6492,
-    "sha256": "fff39eac1dd8ed43ff037e8521e22db5a0545da4f4e430c91df145abf2cf63d3"
+    "bytes": 6855,
+    "sha256": "6086bc72838124995ee66b4885fed1c089c896af3864fcaf32b2d23b5bacfe38"
   },
   "scripts/rebase_release.py": {
     "bytes": 6629,
@@ -3128,8 +3164,8 @@
     "sha256": "ddeadadf5df25e430545f945d438588c5bbe97dac43abb7f0188d1e683fded5b"
   },
   "tests/test_g6_native_binding.py": {
-    "bytes": 9355,
-    "sha256": "5fdea6702e049b46eb80b94540684f06b1ca290e9b7b33a04a69f02d14269005"
+    "bytes": 12633,
+    "sha256": "7c466947e769b0ea75754d39b781c18012e216c97c2084483844fd0b0e8e5ddb"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,

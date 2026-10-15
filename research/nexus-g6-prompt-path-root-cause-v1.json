@@ -1,0 +1,132 @@
+{
+  "baseline_head": "870e9621050b0dfa082d6378e1a79db22c7237c3",
+  "candidate_executions_this_task": 0,
+  "first_passes": {
+    "v20": "Partial public path result; expected positive comparisons recorded, then CWD restore failed (exit 12). Original raw output/source retained; not PASS.",
+    "v21": "13/14 public suite; native C++ fixture raised STATUS_INVALID_HANDLE during excluded sentinel inspection. Raw bytes/source retained; not PASS.",
+    "v22": "14/14 public suite after finite probe handles only the documented invalid-handle exception; all 24 path checks PASS. No native candidate run."
+  },
+  "g2_g3_g4_changed": false,
+  "minimal_fix": {
+    "canonical_input_binding_checked_before_launch": true,
+    "directory_read_expansion": false,
+    "literal_prompt_alternative": "Vendor -p assigns the literal prompt but is not selected; relative filename preserves the existing held-file delivery contract and post-read LF semantics.",
+    "new_argument_shape": "-f ../input/task.txt",
+    "old_argument_shape": "-f <UTF-8 absolute input/task.txt>",
+    "pinned_cwd": "bin",
+    "prompt_file_bytes": "UNCHANGED",
+    "prompt_file_exact_read_allowance": "UNCHANGED_RELATIVE_TO_FRESH_ATTEMPT"
+  },
+  "model_loads_this_task": 0,
+  "n01_resumed": false,
+  "new_native_attempt_created": false,
+  "old_owner_decision_reused": false,
+  "original_failure": {
+    "all_original_file_sha256": {
+      "bin/LICENSE-LLVM-OpenMP": "fdad1758a9e1f9d5a81e18879b3406772115edc92c24bfa36b70c654f325e8e4",
+      "bin/ggml-base.dll": "1c23fd2ad42c74f89ccdd5a8d44b9ec4874d45b94c053a146d394c99ee741122",
+      "bin/ggml-cpu-x64.dll": "1312d4e5ce7dabeef7b13754a205837b005f64d3decac365f1752204d6c36e54",
+      "bin/ggml.dll": "57e644ee4760875715e710fc3b124b926cbcfacdbe1835f4cb91230a30c7b5ba",
+      "bin/libomp.dll": "a12116ba72d1d6820407cf30be23da04ce79d6bb8a71a5ee71759c5a1faa6f1c",
+      "bin/llama-common.dll": "9ccffac45285ac720d5d13dfb2227b9f3cbec808f469c3136dc1461359b11b5e",
+      "bin/llama-completion-impl.dll": "e975b9ab242b371c6f32953fe520745637b592b7048fabaa91386e9d5705f88b",
+      "bin/llama-completion.exe": "3683e8763d7ace0fea04798ab917befec696073e4a1b589ab9e950bae91142c8",
+      "bin/llama.dll": "58967aa7ea27ef05a135305590c36a8cbc01362a01c4af2063a57cddf7c086ec",
+      "disposition.json": "4faf6db8803665af8a3dcd96c26337606d94538dfc14084f89d4312e858f155b",
+      "input/task.txt": "4a3c1b45d8fd7716490ce0204e038ab93818d517adfa9da46716ff06a4e0cd75",
+      "result/sentinel": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "result/stderr.bin": "386d7baca5dcf75a4997e4b61184e784b5f27a63d52b72eef0da1377ade6385f",
+      "result/stdout.bin": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "argument": "-f / --file",
+    "disposition_sha256": "4faf6db8803665af8a3dcd96c26337606d94538dfc14084f89d4312e858f155b",
+    "path_characters": 102,
+    "reason": "UNVERIFIED_RESULT",
+    "returncode": 1,
+    "status": "QUARANTINE_RETIRED_UNCHANGED",
+    "stderr_sha256": "386d7baca5dcf75a4997e4b61184e784b5f27a63d52b72eef0da1377ade6385f"
+  },
+  "pinned_vendor_source": {
+    "file_option_lines": [
+      1804,
+      1811
+    ],
+    "local_copy": "output/g6-public-path-source-v1/arg.cpp",
+    "read_file_lines": [
+      67,
+      74
+    ],
+    "revision": "fcac19079f3f2985fe74ed845f0880e7e9a8030a",
+    "semantics": "-f and --file share the prompt file reader; Windows argv is converted to UTF-8; narrow std::ifstream opens the filename before reading prompt content; one terminal LF is removed after read.",
+    "sha256": "449cd9be39dd477c751a8575e99b4deee737ae85a698e1c8bac7c22f28a9d151",
+    "url": "https://github.com/ggml-org/llama.cpp/blob/fcac19079f3f2985fe74ed845f0880e7e9a8030a/common/arg.cpp",
+    "windows_utf8_argv_lines": [
+      1255,
+      1290
+    ]
+  },
+  "private_inputs_processed": 0,
+  "public_path_evidence": {
+    "active_after_termination": 0,
+    "build_record": "output/g6-public-path-probe-build-v4/build.json",
+    "candidate_dll_imports": false,
+    "checks": {
+      "absolute_separator_does_not_fix_narrow": true,
+      "absolute_slash_wide_read": true,
+      "bom_is_content_not_open_failure": true,
+      "copy_absolute_utf8_narrow_denied": true,
+      "copy_absolute_wide_read": true,
+      "crlf_text_normalized": true,
+      "cwd_pinned": true,
+      "cwd_switch_absolute_wide_still_reads": true,
+      "cwd_switch_relative_denied": true,
+      "fixed_native_plan_prompt_read": true,
+      "lf_read": true,
+      "original_utf8_narrow_open_denied": true,
+      "original_wide_read": true,
+      "outside_read_denied": true,
+      "quoted_argument_roundtrip": true,
+      "relative_backslash_read": true,
+      "relative_dot_read": true,
+      "relative_slash_read": true,
+      "sentinel_excluded": true,
+      "stderr_pipe": true,
+      "stdout_pipe": true,
+      "unlisted_read_denied": true,
+      "writes_denied": true,
+      "wrong_cwd_relative_denied": true
+    },
+    "handle_allowlist_count": 3,
+    "model_read_allowance_in_probe": false,
+    "native_limits": {
+      "active_processes": 8,
+      "memory_bytes": 2147483648,
+      "retained_stdout_stderr_bytes": 65536,
+      "user_cpu_seconds": 120,
+      "wall_seconds": 180
+    },
+    "normalized_sha256": "dec608d87b1c62bc90d6557b4df206d0a0bca239abfda34d5705a191217cc0c9",
+    "original_narrow_errno": 2,
+    "probe_binary_sha256": "83391b8ecf6b9f6eda29667947b5da4f2e5378f1dc993a70297075218cc1e49b",
+    "probe_direct_pe_imports": [
+      "KERNEL32.dll"
+    ],
+    "probe_source_sha256": "ac7d76123bbf359caa97c599d7ccb4c5a3995513a3d5443f21501cae748bd5a3",
+    "python_runtime_allowance_in_probe": false,
+    "raw_sha256": "25ab53e0ae028838bd098d54bb878fcf3b6758c50e21645664635d6963c0b051",
+    "retained_normalized_copy": "research/nexus-g6-fixed-native-public-qualification-v2.json",
+    "suite": "output/g6-native-binding-public-v22/qualification.json",
+    "uses_same_guard": true,
+    "windows_acp": 1252
+  },
+  "real_admission": "NO",
+  "remaining_limits": [
+    "Public parser/path evidence is not successful model loading or inference.",
+    "Native/private completion, value experiments, capability registration and release remain unqualified.",
+    "Existing periodic CPU and bounded cleanup semantics remain unchanged."
+  ],
+  "root_cause": "UTF-8 absolute filename passed to narrow std::ifstream under Windows ACP 1252; non-ASCII directory name is interpreted using the incompatible ANSI code page.",
+  "schema": "nexus.g6.public-prompt-path-root-cause.v1",
+  "signing_packet_created_at_this_record": false,
+  "status": "ROOT_CAUSE_PROVEN_PUBLIC_ONLY"
+}
