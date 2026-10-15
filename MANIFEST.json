@@ -1619,6 +1619,10 @@
     "bytes": 3278,
     "sha256": "d8e7d5fa7b177fac7dc80d5177c00b337d916eb8778423f8151b09198db2ef77"
   },
+  "docs/nexus-g6-fixed-native-once-result-v3.md": {
+    "bytes": 4638,
+    "sha256": "dd7f85da3deffc1e98b36d15b1b55c9dac685ce5bd4a0cc4a92b09075efcf71c"
+  },
   "docs/nexus-g6-fixed-native-owner-signing-v1.md": {
     "bytes": 4521,
     "sha256": "ae93c1b39331b64e8a58a2fcd6bc1216e6b98312ff951dda746e5254016c228c"
@@ -2418,6 +2422,10 @@
   "research/nexus-g6-fixed-native-once-result-v2.json": {
     "bytes": 6087,
     "sha256": "af57e78c16274dcefb27aff9e391c03e83e38ac0a81bab2b23a03f0977819a9b"
+  },
+  "research/nexus-g6-fixed-native-once-result-v3.json": {
+    "bytes": 9928,
+    "sha256": "55d16d5055679e8d040f08340734a7a3d76f6b0a2b59a51f154f4612c70441cc"
   },
   "research/nexus-g6-fixed-native-public-qualification-v1.json": {
     "bytes": 39594,
