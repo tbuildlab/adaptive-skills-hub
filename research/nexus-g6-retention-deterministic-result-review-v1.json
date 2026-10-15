@@ -1,0 +1,26 @@
+{
+  "artifact_sha256": "193448e212fdaa74997028953881545371fb632b4f63c0aa78a6528991e23ae4",
+  "assessment": "Literal labels remain distinct. Equality of those arrays was an overstrict audit proxy, not a proven policy failure. Existing signed package explicitly permits zero inference; frozen Roadmap Section E permits deterministic-only. All physical limits, nonlocal-inference prohibition, no-frontier/no-agent/no-remote-MCP restrictions and exact task acceptance remain satisfied.",
+  "decision": "PASS_BOUNDED_COMMON_TASK_MATERIAL_SUBSTITUTION",
+  "disposition_sha256": "03702ea49f93e73d2a13f86e2e2be4f3c733535cea95f049ee5fce8ab9801893",
+  "first_audit_sha256": "d74aad1c29ad51064f2ed40b85884e36ad6b75a98e92401fc92bb2acb101662b",
+  "limits": [
+    "Fixed common retention task only; not universal substitution.",
+    "No comparative value, confidential corpus or final G6/release qualification inferred."
+  ],
+  "literal_restriction_array_equality": false,
+  "material_findings": [],
+  "observed_attempt_files_unchanged": 81,
+  "real_admission": "NO",
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_actions": {
+    "authentication": 0,
+    "edits": 0,
+    "executions": 0,
+    "raw_io_disclosed": false,
+    "replays": 0,
+    "signing": 0,
+    "tests": 0
+  },
+  "schema": "nexus.g6.deterministic-retention-independent-result-review.v1"
+}

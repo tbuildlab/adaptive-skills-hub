@@ -1703,6 +1703,10 @@
     "bytes": 8165,
     "sha256": "5833aabe77b13fd3d555eab21cc1c4e1ea359e176f616e27fd09cb4f7d03431a"
   },
+  "docs/nexus-g6-retention-deterministic-qualified-result-v1.md": {
+    "bytes": 6320,
+    "sha256": "63853ed315bdb7f514def4766829a9689c06b9b5a7da9e01f7e1776fbc5a6a7e"
+  },
   "docs/nexus-g6-scope-and-reuse-v1.md": {
     "bytes": 9123,
     "sha256": "69fab902a8cdad1e0a5c6f89fe8839aa96222d8418d7cd290b3bc29feb6cc4a6"
@@ -2619,6 +2623,14 @@
     "bytes": 2346,
     "sha256": "0fa40d0326e58c5b07f120b76b20298b11814306beb6c238887c1d776a8da643"
   },
+  "research/nexus-g6-retention-deterministic-qualified-result-v1.json": {
+    "bytes": 7029,
+    "sha256": "0da002e77694b0943a43ec04bef84bc3b0f381c000a22fbd21c48def36b30157"
+  },
+  "research/nexus-g6-retention-deterministic-qualified-result-v2.json": {
+    "bytes": 8274,
+    "sha256": "6d506e7803c50eec5b6877853777c44fc7292d69d77d64af41430db2e9b3af8f"
+  },
   "research/nexus-g6-retention-deterministic-readiness-v1.json": {
     "bytes": 4533,
     "sha256": "ae33ce95a38a8e872bc853c2072dd389861b66e082cda8def7e099da85a01241"
@@ -2626,6 +2638,10 @@
   "research/nexus-g6-retention-deterministic-readiness-v2.json": {
     "bytes": 5388,
     "sha256": "691f439004e6835ccea76bfeaa80ee01fde0820747d45083c755623bda04c428"
+  },
+  "research/nexus-g6-retention-deterministic-result-review-v1.json": {
+    "bytes": 1358,
+    "sha256": "ec7434a543ed687a60f9e37f3b49c295a2b60d19c2908e596be003fc337da6d9"
   },
   "research/nexus-g6-retention-deterministic-signing-checkpoint-v1.json": {
     "bytes": 6398,
