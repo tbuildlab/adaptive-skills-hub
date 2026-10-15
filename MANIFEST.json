@@ -1659,6 +1659,10 @@
     "bytes": 4485,
     "sha256": "ceea8e1b06692e665e8db48a4486ed3fc79e82144bdf1e466756970b5d418837"
   },
+  "docs/nexus-g6-local-retention-once-result-v2.md": {
+    "bytes": 5083,
+    "sha256": "8c510e0c62df598770273deece1f09057a68116963ff1a29fb63d8ec26e6ab6a"
+  },
   "docs/nexus-g6-local-retention-owner-signing-v1.md": {
     "bytes": 7699,
     "sha256": "525dca8ebd97e8952b7edcc3ba780e0aac37e560fdfc089959b5607ef5d6e01d"
@@ -2498,6 +2502,10 @@
   "research/nexus-g6-local-retention-once-result-v1.json": {
     "bytes": 11018,
     "sha256": "76e485dae014f8256776779d6ce3e92df1cc2791ba6283ccda43f9d89377a25d"
+  },
+  "research/nexus-g6-local-retention-once-result-v2.json": {
+    "bytes": 13236,
+    "sha256": "4068a9c29b2b278cfc711704d7c8b8858d7084ef523b3558ece64e0443c4ba57"
   },
   "research/nexus-g6-local-retention-owner-decision-v1.json": {
     "bytes": 7698,
