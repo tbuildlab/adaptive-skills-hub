@@ -1,0 +1,68 @@
+{
+  "baseline_head": "0e9acf158eb9a16e66cc4c5f35ea03f431d01b61",
+  "candidate_executions_added": 0,
+  "current_binding_sha256": "873c3efd3e642f33b8ade7687c636d31864fe11e3b11c12f04c67033d299feab",
+  "current_local_binding_sha256": "65439ebda8bce6efef495e21b88e8d1e70b88b7398368f6884163229ec127140",
+  "first_pass": {
+    "affected_intermediate": "160PASS",
+    "focused_after_parser_mock_repair": "55PASS",
+    "readback_export": "Wrapper string-vs-dict disposition mistake corrected without rerunning execution or changing outcomes",
+    "reconciliation_correction": "New public fixture cases now reconcile their own path; final new preservation test brings current56/161 counts",
+    "unit_first": "45PASS_9ERROR; wrong authority-document parser for observation elapsed floats, plus new test root fixtures",
+    "unit_second": "53PASS_1FAIL; mock intercepted source-hash observation, not production bypass"
+  },
+  "full_repository": "NOT_RUN_THIS_PREPARATION; final sweep remains after real G6 qualifications and review",
+  "historical_native_files_unchanged": 42,
+  "model_loads_added": 0,
+  "new_cloud_resources": 0,
+  "new_issuer_readback": {
+    "authority_issued": false,
+    "github_login": "TDY0225",
+    "github_user_id": 223441940,
+    "identity_and_key_membership_verified": true,
+    "key_fingerprint": "SHA256:5FV4/OvvMPzivK/4YIolW2kPQBGoik/llHbviTDpf98",
+    "observed_at_epoch": 1792048387,
+    "only_public_key_read": true,
+    "signing_key_id": 1242636
+  },
+  "new_native_reservation_absent": true,
+  "new_paid_services": 0,
+  "new_signing_packet_absent": true,
+  "private_inputs_processed": false,
+  "public_shared_pass": 18,
+  "public_transport_pass": 4,
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "binding_sha256": "873c3efd3e642f33b8ade7687c636d31864fe11e3b11c12f04c67033d299feab",
+      "elapsed_seconds": 111.437,
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "a1641c331545da144f05804013c5916ed3799a38872a05fe9618c30507f091d2",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion"
+      ],
+      "pass": 161,
+      "skip": 0,
+      "total": 161
+    },
+    "focused": {
+      "binding_sha256": "873c3efd3e642f33b8ade7687c636d31864fe11e3b11c12f04c67033d299feab",
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "bc12388361162d7f3fdb0e7b425895bae91ea04b2fc999ff12e24dc3f1a46ed2",
+      "pass": 56,
+      "skip": 0,
+      "total": 56
+    }
+  },
+  "regression_counts_overlap": true,
+  "schema": "nexus.g6.local-retention-readiness-regression.v1"
+}

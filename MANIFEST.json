@@ -260,8 +260,12 @@
     "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
   },
   "ash/g6_native_binding.py": {
-    "bytes": 42005,
-    "sha256": "38d9840c7f46bb1ece95a26efd81e02d89533d9e33b41d8c12a39dc71afa3c50"
+    "bytes": 44212,
+    "sha256": "873c3efd3e642f33b8ade7687c636d31864fe11e3b11c12f04c67033d299feab"
+  },
+  "ash/g6_private_completion.py": {
+    "bytes": 9426,
+    "sha256": "65439ebda8bce6efef495e21b88e8d1e70b88b7398368f6884163229ec127140"
   },
   "ash/managed_cli.py": {
     "bytes": 2781,
@@ -1647,6 +1651,14 @@
     "bytes": 7526,
     "sha256": "472ba81fba30b0f0757f11590a4db3b0ae2f4d259bb0369b64c5d9e03963c6e0"
   },
+  "docs/nexus-g6-local-retention-binding-v1.md": {
+    "bytes": 7289,
+    "sha256": "afad3ba7f558dcaafedc48200925e2a8bfe21083aff3887e4e607c19c1f93351"
+  },
+  "docs/nexus-g6-local-retention-owner-signing-v1.md": {
+    "bytes": 7699,
+    "sha256": "525dca8ebd97e8952b7edcc3ba780e0aac37e560fdfc089959b5607ef5d6e01d"
+  },
   "docs/nexus-g6-native-execution-readiness-hold-v1.md": {
     "bytes": 10135,
     "sha256": "fa6519b1752bb41a121de198581dec1b92e7d490603d7c9f78df3ccdb31b209b"
@@ -2459,6 +2471,30 @@
     "bytes": 3523,
     "sha256": "2cd5dbfa12dccafc693999960a7e7fb70ca4d1638479af1664a7ee715e3b6af3"
   },
+  "research/nexus-g6-local-retention-independent-review-v1.json": {
+    "bytes": 4660,
+    "sha256": "378dcd458109c114041f3496386210523361f0d1f9d8dfb14a11e0fe40aa0ba2"
+  },
+  "research/nexus-g6-local-retention-owner-decision-v1.json": {
+    "bytes": 7698,
+    "sha256": "0635da1837e8793f314080cbdc803fa78556be2a93a78a3d64ae68d239a9f9f5"
+  },
+  "research/nexus-g6-local-retention-public-evidence-v1.json": {
+    "bytes": 4962,
+    "sha256": "175c60cde9908c80d46d8845fbc02faf725ef1fdfcf06b5540f6ec9eadb97daf"
+  },
+  "research/nexus-g6-local-retention-public-evidence-v2.json": {
+    "bytes": 5291,
+    "sha256": "32a6573051255e29471b30af1e535fb41931600d7ed2a1b6084dd9b3e5810a56"
+  },
+  "research/nexus-g6-local-retention-readiness-regression-v1.json": {
+    "bytes": 2782,
+    "sha256": "32735d08a5c311ce78f99ec264bac54b9a911bffab52e9560e815fddbfc9f464"
+  },
+  "research/nexus-g6-local-retention-signing-checkpoint-v1.json": {
+    "bytes": 4766,
+    "sha256": "230e8bd9653a7a00ba585e43458e3ed17899ce33d8aea6b62df4c790adac1869"
+  },
   "research/nexus-g6-local-runtime-survey-v1.json": {
     "bytes": 3622,
     "sha256": "b00271673d4ec0870bf272d9998e4bc9aca83373147908dbdc4c96da346843c3"
@@ -2488,8 +2524,8 @@
     "sha256": "a7005b01610488df177fd74109685e66375cfdf0963d4f6e4ecba794a01e1fe3"
   },
   "research/nexus-g6-native-public-fixture-v1.py": {
-    "bytes": 5336,
-    "sha256": "52ce5750dee7bb156585036975379275dcde51a5e0c57a970762a8fd5df17a90"
+    "bytes": 6123,
+    "sha256": "b4539ae98bfdd887a18d325cb4c38ad50a46530d56791b04b3d9615a8b848e51"
   },
   "research/nexus-g6-preparation-inventory-v1.json": {
     "bytes": 8301,
@@ -2887,6 +2923,10 @@
     "bytes": 7114,
     "sha256": "64ed22955e71bf4e32d7d4b7ce89bf9fb6282570bb6ceb2316f565682d8bd5e2"
   },
+  "scripts/qualify_g6_private_completion.py": {
+    "bytes": 1998,
+    "sha256": "fb067d59636ebc8e06504190286ec9db15806274a7cc1884fd3a38d51699acdc"
+  },
   "scripts/rebase_release.py": {
     "bytes": 6629,
     "sha256": "5fd060a7e1d0ffcbe84a72e088725b1ec2aaebd2681cfe8b071cd6524152aa24"
@@ -3218,6 +3258,10 @@
   "tests/test_g6_native_binding.py": {
     "bytes": 17074,
     "sha256": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5"
+  },
+  "tests/test_g6_private_completion.py": {
+    "bytes": 10393,
+    "sha256": "6b42ce59c4bb5fc925c8a207cd2e32c937fdcea9849690bb6ba497caa50e000c"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,

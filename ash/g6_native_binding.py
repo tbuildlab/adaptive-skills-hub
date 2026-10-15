@@ -38,8 +38,10 @@ PUBLIC_CASES = frozenset({'success', 'io', 'overflow', 'stderr_overflow', 'nonze
                           'controller_failure', 'late_output', 'path_diagnostic',
                           'native_marker', 'native_marker_noise', 'native_marker_missing', 'native_marker_eog'})
 PUBLIC_MARKER_CASES=frozenset({'native_marker','native_marker_noise','native_marker_missing','native_marker_eog'})
+PRIVATE_PUBLIC_CASES=frozenset({'retention_report','retention_noise','retention_wrong','retention_missing'})
+PUBLIC_CASES=PUBLIC_CASES|PRIVATE_PUBLIC_CASES
 FIXTURE = ROOT / 'research/nexus-g6-native-public-fixture-v1.py'
-WORK = 'output/g6-native-binding-public-v24'
+WORK = 'output/g6-native-binding-public-v26'
 NATIVE_WORK = 'output/g6-native-public-once-v3'
 OWNER_PACKET = 'output/g6-native-owner-signing-v3/decision.json'
 OWNER_REVIEW = 'research/nexus-g6-fixed-native-independent-review-v3.json'
@@ -93,8 +95,12 @@ def _source_gate():
     require(normalized_sha(Path(__file__))==_LOADED_BINDING_SHA,'LOADED_BINDING_REVISION_CHANGED')
 
 
-def native_plan():
+def native_plan(role='native'):
     """Pinned inert plan only. Creating this data does not extract or dispatch."""
+    require(role in ('native','private'),'CLOSED_NATIVE_ROLE')
+    if role=='private':
+        from . import g6_private_completion as private
+        return private.native_plan()
     policy = load_policy()
     members = [m for m in policy['runtime']['members'] if m['path'] in NATIVE]
     require(len(members) == 8, 'NATIVE_SET')
@@ -143,11 +149,11 @@ def _environment(result):
 
 def _arguments(binary, data, result, case, sentinel, port, *, role='public'):
     # Public Python runtime allowance is explicit and never part of native_plan.
-    require(role in ('public','native'),'CLOSED_ROLE')
+    require(role in ('public','native','private'),'CLOSED_ROLE')
     fs = {':root': 'deny', 'C:/Windows/System32': 'read', PYTHON.parent.as_posix(): 'read',
           binary.as_posix(): 'read', (data/'public.txt').as_posix(): 'read'}
-    if role=='native':
-        plan=native_plan(); fs=plan['filesystem']
+    if role!='public':
+        plan=native_plan(role); fs=plan['filesystem']
         require(str(binary)==plan['cwd'],'NATIVE_CWD')
         require((binary/plan['candidate_arguments'][3]).resolve()==Path(plan['input']).resolve(),
                 'NATIVE_PROMPT_PATH_BINDING')
@@ -210,23 +216,28 @@ def owner_intent():
             'capability_registration':False,'real_admission':'NO'}
 
 
-def _verify_native_owner():
+def _verify_native_owner(role='native'):
     """Thin application of existing GitHub-bound OpenSSH issuer; no new issuer."""
     from scripts import verify_g3_owner_signature as issuer
     from . import g3_grant_codec as codec
     import tempfile
-    path=ROOT/OWNER_PACKET
+    require(role in ('native','private'),'CLOSED_NATIVE_ROLE')
+    if role=='private':
+        from . import g6_private_completion as private
+        packet,review_path,expected=private.PACKET,private.REVIEW,private.owner_intent()
+    else:
+        packet,review_path,expected=OWNER_PACKET,OWNER_REVIEW,owner_intent()
+    path=ROOT/packet
     raw=stable_read_bytes(path,maximum_bytes=65536)
     body=codec.parse_input(raw)
     require(isinstance(body,dict),'OWNER_BODY')
-    expected=owner_intent()
     require(set(body)==set(expected)|{'effective_at','expires_at','review_sha256'},'OWNER_SHAPE')
     require(all(body[n]==v for n,v in expected.items()),'OWNER_EXACT_SUBJECT')
     now=time.time()
     require(type(body['effective_at']) is int and type(body['expires_at']) is int
             and body['effective_at']<=now<body['expires_at']
             and 0<body['expires_at']-body['effective_at']<=86400,'OWNER_WINDOW')
-    review=stable_read_bytes(ROOT/OWNER_REVIEW,maximum_bytes=65536)
+    review=stable_read_bytes(ROOT/review_path,maximum_bytes=65536)
     require(hashlib.sha256(review.replace(b'\r\n',b'\n')).hexdigest()==body['review_sha256'],'OWNER_REVIEW')
     reviewed=codec.parse_input(review)
     require(reviewed.get('decision')=='PASS_SIGNING_READINESS'
@@ -258,10 +269,10 @@ def _native_resume_gate(proof,observed):
             'OWNER_EXPIRED_OR_STALE_BEFORE_RESUME')
 
 
-def _prepare_native(binary,data):
+def _prepare_native(binary,data,role='native'):
     """Only after fresh signature AND exclusive reservation; never called by fixtures."""
     from . import g6_local_model_intake as intake
-    plan=native_plan(); policy=intake.load_policy()
+    plan=native_plan(role); policy=intake.load_policy()
     archive=ROOT/'output/g6-final/llama-b11609-bin-win-cpu-x64.zip'
     model=Path(plan['model_blob'])
     intake.inspect_quarantined(archive,model)
@@ -274,7 +285,12 @@ def _prepare_native(binary,data):
             with (binary/member['path']).open('xb') as out: out.write(content)
         with (binary/'LICENSE-LLVM-OpenMP').open('xb') as out: out.write(source.read('LICENSE-LLVM-OpenMP'))
     require({p.name for p in binary.iterdir()}==NATIVE|{'LICENSE-LLVM-OpenMP'},'NATIVE_LOADER_INVENTORY')
-    with (data/'task.txt').open('xb') as out: out.write(NATIVE_PROMPT)
+    if role=='private':
+        from . import g6_private_completion as private
+        content=private.prompt()
+    else: content=NATIVE_PROMPT
+    require(hashlib.sha256(content).hexdigest()==plan['input_sha256'],'PREPARED_PROMPT_IDENTITY')
+    with (data/'task.txt').open('xb') as out: out.write(content)
 
 
 def public_attempt(case):
@@ -430,15 +446,23 @@ def _record_binding_failure(state,error,winerror):
 
 def _fixed_attempt(role,case):
     """Two closed roles consume one guard; neither accepts caller commands."""
-    require(role in ('public','native'),'CLOSED_ROLE')
+    require(role in ('public','native','private'),'CLOSED_ROLE')
     require(case in PUBLIC_CASES if role=='public' else case=='qualification','PUBLIC_CASE')
     _source_gate()
+    if role=='private':
+        from . import g6_private_completion as private
+        private.source_gate()
     require(os.name == 'nt', 'WINDOWS_REQUIRED')
-    if role=='native': _verify_native_owner()  # Before any materialization/reservation.
+    if role!='public': _verify_native_owner(role)  # Before materialization/reservation.
     import _winapi
     import msvcrt
     c, w, k, Extended, Accounting = _windows()
-    name=WORK+'/'+case if role=='public' else NATIVE_WORK
+    if role=='public':
+        if case in PRIVATE_PUBLIC_CASES:
+            from . import g6_private_completion as private
+            name=private.PUBLIC_WORK+'/'+case
+        else: name=WORK+'/'+case
+    else: name=NATIVE_WORK if role=='native' else private.WORK
     parent = safe_path(ROOT, Path(name).parent.as_posix()); parent.mkdir(parents=True, exist_ok=True)
     directory = safe_path(ROOT,name)
     try:
@@ -464,16 +488,19 @@ def _fixed_attempt(role,case):
         (data/'unlisted-backend.dll').write_bytes(public_dll)
         state['public_dll_sha256']=hashlib.sha256(public_dll).hexdigest()
         if case=='path_diagnostic': _prepare_public_path_probe(binary,data)
+        if case in PRIVATE_PUBLIC_CASES:
+            from . import g6_private_completion as private
+            (data/'public.txt').write_bytes(private.prompt())
     else:
-        _prepare_native(binary,data)
+        _prepare_native(binary,data,role)
     job=hp=ht=None; handles=[]; collector=_Collector(result); started=time.monotonic()
     completed=False; listener=None; stop=threading.Event(); connections=[]; network_thread=None
     wall = 7.0 if case == 'timeout' else 16.0
     cpu = 1 if case == 'cpu' else 8
     memory = 384*1024**2 if case == 'memory' else 2*1024**3
     active = 8
-    if role=='native':
-        plan=native_plan(); wall=plan['limits']['wall_seconds']; cpu=plan['limits']['user_cpu_seconds']
+    if role!='public':
+        plan=native_plan(role); wall=plan['limits']['wall_seconds']; cpu=plan['limits']['user_cpu_seconds']
         memory=plan['limits']['job_memory_bytes']; active=plan['limits']['active_processes']
     elif case=='path_diagnostic':
         wall=180; cpu=120  # Same native Job bounds, with no model/candidate access.
@@ -493,10 +520,10 @@ def _fixed_attempt(role,case):
                 except socket.timeout: pass
                 except OSError: break
         if role=='public': network_thread=threading.Thread(target=serve,daemon=True); network_thread.start()
-        if role=='native':
-            verified_owner=_verify_native_owner()
+        if role!='public':
+            verified_owner=_verify_native_owner(role)
             state['authenticated_payload_sha256']=verified_owner[0]
-        eligibility_observed=verified_owner[3] if role=='native' else time.monotonic()
+        eligibility_observed=verified_owner[3] if role!='public' else time.monotonic()
         with ExitStack() as held:
             state['stage']='HELD_HOST'
             held.enter_context(_held_installed_host(diagnostics=state))
@@ -507,7 +534,7 @@ def _fixed_attempt(role,case):
                 inputs=[binary/'probe.exe',RETIRED_PUBLIC_INPUT,
                         *(data/name for name in ('public.txt','task.txt','crlf.txt','bom.txt','spaced public.txt'))]
             for path in inputs:
-                handle=held.enter_context(open_stable_input(path, maximum_bytes=33554432 if role=='native' else
+                handle=held.enter_context(open_stable_input(path, maximum_bytes=33554432 if role!='public' else
                     (1048576 if case=='path_diagnostic' else 65536)))
                 if role=='public' and case=='path_diagnostic':
                     from .g6_local_model_intake import _hash_input
@@ -517,13 +544,14 @@ def _fixed_attempt(role,case):
                     expected=({'bytes':289280,'sha256':PUBLIC_PATH_PROBE_SHA} if path.name=='probe.exe' else
                               {'bytes':len(expected_content),'sha256':hashlib.sha256(expected_content).hexdigest()})
                     _hash_input(handle,expected,0)
-                if role=='native':
+                if role!='public':
                     from .g6_local_model_intake import _hash_input
                     expected=next((m for m in load_policy()['runtime']['members'] if m['path']==path.name),None)
-                    if path.name=='task.txt': expected={'bytes':len(NATIVE_PROMPT),'sha256':hashlib.sha256(NATIVE_PROMPT).hexdigest()}
+                    if path.name=='task.txt': expected={'bytes':len(private.prompt()) if role=='private' else len(NATIVE_PROMPT),
+                                                       'sha256':plan['input_sha256']}
                     require(expected is not None,'NATIVE_INPUT_IDENTITY')
                     _hash_input(handle,expected,0)
-            if role=='native':
+            if role!='public':
                 from .g6_local_model_intake import _hash_input
                 model=held.enter_context(open_stable_input(Path(plan['model_blob']),maximum_bytes=650000000))
                 _hash_input(model,plan['model'],0)
@@ -571,13 +599,15 @@ def _fixed_attempt(role,case):
                 handle_allowlist_count=3,job_handle_inherited=False,filesystem=fs,
                 telemetry_overrides=list(TELEMETRY),environment_names=sorted(_environment(result)))
             state['stage']='PERSIST_BOUND_STATE'
-            if role=='native':
+            if role!='public':
                 state.update(candidate_execution_attempted=True,candidate_executed='UNKNOWN_NOT_SELF_CERTIFIED',
-                             model_loaded='UNKNOWN_NOT_SELF_CERTIFIED')
+                             model_loaded='UNKNOWN_NOT_SELF_CERTIFIED',
+                             input_classification=plan.get('input_classification','FIXED_PUBLIC_PROMPT'))
             _write_state(directory,state)
             state['stage']='RESUME_BOUND_LAUNCHER'
             _source_gate()
-            if role=='native': _native_resume_gate(verified_owner,eligibility_observed)
+            if role!='public': _native_resume_gate(verified_owner,eligibility_observed)
+            if role=='private': private.source_gate()
             require(k.ResumeThread(ht)!=0xffffffff,'RESUME')
             _winapi.CloseHandle(ht); ht=None
             reason=None
@@ -612,7 +642,11 @@ def _fixed_attempt(role,case):
             reason=reason or ('OUTPUT_LIMIT' if collector.overflow.is_set() else None)
             stdout=(result/'stdout.bin').read_bytes()
             parsed=None
-            if (role=='native' or case in PUBLIC_MARKER_CASES) and reason is None and code==0:
+            if (role=='private' or case in PRIVATE_PUBLIC_CASES) and reason is None and code==0:
+                from . import g6_private_completion as private
+                if private.verified_report(stdout) is None: reason='UNVERIFIED_PRIVATE_RESULT'
+                else: parsed={'status':'PUBLIC_FIXTURE_COMPLETE'}
+            elif (role=='native' or case in PUBLIC_MARKER_CASES) and reason is None and code==0:
                 if not _native_result_matches(stdout): reason='UNVERIFIED_NATIVE_RESULT'
                 else: parsed={'status':'PUBLIC_FIXTURE_COMPLETE'}
             elif reason is None and code==0:
@@ -630,7 +664,8 @@ def _fixed_attempt(role,case):
                 reason='PUBLIC_RESOURCE_CONTROL_FAILED'
             if reason is None and case=='path_diagnostic' and not all(parsed.get(n) is True for n in PUBLIC_PATH_CHECKS):
                 reason='PUBLIC_PATH_DIAGNOSTIC_FAILED'
-            state.update(status=('PUBLIC_FIXTURE_VERIFIED' if role=='public' else 'NATIVE_BOUNDED_RESULT_OBSERVED') if reason is None else 'QUARANTINE',
+            state.update(status=('PUBLIC_FIXTURE_VERIFIED' if role=='public' else
+                                 'LOCAL_RETENTION_RESULT_OBSERVED' if role=='private' else 'NATIVE_BOUNDED_RESULT_OBSERVED') if reason is None else 'QUARANTINE',
                          reason=reason or ('PUBLIC_ONLY' if role=='public' else 'NATIVE_RESULT_NOT_FINAL_G6_ACCEPTANCE'),returncode=code,job_active_after_termination=0,
                          user_cpu_100ns=account.TotalUserTime,total_processes=account.TotalProcesses,
                          retained_bytes=collector.count,elapsed_seconds=round(time.monotonic()-started,3),
@@ -675,7 +710,11 @@ def _fixed_attempt(role,case):
 def reconcile_public(case):
     """Interrupted reserved attempts remain retired; no execution/retry path."""
     require(case in PUBLIC_CASES,'PUBLIC_CASE')
-    directory=safe_path(ROOT,WORK+'/'+case)
+    work=WORK
+    if case in PRIVATE_PUBLIC_CASES:
+        from . import g6_private_completion as private
+        work=private.PUBLIC_WORK
+    directory=safe_path(ROOT,work+'/'+case)
     require(directory.is_dir(),'NO_RESERVED_ATTEMPT')
     try:
         value=json.loads(stable_read_bytes(directory/'disposition.json',maximum_bytes=32768))

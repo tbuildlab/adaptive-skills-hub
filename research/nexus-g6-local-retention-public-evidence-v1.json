@@ -1,0 +1,152 @@
+{
+  "binding_sha256": "ec3916646ceffa9a5f406fe76795dfacf84a903a43849eee32a636f78ce4f8f7",
+  "candidate_executions": 0,
+  "evidence": {
+    "shared": {
+      "case_results": {
+        "cancel": {
+          "pass": true,
+          "reason": "CANCELLED",
+          "status": "QUARANTINE"
+        },
+        "controller_failure": {
+          "pass": true,
+          "reason": null,
+          "status": "PASS_PUBLIC_CONTROLLER_FAILURE"
+        },
+        "cpu": {
+          "pass": true,
+          "reason": "UNVERIFIED_RESULT",
+          "status": "QUARANTINE"
+        },
+        "io": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "late_output": {
+          "pass": true,
+          "reason": "PARTIAL_RESULT",
+          "status": "QUARANTINE"
+        },
+        "memory": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "native_marker": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "native_marker_eog": {
+          "pass": true,
+          "reason": "UNVERIFIED_NATIVE_RESULT",
+          "status": "QUARANTINE"
+        },
+        "native_marker_missing": {
+          "pass": true,
+          "reason": "UNVERIFIED_NATIVE_RESULT",
+          "status": "QUARANTINE"
+        },
+        "native_marker_noise": {
+          "pass": true,
+          "reason": "UNVERIFIED_NATIVE_RESULT",
+          "status": "QUARANTINE"
+        },
+        "nonzero": {
+          "pass": true,
+          "reason": "UNVERIFIED_RESULT",
+          "status": "QUARANTINE"
+        },
+        "overflow": {
+          "pass": true,
+          "reason": "OUTPUT_LIMIT",
+          "status": "QUARANTINE"
+        },
+        "partial": {
+          "pass": true,
+          "reason": "PARTIAL_RESULT",
+          "status": "QUARANTINE"
+        },
+        "path_diagnostic": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "processes": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "stderr_overflow": {
+          "pass": true,
+          "reason": "OUTPUT_LIMIT",
+          "status": "QUARANTINE"
+        },
+        "success": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "timeout": {
+          "pass": true,
+          "reason": "TIMEOUT",
+          "status": "QUARANTINE"
+        }
+      },
+      "cases": 18,
+      "lf_sha256": "a7ace28eb0f227ce71567d975a471ae88bc79b5d3527b9f31316dd7eeb4913f6",
+      "pass": 18,
+      "path": "output/g6-native-binding-public-v25/qualification.json",
+      "raw_sha256": "29548dc637523c8712e09c4f42ef5ad480dd22e0a488692fd13c9df024c07af4",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    "transport": {
+      "case_results": {
+        "retention_missing": {
+          "pass": true,
+          "reason": "UNVERIFIED_PRIVATE_RESULT",
+          "status": "QUARANTINE"
+        },
+        "retention_noise": {
+          "pass": true,
+          "reason": "UNVERIFIED_PRIVATE_RESULT",
+          "status": "QUARANTINE"
+        },
+        "retention_report": {
+          "pass": true,
+          "reason": "PUBLIC_ONLY",
+          "status": "PUBLIC_FIXTURE_VERIFIED"
+        },
+        "retention_wrong": {
+          "pass": true,
+          "reason": "UNVERIFIED_PRIVATE_RESULT",
+          "status": "QUARANTINE"
+        }
+      },
+      "cases": 4,
+      "lf_sha256": "648f1fe78a93fb6bd5adf6708ceac56189afc2c7241989bab5391b65b56f03f3",
+      "pass": 4,
+      "path": "output/g6-local-retention-public-v1/qualification.json",
+      "raw_sha256": "6c0eaa10da4279ea3803117e58c3d6293aa315b086ca6fc35ab48f1257a052d3",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    }
+  },
+  "export_first_pass": "Readback-only wrapper assumed every disposition is dict; existing controller-failure closed string disagreed. Wrapper corrected; no source/fixture/outcome modified or rerun.",
+  "first_pass_failures_retained": [
+    "output/g6-local-retention-preparation-v1/focused-first.json",
+    "output/g6-local-retention-preparation-v1/focused-second.json"
+  ],
+  "limits": [
+    "No new native attempt, useful local/private completion or G6 completion is established by public fixture output.",
+    "The new input corpus consists of real existing PUBLIC project records, not Owner secrets or a synthetic replacement for their observed outcomes."
+  ],
+  "local_binding_sha256": "1d807c5fe8684ef39a85d2bb1278d2a3e265dfdff7f005c397cddeeca55cc5b4",
+  "model_loads": 0,
+  "private_inputs_processed": false,
+  "real_admission": "NO",
+  "schema": "nexus.g6.local-retention-public-evidence.v1",
+  "source_classification": "PUBLIC_PROJECT_EVIDENCE; LOCAL_ONLY_EXECUTION_POLICY",
+  "status": "PASS_PUBLIC_READINESS_ONLY"
+}

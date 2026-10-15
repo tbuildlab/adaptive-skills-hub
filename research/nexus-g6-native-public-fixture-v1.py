@@ -18,6 +18,19 @@ if case=='child':
         os.write(1,b'PUBLIC_LATE\n'); time.sleep(.1)
     raise SystemExit(0)
 result={'status':'PUBLIC_FIXTURE_COMPLETE'}
+if case in ('retention_report','retention_noise','retention_wrong','retention_missing'):
+    prompt=(root/'input/public.txt').read_bytes()
+    data=prompt.split(b'Source records: ',1)[1].split(b'\n/no_think',1)[0]
+    rows=json.loads(data)
+    lines=['attempt,outcome,action,bytes']
+    for row in rows:
+        outcome='QUARANTINE' if row['status']=='QUARANTINE' else 'PUBLIC_ONLY_PASS'
+        lines.append(f"{row['attempt']},{outcome},KEEP,{row['retained_bytes']}")
+    payload=('\n'.join(lines)+'\nEND_G6_AUDIT\n').encode('ascii')
+    if case=='retention_noise': payload=b'PUBLIC_EXTRA\n'+payload
+    elif case=='retention_wrong': payload=payload.replace(b'KEEP',b'DELETE',1)
+    elif case=='retention_missing': payload=b'END_G6_AUDIT\n'
+    os.write(1,payload); raise SystemExit(0)
 if case in ('native_marker','native_marker_noise','native_marker_missing','native_marker_eog'):
     marker=b'PUBLIC_G6_NATIVE_QUALIFICATION_COMPLETE'
     payload={'native_marker':marker+b'\n', 'native_marker_noise':b'PUBLIC_EXTRA '+marker+b' EXTRA\n',

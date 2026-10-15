@@ -1,0 +1,111 @@
+{
+  "baseline_head": "0e9acf158eb9a16e66cc4c5f35ea03f431d01b61",
+  "capability_registrations": 0,
+  "full_repository": "NOT_RUN_THIS_PREPARATION; retained historical sweep not relabeled as current final qualification",
+  "g2_g3_g4": "UNCHANGED_COMPLETED_FROZEN",
+  "g5": "DISABLED",
+  "hardware_energy_cost": "UNMEASURED",
+  "historical_native_files_unchanged": 42,
+  "independent_review": {
+    "decision": "PASS_SIGNING_READINESS",
+    "package_coherence": "PASS",
+    "remaining_material_findings": [],
+    "review_sha256": "378dcd458109c114041f3496386210523361f0d1f9d8dfb14a11e0fe40aa0ba2",
+    "reviewer": "/root/g6_binding_independent_review",
+    "scope_sha256": "7d68df2e9428525294f09464d9f3a45364627442c5eec9c0bd1ece474e2d7233"
+  },
+  "intended_scope": "One fresh fixed local-only model retention-index workflow; real PUBLIC source records, no confidential-input claim.",
+  "manifest": {
+    "boundary": "Exact tracked plus11explicit new files in external static snapshot. Original Git fixtures and runtime evidence retained untouched.",
+    "entries": 844,
+    "existing_changed_paths": [
+      "ash/g6_native_binding.py",
+      "research/nexus-g6-native-public-fixture-v1.py"
+    ],
+    "prior_entries": 833,
+    "prior_unchanged_entries": 831
+  },
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_candidate_executions": 0,
+  "new_cloud_resources": 0,
+  "new_model_loads": 0,
+  "new_paid_services": 0,
+  "new_private_inputs_processed": false,
+  "package_identity": {
+    "approval": "NOT_OBTAINED",
+    "component_sha256": "796557c6e924b586d1c99e50aa13b7a3465e1cddd9db77a6acf159f8e8a5b1ff",
+    "configuration_sha256": "35bdd9b8df87f951fcca647a501ba20ff77c12ccf9ab4b2f531c5993b58f716a",
+    "effective_at": 1792048560,
+    "expires_at": 1792134960,
+    "new_reservation_absent": true,
+    "payload_sha256": "0635da1837e8793f314080cbdc803fa78556be2a93a78a3d64ae68d239a9f9f5",
+    "real_admission": "NO",
+    "review_sha256": "378dcd458109c114041f3496386210523361f0d1f9d8dfb14a11e0fe40aa0ba2",
+    "subject_id": "nexus.g3.subject.v1:ce780c9ee36284c39f3a28f4eaddfd4225b3796abb0a020b4fe58ad8e4005c9d",
+    "window_myt": [
+      "2026-10-15 15:16",
+      "2026-10-16 15:16"
+    ]
+  },
+  "public_qualification": {
+    "classification": "PUBLIC_READINESS_ONLY_NOT_MODEL_COMPLETION",
+    "shared": 18,
+    "transport": 4
+  },
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "binding_sha256": "873c3efd3e642f33b8ade7687c636d31864fe11e3b11c12f04c67033d299feab",
+      "elapsed_seconds": 111.437,
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "a1641c331545da144f05804013c5916ed3799a38872a05fe9618c30507f091d2",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion"
+      ],
+      "pass": 161,
+      "skip": 0,
+      "total": 161
+    },
+    "focused": {
+      "binding_sha256": "873c3efd3e642f33b8ade7687c636d31864fe11e3b11c12f04c67033d299feab",
+      "error": 0,
+      "fail": 0,
+      "log_sha256": "bc12388361162d7f3fdb0e7b425895bae91ea04b2fc999ff12e24dc3f1a46ed2",
+      "pass": 56,
+      "skip": 0,
+      "total": 56
+    }
+  },
+  "remaining_g6_gates": [
+    "Actual useful local-only model completion under fresh exact-subject signature",
+    "Material execution-configuration substitution on stable common tasks/policy",
+    "Remaining original A-H/A6 evidence reconciliation and restricted combinations",
+    "Separate pilot then locked fair value protocol/comparison with capable native Host baseline",
+    "Final independent G6 security/release review and Critical/High resolution",
+    "Final full repository regression and exact source/artifact/manifest identity",
+    "Exact final Owner artifact/release acceptance then authorized freeze and remote verification"
+  ],
+  "retained_limits": [
+    "PUBLIC corpus with local-only policy does not qualify arbitrary confidential-data processing.",
+    "Correct CSV alone demonstrates no Nexus/model benefit versus native Host or deterministic solution.",
+    "Public fixtures and unit tests are not real model/private/value qualification.",
+    "CPU enforcement is periodic and guarded wall deadline includes bounded cleanup."
+  ],
+  "schema": "nexus.g6.local-retention-signing-checkpoint.v1",
+  "signature": "NOT_OBTAINED",
+  "source_package": {
+    "candidate_model_runtime_evidence_excluded": true,
+    "members": 273,
+    "reproduced_twice": true,
+    "sha256": "468b454cb91289a9371d628a58fd47270cacbba917af18c166d4302e35fa4e3a"
+  },
+  "status": "SIGNING_READY_USEFUL_LOCAL_TASK_PENDING_OWNER"
+}
