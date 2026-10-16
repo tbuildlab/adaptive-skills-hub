@@ -1,0 +1,173 @@
+{
+  "canonical_amendment_sha256": "c636f5418d85e69455224150cc796e2cf57866978ecd97e3bea9e9928e0fa85c",
+  "distribution_limits": "Restricted private source/tag evidence only; no Desktop upgrade/new runtime install, public asset upload or new license grant",
+  "final_MANIFEST_entries_expected": 918,
+  "independent_secret_fixture_disposition": {
+    "bound_disposition": "source-secret-pattern-disposition.json",
+    "confirmed": [
+      "Both exact source and match digest pins match reviewed archive",
+      "32character sequential token fixture is synthetic",
+      "25character private-key-header body contains invalid Base64 and cannot encode declared private-key structure",
+      "Both enclosing tests explicitly verify redaction",
+      "No general test-path exemption"
+    ],
+    "credential_validation_or_private_key_vault_env_access": false,
+    "decision": "PASS_EXACT_SYNTHETIC_REDACTION_FIXTURES_NO_MATERIAL_CREDENTIAL_FINDING",
+    "final_independent_release_review": "PASS_UNCHANGED",
+    "literal_values_printed": false,
+    "real_admission": "NO",
+    "reviewer": "/root/g6_final_release_independent_review",
+    "schema": "nexus.g6.secret-fixture-independent-disposition.v1"
+  },
+  "new_product_or_historical_test_changes": false,
+  "permitted_research_member": "research/nexus-ecosystem-gap-scan.json only; retained exact public metadata",
+  "portable_source_smoke": {
+    "candidate_model_or_old_attempt_runs": 0,
+    "commands": [
+      {
+        "argv": [
+          "D:\\DevTools\\NexusR2Python\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-finalization-amendment-v1\\portable-source-smoke\\scripts\\nexus.py",
+          "--help"
+        ],
+        "returncode": 0,
+        "stderr_present": false,
+        "stdout_bytes": 4333,
+        "stdout_sha256": "876e2477d9f631f9e5f1c0436d0f043481466a2ae196bbcb1446852f2a3de8be"
+      },
+      {
+        "argv": [
+          "D:\\DevTools\\NexusR2Python\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "-B",
+          "-I",
+          "-c",
+          "import sys,json;sys.path.insert(0,sys.argv[1]);from ash import g1_profiles,g4_contracts;from ash.g6_host_adapter import release_gate;v=release_gate(None,now=0);assert v['status']=='DENY' and not v['real_admission_enabled'];print(json.dumps({'source_import':'PASS','production_gate':'DENY','real_admission':False}))",
+          "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-finalization-amendment-v1\\portable-source-smoke"
+        ],
+        "returncode": 0,
+        "stderr_present": false,
+        "stdout_bytes": 79,
+        "stdout_sha256": "fe329dc358c0d3cd80b0d6e9d712e51fb0368b85b61ed3f1dffdf57233718e87"
+      }
+    ],
+    "installation_or_plugin_configuration_changed": false,
+    "limits": "Private source package smoke only; no new embedded runtime, Desktop install, native candidate or confidential-corpus qualification",
+    "members_checked": 279,
+    "network_or_provider_calls": 0,
+    "private_input_processed": false,
+    "production_admission": "DENY",
+    "real_admission": "NO",
+    "schema": "nexus.g6.portable-source-smoke.v1",
+    "source_archive_sha256": "afa33b9b0659451d7dcfcb22f6b56722912d23435d3bdf5c4a73aa8cafbb99ad",
+    "source_scope_match": true,
+    "status": "PASS_PORTABLE_SOURCE_IDENTITY_IMPORT_HELP_AND_DENY"
+  },
+  "preservation_and_quarantined_input_identity": {
+    "authority": "NONE",
+    "core_pilot_files_unchanged": 62,
+    "historical_unique_attempt_files_unchanged": 129,
+    "new_candidate_model_or_pilot_executions": 0,
+    "new_production_or_N01_state": false,
+    "prior_docs_research_raw_files_unchanged": 548,
+    "quarantined_qualification_input_artifacts": {
+      "model": {
+        "bytes": 639446688,
+        "operation": "Stable read-only SHA256; no parsing, library load, inference or execution",
+        "relative_path": "output/g6-final/intake-successor-v1/model.gguf.blob",
+        "revision": "23749fefcc72300e3a2ad315e1317431b06b590a",
+        "sha256": "9465e63a22add5354d9bb4b99e90117043c7124007664907259bd16d043bb031"
+      },
+      "runtime": {
+        "bytes": 19518618,
+        "operation": "Stable read-only SHA256; no parsing, library load, inference or execution",
+        "relative_path": "output/g6-final/llama-b11609-bin-win-cpu-x64.zip",
+        "revision": "b11609",
+        "sha256": "8708a7b81842333927f6377ac3f17ff8bba4dbe1ee0cf28dfd5e7a32e3a46b38"
+      }
+    },
+    "real_admission": "NO",
+    "redistributed_or_activated": false,
+    "retired_signatures_subjects_reused": 0,
+    "schema": "nexus.g6.postreview-preservation-component-identity.v1",
+    "status": "PASS_READONLY_IDENTITY_AND_HISTORICAL_PRESERVATION"
+  },
+  "prior913entries_unchanged": true,
+  "private_repository_metadata": {
+    "archived": false,
+    "method": "Existing connected GitHub get_repo protected authentication; no credential values read",
+    "new_public_release_or_asset_upload": false,
+    "observed_at_utc": "2026-10-16 06:55:56 UTC",
+    "owner_id": 223441940,
+    "owner_login": "TDY0225",
+    "purpose": "Private restricted source/tag release identity only; metadata is not component approval or execution authority",
+    "real_admission": "NO",
+    "repository_full_name": "TDY0225/adaptive-skills-hub",
+    "repository_id": "1341770180",
+    "schema": "nexus.g6.release-repository-readback.v1",
+    "visibility": "private"
+  },
+  "real_admission": "NO",
+  "reproducible_twice": true,
+  "review_bundle": "Static review/delivery envelope built externally after final technical commit; exact outer hash and commit belong in Owner acceptance package, not self-referential Git records",
+  "review_bundle_index_rule": "Every payload member except index itself; full outer digest binds index too",
+  "reviewed_profile_LF_sha256": "e44ccda64be1871aa010946932c6e87a02f708fd5b655087ab0f605d6b1fcc7a",
+  "reviewed_scope_LF_sha256": "a46e846039271ef573f25353d102f0dd8c24f9fe3cc1e74e04521448732e5365",
+  "schema": "nexus.g6.final-artifact-verification.v1",
+  "secret_literal_disposition": {
+    "artifact_sha256": "afa33b9b0659451d7dcfcb22f6b56722912d23435d3bdf5c4a73aa8cafbb99ad",
+    "dispositions": [
+      {
+        "disposition": "EXACT_EXISTING_PUBLIC_REDACTION_FIXTURE_NOT_CREDENTIAL",
+        "enclosing_test": "test_redaction_is_truthful_for_delimiters_paths_tokens_and_truncation",
+        "kind": "github_token_literal",
+        "line": 983,
+        "match_sha256": "26c58bfde0c4ce6861aa5968ff78d6c1a86b7e06671af70210f5718e29c6a7d3",
+        "path": "tests/test_ecosystem_evidence.py",
+        "payload_bytes": 32,
+        "synthetic_sequential_alphabet_test_token": true,
+        "test_path": true
+      },
+      {
+        "body_bytes": 25,
+        "body_structurally_not_encoded_private_key": true,
+        "disposition": "EXACT_EXISTING_PUBLIC_REDACTION_FIXTURE_NOT_CREDENTIAL",
+        "enclosing_test": "test_33_environment_tokens_and_unc_paths_are_redacted_truthfully",
+        "kind": "private_key_block",
+        "line": 655,
+        "match_sha256": "3021d90eb9437b2d8f30e8363695c4418b5e5f1870801b5c317e9398ee0f572d",
+        "path": "tests/test_evaluation_contract.py",
+        "test_path": true
+      }
+    ],
+    "first_inert_classifier_check_preserved": "source-secret-classifier-first-check.json",
+    "private_files_or_environment_values_read": false,
+    "real_admission": "NO",
+    "rule": "Only exact hash-bound PUBLIC redaction fixture literals classified; no general test-path exemption or real key/token validation request",
+    "scan_ref": "source-secret-pattern-scan.json",
+    "schema": "nexus.g6.source-secret-literal-disposition.v1",
+    "secret_values_printed": false,
+    "unresolved_real_credential_findings": 0
+  },
+  "source_dependency_provenance_refs": {
+    "config/upstream-source-registry.json": "79bf95c58db175cb811ffa0030487f78636b329c5b5af090e7981bde5e2cb0c6",
+    "docs/license-inventory.md": "10833239e3073a5c50b425edff3aac048f8dfa7303d418c36cf3e2b774a15b3a",
+    "docs/upstream-source-registry.md": "421b56eabfcdf1875ed0bc0f0957bf89f930caaae541745346460305dcff85d6",
+    "requirements-r2-mcp.lock": "bf7ce90c2830c3b6cbd3eb77272a621695493b878e33c34cf0af20f83e34e82b",
+    "sources.json": "e9160e803dbb7fd6c445b4c443f4c46da5fc699574bdedd7fd192f8ea32b8e66"
+  },
+  "source_identity_ref": "research/nexus-g6-final-release-review-scope-v1.json",
+  "source_members": 279,
+  "source_package_sha256": "afa33b9b0659451d7dcfcb22f6b56722912d23435d3bdf5c4a73aa8cafbb99ad",
+  "static_package_exclusions": [
+    "No runtime output/state/CAS/private workspace",
+    "No actual key/signature/credential data",
+    "No GGUF/llama/Codex/Python runtime binaries",
+    "No Desktop configuration/profile/caches"
+  ],
+  "status": "PASS_REVIEWED_SOURCE_ARTIFACT_AND_PRESERVATION"
+}

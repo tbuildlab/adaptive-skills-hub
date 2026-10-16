@@ -1639,6 +1639,10 @@
     "bytes": 7174,
     "sha256": "19751dc02afe34b9df4fc7eb0dcdcc4043fae81e51eb4cac161cbfb0f79dd724"
   },
+  "docs/nexus-g6-final-technical-qualification-owner-gate-v1.md": {
+    "bytes": 4498,
+    "sha256": "150fe5057c908c97a6571f014a644c7dc0591dd42fc17126bf483abed8553711"
+  },
   "docs/nexus-g6-finalization-amendment-v1.md": {
     "bytes": 5440,
     "sha256": "32baa2577ef45e3569897eaefeaa7151b9f897d3cd91717c95217d71d9f1b047"
@@ -2523,6 +2527,18 @@
     "bytes": 622,
     "sha256": "207381841af9cf23bfab76e4fd88f7c25df87c0b184a81af99254a43fc6fdd84"
   },
+  "research/nexus-g6-final-artifact-verification-v1.json": {
+    "bytes": 8854,
+    "sha256": "3eb9e0b5761fa2a1d97f599156df849d4fa1e5c95e7bb1ebfac4d1130337b32f"
+  },
+  "research/nexus-g6-final-full-regression-v1.json": {
+    "bytes": 4158,
+    "sha256": "13d7acfb14b6fc7871a659310dfd624f5da79d039f827f74474c8fe3c6a9950a"
+  },
+  "research/nexus-g6-final-independent-release-review-v1.json": {
+    "bytes": 3547,
+    "sha256": "f3693acb7b07acabf552b7c169b76a5a2b1612452566760932d529d72fbce526"
+  },
   "research/nexus-g6-final-qualification-status-v1.json": {
     "bytes": 5441,
     "sha256": "5eb23792926bceb0ff4962f5aac85db5947dbc88e092d4b3fbe6595ddba07bf1"
@@ -2534,6 +2550,10 @@
   "research/nexus-g6-final-supported-profile-v1.json": {
     "bytes": 3155,
     "sha256": "e44ccda64be1871aa010946932c6e87a02f708fd5b655087ab0f605d6b1fcc7a"
+  },
+  "research/nexus-g6-final-technical-readiness-v1.json": {
+    "bytes": 1924,
+    "sha256": "d1891ac74c3c96030c74b7f5ecef5bc03ce633bfe18ae3932e65d03dc5b8f2ff"
   },
   "research/nexus-g6-finalization-amendment-application-v1.json": {
     "bytes": 1607,

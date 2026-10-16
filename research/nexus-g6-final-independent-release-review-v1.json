@@ -1,0 +1,54 @@
+{
+  "baseline_903_entries_preserved": true,
+  "candidate_branch": "nexus-v2-g6-final-qualification",
+  "candidate_commit": "39079f21655403b602f28aca401048fe874a1be1",
+  "candidate_manifest_entries": 913,
+  "completed_before_final_full_regression": true,
+  "critical": [],
+  "decision": "PASS_FINAL_INDEPENDENT_RELEASE_REVIEW",
+  "high": [],
+  "limits": [
+    "Independent review gate only, not final release approval",
+    "Original G6 HOLD and both NO INCREMENTAL BENEFIT results/clean latency failure unchanged",
+    "Remote publication recovery UNSUPPORTED/NOT QUALIFIED",
+    "G2/G3/G4 frozen; G5 disabled; N01 optional research HOLD; production adapters DENY",
+    "Historical1653PASS+4SKIP is not new post-review final sweep"
+  ],
+  "matched_control_evidence_checks": 98,
+  "other_material_findings": [],
+  "real_admission": "NO",
+  "recorded_at_utc": "2026-10-16T06:53:43.283117+00:00",
+  "remaining_gates_in_order": [
+    "Final full repository regression",
+    "Final artifact/MANIFEST/provenance/data-exclusion recheck",
+    "Exact final Owner release acceptance",
+    "Authorized annotated final tag/push/readback"
+  ],
+  "review_invalidated_by": "Changes to reviewed code/evidence/profile/amendment bytes require re-review; additive final logs/readiness records must not change those pins",
+  "reviewed_LF_sha256": {
+    "MANIFEST.json": "074de0ad4f2a512eaf752c2a8920f3f476a3f66b83c4c1b07faaffc00bf5d256",
+    "docs/nexus-g6-final-supported-profile-v1.md": "19751dc02afe34b9df4fc7eb0dcdcc4043fae81e51eb4cac161cbfb0f79dd724",
+    "research/nexus-g6-consolidated-defensive-review-v1.json": "8508c6dc563b2baca284b0df9bcf5fa6045e8220b70c139a0e1f6317fcc61a83",
+    "research/nexus-g6-final-release-review-scope-v1.json": "a46e846039271ef573f25353d102f0dd8c24f9fe3cc1e74e04521448732e5365",
+    "research/nexus-g6-final-supported-profile-v1.json": "e44ccda64be1871aa010946932c6e87a02f708fd5b655087ab0f605d6b1fcc7a",
+    "research/nexus-g6-finalization-amendment-v1.json": "c636f5418d85e69455224150cc796e2cf57866978ecd97e3bea9e9928e0fa85c"
+  },
+  "reviewer": "/root/g6_final_release_independent_review",
+  "reviewer_auth_network_calls": 0,
+  "reviewer_mutations_replays_authority_creation": 0,
+  "reviewer_product_test_candidate_model_executions": 0,
+  "schema": "nexus.g6.final-independent-release-review.v1",
+  "source_archive_members": 279,
+  "source_archive_sha256": "afa33b9b0659451d7dcfcb22f6b56722912d23435d3bdf5c4a73aa8cafbb99ad",
+  "supplemental_local_hook_raw_sha256": "7f7a770ad13aa5e3bf49feb372b91ab6fac8c6bbe3b164991b072119df512e19",
+  "verified": [
+    "Exactly accepted prospective amendment and separate retained-G3-governance value assessment; no retroactive original criterion pass",
+    "Both archives byte-identical and all279members match scoped source; no duplicate/prohibited data/runtime/model/credential filenames",
+    "All913static MANIFESTentries match LF hashes/sizes; no historical source/test/evidence changes",
+    "Bounded A-H/A6 claims match profile; structural validators and unconditional production DENY retained",
+    "Core pre-effect charges/expiry/ambiguity and native exclusive reservation/no-replay source confirmed",
+    "Actual local111byte effect/inflight ambiguity/one charge/no accepted artifact matches retained state",
+    "Both independently reconstructed106byte3row model/deterministic artifacts match193448e212fdaa74997028953881545371fb632b4f63c0aa78a6528991e23ae4",
+    "Prior module reviews reused only for exact pinned scope; no hostileHost/generalprivacy/Agent attenuation claims"
+  ]
+}

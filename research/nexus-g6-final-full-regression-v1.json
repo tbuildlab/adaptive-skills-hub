@@ -1,0 +1,66 @@
+{
+  "all106historical_test_file_bytes_unchanged": true,
+  "environment": "Isolated static913entry source snapshot, preconfigured3PUBLIC retired disposition DATA and54pinned Python inventory files for read-only tests; no candidate/model/old attempt execution. Existing JSONLF/offline fixture clock preconditions only, no real authority renewed.",
+  "error": 0,
+  "fail": 0,
+  "full_result": {
+    "elapsed_seconds": 5591.078,
+    "errors": [],
+    "failures": [],
+    "live_research_resumed": false,
+    "mode": "full",
+    "pass": 1653,
+    "real_admission": "NO",
+    "schema": "nexus.g3.original-regression.v1",
+    "skip": [
+      {
+        "id": "test_github_distribution.GitHubDistributionTests.test_real_clean_bootstrap_without_system_python",
+        "reason": "real embedded runtime inputs are not configured"
+      },
+      {
+        "id": "test_github_distribution.GitHubDistributionTests.test_real_plugin_bootstrap_without_codex_prepares_host_managed_source",
+        "reason": "real embedded runtime inputs are not configured"
+      },
+      {
+        "id": "test_github_distribution.GitHubDistributionTests.test_real_plugin_health_without_system_python_or_codex",
+        "reason": "real embedded runtime inputs are not configured"
+      },
+      {
+        "id": "test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected",
+        "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmp0y9p35oz\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmp0y9p35oz\\\\approved-project\\\\linked'"
+      }
+    ],
+    "source_root": "C:\\Users\\DEYONG~1\\AppData\\Local\\Temp\\nexus-g6-amended-final-regression-8ut6ptmv\\source",
+    "source_tests_modified": false,
+    "total": 1657,
+    "unchanged_historical_test_clock_configured": [
+      "test_g3_n01_atomic_reads.AtomicContinuationTests.test_new_artifact_is_head_eight_only_and_does_not_reset_aggregate",
+      "test_g3_n01_auth_continuation.AuthContinuationTests.test_builder_keeps_cumulative_cost_and_separate_one_attempt",
+      "test_g3_n01_live_budget.LiveBudgetTests.test_attempt_bound_includes_injected_ack_loss_and_no_retry",
+      "test_g3_n01_live_budget.LiveBudgetTests.test_fixed_error_does_not_copy_backend_private_message",
+      "test_g3_n01_owner_controller.OwnerControllerTests.test_complete_owner_only_durability_stays_inside_original_backend_bounds",
+      "test_g3_n01_owner_controller.OwnerControllerTests.test_missing_independent_source_quarantines_before_mutation_without_retry",
+      "test_g3_n01_owner_controller.OwnerControllerTests.test_real_durability_composition_model_finalizes_recovery_and_source_as_none",
+      "test_g3_n01_public_review.PublicReviewTests.test_duplicate_missing_corrupt_expired_or_legacy_custody_denies",
+      "test_g3_n01_source_enrollment.SourceEnrollmentTests.test_missing_ambiguous_expired_unavailable_source_custody_denies",
+      "test_g3_n01_vercel_probe.RuntimeProbeTests.test_cached_success_still_none_not_owner_context",
+      "test_g3_n01_vercel_probe.RuntimeProbeTests.test_unknown_outcome_is_sanitized_terminal_no_retry"
+    ]
+  },
+  "historical_first_failures_and_logs_preserved": true,
+  "historical_skip": 4,
+  "independent_review_LF_sha256": "f3693acb7b07acabf552b7c169b76a5a2b1612452566760932d529d72fbce526",
+  "new_skips": 0,
+  "pass": 1653,
+  "raw_final_log_sha256": "fb8fb3091354e9ae207fa851bc7bfad299144cb6580d51cb887a38373928f4d1",
+  "raw_final_result_sha256": "9223a62a600c51a1c19b931eca7bbca71a51cd03ed7b2efe6205a96d82ca3071",
+  "real_admission": "NO",
+  "review_candidate_commit": "39079f21655403b602f28aca401048fe874a1be1",
+  "review_precedes_run": true,
+  "runner_LF_sha256": "0d42d98beef0f115a5bfc071589be8b22267247bd09dbda7515c10e5273b6fef",
+  "schema": "nexus.g6.final-full-regression.v1",
+  "single_complete_discovery_run": true,
+  "snapshot_record_sha256": "e5beeafd33e7a03caa6055c6f8138711335fa0abf6442d133485c2fb220ca267",
+  "status": "PASS_POST_INDEPENDENT_REVIEW_FINAL_FULL_WITH_HISTORICAL_SKIPS",
+  "unique_total": 1657
+}
