@@ -1,0 +1,73 @@
+{
+  "binding_sha256": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+  "capability_registration": false,
+  "decision": "PASS_SIGNING_READINESS",
+  "fairness": [
+    "Native independently derives source CSV; native hash/readback/receipt/inspection features retained.",
+    "All shared finalizer/observer/safety facts receive zero incremental credit in BOTH arms.",
+    "A tie/native advantage is valid; no affirmative value inferred from this pilot.",
+    "Controlled no-commit interruption is not OS crash/recovery qualification."
+  ],
+  "files": {
+    "ash/g6_native_binding.py": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+    "ash/g6_private_completion.py": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd",
+    "ash/g6_retention_substitution.py": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c",
+    "ash/g6_value_pilot.py": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65",
+    "docs/nexus-g6-retention-value-pilot-design-v1.md": "0b2b5c38afe914b2f5a8413ae301275148b574f7bdca65aa37cbb254d1bab34e",
+    "research/nexus-g6-deterministic-host-runtime-pins-v1.json": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1",
+    "research/nexus-g6-fixed-host-snapshot-provenance-v1.json": "d79bdd3f37d373401c61304176080d76e3b2ae98234305187b97d411c2c5213f",
+    "research/nexus-g6-fixed-prompt-contract-v1.json": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500",
+    "research/nexus-g6-native-public-fixture-v1.py": "b4539ae98bfdd887a18d325cb4c38ad50a46530d56791b04b3d9615a8b848e51",
+    "research/nexus-g6-public-path-probe-v1.cpp": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1",
+    "research/nexus-g6-retention-deterministic-public-probe-v1.py": "0fa40d0326e58c5b07f120b76b20298b11814306beb6c238887c1d776a8da643",
+    "research/nexus-g6-retention-deterministic-worker-v1.py": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d",
+    "research/nexus-g6-retention-value-pilot-design-v1.json": "32be973f291296791b96fa2cee3a28bc7c9b865219cd2cd9b469bfeda5927abc",
+    "research/nexus-g6-retention-value-pilot-readiness-v1.json": "3d34aa1e79499071956665e5e63c33fdb69b93b76ea77a4f64023e49eab6041e",
+    "scripts/qualify_g6_native_binding.py": "a9d7de56df05b9b9490b20aeacb72b1e6ddcc4284ec47d2681757a329672f407",
+    "scripts/qualify_g6_private_completion.py": "fb067d59636ebc8e06504190286ec9db15806274a7cc1884fd3a38d51699acdc",
+    "scripts/qualify_g6_retention_substitution.py": "be374d7f41ae4c279b762b7ed948b0a8e651a5543bda3ed0323cff144cdc3dda",
+    "scripts/qualify_g6_value_pilot.py": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g6_native_binding.py": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5",
+    "tests/test_g6_private_completion.py": "e1588f16baeeb8f33c85310501087a56cef11f431a08ac527d2ef6b38159b5ee",
+    "tests/test_g6_retention_substitution.py": "a6fe6b21de3db99eea331a6809b8b50c267cf150bdc8eaccb3e4dbda0c2d2f0b",
+    "tests/test_g6_value_pilot.py": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
+  },
+  "final_value_protocol": "NOT_PREREGISTERED",
+  "findings": [],
+  "g6_freeze": "NOT_QUALIFIED",
+  "historical_attempt_files_unchanged": 81,
+  "independently_rehashed_host_files": 2,
+  "independently_rehashed_runtime_files": 54,
+  "layered_proof": "Unchanged current guard37d14f/worker/runtime/control composition; current outer412a78 public fixtures/final regressions. Earlier outer observation hashes remain retained, not relabelled. No signed role executed.",
+  "pilot_sha256": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+  "public_cases": {
+    "csv_transport": 4,
+    "outer_postprocessor": 10,
+    "shared_guard": 18,
+    "snapshot": 6
+  },
+  "real_admission": "NO",
+  "regression": {
+    "affected": 205,
+    "counts_overlap": true,
+    "error": 0,
+    "fail": 0,
+    "focused": 84,
+    "skip": 0
+  },
+  "review_scope": "One finite six-slot feasibility/negative-control pilot only; no execution or value/release authority.",
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_actions": {
+    "authentication": 0,
+    "edits": 0,
+    "executions": 0,
+    "raw_io_disclosed": false,
+    "replays": 0,
+    "signing": 0,
+    "tests": 0
+  },
+  "schema": "nexus.g6.retention-value-pilot-independent-review.v1",
+  "scope_sha256": "0db72d9ba23550174c3e614273c3734a5090cf60535f6300e4d9679ed07fecd2"
+}

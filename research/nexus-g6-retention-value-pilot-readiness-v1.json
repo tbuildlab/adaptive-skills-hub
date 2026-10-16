@@ -1,0 +1,162 @@
+{
+  "actual_pilot_attempts": 0,
+  "baseline_head": "a700d605ed3e5afeceb8a1cd5aac9b0e96f1e891",
+  "batch_reservation": "ABSENT",
+  "code_gap": "Finite six-slot feasibility bookkeeping and independent native postvalidator; existing execution/crypto/resource controls reused, no generic runner or new authority category.",
+  "final_comparison_protocol": "NOT_PREREGISTERED",
+  "full_repository": "NOT_RUN_THIS_SIGNING_GATE; final after remaining mandatory value/qualification/review",
+  "g2_g3_g4": "UNCHANGED_FROZEN",
+  "g5": "DISABLED",
+  "historical_attempt_files_unchanged": 81,
+  "independent_review": "SEPARATE_EXACT_SOURCE_RECORD_REQUIRED",
+  "issuer_readback": {
+    "fingerprint": "SHA256:5FV4/OvvMPzivK/4YIolW2kPQBGoik/llHbviTDpf98",
+    "login": "TDY0225",
+    "private_key_read": false,
+    "signing_key_id": 1242636,
+    "status": "CURRENT_PUBLIC_SIGNING_KEY_MATCH",
+    "user_id": 223441940
+  },
+  "local_monetary_cost": "UNKNOWN_UNMEASURED",
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_cloud_resources": 0,
+  "new_model_invocations": 0,
+  "new_paid_services": 0,
+  "observed_at": 1792113960,
+  "owner_packet": "NOT_CREATED",
+  "owner_signatures": "NOT_OBTAINED",
+  "pilot_slots": [
+    "pilot_native_1",
+    "pilot_nexus_1",
+    "pilot_nexus_2",
+    "pilot_native_2",
+    "pilot_native_interrupted",
+    "pilot_nexus_interrupted"
+  ],
+  "production_adapters": "DENY",
+  "public_proof_scope": "Shared current guard/loader/MXC/Job controls plus independently tested current outer postprocessors and closed-role static composition; no real signed pilot role executed.",
+  "public_qualification": [
+    {
+      "cases": 18,
+      "path": "output/g6-native-binding-public-v30/qualification.json",
+      "sha256": "511c9060407db8aa7011e99c4b8389fd5edfd2eaefe5104804d149cdfbb85475",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    {
+      "cases": 4,
+      "path": "output/g6-local-retention-public-v6/qualification.json",
+      "sha256": "d607f44a44bc7effaa56e72fb431796ad72d98bb820ab5caf6b545ff0f545d2a",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    },
+    {
+      "cases": 6,
+      "path": "output/g6-retention-deterministic-public-v6/qualification.json",
+      "sha256": "9f74f7be42b5f9870dca491f07153cc5f9288a70cf2b0065c3fb94f213fd33b9",
+      "status": "PASS_PUBLIC_DETERMINISTIC_COMPOSITION_ONLY"
+    },
+    {
+      "cases": 10,
+      "path": "output/g6-retention-value-pilot-preparation-v1/public-postprocessor-v3.json",
+      "sha256": "19fd7a9139e7e5e03780f7fdfc59727082c63ac368e48178fb184338aaf05f73",
+      "status": "PASS_PUBLIC_POSTPROCESSOR_ONLY"
+    }
+  ],
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "elapsed_seconds": 159.39,
+      "error": 0,
+      "exit_code": 0,
+      "fail": 0,
+      "kind": "affected",
+      "log_sha256": "0999e225eea2a896e8078bfc0765469ae7f30afcbe1fe15dc506b5022e5ca2e5",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution",
+        "tests.test_g6_value_pilot"
+      ],
+      "pass": 205,
+      "skip": 0,
+      "source_hashes": {
+        "ash/g6_native_binding.py": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+        "ash/g6_private_completion.py": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd",
+        "ash/g6_retention_substitution.py": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c",
+        "ash/g6_value_pilot.py": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+        "scripts/qualify_g6_value_pilot.py": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf",
+        "tests/test_g6_value_pilot.py": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
+      },
+      "total": 205
+    },
+    "focused": {
+      "elapsed_seconds": 4.672,
+      "error": 0,
+      "exit_code": 0,
+      "fail": 0,
+      "kind": "focused",
+      "log_sha256": "a7d87ecf0949ef625e404daeb337bdaf85fcb3cd9e62dea8a7d512e6342bb306",
+      "modules": [
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution",
+        "tests.test_g6_value_pilot"
+      ],
+      "pass": 84,
+      "skip": 0,
+      "source_hashes": {
+        "ash/g6_native_binding.py": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+        "ash/g6_private_completion.py": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd",
+        "ash/g6_retention_substitution.py": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c",
+        "ash/g6_value_pilot.py": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+        "scripts/qualify_g6_value_pilot.py": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf",
+        "tests/test_g6_value_pilot.py": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
+      },
+      "total": 84
+    }
+  },
+  "retained_first_failures": [
+    "output/g6-retention-value-pilot-preparation-v1/first-focused-failure.json",
+    "output/g6-retention-value-pilot-preparation-v1/second-focused-failure.json"
+  ],
+  "review_cautions_addressed": [
+    "Native identifier and unique-frame bound aligned with fixed worker; new public negatives.",
+    "All common finalizer/observer metadata receives zero incremental credit in both arms; no benefit is an admissible outcome."
+  ],
+  "runtime_bytes": 8277451,
+  "runtime_files": 54,
+  "schema": "nexus.g6.retention-value-pilot-signing-preparation.v1",
+  "shared_guard_pilot_source_observation": "Guard/CSV/snapshot logs retained earlier outer pilot SHA29db4c; only the outer native validator bound and closed failure metadata changed afterward. Shared guard37d14f, worker/runtime/arguments and these public paths are unchanged. Current outer postprocessor v3 and final regressions bind412a78; do not relabel earlier observation hashes.",
+  "source_files": {
+    "ash/g6_native_binding.py": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+    "ash/g6_private_completion.py": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd",
+    "ash/g6_retention_substitution.py": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c",
+    "ash/g6_value_pilot.py": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+    "config/nexus-g6-local-model-intake-successor-v1.json": "16f8d981adfc798dc5baf1c2b84a6c111f3b60af0b557ce804b4afe7b555de65",
+    "docs/nexus-g6-retention-value-pilot-design-v1.md": "0b2b5c38afe914b2f5a8413ae301275148b574f7bdca65aa37cbb254d1bab34e",
+    "research/nexus-g6-deterministic-host-runtime-pins-v1.json": "aee37f90a8d409320de8a108efc76bae3c144439179a7e36d6dd3d0d5992cfe1",
+    "research/nexus-g6-fixed-host-snapshot-provenance-v1.json": "d79bdd3f37d373401c61304176080d76e3b2ae98234305187b97d411c2c5213f",
+    "research/nexus-g6-fixed-prompt-contract-v1.json": "179d6004d245b839b3954e00c23fd97ce203e0a19f7d7235f381b668e0e0b500",
+    "research/nexus-g6-native-public-fixture-v1.py": "b4539ae98bfdd887a18d325cb4c38ad50a46530d56791b04b3d9615a8b848e51",
+    "research/nexus-g6-public-path-probe-v1.cpp": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1",
+    "research/nexus-g6-retention-deterministic-public-probe-v1.py": "0fa40d0326e58c5b07f120b76b20298b11814306beb6c238887c1d776a8da643",
+    "research/nexus-g6-retention-deterministic-worker-v1.py": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d",
+    "research/nexus-g6-retention-value-pilot-design-v1.json": "32be973f291296791b96fa2cee3a28bc7c9b865219cd2cd9b469bfeda5927abc",
+    "scripts/qualify_g6_native_binding.py": "a9d7de56df05b9b9490b20aeacb72b1e6ddcc4284ec47d2681757a329672f407",
+    "scripts/qualify_g6_private_completion.py": "fb067d59636ebc8e06504190286ec9db15806274a7cc1884fd3a38d51699acdc",
+    "scripts/qualify_g6_retention_substitution.py": "be374d7f41ae4c279b762b7ed948b0a8e651a5543bda3ed0323cff144cdc3dda",
+    "scripts/qualify_g6_value_pilot.py": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g6_native_binding.py": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5",
+    "tests/test_g6_private_completion.py": "e1588f16baeeb8f33c85310501087a56cef11f431a08ac527d2ef6b38159b5ee",
+    "tests/test_g6_retention_substitution.py": "a6fe6b21de3db99eea331a6809b8b50c267cf150bdc8eaccb3e4dbda0c2d2f0b",
+    "tests/test_g6_value_pilot.py": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
+  },
+  "status": "PUBLIC_PREPARATION_COMPLETE_PENDING_INDEPENDENT_SIGNING_REVIEW",
+  "value_qualification": "NOT_ESTABLISHED"
+}

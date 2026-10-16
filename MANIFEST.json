@@ -260,16 +260,20 @@
     "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
   },
   "ash/g6_native_binding.py": {
-    "bytes": 48524,
-    "sha256": "14c577ccfb026e17fc635dc01b09505a12d2b803713ed9fb34a2a844012de0f8"
+    "bytes": 49576,
+    "sha256": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939"
   },
   "ash/g6_private_completion.py": {
     "bytes": 9830,
-    "sha256": "a4a7dbba722f0354b50fe04c81a7bb014bb192d43b8da158e20d1741cdc358eb"
+    "sha256": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd"
   },
   "ash/g6_retention_substitution.py": {
     "bytes": 10462,
-    "sha256": "b7c48a48bcdd8be4af337d470345de71d23fa8000e8081f08baffdd3383030dc"
+    "sha256": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c"
+  },
+  "ash/g6_value_pilot.py": {
+    "bytes": 12687,
+    "sha256": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca"
   },
   "ash/managed_cli.py": {
     "bytes": 2781,
@@ -1707,6 +1711,14 @@
     "bytes": 6320,
     "sha256": "63853ed315bdb7f514def4766829a9689c06b9b5a7da9e01f7e1776fbc5a6a7e"
   },
+  "docs/nexus-g6-retention-value-pilot-design-v1.md": {
+    "bytes": 8574,
+    "sha256": "0b2b5c38afe914b2f5a8413ae301275148b574f7bdca65aa37cbb254d1bab34e"
+  },
+  "docs/nexus-g6-retention-value-pilot-owner-signing-v1.md": {
+    "bytes": 9687,
+    "sha256": "aa225997ca1e8d483d36e45871931405f0d9afde9a66060fa547c652febcf953"
+  },
   "docs/nexus-g6-scope-and-reuse-v1.md": {
     "bytes": 9123,
     "sha256": "69fab902a8cdad1e0a5c6f89fe8839aa96222d8418d7cd290b3bc29feb6cc4a6"
@@ -2651,6 +2663,50 @@
     "bytes": 2212,
     "sha256": "3d316fcb4051360a91603607d8f84e5e4eae189b83904ee90dcacd052491098d"
   },
+  "research/nexus-g6-retention-value-pilot-design-v1.json": {
+    "bytes": 3373,
+    "sha256": "32be973f291296791b96fa2cee3a28bc7c9b865219cd2cd9b469bfeda5927abc"
+  },
+  "research/nexus-g6-retention-value-pilot-independent-review-v1.json": {
+    "bytes": 4734,
+    "sha256": "4ec402f36c6cde968a43acb4b8be6c98293d8f379505156645a29188449f98b2"
+  },
+  "research/nexus-g6-retention-value-pilot-owner-decision-native-1-v1.json": {
+    "bytes": 25131,
+    "sha256": "fd1896366cde3120d5433ffd92411dc3a1ead72509e8842f1e27044dde673ccc"
+  },
+  "research/nexus-g6-retention-value-pilot-owner-decision-native-2-v1.json": {
+    "bytes": 25131,
+    "sha256": "316687f0948e89f9f1da70fdf773accfd494e7a0c56284a3d510b012699472aa"
+  },
+  "research/nexus-g6-retention-value-pilot-owner-decision-native-interrupted-v1.json": {
+    "bytes": 25220,
+    "sha256": "c4ef45ad12923d37e15c30658998c0dd7718c843b7ad8a6b56bd75f2bc054639"
+  },
+  "research/nexus-g6-retention-value-pilot-owner-decision-nexus-1-v1.json": {
+    "bytes": 25121,
+    "sha256": "cb1a7fb297d51f527c221dfa0b228a531e65290cc53f212c28889a3cacd45778"
+  },
+  "research/nexus-g6-retention-value-pilot-owner-decision-nexus-2-v1.json": {
+    "bytes": 25121,
+    "sha256": "f7e65a6d3add337aa8fc48538568ef0be921343819ff0020f0bbb00611f4fc26"
+  },
+  "research/nexus-g6-retention-value-pilot-owner-decision-nexus-interrupted-v1.json": {
+    "bytes": 25210,
+    "sha256": "c6ddbaea67c1a58dbd6d9695eafd67fdc36f0b60eb32cf45cf38471ab81ead2d"
+  },
+  "research/nexus-g6-retention-value-pilot-readiness-v1.json": {
+    "bytes": 8997,
+    "sha256": "3d34aa1e79499071956665e5e63c33fdb69b93b76ea77a4f64023e49eab6041e"
+  },
+  "research/nexus-g6-retention-value-pilot-signing-bundle-v1.json": {
+    "bytes": 5320,
+    "sha256": "72648e99394206dad8fa03a776e76461499f462034deb288fd69fb496e0aff73"
+  },
+  "research/nexus-g6-retention-value-pilot-signing-checkpoint-v1.json": {
+    "bytes": 11596,
+    "sha256": "16262beedcfd41125ebf35e8873f42238b565ce4ec49f2b68497333d10a0e31a"
+  },
   "research/nexus-n01-cached-retained-schema-analysis-v1.json": {
     "bytes": 30286,
     "sha256": "56cc474be1dd8602201e9da9fad8cebcf6730c3ef29b94c9128a4360de3f2b2a"
@@ -3035,6 +3091,10 @@
     "bytes": 2660,
     "sha256": "be374d7f41ae4c279b762b7ed948b0a8e651a5543bda3ed0323cff144cdc3dda"
   },
+  "scripts/qualify_g6_value_pilot.py": {
+    "bytes": 3124,
+    "sha256": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf"
+  },
   "scripts/rebase_release.py": {
     "bytes": 6629,
     "sha256": "5fd060a7e1d0ffcbe84a72e088725b1ec2aaebd2681cfe8b071cd6524152aa24"
@@ -3374,6 +3434,10 @@
   "tests/test_g6_retention_substitution.py": {
     "bytes": 13106,
     "sha256": "a6fe6b21de3db99eea331a6809b8b50c267cf150bdc8eaccb3e4dbda0c2d2f0b"
+  },
+  "tests/test_g6_value_pilot.py": {
+    "bytes": 16327,
+    "sha256": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
   },
   "tests/test_github_distribution.py": {
     "bytes": 70986,

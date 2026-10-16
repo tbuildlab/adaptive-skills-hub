@@ -10,7 +10,7 @@ from .core_capabilities import safe_path
 ROOT = Path(__file__).resolve().parents[1]
 _LOADED_SHA = guard.normalized_sha(Path(__file__))
 WORK = 'output/g6-retention-deterministic-once-v1'
-PUBLIC_WORK = 'output/g6-retention-deterministic-public-v5'
+PUBLIC_WORK = 'output/g6-retention-deterministic-public-v6'
 PACKET = 'output/g6-retention-deterministic-owner-signing-v1/decision.json'
 REVIEW = 'research/nexus-g6-retention-deterministic-independent-review-v1.json'
 PINS = 'research/nexus-g6-deterministic-host-runtime-pins-v1.json'

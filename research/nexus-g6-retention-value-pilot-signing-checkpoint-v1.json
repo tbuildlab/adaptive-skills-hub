@@ -1,0 +1,216 @@
+{
+  "actual_pilot_attempts": 0,
+  "baseline_head": "a700d605ed3e5afeceb8a1cd5aac9b0e96f1e891",
+  "batch_reservation": "ABSENT",
+  "comparative_value": "NOT_ESTABLISHED",
+  "final_comparison_protocol": "NOT_PREREGISTERED",
+  "full_repository": "NOT_RUN_THIS_SIGNING_GATE; mandatory after remaining qualification/final review",
+  "g2_g3_g4": "UNCHANGED_FROZEN",
+  "g5": "DISABLED",
+  "independent_review": {
+    "decision": "PASS_SIGNING_READINESS",
+    "material_findings": [],
+    "package_coherence": "PASS_PACKAGE_COHERENCE",
+    "review_sha256": "4ec402f36c6cde968a43acb4b8be6c98293d8f379505156645a29188449f98b2",
+    "reviewer": "/root/g6_binding_independent_review"
+  },
+  "local_monetary_cost": "UNKNOWN_UNMEASURED",
+  "manifest": {
+    "entries": 888,
+    "existing_changed_paths": [
+      "ash/g6_native_binding.py",
+      "ash/g6_private_completion.py",
+      "ash/g6_retention_substitution.py"
+    ],
+    "prior_entries": 872,
+    "prior_unchanged_entries": 869
+  },
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "new_cloud_resources": 0,
+  "new_model_invocations": 0,
+  "new_paid_services": 0,
+  "new_private_input": false,
+  "owner_signatures": "NOT_OBTAINED",
+  "package_identity": {
+    "actual_pilot_attempts": 0,
+    "batch_reservation_absent": true,
+    "bundle_sha256": "72648e99394206dad8fa03a776e76461499f462034deb288fd69fb496e0aff73",
+    "effective_at": 1792114260,
+    "expires_at": 1792200660,
+    "payloads": [
+      {
+        "component_sha256": "db2d6962657383cdb1fb420225ab62625e55e3f16d297add5321892c313733db",
+        "configuration_sha256": "86602019a425eece217a8d9eb8aaf7fd296cac9f8b12e51fb9f801daaafe187b",
+        "decision_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-retention-value-pilot-owner-signing-v1\\pilot_native_1\\decision.json",
+        "payload_sha256": "fd1896366cde3120d5433ffd92411dc3a1ead72509e8842f1e27044dde673ccc",
+        "retained_path": "research/nexus-g6-retention-value-pilot-owner-decision-native-1-v1.json",
+        "slot": "pilot_native_1",
+        "subject_id": "nexus.g3.subject.v1:0106765af5039b9fc665c984314f68952b308a74b863272317ad48ae74eca0f8"
+      },
+      {
+        "component_sha256": "db2d6962657383cdb1fb420225ab62625e55e3f16d297add5321892c313733db",
+        "configuration_sha256": "ba675e604aa06fbaa96d3917c4603c74167a90aee59e60bd35a74f056f54164f",
+        "decision_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-retention-value-pilot-owner-signing-v1\\pilot_nexus_1\\decision.json",
+        "payload_sha256": "cb1a7fb297d51f527c221dfa0b228a531e65290cc53f212c28889a3cacd45778",
+        "retained_path": "research/nexus-g6-retention-value-pilot-owner-decision-nexus-1-v1.json",
+        "slot": "pilot_nexus_1",
+        "subject_id": "nexus.g3.subject.v1:2ae10d121092f52a6105952a7409f60ab198d3ff3a25322a5cd8129fc059a1cf"
+      },
+      {
+        "component_sha256": "db2d6962657383cdb1fb420225ab62625e55e3f16d297add5321892c313733db",
+        "configuration_sha256": "8ac7c6e38b22db995b5eb9caa942d52849e66431f2c54f16c18c93b3bff53f43",
+        "decision_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-retention-value-pilot-owner-signing-v1\\pilot_nexus_2\\decision.json",
+        "payload_sha256": "f7e65a6d3add337aa8fc48538568ef0be921343819ff0020f0bbb00611f4fc26",
+        "retained_path": "research/nexus-g6-retention-value-pilot-owner-decision-nexus-2-v1.json",
+        "slot": "pilot_nexus_2",
+        "subject_id": "nexus.g3.subject.v1:9fc0a9d540d8ba5c4aad0dc6e4a992bf6883d7ad18730603df8d88b88d274821"
+      },
+      {
+        "component_sha256": "db2d6962657383cdb1fb420225ab62625e55e3f16d297add5321892c313733db",
+        "configuration_sha256": "bf142883c6f6dad5f79f5fd1a8b2dbd126b2e74fd9a23cffae849be7fe47885b",
+        "decision_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-retention-value-pilot-owner-signing-v1\\pilot_native_2\\decision.json",
+        "payload_sha256": "316687f0948e89f9f1da70fdf773accfd494e7a0c56284a3d510b012699472aa",
+        "retained_path": "research/nexus-g6-retention-value-pilot-owner-decision-native-2-v1.json",
+        "slot": "pilot_native_2",
+        "subject_id": "nexus.g3.subject.v1:f8e13227e93eb87093a1cd582598b4dc3d94ddbfcfee989ae70dd5c9c73c9e62"
+      },
+      {
+        "component_sha256": "db2d6962657383cdb1fb420225ab62625e55e3f16d297add5321892c313733db",
+        "configuration_sha256": "91829ae31dfc2add2003ba461eb7bba2bc27e1eed237b9e7bc85f409ed50b864",
+        "decision_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-retention-value-pilot-owner-signing-v1\\pilot_native_interrupted\\decision.json",
+        "payload_sha256": "c4ef45ad12923d37e15c30658998c0dd7718c843b7ad8a6b56bd75f2bc054639",
+        "retained_path": "research/nexus-g6-retention-value-pilot-owner-decision-native-interrupted-v1.json",
+        "slot": "pilot_native_interrupted",
+        "subject_id": "nexus.g3.subject.v1:55b8eebb91a1fc43a2b1696b8b3f9f96299e944b253c7575fbbe170986824b09"
+      },
+      {
+        "component_sha256": "db2d6962657383cdb1fb420225ab62625e55e3f16d297add5321892c313733db",
+        "configuration_sha256": "1da34aedb905ee25e40298f849e54ad01ba0364be9c07db4252fd2f31f9df104",
+        "decision_path": "D:\\chatgpt\\\u5b89\u88c5skills\\nexus-core-g4-domain-qualification\\output\\g6-retention-value-pilot-owner-signing-v1\\pilot_nexus_interrupted\\decision.json",
+        "payload_sha256": "c6ddbaea67c1a58dbd6d9695eafd67fdc36f0b60eb32cf45cf38471ab81ead2d",
+        "retained_path": "research/nexus-g6-retention-value-pilot-owner-decision-nexus-interrupted-v1.json",
+        "slot": "pilot_nexus_interrupted",
+        "subject_id": "nexus.g3.subject.v1:8b455b0d434404f82e4b16e99b0e551ada9ba7872bee43564fb3db16edd9e3b2"
+      }
+    ],
+    "real_admission": "NO",
+    "review_sha256": "4ec402f36c6cde968a43acb4b8be6c98293d8f379505156645a29188449f98b2",
+    "scope_sha256": "0db72d9ba23550174c3e614273c3734a5090cf60535f6300e4d9679ed07fecd2",
+    "status": "UNSIGNED_SIX_SUBJECT_PACKETS_PREPARED",
+    "window_myt": [
+      "2026-10-16 09:31",
+      "2026-10-17 09:31"
+    ]
+  },
+  "preservation": {
+    "all_prior_attempt_files_unchanged": 81,
+    "all_prior_authorizations": "CONSUMED_NOT_REUSED",
+    "earlier_83_and_204_regressions": "Preserved, not aggregated with final84/205.",
+    "initial_public_unit_failures": "Two fixture setup failures preserved; production gates unchanged.",
+    "packet_preparation_parse_failure": "Preserved; raw PowerShell literal repaired before packet generation; no reviewed executable changed.",
+    "public_layered_source_hashes": "Earlier outer observation hash retained explicitly; current outer fixture/final regression prove repair."
+  },
+  "production_adapters": "DENY",
+  "public_qualification": [
+    {
+      "cases": 18,
+      "path": "output/g6-native-binding-public-v30/qualification.json",
+      "sha256": "511c9060407db8aa7011e99c4b8389fd5edfd2eaefe5104804d149cdfbb85475",
+      "status": "PASS_PUBLIC_COMPOSITION_ONLY"
+    },
+    {
+      "cases": 4,
+      "path": "output/g6-local-retention-public-v6/qualification.json",
+      "sha256": "d607f44a44bc7effaa56e72fb431796ad72d98bb820ab5caf6b545ff0f545d2a",
+      "status": "PASS_PUBLIC_TRANSPORT_ONLY"
+    },
+    {
+      "cases": 6,
+      "path": "output/g6-retention-deterministic-public-v6/qualification.json",
+      "sha256": "9f74f7be42b5f9870dca491f07153cc5f9288a70cf2b0065c3fb94f213fd33b9",
+      "status": "PASS_PUBLIC_DETERMINISTIC_COMPOSITION_ONLY"
+    },
+    {
+      "cases": 10,
+      "path": "output/g6-retention-value-pilot-preparation-v1/public-postprocessor-v3.json",
+      "sha256": "19fd7a9139e7e5e03780f7fdfc59727082c63ac368e48178fb184338aaf05f73",
+      "status": "PASS_PUBLIC_POSTPROCESSOR_ONLY"
+    }
+  ],
+  "real_admission": "NO",
+  "regression": {
+    "affected": {
+      "elapsed_seconds": 159.39,
+      "error": 0,
+      "exit_code": 0,
+      "fail": 0,
+      "kind": "affected",
+      "log_sha256": "0999e225eea2a896e8078bfc0765469ae7f30afcbe1fe15dc506b5022e5ca2e5",
+      "modules": [
+        "tests.test_core",
+        "tests.test_core_host_loop",
+        "tests.test_core_profiles",
+        "tests.test_g3_signed_local_approval",
+        "tests.test_g6_contracts",
+        "tests.test_g6_local_model_intake",
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution",
+        "tests.test_g6_value_pilot"
+      ],
+      "pass": 205,
+      "skip": 0,
+      "source_hashes": {
+        "ash/g6_native_binding.py": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+        "ash/g6_private_completion.py": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd",
+        "ash/g6_retention_substitution.py": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c",
+        "ash/g6_value_pilot.py": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+        "scripts/qualify_g6_value_pilot.py": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf",
+        "tests/test_g6_value_pilot.py": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
+      },
+      "total": 205
+    },
+    "focused": {
+      "elapsed_seconds": 4.672,
+      "error": 0,
+      "exit_code": 0,
+      "fail": 0,
+      "kind": "focused",
+      "log_sha256": "a7d87ecf0949ef625e404daeb337bdaf85fcb3cd9e62dea8a7d512e6342bb306",
+      "modules": [
+        "tests.test_g6_native_binding",
+        "tests.test_g6_private_completion",
+        "tests.test_g6_retention_substitution",
+        "tests.test_g6_value_pilot"
+      ],
+      "pass": 84,
+      "skip": 0,
+      "source_hashes": {
+        "ash/g6_native_binding.py": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939",
+        "ash/g6_private_completion.py": "81338e90b187968c837c875609b8a4eb70ad378998df70eed3e692b68893e4fd",
+        "ash/g6_retention_substitution.py": "836c46457a2299865c8c6edc04e06b41d34b2460d567855d8fcbf9701276488c",
+        "ash/g6_value_pilot.py": "412a78e5f8193dec5380996ba74eee7e3a053759327be57ec1807a062658c3ca",
+        "scripts/qualify_g6_value_pilot.py": "5557a260021db5f805155f18763b55c0ef984f9e992aa229a19e1692f4b1fadf",
+        "tests/test_g6_value_pilot.py": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
+      },
+      "total": 84
+    }
+  },
+  "remaining_g6_gates": [
+    "Fresh authorized finite pilot, then fair locked comparison only if justified; no manufactured advantage.",
+    "Remaining applicable A-H/A6 and accumulated negative/evidence reconciliation.",
+    "Final independent G6 security/release review and genuine Critical/High resolution.",
+    "Final focused/affected/whole-repository regression, exact package/MANIFEST/release identity.",
+    "Exact Owner final release acceptance, authorized annotated final tag/push and remote identity verification."
+  ],
+  "schema": "nexus.g6.retention-value-pilot-signing-checkpoint.v1",
+  "scope_sha256": "0db72d9ba23550174c3e614273c3734a5090cf60535f6300e4d9679ed07fecd2",
+  "shared_metadata_incremental_credit": "ZERO_BOTH_ARMS",
+  "source_package": {
+    "members": 279,
+    "reproduced_twice": true,
+    "scope": "Portable Core/source distribution; qualification-only helpers depend on separately bound local runtime/Host/material and are not autoactivated or generally portable.",
+    "sha256": "afa33b9b0659451d7dcfcb22f6b56722912d23435d3bdf5c4a73aa8cafbb99ad"
+  },
+  "status": "PASS_SIGNING_READINESS_PENDING_SIX_OWNER_SIGNATURES"
+}
