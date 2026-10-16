@@ -89,7 +89,7 @@ _FORBIDDEN_MANIFEST_NAMES = frozenset(
 # developer paths or machine-specific evidence from silently entering a zip.
 ALLOWED_ROOT_FILES = {"SKILL.md", "sources.json", "requirements-r2-mcp.txt", "requirements-r2-mcp.lock"}
 ALLOWED_RESEARCH = {"research/nexus-ecosystem-gap-scan.json"}
-ALLOWED_DIRECTORIES = {"ash", "config", "plugins", "scripts", "tests", ".agents"}
+ALLOWED_DIRECTORIES = {"ash", "assets", "config", "plugins", "scripts", "tests", ".agents"}
 ALLOWED_DOCS = {
     "docs/nexus-g2-openai-structured-v3.md",
     "docs/nexus-g2-openai-hosted-adapter-v1.md",
@@ -113,6 +113,7 @@ ALLOWED_DOCS = {
     "docs/nexus-post-r5-runtime-integration-slice3c-adr-pds.md",
     "docs/nexus-agent-runtime-contract.md",
     "docs/nexus-post-g6-reference-research-workflow.md",
+    "docs/nexus-visual-identity-v1.md",
 }
 
 

@@ -20,8 +20,8 @@
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "README.md": {
-    "bytes": 15141,
-    "sha256": "081bb6f9887c2f473b550a921f60a308393183eede686ab026d71294af36dbb0"
+    "bytes": 15476,
+    "sha256": "5f8a64689784aae8cdf41828954545eaf1a9922691c26dae88b682b215824603"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -386,6 +386,14 @@
   "ash/v2.py": {
     "bytes": 64913,
     "sha256": "3d7e714675b85b7983d33463a321df40c8f87fa4e4b5133e02e4981bb60b53f3"
+  },
+  "assets/brand/nexus/nexus-avatar-500.png": {
+    "bytes": 267327,
+    "sha256": "e7b11e08c8b54693dccad961ac88fe848b7819fec97bda1a2d8a593569835826"
+  },
+  "assets/brand/nexus/nexus-avatar-master.png": {
+    "bytes": 2048098,
+    "sha256": "58dca0ec370f0efa4536a3ff881cc49f5e2c5bd9283473c1cd34d7698fe186bc"
   },
   "config/capability-foundation.json": {
     "bytes": 19849,
@@ -2255,6 +2263,10 @@
     "bytes": 18443,
     "sha256": "fa51f6d36ae7afb9431d092f5d3fe4f1d1ee378f7b5adea8ebf10fe72495cede"
   },
+  "docs/nexus-visual-identity-v1.md": {
+    "bytes": 2036,
+    "sha256": "f9254c8abf8c858030775c287b85c738a06ecbc7d5b00af4567e91d4cc5a378f"
+  },
   "docs/portable-installation.md": {
     "bytes": 2133,
     "sha256": "ae6131e86045c0db6813307c744031d92d3dcecd94c94fc0157f6507c8a2bd11"
@@ -3196,8 +3208,8 @@
     "sha256": "3bd2590b8561ef9c0398a4552719d5a031a461bc3565246ba4d624ad7ec63184"
   },
   "scripts/package_nexus.py": {
-    "bytes": 15144,
-    "sha256": "a488a82756d0782978e1d5afd42c43dda9af67adcda5463371e3b6da7b18b50e"
+    "bytes": 15194,
+    "sha256": "bc26cd6ba2d524547ad71c2455543cd07deb20bfeda144c046be2c7ba430e4cd"
   },
   "scripts/probe_g1_conformance.py": {
     "bytes": 11777,

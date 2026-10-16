@@ -2,6 +2,15 @@
 
 ## Adaptive AI Capability Hub
 
+## Official visual identity
+
+The accepted Nexus avatar is the ringed multi-flow gate. Use the square avatar
+asset for Nexus profile and project displays; see the
+[visual identity guide](docs/nexus-visual-identity-v1.md) for the unchanged
+master and safe-use details.
+
+![Official Nexus avatar](assets/brand/nexus/nexus-avatar-500.png)
+
 ## Active product direction — 2026-10-08
 
 Core Alpha 2 is the accepted practical local engine. The verified managed layer is
