@@ -1,0 +1,52 @@
+{
+  "schema": "nexus.g6.retention-value-pilot-result-independent-review.v1",
+  "reviewer": "/root/g6_binding_independent_review",
+  "role": "Independent read-only reviewer; no implementation or release authority",
+  "decision": "PASS_BOUNDED_FEASIBILITY_PILOT_OBSERVATIONS",
+  "record_coherence": "PASS_RECORD_COHERENCE",
+  "comparative_value": "NO_INCREMENTAL_NEXUS_VALUE_DEMONSTRATED",
+  "material_findings": [],
+  "cryptographic_checks": {
+    "detached_signatures": 6,
+    "method": "Offline OpenSSH check-novalidate against each exact payload, namespace and accepted Ed25519 fingerprint",
+    "network_identity_refresh": false,
+    "current_issuer_check": "Implementer prescribed verification-only and per-dispatch current GitHub issuer checks retained separately; offline reviewer checks do not assert fresh GitHub registration",
+    "private_key_access": false
+  },
+  "verified": {
+    "bundle_review_payload_signature_preflight_bindings": true,
+    "unchanged_source_scope_files": 24,
+    "locked_slots_and_order": 6,
+    "normal_artifacts": 4,
+    "artifact_bytes_each": 106,
+    "artifact_sha256": "193448e212fdaa74997028953881545371fb632b4f63c0aa78a6528991e23ae4",
+    "planned_no_commit_interruptions": 2,
+    "interrupted_artifacts_completed": 0,
+    "all_jobs_active_zero": true,
+    "all_slots_retired_no_retry": true,
+    "model_invocations": 0,
+    "historical_files_unchanged": 81,
+    "runtime_files": 54,
+    "new_batch_evidence_files": 48,
+    "batch_result_sha256": "cd40c126c0d592b3aa9064b1010f33bb86bc6f5914ef0231c7245a0555566198"
+  },
+  "normalized_record_hashes": {
+    "docs/nexus-g6-retention-value-pilot-observations-v1.md": "27e34146d7d651f6d44828a422b86ad85874a81c17ffd49eb09d9445445249f7",
+    "research/nexus-g6-retention-value-pilot-observations-v1.json": "20e13c2f3f20ed12cb791894602000b7044dd6ccc86466c8f1b60a6c7fef8b51"
+  },
+  "interpretation": [
+    "Completed bounded negative-control pilot; not a preregistered final comparison or G6 acceptance",
+    "Common safety/observer/finalizer evidence receives zero incremental credit in both arms",
+    "No statistical superiority or monetary savings follows from observed latency",
+    "Local monetary cost remains UNKNOWN",
+    "Planned no-commit interruption is neither OS-crash proof nor completed artifact delivery",
+    "First inert audit projection assertion correction is explicit and does not alter or replay execution evidence",
+    "Delegation of redundant retention-specific responsibility does not register or activate a capability",
+    "Remaining retained-functionality value, cumulative qualification, final independent release review, final regression and exact Owner artifact acceptance require separate evidence"
+  ],
+  "reviewer_edits": 0,
+  "reviewer_slot_model_executions": 0,
+  "reviewer_network_calls": 0,
+  "release_authority": "NONE",
+  "real_admission": "NO"
+}

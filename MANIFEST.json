@@ -1715,6 +1715,10 @@
     "bytes": 8574,
     "sha256": "0b2b5c38afe914b2f5a8413ae301275148b574f7bdca65aa37cbb254d1bab34e"
   },
+  "docs/nexus-g6-retention-value-pilot-observations-v1.md": {
+    "bytes": 6038,
+    "sha256": "27e34146d7d651f6d44828a422b86ad85874a81c17ffd49eb09d9445445249f7"
+  },
   "docs/nexus-g6-retention-value-pilot-owner-signing-v1.md": {
     "bytes": 9687,
     "sha256": "aa225997ca1e8d483d36e45871931405f0d9afde9a66060fa547c652febcf953"
@@ -2671,6 +2675,10 @@
     "bytes": 4734,
     "sha256": "4ec402f36c6cde968a43acb4b8be6c98293d8f379505156645a29188449f98b2"
   },
+  "research/nexus-g6-retention-value-pilot-observations-v1.json": {
+    "bytes": 14001,
+    "sha256": "20e13c2f3f20ed12cb791894602000b7044dd6ccc86466c8f1b60a6c7fef8b51"
+  },
   "research/nexus-g6-retention-value-pilot-owner-decision-native-1-v1.json": {
     "bytes": 25131,
     "sha256": "fd1896366cde3120d5433ffd92411dc3a1ead72509e8842f1e27044dde673ccc"
@@ -2698,6 +2706,10 @@
   "research/nexus-g6-retention-value-pilot-readiness-v1.json": {
     "bytes": 8997,
     "sha256": "3d34aa1e79499071956665e5e63c33fdb69b93b76ea77a4f64023e49eab6041e"
+  },
+  "research/nexus-g6-retention-value-pilot-result-independent-review-v1.json": {
+    "bytes": 2871,
+    "sha256": "245a8e9f7f17c7246fcf13174a24c683dd6e021cf601e98154081fd10a5e5406"
   },
   "research/nexus-g6-retention-value-pilot-signing-bundle-v1.json": {
     "bytes": 5320,
