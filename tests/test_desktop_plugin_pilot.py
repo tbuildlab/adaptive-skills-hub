@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from contextlib import redirect_stderr
+import hashlib
 import importlib.util
 import io
 import json
@@ -37,10 +38,13 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         marketplace = json.loads((ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
         skill = (PLUGIN_ROOT / "skills" / "nexus" / "SKILL.md").read_text(encoding="utf-8")
         self.assertEqual(manifest["name"], "nexus-desktop")
-        self.assertEqual(manifest["version"], "0.1.0-r5.pilot.4")
+        self.assertEqual(manifest["version"], "0.1.0")
         self.assertEqual(manifest["interface"]["displayName"], "Nexus")
+        self.assertIn("bounded reference research", manifest["description"])
         self.assertIn("server-issued short-lived Host inventory tickets", manifest["description"])
-        self.assertIn("ChatGPT Host retains artifact and tool authority", manifest["interface"]["longDescription"])
+        self.assertIn("ChatGPT Host retains those authorities", manifest["interface"]["longDescription"])
+        self.assertEqual(manifest["interface"]["composerIcon"], "./assets/nexus-avatar-500.png")
+        self.assertEqual(manifest["interface"]["logo"], "./assets/nexus-avatar-500.png")
         self.assertEqual(manifest["mcpServers"], "./.mcp.json")
         self.assertEqual(mapping["mcpServers"]["nexus_desktop_local"]["cwd"], ".")
         self.assertEqual(mapping["mcpServers"]["nexus_desktop_local"]["args"], ["./scripts/launch_nexus_mcp.py"])
@@ -93,6 +97,12 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         self.assertIn("Do not claim an enhancement, an artifact, or validation", skill)
         self.assertIn("nexus-default", skill)
         self.assertIn("substantive", skill)
+        self.assertIn("Default Reference Research", skill)
+        self.assertIn("NO_SUITABLE_REFERENCE_FOUND", skill)
+        self.assertIn("PLAN → BUILD → TEST → VERIFY", skill)
+        self.assertIn("unknown or unclear license", skill)
+        self.assertIn("REAL_ADMISSION", skill)
+        self.assertIn("G5 is disabled", skill)
         self.assertNotIn("nexus executes", skill.casefold())
         source = "\n".join(path.read_text(encoding="utf-8") for path in PLUGIN_ROOT.rglob("*.py"))
         developer_root = "D:" + chr(92) + "chatgpt"
@@ -101,6 +111,29 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
             self.assertNotIn(forbidden, source)
         self.assertIn("subprocess.run", source)
         self.assertIn("shell=False", source)
+
+    def test_final_avatar_is_the_packaged_canonical_profile_asset(self) -> None:
+        source = ROOT / "assets" / "brand" / "nexus" / "nexus-avatar-500.png"
+        packaged = PLUGIN_ROOT / "assets" / "nexus-avatar-500.png"
+        self.assertTrue(source.is_file())
+        self.assertTrue(packaged.is_file())
+        self.assertEqual(hashlib.sha256(source.read_bytes()).digest(), hashlib.sha256(packaged.read_bytes()).digest())
+        header = packaged.read_bytes()[:24]
+        self.assertEqual(header[:8], b"\x89PNG\r\n\x1a\n")
+        self.assertEqual(int.from_bytes(header[16:20], "big"), 500)
+        self.assertEqual(int.from_bytes(header[20:24], "big"), 500)
+
+    def test_reference_research_instructions_cover_final_normal_use_policy(self) -> None:
+        from ash.reference_research import reference_research_plan
+
+        skill = (PLUGIN_ROOT / "skills" / "nexus" / "SKILL.md").read_text(encoding="utf-8")
+        self.assertEqual(reference_research_plan("Build a new website").status, "required")
+        self.assertEqual(reference_research_plan("Build a new website from this complete specification").status, "reduced")
+        self.assertEqual(reference_research_plan("Fix a tiny button label typo").status, "skipped")
+        self.assertEqual(reference_research_plan("Build a new website; do not search").trigger, "user_opt_out")
+        self.assertIn("NO_SUITABLE_REFERENCE_FOUND", skill)
+        self.assertIn("synthesize before", skill.casefold())
+        self.assertIn("HOLD", skill)
 
     def test_plugin_lifecycle_delegates_only_to_official_codex_commands(self) -> None:
         import scripts.setup_nexus as setup
@@ -325,6 +358,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
                 names = contents.namelist()
                 joined = "\n".join(contents.read(name).decode("utf-8", errors="ignore") for name in names)
             self.assertIn("plugins/nexus-desktop/.codex-plugin/plugin.json", names)
+            self.assertIn("plugins/nexus-desktop/assets/nexus-avatar-500.png", names)
             self.assertNotIn("state/installed-skills.json", names)
             developer_root = "D:" + chr(92) + "chatgpt"
             developer_profile = "C:" + chr(92) + "Users" + chr(92) + "De Yong"

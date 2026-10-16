@@ -1,8 +1,12 @@
-# Nexus Desktop Plugin and portable-distribution pilot
+# Nexus Desktop Plugin and portable distribution
 
-This pilot adds a **private local integration layer** over the frozen Nexus
-V1.2 Core and accepted Runtime R1/R2/R3 work. It does not change routing,
-planning, skill selection, the R2 tool surface, or any frozen tag.
+This normal-use release provides a **private local integration layer** over the
+frozen Nexus Roadmap V2 baseline and accepted runtime work. It does not change
+routing, planning, skill selection, the R2 tool surface, or any frozen tag.
+Version `0.1.0` follows the prior `0.1.0-r5.pilot.4` Desktop plugin and
+`0.1.0-rc.6` distribution candidate because the bounded capability surface,
+reference-research policy, packaging, and release validation are now treated as
+the supported normal-use baseline.
 
 ## Architecture
 
@@ -63,6 +67,12 @@ The Plugin uses the fixed opaque alias `nexus-default`; setup maps it to the
 single approved `--workspace-root` without putting a filesystem path in the
 bundled Skill.
 
+The retained marketplace identifier `nexus-local-pilot` is a compatibility key
+for existing local installations, not a user-facing capability or release
+label. The marketplace display name and installed plugin identity are `Nexus`.
+Keeping the key avoids an unrequested destructive migration of users' existing
+local marketplace records.
+
 ## Verify, update, remove, and rollback
 
 ```powershell
@@ -96,7 +106,7 @@ codex mcp add nexus-r2-local -- <python.exe> <nexus-root>\scripts\nexus_mcp.py -
 
 No source checkout, Core behavior, or frozen tag changes during removal.
 
-## Human Desktop acceptance checkpoint
+## Normal-use validation checkpoint
 
 Automated validation cannot prove a UI mention surface. In a **new ChatGPT
 Desktop conversation**, open Plugins, enable `Nexus`, and run exactly:
@@ -114,8 +124,9 @@ until a human observes it.
 
 ## Distribution boundary
 
-This is a private pilot, not a public release. The source archive contains only
+This is a private local normal-use release, not a public directory submission.
+The source archive contains only
 Nexus-owned source, Plugin metadata, the thin launcher, tests, and documentation.
 It excludes local workspace configuration, logs, state, output, caches, private
 Skills, credentials, personal paths, and virtual environments. There is no public
-license grant in this pilot; the manifest correctly identifies it as Proprietary.
+license grant in this release; the manifest correctly identifies it as Proprietary.

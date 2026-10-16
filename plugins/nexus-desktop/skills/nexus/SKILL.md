@@ -1,6 +1,6 @@
 ---
 name: nexus
-description: Use the local Nexus planner for a substantive multi-step task when capability selection, bounded Skill evidence, or a validation plan would materially improve reliability. For a presentation task, assess only the current Host-visible capability subset before preparing the single verified Presentations host-owned execution handoff and one bounded post-validation enhancement pass. Do not use for casual chat, simple facts, arithmetic, or short rewrites.
+description: Use Nexus for a substantial project or multi-step task when bounded Default Reference Research, capability selection, evidence, checkpoints, or a validation plan would materially improve reliability. Do not use it for casual chat, simple facts, arithmetic, short rewrites, or tiny edits. For presentations, retain the bounded current-turn Host-capability handoff workflow.
 ---
 
 # Nexus local planning workflow
@@ -8,6 +8,50 @@ description: Use the local Nexus planner for a substantive multi-step task when 
 Use this plugin only for a substantive task. Nexus is a planning and handoff
 layer, never an execution runtime. The ChatGPT host alone owns tools, file
 writes, artifacts, validation, approvals, and the final response.
+
+## Default Reference Research for substantial project work
+
+Before building a new project or making a substantial project change, call the
+existing `nexus.plan_task` flow and inspect its `reference_research` decision.
+This is the one existing planner's data-only stage, not a second planner,
+router, agent framework, or research runtime. It does not itself browse,
+download, install, execute, access private sources, or expand permissions.
+
+1. Use the decision as follows: `required` means complete bounded Reference
+   Research before implementation; `reduced` means research only unresolved
+   compatibility, implementation, and risk points; `skipped` means continue
+   without research overhead. A tiny edit, focused repair, or explicit user
+   instruction such as “do not search” remains skipped. Do not add research
+   to a trivial question or a small copy, color, label, or typo change.
+2. When active, prefer official documentation for implementation facts, then
+   compare a mature relevant project, an alternative implementation, and an
+   authoritative source. Keep the candidate set bounded by the returned plan.
+   Assess relevance, maintenance, documentation, releases/tests, license,
+   compatibility, security posture, and operating cost. Synthesize before
+   build; do not clone, rebrand, or directly copy a reference implementation.
+3. An unknown or unclear license allows learning patterns only, never direct
+   code reuse. Distinguish reference-derived ideas from Nexus-designed
+   decisions. Research is opt-out and does not grant network, installation,
+   credential, production, or privilege authority.
+4. If no suitable reference is found, record
+   `NO_SUITABLE_REFERENCE_FOUND`, design the remaining in-scope solution from
+   the user's goals, existing architecture, verified capabilities, security
+   boundary, and budget, then continue: PLAN → BUILD → TEST → VERIFY. Do not
+   start an unbounded search loop or block an otherwise safe project.
+5. Make ordinary technical choices autonomously within the accepted scope.
+   A real security, permission, production, trust-model, or frozen-contract
+   conflict is `HOLD` and requires an Owner decision. Preserve the first
+   failure, make the smallest repair, and never lower acceptance criteria just
+   to obtain PASS.
+
+Nexus currently supports bounded planning/routing, evidence and checkpoint
+behavior, qualified scoped Website/Report/project workflows, and the existing
+Host-owned presentation handoff. It does not support remote or external
+publication recovery, production admission, arbitrary production adapters,
+generic confidential-corpus qualification, universal Host isolation, G5
+delegation/concurrency, or retired experimental capabilities. `REAL_ADMISSION`
+remains `NO`; production adapters remain `DENY`; G5 is disabled; and N01 is an
+optional high-assurance research `HOLD`.
 
 ## Core Host Git Maintenance v1
 

@@ -1,7 +1,7 @@
 {
   "name": "nexus-local-pilot",
   "interface": {
-    "displayName": "Nexus Local Pilot"
+    "displayName": "Nexus"
   },
   "plugins": [
     {

@@ -11,30 +11,21 @@ master and safe-use details.
 
 ![Official Nexus avatar](assets/brand/nexus/nexus-avatar-500.png)
 
-## Active product direction — 2026-10-08
+## Active product direction — post-G6
 
-Core Alpha 2 is the accepted practical local engine. The verified managed layer is
-[G2-OPENAI — Managed Execution](docs/nexus-g2-openai-managed-execution-v1.md),
-with an opt-in [offline handoff CLI](docs/nexus-g2-openai-managed-use-v1.md) and
-[Responses hosted shell adapter](docs/nexus-g2-openai-hosted-adapter-v1.md).
-Nexus retains orchestration, task authority and independent completion checks.
-The first source slice prepares/imports bounded artifact handoffs. The additive
-adapter supports separately admitted dispatch/retrieval/cancellation and isolated
-artifact verification. Live credentials, account access and spend approval remain
-required; deterministic HTTP fixtures are not managed-cloud execution evidence.
+Roadmap V2 is completed and frozen at `nexus-v2-g6-final`. The normal-use
+Desktop Plugin is version `0.1.0` and adds bounded Default Reference Research
+to the existing planning, routing, evidence, checkpoint, and scoped
+Website/Report/project workflows. Reference research is opt-out, prefers
+official documentation, compares multiple public sources, guards unknown
+licenses, synthesizes before build, and falls back to Nexus-original in-scope
+design when no suitable reference exists.
 
-Active roadmap: Core Alpha 2 → G2-OPENAI → G3 → G4 → G6; G5 optional.
-The [2026-10-08 structured delivery v3 direction](docs/nexus-g2-openai-structured-v3.md)
-reuses Hosted Shell for execution and strict Responses JSON for patch delivery,
-with existing Nexus staging and independent verification. Reuse first, build only
-the gap; routine implementation proceeds within existing authority. G2-OPENAI is
-complete for this declared managed coding configuration: strict original-response
-patch delivery, isolated staging and unchanged independent local tests passed.
-Next: G3 — Separate Capability Authorization, under the reuse-first rule.
-G3 remains Separate Capability Authorization. Self-hosted high-assurance G2
-(Route D/Root R and related Host proof) is DEFERRED and its evidence is preserved.
-Production Positive Host Binding remains ABSENT. Earlier G2 HOLD records below
-remain historical self-hosted evidence, not active managed-execution blockers.
+The release does not promote historical experiments into normal capabilities:
+`REAL_ADMISSION=NO`, production adapters are `DENY`, G5 remains disabled, N01
+is optional high-assurance research `HOLD`, and remote publication recovery is
+not qualified. The Host retains tool, artifact, validation, permission, and
+publication authority.
 
 ## Core internal alpha — 2026-10-07
 

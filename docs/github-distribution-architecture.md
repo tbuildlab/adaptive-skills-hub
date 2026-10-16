@@ -168,7 +168,9 @@ neither claim.
 ## Versioning and future compatibility
 
 Frozen Core tags stay unchanged. Distribution has a separate SemVer stream in
-`release/VERSION`; `0.1.0-rc.6` is a release candidate, not a Core tag. A
+`release/VERSION`; `0.1.0` is the normal-use release, not a Core tag. The
+previous `0.1.0-rc.6` release candidate and `0.1.0-r5.pilot.4` Desktop plugin
+remain historical version markers, not current capability claims. A
 future GitHub Skill Scout must remain separately approved, preserve provenance,
 license/reputation/pinned-hash review, and never turn this installer into an
 automatic Skill installation channel.

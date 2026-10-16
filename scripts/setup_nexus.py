@@ -261,7 +261,7 @@ def uninstall(args: argparse.Namespace) -> int:
 
 
 def parser() -> argparse.ArgumentParser:
-    cli = argparse.ArgumentParser(description="Nexus Desktop Plugin pilot setup")
+    cli = argparse.ArgumentParser(description="Nexus Desktop Plugin setup")
     cli.add_argument("--data-root", default=str(default_data_root()), help="Nexus-owned private local data directory")
     cli.add_argument("--codex-command", default=default_codex_command(), help="Codex CLI executable for explicit plugin lifecycle commands")
     commands = cli.add_subparsers(dest="command", required=True)

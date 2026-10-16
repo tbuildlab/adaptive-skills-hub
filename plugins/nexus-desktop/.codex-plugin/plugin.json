@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
-  "version": "0.1.0-r5.pilot.4",
-  "description": "Local Nexus capability routing with server-issued short-lived Host inventory tickets, verified Host Skill-workflow bindings, host-owned execution handoff, and post-validation enhancement handoff for ChatGPT Desktop and Codex.",
+  "version": "0.1.0",
+  "description": "Local Nexus planning, bounded reference research, capability routing, server-issued short-lived Host inventory tickets, and Host-owned execution handoff for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
   },
@@ -13,14 +13,16 @@
     "planning",
     "host-handoff",
     "host-capability-inventory",
-    "adaptive-enhancement"
+    "adaptive-enhancement",
+    "reference-research",
+    "evidence"
   ],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Nexus",
-    "shortDescription": "Route substantive work with verified local capability evidence.",
-    "longDescription": "Nexus is a local routing and Host-handoff plugin. It can assess a bounded current-turn subset of metadata already surfaced by ChatGPT Desktop, but cannot enumerate private Host state. Its read/plan-and-handoff-only local MCP server exposes no remote endpoint and never performs execution, artifact mutation, or validation; ChatGPT Host retains artifact and tool authority.",
+    "shortDescription": "Plan work with evidence.",
+    "longDescription": "Nexus plans and routes substantive work, using bounded Default Reference Research where appropriate. It can assess only a current-turn subset of metadata already surfaced by ChatGPT Desktop, not private Host state. Its local MCP server never publishes remotely, expands privilege, executes a plan, mutates an artifact, or validates an outcome; the ChatGPT Host retains those authorities.",
     "developerName": "Nexus Project",
     "category": "Developer tools",
     "capabilities": [
@@ -28,8 +30,11 @@
     ],
     "defaultPrompt": [
       "Use Nexus to create an editable PowerPoint presentation.",
-      "Use Nexus to plan a backend bug fix with regression tests."
+      "Use Nexus to plan a backend bug fix with regression tests.",
+      "Use Nexus to plan a new website with bounded reference research before implementation."
     ],
-    "brandColor": "#2563EB"
+    "brandColor": "#2563EB",
+    "composerIcon": "./assets/nexus-avatar-500.png",
+    "logo": "./assets/nexus-avatar-500.png"
   }
 }
