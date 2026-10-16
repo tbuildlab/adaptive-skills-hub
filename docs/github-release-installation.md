@@ -1,10 +1,15 @@
-# Install Nexus from a GitHub Release (Windows RC)
+# Install Nexus 0.1.1 from a private GitHub Release (Windows x64)
+
+Use the [stable Nexus 0.1.1 release](https://github.com/TDY0225/adaptive-skills-hub/releases/tag/nexus-0.1.1).
+Its source is the accepted plugin patch commit
+`a8dbcc7c10177f20955ed7cce78b6609e663d1aa`; its immutable assets are not rebuilt
+for later README or repository-catalog cleanup on `main`.
 
 ## Prerequisites
 
 This path needs no repository clone, `D:` drive, administrator rights, API key,
 OAuth, remote MCP, Microsoft Store, `py.exe`, preinstalled Python, Codex CLI,
-Node, or npm. RC6
+Node, or npm. The `0.1.1` Windows ZIP
 contains a pinned, Nexus-owned CPython 3.13.15 x64 runtime and the reviewed R2
 dependencies. You need supported 64-bit Windows and one real non-root
 workspace directory. The installer registers a Nexus-owned source in the
@@ -12,15 +17,47 @@ documented per-user personal marketplace at
 `~/.agents/plugins/marketplace.json`; it never edits `~/.codex/config.toml`.
 Download the ZIP, ZIP receipt, PowerShell bootstrap, and bootstrap receipt from
 the same trusted GitHub Release.
-The release stays restricted/private until the owner separately chooses a
-license and repository visibility. Do not install files from a mirror.
+The repository/release is private and proprietary. Recipients need their own
+authorized GitHub repository access; a link does not grant access. Repository
+visibility and licensing are unchanged. Do not install files from a mirror.
+
+## Exact release downloads
+
+Sign in to GitHub and download these six assets into one folder:
+
+| Asset | Purpose |
+| --- | --- |
+| [Nexus-0.1.1-windows.zip](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1-windows.zip) | Complete Windows release, including the owned runtime. |
+| [ZIP checksum](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1-windows.zip.sha256) | ZIP SHA-256 receipt. |
+| [Install-Nexus-0.1.1.ps1](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Install-Nexus-0.1.1.ps1) | Verified bootstrap. |
+| [Bootstrap checksum](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Install-Nexus-0.1.1.ps1.sha256) | Bootstrap SHA-256 receipt. |
+| [Release manifest](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1.release-manifest.json) | Exact release member sizes and hashes. |
+| [Manifest checksum](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1.release-manifest.json.sha256) | Manifest SHA-256 receipt. |
+
+The ZIP SHA-256 is
+`6b6b8f8f2ee8949557dd09ac2bffe14e0401c99aa2d2bafb9402f6f90d2f745a`.
+Do not use GitHub's generated **Source code** ZIP/TAR as the installer: it has
+no release-owned runtime or extracted `release-manifest.json`.
+
+Alternatively, with GitHub CLI installed and already authenticated as an
+authorized user:
+
+```powershell
+gh release download nexus-0.1.1 --repo TDY0225/adaptive-skills-hub --dir .\Nexus-0.1.1-download
+Set-Location .\Nexus-0.1.1-download
+```
+
+No credentials should be pasted into commands or shared with another user.
 
 ## Install
 
 1. Verify the downloaded bootstrap against its `.sha256` receipt:
 
    ```powershell
-   Get-FileHash .\Install-Nexus-<version>.ps1 -Algorithm SHA256
+   $expectedBootstrap = '37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f'
+   if ((Get-FileHash .\Install-Nexus-0.1.1.ps1 -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expectedBootstrap) {
+     throw 'Nexus bootstrap checksum mismatch'
+   }
    ```
 
    Compare it with the first field in the matching receipt from that Release.
@@ -29,10 +66,12 @@ license and repository visibility. Do not install files from a mirror.
    manifest, and configures Nexus:
 
    ```powershell
-   powershell -ExecutionPolicy Bypass -File .\Install-Nexus-<version>.ps1 `
-     -ArchivePath .\Nexus-<version>-windows.zip `
-     -ChecksumPath .\Nexus-<version>-windows.zip.sha256 `
-     -WorkspaceRoot C:\Work\MyProject
+   $projectRoot = Join-Path $env:USERPROFILE 'NexusProjects\MyProject'
+   New-Item -ItemType Directory -Force -Path $projectRoot | Out-Null
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-Nexus-0.1.1.ps1 `
+     -ArchivePath .\Nexus-0.1.1-windows.zip `
+     -ChecksumPath .\Nexus-0.1.1-windows.zip.sha256 `
+     -WorkspaceRoot $projectRoot -Mode plugin
    ```
 
    `Bypass` affects only this PowerShell process; the installer requests no
@@ -52,13 +91,49 @@ Alias, modify another Python, or download packages. If `python` resolves to a
 WindowsApps alias or another system interpreter, it is reported only as ignored
 diagnostics; a missing or incompatible system interpreter is not a blocker.
 
-RC6 copies the Plugin source to the documented personal location
+The installer copies the Plugin source to the documented personal location
 `~/.codex/plugins/nexus-desktop` and registers it as
 `./.codex/plugins/nexus-desktop` with policy `AVAILABLE`. The installer does
 not treat marketplace discovery as proof that the `@` selector can load Nexus.
-Only ChatGPT Desktop can perform the required `+ Install` action. After it has
-done so, start a fresh conversation and type `@`. If Nexus is absent, stop the
-acceptance test and report an exposure failure—do not edit host files.
+Desktop owns the actual plugin installation. After it has installed Nexus,
+start a fresh conversation and type `@`. If Nexus is absent, report an exposure
+failure; do not infer success from the source card or edit host files.
+
+### Optional Codex CLI registration
+
+On a local Codex installation whose `codex plugin --help` exposes `marketplace`,
+`add`, and `list`, the supported CLI can perform the host-managed registration
+after the verified release installer has prepared the personal source:
+
+```powershell
+codex plugin marketplace add "$env:USERPROFILE"
+codex plugin add nexus-desktop@personal-marketplace
+codex plugin list --json
+```
+
+If `personal-marketplace` already appears in `codex plugin marketplace list`,
+skip the first command. Expect exactly one enabled installed Nexus record,
+version `0.1.1`, ID `nexus-desktop@personal-marketplace`. The host manages its
+cache; never manually copy, edit or delete cache files. Start a new conversation
+after installation so its Skill and tools refresh.
+
+The cloned repository catalog is a distinct developer path. On current `main`
+its `nexus-local-pilot` catalog points to `./plugins/nexus-desktop` relative to
+the checkout. It does not replace the generated personal catalog above. Do not
+install both copies or create a standalone MCP with the same tool names.
+
+## First use and truthful outcomes
+
+Try `Use Nexus to plan a new editable PowerPoint presentation project.`
+`nexus.plan_task` returns the `reference_research` object in `0.1.1`.
+Substantial projects use bounded research; exact specs use reduced/targeted
+research; tiny edits and explicit opt-out skip it. No suitable reference means
+Nexus-original in-scope design and Host-owned PLAN → BUILD → TEST → VERIFY.
+
+A real capability gap remains `fallback_needed / CAPABILITY_NOT_COVERED`.
+Material scope/security/permission conflicts retain `HOLD_owner_decision` and
+must not be promoted into a successful plan. A planning response is not artifact
+execution or verification evidence. See [the current scope](../README.md#supported-scope).
 
 ## Existing standalone MCP
 
@@ -73,11 +148,19 @@ Codex/ChatGPT host configuration to migrate it.
 After extraction, use the printed release root:
 
 ```powershell
-<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py verify
-<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py upgrade --workspace-root C:\Work\MyProject --mode plugin
-<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py rollback
-<release-root>\runtime\python\python.exe -I -B <release-root>\scripts\release_install.py uninstall
+$releaseRoot = Join-Path $env:LOCALAPPDATA 'Nexus\releases\Nexus-0.1.1'
+$projectRoot = Join-Path $env:USERPROFILE 'NexusProjects\MyProject'
+& "$releaseRoot\runtime\python\python.exe" -I -B "$releaseRoot\scripts\release_install.py" verify
+if ($LASTEXITCODE -ne 0) { throw 'Nexus release verification failed' }
+& "$releaseRoot\runtime\python\python.exe" -I -B "$releaseRoot\scripts\release_install.py" upgrade --workspace-root $projectRoot --mode plugin
 ```
+
+For a previously extracted `0.1.1`, use `verify` and `upgrade` above rather than
+extracting over it. For a new version, download its own versioned assets first.
+Complete the Desktop/CLI refresh afterward. Never replace an old release's bytes
+or change a frozen tag to reuse a version. To intentionally roll back or uninstall,
+close active Nexus sessions, use Desktop's uninstall control, then invoke the
+same verified installer's `rollback` or `uninstall` subcommand as appropriate.
 
 Nexus never auto-downloads, auto-installs, or silently downgrades. Uninstall
 retains Nexus-local backups and verified release files for rollback; it never

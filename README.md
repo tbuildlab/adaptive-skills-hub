@@ -1,31 +1,131 @@
 # Nexus
 
-## Adaptive AI Capability Hub
+Nexus is a local planning and capability-routing plugin for ChatGPT Desktop and
+Codex. It selects suitable Skills, prepares bounded research and validation
+plans, and returns evidence for Host-owned work. The Host executes tools,
+creates artifacts, verifies results, and controls permissions.
 
-## Official visual identity
-
-The accepted Nexus avatar is the ringed multi-flow gate. Use the square avatar
-asset for Nexus profile and project displays; see the
-[visual identity guide](docs/nexus-visual-identity-v1.md) for the unchanged
-master and safe-use details.
+**Stable private release: 0.1.1.** Nexus Roadmap V2 is completed and frozen at
+[`nexus-v2-g6-final`](https://github.com/TDY0225/adaptive-skills-hub/tree/nexus-v2-g6-final).
+The distribution version is independent of frozen Core tags. This repository
+is private and proprietary: share these links only with authorized repository
+users. There is no OpenAI public plugin-directory listing or public license grant.
 
 ![Official Nexus avatar](assets/brand/nexus/nexus-avatar-500.png)
 
-## Active product direction — post-G6
+## Quick Start: Windows x64
 
-Roadmap V2 is completed and frozen at `nexus-v2-g6-final`. The normal-use
-Desktop Plugin is version `0.1.1` and exposes bounded Default Reference Research
-to the existing planning, routing, evidence, checkpoint, and scoped
-Website/Report/project workflows. Reference research is opt-out, prefers
-official documentation, compares multiple public sources, guards unknown
-licenses, synthesizes before build, and falls back to Nexus-original in-scope
-design when no suitable reference exists.
+1. Sign in to GitHub with repository access and download the six assets from
+   [Nexus 0.1.1](https://github.com/TDY0225/adaptive-skills-hub/releases/tag/nexus-0.1.1)
+   into one folder. Use the named Windows ZIP asset, not GitHub's automatic
+   **Source code** download.
+2. Open PowerShell in that folder and run:
+
+   ```powershell
+   $projectRoot = Join-Path $env:USERPROFILE 'NexusProjects\MyProject'
+   New-Item -ItemType Directory -Force -Path $projectRoot | Out-Null
+   $expectedBootstrap = '37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f'
+   if ((Get-FileHash .\Install-Nexus-0.1.1.ps1 -Algorithm SHA256).Hash.ToLowerInvariant() -ne $expectedBootstrap) {
+     throw 'Nexus bootstrap checksum mismatch'
+   }
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\Install-Nexus-0.1.1.ps1 `
+     -ArchivePath .\Nexus-0.1.1-windows.zip `
+     -ChecksumPath .\Nexus-0.1.1-windows.zip.sha256 `
+     -WorkspaceRoot $projectRoot -Mode plugin
+   ```
+
+   Replace the example workspace with your existing approved project if desired.
+   No administrator access, preinstalled Python, Node/npm, API key, or Codex CLI
+   is required by the packaged installer. ExecutionPolicy Bypass applies to this
+   PowerShell process only. Do not run this fresh-extraction command over an
+   already extracted version; see the maintenance instructions below.
+3. The installer prepares the personal marketplace source. In Desktop, open
+   **Plugins → Personal → Nexus → Install**, then start a new chat and select Nexus.
+
+[Full installation, checksums, upgrade and rollback](docs/github-release-installation.md)
+includes exact assets and an optional Codex CLI registration path. Do not edit
+the plugin cache manually. A repository clone alone is not a packaged installation.
+
+## Marketplace paths
+
+The release installer generates `~/.agents/plugins/marketplace.json` with
+`source.path: ./.codex/plugins/nexus-desktop`, relative to your user profile.
+The managed plugin source is `~/.codex/plugins/nexus-desktop`; Desktop/Codex
+owns the installed copy. Its plugin ID is `nexus-desktop@personal-marketplace`.
+
+For source developers, the separate repo catalog
+[`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) uses
+`./plugins/nexus-desktop`, relative to this checkout, and retains the compatibility
+key `nexus-local-pilot`. Use the [developer setup guide](docs/nexus-desktop-plugin-pilot.md)
+for that path. Choose one installation path; do not enable two Nexus MCP registrations.
+
+## Basic usage
+
+In a new conversation with Nexus enabled, try:
+
+- `Use Nexus to plan a new editable PowerPoint presentation project.`
+- `Use Nexus to plan a backend bug fix and its regression checks.`
+- `Use Nexus to plan a new website from this complete specification.`
+
+Nexus returns planning and load evidence; these responses do not claim that a
+Host executed or validated an artifact. Task suitability and installed trusted
+Skill coverage determine whether planning can proceed. Tiny edits and trivial
+questions should normally bypass the planner entirely.
+
+## Default Reference Research and expected fallback
+
+| Situation | Expected behavior |
+| --- | --- |
+| Substantial new project/change | Bounded research first, preferring official docs and comparing multiple GitHub/public references; synthesize before build. |
+| Exact specification/stack | Reduced, targeted research for unresolved implementation, compatibility and risk points. |
+| Tiny edit or explicit "do not search" | Skip research. |
+| Unknown/unclear license | Learn patterns only; no direct code reuse. |
+| No suitable reference within budget | Record `NO_SUITABLE_REFERENCE_FOUND`, design an in-scope Nexus-original solution, then PLAN → BUILD → TEST → VERIFY through the Host. |
+| Missing trusted capability coverage | Honest `fallback_needed / CAPABILITY_NOT_COVERED`; this is independent of the research decision. |
+| Material security/scope/permission conflict | HOLD / Owner decision; do not expand privilege or bypass selection gates. |
+
+`nexus.plan_task` exposes the existing `reference_research` decision in `0.1.1`.
+Covered required/reduced/skipped cases return `planned` with no unexpected
+fallback. Vague prompts can still lack supported coverage. HOLD is preserved as
+`security_conflict_outcome: HOLD_owner_decision`; a blocked plan may retain the
+existing `fallback_needed` envelope. Do not relabel either outcome as success.
+
+## Supported scope
+
+Nexus provides bounded planning/routing/Skill selection, evidence and checkpoint
+behavior, qualified scoped Website/Report/project workflows, and the existing
+Host-owned presentation handoff. Availability depends on the accepted workflow,
+trusted Skills, Host bindings, runtime and permissions; it is not universal coverage.
 
 The release does not promote historical experiments into normal capabilities:
 `REAL_ADMISSION=NO`, production adapters are `DENY`, G5 remains disabled, N01
 is optional high-assurance research `HOLD`, and remote publication recovery is
 not qualified. The Host retains tool, artifact, validation, permission, and
 publication authority.
+
+Unsupported scope includes arbitrary production adapters/admission, remote or
+external publication recovery, generic confidential-corpus qualification,
+universal Host isolation, G5 delegation/concurrency, and retired experiments.
+Ordinary technical choices remain autonomous within scope; preserve the first
+failure, make the smallest repair, and never lower acceptance criteria to PASS.
+
+## Release and project references
+
+- [Stable release and private downloads](https://github.com/TDY0225/adaptive-skills-hub/releases/tag/nexus-0.1.1)
+- [Accepted plugin source commit](https://github.com/TDY0225/adaptive-skills-hub/commit/a8dbcc7c10177f20955ed7cce78b6609e663d1aa)
+- [Plugin integration/developer guide](docs/nexus-desktop-plugin-pilot.md)
+- [Distribution architecture and versioning](docs/github-distribution-architecture.md)
+- [Final visual identity and canonical assets](docs/nexus-visual-identity-v1.md)
+
+`nexus-0.1.1` identifies the accepted, already built release commit. Later
+documentation/catalog cleanup on `main` does not reissue its immutable assets.
+
+<details>
+<summary>Historical architecture and development notes (not current readiness claims)</summary>
+
+The following sections preserve earlier checkpoints. Their dates, remaining-work
+statements and experimental capability descriptions are historical; the stable
+scope and installation guidance above control normal plugin use.
 
 ## Core internal alpha — 2026-10-07
 
@@ -295,3 +395,5 @@ Slice 1 surface also exposes the non-authorizing
 path, uses bounded safe context, returns redacted plan/load evidence, and never
 executes a plan. See [docs/nexus-runtime-r2-local-mcp.md](docs/nexus-runtime-r2-local-mcp.md)
 for installation, local configuration, security boundaries, and removal.
+
+</details>

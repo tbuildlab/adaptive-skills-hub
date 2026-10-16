@@ -56,7 +56,12 @@ it afterward with the accepted R3 command.
 
 ## Private install
 
-From a cloned Nexus checkout, use the primary setup command. It creates only a
+For normal Windows use, start with the verified private
+[0.1.1 GitHub Release installation](github-release-installation.md). The following
+checkout-based setup is a separate developer path, not the packaged installer.
+Do not enable it alongside the personal-marketplace installation.
+
+From a cloned Nexus checkout on current `main`, use the setup command. It creates only a
 Nexus-owned local data directory (normally `%LOCALAPPDATA%\Nexus`) and preserves
 backup copies before replacing Nexus-owned JSON files:
 
@@ -106,10 +111,10 @@ python scripts/setup_nexus.py check
 codex plugin list
 ```
 
-For an updated private checkout, reinstall only after validating the new source:
+For an updated developer checkout, reinstall only after validating the new source
+and its newly versioned manifest. Do not rewrite an already released version:
 
 ```powershell
-python C:\Users\<user>\.codex\skills\.system\plugin-creator\scripts\update_plugin_cachebuster.py plugins\nexus-desktop
 codex plugin add nexus-desktop@nexus-local-pilot
 ```
 

@@ -8,7 +8,7 @@
       "name": "nexus-desktop",
       "source": {
         "source": "local",
-        "path": "./.codex/plugins/nexus-desktop"
+        "path": "./plugins/nexus-desktop"
       },
       "policy": {
         "installation": "AVAILABLE",

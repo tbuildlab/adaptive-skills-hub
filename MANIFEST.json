@@ -1,7 +1,7 @@
 {
   ".agents/plugins/marketplace.json": {
-    "bytes": 388,
-    "sha256": "3e093030b7af90586776b1ba4077e504d3b96012f12291c1031221835e21b818"
+    "bytes": 381,
+    "sha256": "0ba28c2abcc07af8189228ea308756ac7b7d2076545d3042d19e728262d21f23"
   },
   ".github/workflows/nexus-d03-custody-qualification.yml": {
     "bytes": 872,
@@ -20,8 +20,8 @@
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "README.md": {
-    "bytes": 14607,
-    "sha256": "1a7db7401e154e2d249925eaf07e16d7c6f735dadb08f2f4dc07f467e3fe1ed5"
+    "bytes": 20693,
+    "sha256": "c240e8654b6f80983fa63349bf90dcdc2fb378f6b2b148b6175406617cdebdfb"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -880,8 +880,8 @@
     "sha256": "578673f3c7b852043dde2e6a73ce3dc7d288860d2c51a562804808b90729db1d"
   },
   "docs/github-release-installation.md": {
-    "bytes": 4502,
-    "sha256": "c3213ebb2276eb206033f9cd17bc3f8ecc0f96bc7ef5a46d25d0721886ebbae0"
+    "bytes": 9276,
+    "sha256": "abc27e0b398e450dd357e9189517c68ffe3a3f6a87449d0f231da70d144b0eeb"
   },
   "docs/license-inventory.md": {
     "bytes": 2293,
@@ -936,8 +936,8 @@
     "sha256": "08a5237e1b55a85e409c8642b44dc31d45737dc62dece0ddadffb9ab75422bf0"
   },
   "docs/nexus-desktop-plugin-pilot.md": {
-    "bytes": 7443,
-    "sha256": "d84ab2f73bd8c570b84946dbd742033ce070f24842f7bf521f1c38f57b2ee39f"
+    "bytes": 7698,
+    "sha256": "c8b8cf5431c693c753d20aac70ba22f9bc5e3288b5aa025489008a2b0d8eba62"
   },
   "docs/nexus-e2b-appcontainer-protocol-successor-proposal-v1.md": {
     "bytes": 13449,
@@ -3328,8 +3328,8 @@
     "sha256": "b4d0c665b5353ce93ff6ac45605831683e0bf166419a8d11a515e014f4cffc4e"
   },
   "tests/test_desktop_plugin_pilot.py": {
-    "bytes": 21702,
-    "sha256": "eea08f63415f2542c3ee8f6b8238c30eb03558a54ba73743cfaa32ff287c6068"
+    "bytes": 21782,
+    "sha256": "94ca7fe8f7059217176dd2130c5d5032047acb9aea7da548dfa88c9988761f28"
   },
   "tests/test_ecosystem_compare.py": {
     "bytes": 23723,
