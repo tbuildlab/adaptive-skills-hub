@@ -123,6 +123,7 @@ def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str
     return ensure_response_limit({
         "schema_version": SCHEMA_VERSION, "request_id": request_id, "product": PRODUCT, "status": status,
         "task_summary": {"task_type": plan.task_profile.task_type, "required_capabilities": list(plan.task_profile.required_capabilities)},
+        "reference_research": plan.reference_research.to_dict(),
         "selected_skills": selected,
         "execution_steps": [{"capability": step.capability, "summary": f"complete the {step.capability} contribution", "validation": list(step.validation)} for step in plan.steps],
         "validation_plan": [{"kind": item.get("kind", "validation"), "summary": "perform the planned validation"} for item in plan.validation_plan.checks],

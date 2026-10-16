@@ -168,7 +168,9 @@ neither claim.
 ## Versioning and future compatibility
 
 Frozen Core tags stay unchanged. Distribution has a separate SemVer stream in
-`release/VERSION`; `0.1.0` is the normal-use release, not a Core tag. The
+`release/VERSION`; `0.1.1` is the normal-use patch release, not a Core tag. It
+exposes the existing reference-research decision through the MCP plan response;
+the previously installed `0.1.0` artifacts remain immutable. The
 previous `0.1.0-rc.6` release candidate and `0.1.0-r5.pilot.4` Desktop plugin
 remain historical version markers, not current capability claims. A
 future GitHub Skill Scout must remain separately approved, preserve provenance,

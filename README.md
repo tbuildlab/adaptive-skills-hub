@@ -14,7 +14,7 @@ master and safe-use details.
 ## Active product direction — post-G6
 
 Roadmap V2 is completed and frozen at `nexus-v2-g6-final`. The normal-use
-Desktop Plugin is version `0.1.0` and adds bounded Default Reference Research
+Desktop Plugin is version `0.1.1` and exposes bounded Default Reference Research
 to the existing planning, routing, evidence, checkpoint, and scoped
 Website/Report/project workflows. Reference research is opt-out, prefers
 official documentation, compares multiple public sources, guards unknown

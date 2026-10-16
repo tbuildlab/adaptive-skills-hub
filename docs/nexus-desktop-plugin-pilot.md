@@ -8,6 +8,32 @@ Version `0.1.0` follows the prior `0.1.0-r5.pilot.4` Desktop plugin and
 reference-research policy, packaging, and release validation are now treated as
 the supported normal-use baseline.
 
+### 0.1.1 patch: expose the existing research decision
+
+Previous plugin/distribution version: `0.1.0`. New version: `0.1.1`, following
+the existing distribution SemVer stream. The already built/installed `0.1.0`
+is not reissued. The only runtime change adds the existing
+`ExecutionPlan.reference_research.to_dict()` to the allowlisted MCP
+`nexus.plan_task` response. The launcher and stdio adapter already reached the
+correct planner; `safe_plan()` omitted this field while the bundled Skill
+required it. No planner, policy, tool, authority, routing, or handoff changes.
+
+`required`, `reduced`, and `skipped` are research decisions, independent of
+capability coverage. A real coverage gap still returns `fallback_needed`;
+it must never be relabeled `planned` to pass a smoke test. For example,
+`Build a new website` currently lacks trusted `general` Skill coverage.
+Covered presentation-project cases exercise the actual MCP protocol with no
+unexpected fallback. A project prohibition still blocks selection, and the
+research data retains `security_conflict_outcome: HOLD_owner_decision`.
+No-suitable-reference synthesis continues through the existing Host-owned
+PLAN / BUILD / TEST / VERIFY workflow; Nexus does not execute research or builds.
+
+`tests/test_mcp_reference_research.py` tests real stdio `nexus.plan_task` output
+for required/reduced/tiny-edit/opt-out cases, exact existing policy data,
+license/budget/original-design/HOLD rules, true coverage gaps, project prohibitions,
+and equal-priority security/scope constraint conflicts.
+It uses an explicitly trusted test catalog without mocking planner results.
+
 ## Architecture
 
 `plugins/nexus-desktop` is a local Plugin with a user-facing display name of
