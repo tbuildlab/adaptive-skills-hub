@@ -1,6 +1,6 @@
 # Install Nexus 0.1.1 from a private GitHub Release (Windows x64)
 
-Use the [stable Nexus 0.1.1 release](https://github.com/TDY0225/adaptive-skills-hub/releases/tag/nexus-0.1.1).
+Use the [stable Nexus 0.1.1 release](https://github.com/tbuildlab/adaptive-skills-hub/releases/tag/nexus-0.1.1).
 Its source is the accepted plugin patch commit
 `a8dbcc7c10177f20955ed7cce78b6609e663d1aa`; its immutable assets are not rebuilt
 for later README or repository-catalog cleanup on `main`.
@@ -27,12 +27,12 @@ Sign in to GitHub and download these six assets into one folder:
 
 | Asset | Purpose |
 | --- | --- |
-| [Nexus-0.1.1-windows.zip](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1-windows.zip) | Complete Windows release, including the owned runtime. |
-| [ZIP checksum](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1-windows.zip.sha256) | ZIP SHA-256 receipt. |
-| [Install-Nexus-0.1.1.ps1](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Install-Nexus-0.1.1.ps1) | Verified bootstrap. |
-| [Bootstrap checksum](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Install-Nexus-0.1.1.ps1.sha256) | Bootstrap SHA-256 receipt. |
-| [Release manifest](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1.release-manifest.json) | Exact release member sizes and hashes. |
-| [Manifest checksum](https://github.com/TDY0225/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1.release-manifest.json.sha256) | Manifest SHA-256 receipt. |
+| [Nexus-0.1.1-windows.zip](https://github.com/tbuildlab/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1-windows.zip) | Complete Windows release, including the owned runtime. |
+| [ZIP checksum](https://github.com/tbuildlab/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1-windows.zip.sha256) | ZIP SHA-256 receipt. |
+| [Install-Nexus-0.1.1.ps1](https://github.com/tbuildlab/adaptive-skills-hub/releases/download/nexus-0.1.1/Install-Nexus-0.1.1.ps1) | Verified bootstrap. |
+| [Bootstrap checksum](https://github.com/tbuildlab/adaptive-skills-hub/releases/download/nexus-0.1.1/Install-Nexus-0.1.1.ps1.sha256) | Bootstrap SHA-256 receipt. |
+| [Release manifest](https://github.com/tbuildlab/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1.release-manifest.json) | Exact release member sizes and hashes. |
+| [Manifest checksum](https://github.com/tbuildlab/adaptive-skills-hub/releases/download/nexus-0.1.1/Nexus-0.1.1.release-manifest.json.sha256) | Manifest SHA-256 receipt. |
 
 The ZIP SHA-256 is
 `6b6b8f8f2ee8949557dd09ac2bffe14e0401c99aa2d2bafb9402f6f90d2f745a`.
@@ -43,7 +43,7 @@ Alternatively, with GitHub CLI installed and already authenticated as an
 authorized user:
 
 ```powershell
-gh release download nexus-0.1.1 --repo TDY0225/adaptive-skills-hub --dir .\Nexus-0.1.1-download
+gh release download nexus-0.1.1 --repo tbuildlab/adaptive-skills-hub --dir .\Nexus-0.1.1-download
 Set-Location .\Nexus-0.1.1-download
 ```
 

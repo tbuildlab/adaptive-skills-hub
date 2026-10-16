@@ -6,7 +6,7 @@ plans, and returns evidence for Host-owned work. The Host executes tools,
 creates artifacts, verifies results, and controls permissions.
 
 **Stable private release: 0.1.1.** Nexus Roadmap V2 is completed and frozen at
-[`nexus-v2-g6-final`](https://github.com/TDY0225/adaptive-skills-hub/tree/nexus-v2-g6-final).
+[`nexus-v2-g6-final`](https://github.com/tbuildlab/adaptive-skills-hub/tree/nexus-v2-g6-final).
 The distribution version is independent of frozen Core tags. This repository
 is private and proprietary: share these links only with authorized repository
 users. There is no OpenAI public plugin-directory listing or public license grant.
@@ -16,7 +16,7 @@ users. There is no OpenAI public plugin-directory listing or public license gran
 ## Quick Start: Windows x64
 
 1. Sign in to GitHub with repository access and download the six assets from
-   [Nexus 0.1.1](https://github.com/TDY0225/adaptive-skills-hub/releases/tag/nexus-0.1.1)
+   [Nexus 0.1.1](https://github.com/tbuildlab/adaptive-skills-hub/releases/tag/nexus-0.1.1)
    into one folder. Use the named Windows ZIP asset, not GitHub's automatic
    **Source code** download.
 2. Open PowerShell in that folder and run:
@@ -111,8 +111,8 @@ failure, make the smallest repair, and never lower acceptance criteria to PASS.
 
 ## Release and project references
 
-- [Stable release and private downloads](https://github.com/TDY0225/adaptive-skills-hub/releases/tag/nexus-0.1.1)
-- [Accepted plugin source commit](https://github.com/TDY0225/adaptive-skills-hub/commit/a8dbcc7c10177f20955ed7cce78b6609e663d1aa)
+- [Stable release and private downloads](https://github.com/tbuildlab/adaptive-skills-hub/releases/tag/nexus-0.1.1)
+- [Accepted plugin source commit](https://github.com/tbuildlab/adaptive-skills-hub/commit/a8dbcc7c10177f20955ed7cce78b6609e663d1aa)
 - [Plugin integration/developer guide](docs/nexus-desktop-plugin-pilot.md)
 - [Distribution architecture and versioning](docs/github-distribution-architecture.md)
 - [Final visual identity and canonical assets](docs/nexus-visual-identity-v1.md)
