@@ -1,0 +1,44 @@
+{
+  "accepted_responsibility": "Frozen original G3 exact reviewed capability approval/registration/current eligibility with terminal revocation",
+  "additional_inspectable_semantics": [
+    "Registration binds the subject, reviewed configuration, exact scope and finite validity",
+    "Current eligibility compares exact current registration bytes and rechecks origin/material",
+    "Eligibility supplies no dispatch authority",
+    "Typed subject/grant/revocation identities and exact cross-record binding",
+    "Revocation invalidates memory before persistence; spent decision denies before enrollment and every eligibility query"
+  ],
+  "all_match_frozen_g3_tag": true,
+  "decision": "PASS_RETAINED_GOVERNANCE_VALUE",
+  "governing_amendment_sha256": "c636f5418d85e69455224150cc796e2cf57866978ecd97e3bea9e9928e0fa85c",
+  "historical_evidence": "Frozen acceptance retains four positive eligibility queries, useful bounded completion, subsequent revocation DENY and restart refusal. Original High finding and repaired successor review preserved.",
+  "limits": [
+    "Historical exact-packet trusted-Host governance semantics only",
+    "Decision remains permanently retired; no active or reusable issuer/approval service created",
+    "No production admission, malicious-Host protection, general comparative superiority, money savings or confidential input qualification",
+    "G4 need not be claimed to satisfy this independently supported at-least-one-responsibility criterion",
+    "Amended criterion PASS only; original G6 criteria remained HOLD; both pilot outcomes/parameters unchanged",
+    "Final whole-product security/release review and exact Owner artifact acceptance remain separate"
+  ],
+  "native_boundary": "The corresponding native verification invocation alone does not implement this application-specific capability-registration lifecycle. Native tools could implement equivalent additional custom contracts; no universal impossibility or performance-superiority claim.",
+  "native_facility": "Existing GitHub signing-key identity evidence and actual OpenSSH -Y verify authenticate signed bytes/key/principal/namespace",
+  "new_execution_or_component_decision": false,
+  "real_admission": "NO",
+  "reviewed_LF_sha256": {
+    "ash/g3_grant_codec.py": "7287fd2dcf503f7d04540beee076f2def28254aeae154e418d6ecc05321f66b4",
+    "docs/nexus-g3-original-final-acceptance-freeze-v1.md": "fcfa48e5ee909fc821fb4baf4f44b9a594ae86f75b1c591b86f993e6a32a9567",
+    "research/nexus-g3-independent-review-result-v2.json": "00c3e26274c6dc3a13c621e298b0e2d09f71334f9c18bbfa7428c27b0ae5978c",
+    "research/nexus-g3-signed-local-qualification-v1.json": "c4f05fe7da6ae58104a421944303a032f7c196c87783e9e5bef6bd9d2caa803b",
+    "research/nexus-g3-signed-local-revocation-v1.json": "542abc6b0c22455dcd282c099cbbb9a5001cfead3576eb230331aa55d640656f",
+    "scripts/g3_signed_local_approval.py": "c8f535859f28c18e82c8927492f95b60e6ab5e95a4f0638f6f5cfe50de072880",
+    "scripts/verify_g3_owner_signature.py": "46f2d685db825fcb8812a5e6c2cd80285130ace022205dfee602dda46f0c72c6",
+    "tests/test_g3_owner_signing_procedure.py": "c2c84ccbb87ce1e14b8805cd777c7ff756fd68747ef84aeb8a0532b0190bdf42",
+    "tests/test_g3_signed_local_approval.py": "a86a8bc86754abc9ac5760775e2a6a9d7a2c4e2a041ca18085f8bf2549ba97b0"
+  },
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_authentication_calls": 0,
+  "reviewer_executions": 0,
+  "reviewer_mutations": 0,
+  "reviewer_replays": 0,
+  "reviewer_tests": 0,
+  "schema": "nexus.g6.retained-governance-value-independent-review.v1"
+}

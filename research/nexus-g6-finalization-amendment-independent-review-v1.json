@@ -1,0 +1,25 @@
+{
+  "amendment_applied_by_reviewer": false,
+  "canonical_amendment_sha256": "c636f5418d85e69455224150cc796e2cf57866978ecd97e3bea9e9928e0fa85c",
+  "confirmed": [
+    "Exactly two prospective milestone acceptance changes; not compliance with original criteria",
+    "Frozen original Roadmap and local-effect evidence hashes match",
+    "Original G6 HOLD and both NO INCREMENTAL BENEFIT conclusions, clean latency failure and UNKNOWN money unchanged",
+    "No comparator/metric/threshold/acceptance change inside completed pilots",
+    "Retained governance value needs its own independent concrete-semantic assessment; architecture intent alone insufficient",
+    "Remote publication recovery UNSUPPORTED/NOT QUALIFIED",
+    "All other defensive, regression, artifact, independent review and exact Owner release gates retained",
+    "No new functionality, authority, signature reuse or architecture expansion"
+  ],
+  "decision": "ACCEPT_PROSPECTIVE_AMENDMENT_V1",
+  "findings": [],
+  "new_execution_authority": "NONE",
+  "real_admission": "NO",
+  "reviewed_LF_sha256": {
+    "docs/nexus-g6-finalization-amendment-v1.md": "32baa2577ef45e3569897eaefeaa7151b9f897d3cd91717c95217d71d9f1b047"
+  },
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_executions": 0,
+  "reviewer_mutations": 0,
+  "schema": "nexus.g6.finalization-amendment-independent-review.v1"
+}

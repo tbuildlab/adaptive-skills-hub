@@ -1627,9 +1627,21 @@
     "bytes": 15094,
     "sha256": "ed1fbe637d3f2a2c3aaae2e5457df93b5d96438692d53f909650f7c2c70ae431"
   },
+  "docs/nexus-g6-cumulative-evidence-map-v3.md": {
+    "bytes": 5699,
+    "sha256": "1d89cc8edac75d5311e35d546768c18b76edd44c2dd135e5a9551d80b1d51e75"
+  },
   "docs/nexus-g6-final-qualification-progress-v1.md": {
     "bytes": 9633,
     "sha256": "166a686960ed0a698ea6997184936faa4c265e81ff24691d60d50e0aa61c9aa0"
+  },
+  "docs/nexus-g6-final-supported-profile-v1.md": {
+    "bytes": 7174,
+    "sha256": "19751dc02afe34b9df4fc7eb0dcdcc4043fae81e51eb4cac161cbfb0f79dd724"
+  },
+  "docs/nexus-g6-finalization-amendment-v1.md": {
+    "bytes": 5440,
+    "sha256": "32baa2577ef45e3569897eaefeaa7151b9f897d3cd91717c95217d71d9f1b047"
   },
   "docs/nexus-g6-fixed-native-binding-public-qualification-v1.md": {
     "bytes": 7498,
@@ -2463,6 +2475,10 @@
     "bytes": 17098,
     "sha256": "733668b5fb774484d0cbcdc0fb4fd888f5c451e17faaaf4b0615ded1f9b8268b"
   },
+  "research/nexus-g6-consolidated-defensive-review-v1.json": {
+    "bytes": 10065,
+    "sha256": "8508c6dc563b2baca284b0df9bcf5fa6045e8220b70c139a0e1f6317fcc61a83"
+  },
   "research/nexus-g6-core-host-value-pilot-independent-review-v1.json": {
     "bytes": 2303,
     "sha256": "2672ba73ae66bf1daae788bff4b468dd90752727e0026c1de46251025f5517d6"
@@ -2510,6 +2526,26 @@
   "research/nexus-g6-final-qualification-status-v1.json": {
     "bytes": 5441,
     "sha256": "5eb23792926bceb0ff4962f5aac85db5947dbc88e092d4b3fbe6595ddba07bf1"
+  },
+  "research/nexus-g6-final-release-review-scope-v1.json": {
+    "bytes": 44534,
+    "sha256": "a46e846039271ef573f25353d102f0dd8c24f9fe3cc1e74e04521448732e5365"
+  },
+  "research/nexus-g6-final-supported-profile-v1.json": {
+    "bytes": 3155,
+    "sha256": "e44ccda64be1871aa010946932c6e87a02f708fd5b655087ab0f605d6b1fcc7a"
+  },
+  "research/nexus-g6-finalization-amendment-application-v1.json": {
+    "bytes": 1607,
+    "sha256": "a1a63adebaa4f62f6b990a5ea02100ab4db12559c55d17f82f6747e72af1df0d"
+  },
+  "research/nexus-g6-finalization-amendment-independent-review-v1.json": {
+    "bytes": 1368,
+    "sha256": "1b1c1f1ca65dc28a010e97a10a973bd56bb9ccf9cdcda43c3e2c5e094ed3e4cb"
+  },
+  "research/nexus-g6-finalization-amendment-v1.json": {
+    "bytes": 4148,
+    "sha256": "c636f5418d85e69455224150cc796e2cf57866978ecd97e3bea9e9928e0fa85c"
   },
   "research/nexus-g6-fixed-host-snapshot-provenance-v1.json": {
     "bytes": 1604,
@@ -2674,6 +2710,10 @@
   "research/nexus-g6-public-path-probe-v1.cpp": {
     "bytes": 7156,
     "sha256": "d9e51cc5ce72e78614bd41fe886e000d1b5000dd56f6f954c19410c2daec75f1"
+  },
+  "research/nexus-g6-retained-governance-value-independent-review-v1.json": {
+    "bytes": 3568,
+    "sha256": "6fc2cd1624c534a82b522eba60962f6b612c00f8085e7c7ead3544b1d85601b2"
   },
   "research/nexus-g6-retention-deterministic-independent-review-v1.json": {
     "bytes": 6716,

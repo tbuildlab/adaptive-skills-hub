@@ -1,0 +1,47 @@
+{
+  "G2_G3_G4": "FROZEN_UNCHANGED",
+  "G5": "DISABLED",
+  "N01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "accepted_implementation_baseline": "0421170c088ed9b54f52f6a44cb25492a0c9b16f",
+  "all_previous_native_and_value_authorizations": "PERMANENTLY_RETIRED_NO_REUSE",
+  "authority": "NONE",
+  "core_scope": "Trusted non-secret local hooks; no sandbox or production admission",
+  "external_remote_publication_recovery": "UNSUPPORTED_NOT_QUALIFIED",
+  "final_owner_release_acceptance": "NOT_OBTAINED",
+  "generic_agents_mcp_scripts_compaction": "NOT_ADMITTED_BY_FIXED_NATIVE_RECIPES",
+  "governing_amendment_sha256": "c636f5418d85e69455224150cc796e2cf57866978ecd97e3bea9e9928e0fa85c",
+  "local_effect_unknown": {
+    "path": "output/g6-retained-functionality-readiness-v1/local-publication-gap/qualification.json",
+    "raw_sha256": "35e4282aedc09a145ad44dbeab763f8ce934a3c3c5f96329a68aaee3e4e1a4d9"
+  },
+  "model_runtime_distribution_or_activation": false,
+  "native_public_composition": {
+    "path": "output/g6-native-binding-public-v30/qualification.json",
+    "raw_sha256": "511c9060407db8aa7011e99c4b8389fd5edfd2eaefe5104804d149cdfbb85475",
+    "scope": "Retained PUBLIC composition, not new candidate execution"
+  },
+  "production_adapters": "DENY",
+  "qualification_evidence": [
+    "research/nexus-g6-local-host-qualification-result-v1.json",
+    "research/nexus-g4-final-acceptance-audit-v1.json",
+    "research/nexus-g3-signed-local-qualification-v1.json",
+    "research/nexus-g6-local-retention-once-result-v2.json",
+    "research/nexus-g6-retention-deterministic-qualified-result-v2.json",
+    "research/nexus-g6-retained-governance-value-independent-review-v1.json"
+  ],
+  "qualification_evidence_LF_sha256": {
+    "research/nexus-g3-signed-local-qualification-v1.json": "c4f05fe7da6ae58104a421944303a032f7c196c87783e9e5bef6bd9d2caa803b",
+    "research/nexus-g4-final-acceptance-audit-v1.json": "b9981ed74f984e76f0b13a3698685430317656dd7ae6422fd275d0e41aadd916",
+    "research/nexus-g6-local-host-qualification-result-v1.json": "567527b4232da76bccfede932684f06b72ceab4652922d9d351556db7ea1390b",
+    "research/nexus-g6-local-retention-once-result-v2.json": "4068a9c29b2b278cfc711704d7c8b8858d7084ef523b3558ece64e0443c4ba57",
+    "research/nexus-g6-retained-governance-value-independent-review-v1.json": "6fc2cd1624c534a82b522eba60962f6b612c00f8085e7c7ead3544b1d85601b2",
+    "research/nexus-g6-retention-deterministic-qualified-result-v2.json": "6d506e7803c50eec5b6877853777c44fc7292d69d77d64af41430db2e9b3af8f"
+  },
+  "real_admission": "NO",
+  "retained_features": "Existing G1-G4/G6 deterministic governance and qualified bounded workflows only; no new product functionality",
+  "schema": "nexus.g6.final-supported-profile.v1",
+  "scope_document": "docs/nexus-g6-final-supported-profile-v1.md",
+  "scope_document_LF_sha256": "19751dc02afe34b9df4fc7eb0dcdcc4043fae81e51eb4cac161cbfb0f79dd724",
+  "source_distribution": "Existing reproducible private source package plus exact Git/release-side support/amendment/evidence records; no Desktop upgrade or new runtime installer",
+  "whole_host_or_confidential_corpus_privacy": "NOT_QUALIFIED"
+}
