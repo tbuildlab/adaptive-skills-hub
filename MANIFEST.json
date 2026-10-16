@@ -1619,6 +1619,14 @@
     "bytes": 7907,
     "sha256": "b38f64ea3b51e12924886fa3ff77b2d15bb410b616f7764c558c91de56bbd235"
   },
+  "docs/nexus-g6-core-host-value-pilot-observations-v1.md": {
+    "bytes": 6603,
+    "sha256": "9fa995133227f347050a7689c60ce53b77a14e69fc4c5be59ebd3a40fa9a6ea3"
+  },
+  "docs/nexus-g6-cumulative-evidence-map-v2.md": {
+    "bytes": 15094,
+    "sha256": "ed1fbe637d3f2a2c3aaae2e5457df93b5d96438692d53f909650f7c2c70ae431"
+  },
   "docs/nexus-g6-final-qualification-progress-v1.md": {
     "bytes": 9633,
     "sha256": "166a686960ed0a698ea6997184936faa4c265e81ff24691d60d50e0aa61c9aa0"
@@ -2463,6 +2471,10 @@
     "bytes": 1709,
     "sha256": "11bf2b1df4a7256525a0e1d1a5c046291178a247413c73382b675593879c0096"
   },
+  "research/nexus-g6-core-host-value-pilot-observations-v1.json": {
+    "bytes": 18363,
+    "sha256": "774ec67a94faf7d919a97e6f1ce47a8b0bbfb4670ce70404d2afe25b9b28b1fd"
+  },
   "research/nexus-g6-core-host-value-pilot-registration-v1.json": {
     "bytes": 4458,
     "sha256": "d73b5f9d0107f77d73cd465057f4ff9cec0dce817607b2ec5ff8b9cf77016637"
@@ -2471,9 +2483,21 @@
     "bytes": 4812,
     "sha256": "7aef82c9cf69bff3e5a981193f835188cf64d5d33cfe3f58aacc48afd30d7f90"
   },
+  "research/nexus-g6-core-host-value-pilot-result-independent-review-v1.json": {
+    "bytes": 3733,
+    "sha256": "f2fe3318a6f467c7602302d5393fa242df48b8958f3211ce9df6ff4c72b2f4e2"
+  },
   "research/nexus-g6-core-host-value-pilot-v1.py": {
     "bytes": 19873,
     "sha256": "8d862ec7e3aa08d26982df178df2827ae2d84c5e79405932cda674971feb7459"
+  },
+  "research/nexus-g6-cumulative-readiness-status-v2.json": {
+    "bytes": 3937,
+    "sha256": "7aeaf169dd60157255ea453418f1deec4a858431d7ead1b607456a83c50646c7"
+  },
+  "research/nexus-g6-cumulative-regression-reconciliation-v1.json": {
+    "bytes": 5594,
+    "sha256": "832785297b1cbb3a8745ccf230acdba46f53ec89b09f61a152a6abbc1f9ae225"
   },
   "research/nexus-g6-deterministic-host-runtime-pins-v1.json": {
     "bytes": 21191,

@@ -1,0 +1,78 @@
+{
+  "cause": "Isolated source snapshot intentionally omits retained public task dispositions and the pinned 54-file runtime. All 22 unchanged tests pass in original environment. No tests weakened or new skips added; no historical attempt executed.",
+  "counting": "Unique union, not a monolithic green first pass; retests not added to total",
+  "environment_retest": {
+    "error": 0,
+    "fail": 0,
+    "ids": [
+      "test_g6_private_completion.LocalRetentionTests.test_consumed_local_retention_decision_rejects_new_snapshot_subject",
+      "test_g6_private_completion.LocalRetentionTests.test_current_source_join_is_a_real_three_record_report",
+      "test_g6_private_completion.LocalRetentionTests.test_exact_csv_protocol_rejects_noise_wrong_rows_actions_and_missing_data",
+      "test_g6_private_completion.LocalRetentionTests.test_generation_format_repair_preserves_the_original_exact_acceptance",
+      "test_g6_private_completion.LocalRetentionTests.test_native_command_uses_private_closed_plan_not_old_prompt_or_python",
+      "test_g6_private_completion.LocalRetentionTests.test_native_plan_preserves_loader_model_limits_and_exact_file_scope",
+      "test_g6_private_completion.LocalRetentionTests.test_new_subject_and_purpose_cannot_reuse_any_old_decision",
+      "test_g6_private_completion.LocalRetentionTests.test_private_receipt_requires_settled_accepted_output_and_reopens_artifact",
+      "test_g6_private_completion.LocalRetentionTests.test_prompt_contains_only_selected_public_fields_and_fixed_template",
+      "test_g6_private_completion.LocalRetentionTests.test_snapshot_paths_are_only_same_pinned_two_hosts_without_installed_fallback",
+      "test_g6_private_completion.LocalRetentionTests.test_unknown_or_changed_output_cannot_create_report_or_restore_authority",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_exact_same_task_input_and_acceptance_as_qualified_model_configuration",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_exact_snapshot_regular_singlelink_runtime_inventory",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_expired_or_future_signature_window_rejects_before_review_or_dispatch",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_new_subject_rejects_all_consumed_native_and_local_decisions_before_authentication",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_only_closed_deterministic_command_and_snapshot_not_installed_fallback",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_public_evidence_cannot_create_one_shot_authority_or_dispatch",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_public_preparation_uses_different_records_and_no_owner_or_model",
+      "test_g6_retention_substitution.RetentionSubstitutionTests.test_wrong_artifact_configuration_subject_or_input_reject_before_authentication",
+      "test_g6_value_pilot.ValuePilotTests.test_fixed_comparable_host_model_input_policy_features_and_limits",
+      "test_g6_value_pilot.ValuePilotTests.test_new_exact_subjects_do_not_reuse_each_other_or_old_decisions",
+      "test_g6_value_pilot.ValuePilotTests.test_wrong_slot_signed_body_and_expired_or_future_window_fail_before_key_io"
+    ],
+    "log_sha256": "7f49044f0f8bef04670223aab0faf8bb251709f1dd002a8c6acd73bec45c2af4",
+    "pass": 22,
+    "path": "output/g6-retained-functionality-readiness-v1/environment-exact-retest.json",
+    "sha256": "afd6a67a472f18f13fa80889387bdff1fa2b733bfdbcc12dd3d209fcdcc8e1a3",
+    "skip": 0,
+    "test_bytes_and_product_source_match": true,
+    "total": 22
+  },
+  "final_release_regression_gate": "Not substituted for independent review followed by final release checks",
+  "first_pass": {
+    "error": 22,
+    "fail": 0,
+    "log_sha256": "3c9d20eec82ef62b28ac3e6f99931d28fff48b35eaf84cbbf141bde22ade988b",
+    "pass": 1631,
+    "path": "output/g6-retained-functionality-readiness-v1/full-regression.json",
+    "sha256": "9017b58bd70d5cf0cf53d134ed3dcb23d090bcd22990c8feb338640056dd032d",
+    "skip": 4,
+    "total": 1657
+  },
+  "future_source_changes_require_affected_retesting": true,
+  "isolated_snapshot_baseline": "794441e03c736117046370ed82f709d16359ee1d",
+  "pass": 1653,
+  "product_and_historical_tests_unchanged_between_checkpoints": true,
+  "real_admission": "NO",
+  "schema": "nexus.g6.cumulative-regression-reconciliation.v1",
+  "skip": [
+    {
+      "id": "test_github_distribution.GitHubDistributionTests.test_real_clean_bootstrap_without_system_python",
+      "reason": "real embedded runtime inputs are not configured"
+    },
+    {
+      "id": "test_github_distribution.GitHubDistributionTests.test_real_plugin_bootstrap_without_codex_prepares_host_managed_source",
+      "reason": "real embedded runtime inputs are not configured"
+    },
+    {
+      "id": "test_github_distribution.GitHubDistributionTests.test_real_plugin_health_without_system_python_or_codex",
+      "reason": "real embedded runtime inputs are not configured"
+    },
+    {
+      "id": "test_mcp_authorization.McpAuthorizationTests.test_symlink_if_privilege_is_available_is_rejected",
+      "reason": "symlink fixture unavailable: [WinError 1314] A required privilege is not held by the client: 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmp6tb6brfn\\\\approved-project\\\\target' -> 'C:\\\\Users\\\\DEYONG~1\\\\AppData\\\\Local\\\\Temp\\\\tmp6tb6brfn\\\\approved-project\\\\linked'"
+    }
+  ],
+  "source_checkpoint": "49cfd658c08bca0f6b1225fae25f849aed9f9d90",
+  "unique_total": 1657,
+  "unresolved_errors": [],
+  "unresolved_failures": []
+}

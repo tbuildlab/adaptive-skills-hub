@@ -1,0 +1,73 @@
+{
+  "G6_release": "NOT_ACCEPTED",
+  "additional_evidence_review": "PASS_BOUNDED_ADDITIVE_EVIDENCE_REVIEW",
+  "comparative_value": "NO_INCREMENTAL_BENEFIT_DEMONSTRATED",
+  "decision": "PASS_BOUNDED_CORE_PILOT_OBSERVATIONS",
+  "finding_disposition": [
+    {
+      "G6_gate_closed": false,
+      "finding": "Original Roadmap F/D includes usage exhaustion and ambiguous publication; out-of-scope recipe statements cannot waive required coverage",
+      "resolution": "Map now names exact bounded usage tests and local effect negative fixture, while keeping external-publication qualification explicitly OUTSTANDING"
+    }
+  ],
+  "interpretation": [
+    "No result or value PASS inferred from tied pilot",
+    "No third task population selected to obtain a win",
+    "Retained contractual responsibilities differ from generic Host loops, but acceptance of architecture is not measured value",
+    "Delegate this redundant Git recipe to existing Host without rewriting historical source/checkpoints/milestones",
+    "No artificial Owner signing gate for ordinary trusted read-only work",
+    "Final independent whole-product security/release review, exact artifact acceptance and G6 freeze remain outstanding"
+  ],
+  "interruption_history": "Reviewer earlier sent substantive bounded observations before a usage-limit interruption; this record uses the later resumed completed read-only result and additive reviews, not the interrupted response as final release review.",
+  "local_effect_gap_review": {
+    "accepted_artifacts": 0,
+    "actual_effect_before_injected_acknowledgement_loss": true,
+    "inflight_uncertainty_and_one_charge_preserved": true,
+    "public_bytes_match_retained_digest": true,
+    "remote_publication": "OUTSTANDING_NOT_QUALIFIED",
+    "status": "PASS_BOUNDED_LOCAL_EFFECT_NEGATIVE_COVERAGE",
+    "terminal_state_read_redispatch": 0
+  },
+  "real_admission": "NO",
+  "regression_review": {
+    "exact_same_22_ids_retested": true,
+    "historical_skip": 4,
+    "not_a_monolithic_green_first_pass": true,
+    "original_error": 22,
+    "original_historical_skip": 4,
+    "original_pass": 1631,
+    "original_total": 1657,
+    "retest_pass": 22,
+    "same_product_source_LF": true,
+    "same_test_files": 106,
+    "unique_union_pass": 1653,
+    "unresolved_fail_error": 0
+  },
+  "reviewed_LF_sha256": {
+    "docs/nexus-g6-core-host-value-pilot-observations-v1.md": "9fa995133227f347050a7689c60ce53b77a14e69fc4c5be59ebd3a40fa9a6ea3",
+    "docs/nexus-g6-cumulative-evidence-map-v2.md": "ed1fbe637d3f2a2c3aaae2e5457df93b5d96438692d53f909650f7c2c70ae431",
+    "research/nexus-g6-core-host-value-pilot-observations-v1.json": "774ec67a94faf7d919a97e6f1ce47a8b0bbfb4670ce70404d2afe25b9b28b1fd",
+    "research/nexus-g6-cumulative-regression-reconciliation-v1.json": "832785297b1cbb3a8745ccf230acdba46f53ec89b09f61a152a6abbc1f9ae225"
+  },
+  "reviewer": "/root/g6_binding_independent_review",
+  "reviewer_authentication_calls": 0,
+  "reviewer_executions": 0,
+  "reviewer_mutations": 0,
+  "reviewer_replays": 0,
+  "role": "Independent read-only reviewer; not implementation or release authority",
+  "schema": "nexus.g6.core-host-value-pilot-result-independent-review.v1",
+  "unresolved_material_result_findings": [],
+  "verified": {
+    "all_retired_no_retry": true,
+    "clean_latency_failure_retained": true,
+    "cost_basis": "Prospective incremental attempt billing only, never zero total economic cost/savings",
+    "fresh_resume_budgets_and_original_work_preserved": true,
+    "historical_unique_files_unchanged": 129,
+    "incremental_correct_cases": 0,
+    "locked_order_slots": 8,
+    "native_correct_cases": 4,
+    "nexus_correct_cases": 4,
+    "planned_ambiguous_incomplete": 2,
+    "verified_normal_reports": 6
+  }
+}
