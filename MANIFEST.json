@@ -359,6 +359,10 @@
     "bytes": 27880,
     "sha256": "8a3a22ed94064d7c4f87f4d35e297f713eb12a0f4124768fa930555c1f76819d"
   },
+  "ash/reference_research.py": {
+    "bytes": 8043,
+    "sha256": "08d1af4acb26079ada7cee4319fea4c7eef9ee3038aadf930cfb50ee6b1234c5"
+  },
   "ash/router.py": {
     "bytes": 23144,
     "sha256": "528a39bf267070aed3dd2100fe884a4eb5f5d656fd24c78a7d25e151b4411838"
@@ -380,8 +384,8 @@
     "sha256": "fd4636807a4358cdea958040a4be6507123cb8b77ceca881db6f9dfd59020ca5"
   },
   "ash/v2.py": {
-    "bytes": 61711,
-    "sha256": "80a47fe4b35ee95ad70ddc4274dc3e9a34ff2231632e51e8ecbc59328a9e0010"
+    "bytes": 64913,
+    "sha256": "3d7e714675b85b7983d33463a321df40c8f87fa4e4b5133e02e4981bb60b53f3"
   },
   "config/capability-foundation.json": {
     "bytes": 19849,
@@ -1847,6 +1851,10 @@
     "bytes": 28762,
     "sha256": "ff0e2b082948034cbb45e37cd331a36055117057dd1d6c25bfc295b1ff712d73"
   },
+  "docs/nexus-post-g6-reference-research-workflow.md": {
+    "bytes": 4703,
+    "sha256": "ddf7ef57d320f15fd57a606eb297040c5c61754305743cc24809be3f924fe1e2"
+  },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
     "sha256": "5c5c686853cb3499e7b4ca798cd34b7ffc2c66bd4a8631df388a8270c20e5f1e"
@@ -3168,8 +3176,8 @@
     "sha256": "c8f535859f28c18e82c8927492f95b60e6ab5e95a4f0638f6f5cfe50de072880"
   },
   "scripts/hub.py": {
-    "bytes": 27059,
-    "sha256": "90a13556c2e8909a524b4b8e380162684614b79b129f8ec7b50cfa91af3af35b"
+    "bytes": 27404,
+    "sha256": "31320ac35a40d64de515d08210083cfabb9a7ae542c99ae57a56032bcc6973b8"
   },
   "scripts/managed_handoff_demo.py": {
     "bytes": 1990,
@@ -3188,8 +3196,8 @@
     "sha256": "3bd2590b8561ef9c0398a4552719d5a031a461bc3565246ba4d624ad7ec63184"
   },
   "scripts/package_nexus.py": {
-    "bytes": 15087,
-    "sha256": "f8749bf180f18d34069cacde49c1edd07675a1eb0de6c94c028ed6ed7280b348"
+    "bytes": 15144,
+    "sha256": "a488a82756d0782978e1d5afd42c43dda9af67adcda5463371e3b6da7b18b50e"
   },
   "scripts/probe_g1_conformance.py": {
     "bytes": 11777,
@@ -3320,8 +3328,8 @@
     "sha256": "a126cb30ba88fa0f172d46347e5d4909bb13328657c2ce1e7d4aac666c00f9e0"
   },
   "tests/test_ecosystem_isolation_package.py": {
-    "bytes": 18243,
-    "sha256": "48c6164d556c2397276d15b719be56d88260444ef2fbee9f35f797fe1723cd04"
+    "bytes": 18312,
+    "sha256": "d23499ab38aee744cba39a16a072b82d6e284419f3dde3ece139bc0cf092becf"
   },
   "tests/test_ecosystem_policy_models.py": {
     "bytes": 47634,
@@ -3651,6 +3659,10 @@
     "bytes": 13812,
     "sha256": "a5c2ce7fd5c63d338f48f81d517e88e01238de4551c169823d7c1c738ca7b20c"
   },
+  "tests/test_reference_research.py": {
+    "bytes": 3749,
+    "sha256": "5a39949eb6ab25aab74eb5e2265a68806ceb2c4cabade93e6adf09bfe274fd26"
+  },
   "tests/test_runtime_decision.py": {
     "bytes": 24446,
     "sha256": "185c795c5ed74f93dbb64170631c201582d9fa84cd8afafe24231c3cbcb9f602"
@@ -3668,7 +3680,7 @@
     "sha256": "1db3da818998a65619a70cb1d2525c7ea31415519c37185de10fccb0d25bfa0d"
   },
   "tests/test_v2.py": {
-    "bytes": 38205,
-    "sha256": "accd0280c9c515b548a191e464c0f52c95d5ddfce1d1c7524e9fef251f3a625f"
+    "bytes": 40091,
+    "sha256": "1cf99cc78b177e1d6f85278e528e1e675830c45f9d2ccca302f739ed1d5c9645"
   }
 }

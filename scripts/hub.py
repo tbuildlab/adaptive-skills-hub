@@ -65,6 +65,7 @@ def _friendly_validation_label(kind: str) -> str:
         "evidence_ledger": "evidence ledger",
         "ui_behavior_accessibility": "UI behavior and accessibility review",
         "security_boundary_review": "security boundary review",
+        "reference_research_synthesis": "reference intelligence synthesis before build",
     }
     return labels.get(kind, kind.replace("_", " "))
 
@@ -221,6 +222,7 @@ def _plan_handoff(plan, loaded: list[dict], validation: dict, project: Path, *, 
             "required_capabilities": plan.task_profile.required_capabilities,
         },
         "selected_skills": selected_skills,
+        "reference_research": plan.reference_research.to_dict(),
         "execution_steps": [
             {
                 "step_id": step.step_id,
@@ -464,6 +466,8 @@ def main() -> int:
             write_plan_packet(Path(args.packet), v2_plan, loaded, validation)
         _print_product_header()
         print(f"Task: {_friendly_task_label(v2_plan.task_profile.task_type, v2_plan.task_profile.original_task)}")
+        if v2_plan.reference_research.status in {"required", "reduced"}:
+            print(f"Pre-build reference research: {v2_plan.reference_research.status}; synthesis must precede build")
         if v2_plan.selected:
             print("Skills:")
             for resource in v2_plan.selected:

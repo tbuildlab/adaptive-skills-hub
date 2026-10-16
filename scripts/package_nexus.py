@@ -112,6 +112,7 @@ ALLOWED_DOCS = {
     "docs/nexus-post-r5-runtime-integration-slice3b.md",
     "docs/nexus-post-r5-runtime-integration-slice3c-adr-pds.md",
     "docs/nexus-agent-runtime-contract.md",
+    "docs/nexus-post-g6-reference-research-workflow.md",
 }
 
 

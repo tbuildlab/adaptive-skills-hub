@@ -217,6 +217,29 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
         secure, _ = task_profile_for("Fix this endpoint and verify users cannot access another user's invoice")
         self.assertIn("security", secure.required_capabilities)
 
+    def test_reference_research_is_first_and_reuses_existing_research_skill(self) -> None:
+        plan = plan_task("Build a new React web app", self.index, self.root)
+        self.assertEqual(plan.reference_research.status, "required")
+        self.assertEqual(plan.steps[0].step_id, "reference-research")
+        research_skill = next(item for item in plan.selected if item.name == "evidence-research")
+        self.assertEqual(plan.steps[0].selected_resource_id, research_skill.resource_id)
+        self.assertTrue(all("reference-research" in step.dependencies for step in plan.steps[1:]))
+        self.assertEqual(plan.task_profile.primary_domain, "frontend_implementation")
+        loaded = load_plan_skills(plan)
+        handoff = _plan_handoff(plan, loaded, validate_plan(plan, loaded), self.root)
+        self.assertEqual(handoff["reference_research"]["status"], "required")
+        self.assertEqual(handoff["execution_steps"][0]["step_id"], "reference-research")
+
+    def test_reference_research_opt_out_and_exact_spec_preserve_existing_planning(self) -> None:
+        opted_out = plan_task("Build a new React web app; do not search GitHub", self.index, self.root)
+        self.assertEqual(opted_out.reference_research.status, "skipped")
+        self.assertNotEqual(opted_out.steps[0].step_id, "reference-research")
+        specified = plan_task("Build a new React web app from a complete specification and acceptance criteria", self.index, self.root)
+        self.assertEqual(specified.reference_research.status, "reduced")
+        repair = plan_task("Fix the backend API HTTP 500 bug", self.index, self.root)
+        self.assertEqual(repair.reference_research.status, "skipped")
+        self.assertEqual([step.capability for step in repair.steps], ["backend"])
+
     def test_task_profile_extracts_native_editable_pptx_constraint_from_output_format(self) -> None:
         profile, _ = task_profile_for("Create an editable PowerPoint presentation")
         self.assertEqual(profile.artifact_type, "presentation")
@@ -305,7 +328,8 @@ class AdaptiveSkillsHubV2Tests(unittest.TestCase):
     def test_architecture_task_rejects_product_ux_and_generic_research_without_exact_domain(self) -> None:
         product_research = make_skill(self.root, "product-design/research", "research", "Run UX research on a named product")
         plan = plan_task("Design an architecture for an AI research assistant", {"skills": [self.research, product_research], "agents": []}, self.root)
-        self.assertEqual(plan.selected, [])
+        self.assertEqual([item.name for item in plan.selected], ["evidence-research"])
+        self.assertEqual(plan.steps[0].step_id, "reference-research")
         self.assertIn("architecture_review", plan.fallback["missing_domains"])
         self.assertTrue(any(item["name"] == "research" and item.get("reason_code") in {"DOMAIN_INCOMPATIBLE", "DOMAIN_EVIDENCE_MISSING"} for item in plan.rejected))
 

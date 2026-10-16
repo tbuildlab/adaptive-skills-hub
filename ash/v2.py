@@ -16,6 +16,7 @@ from uuid import uuid4
 
 from .common import sha256_text, tokenize, utc_now, write_json
 from .execution import load_selected_skills
+from .reference_research import ReferenceResearchPlan, reference_research_plan
 from .semantic_domains import (
     CAPABILITY_NOT_COVERED,
     DOMAIN_EVIDENCE_MISSING,
@@ -286,6 +287,7 @@ class ExecutionPlan:
     steps: list[ExecutionStep]
     evidence: list[DecisionEvidence]
     fallback: dict[str, Any]
+    reference_research: ReferenceResearchPlan
     replan_attempt: int = 0
 
     def to_dict(self) -> dict[str, Any]:
@@ -306,6 +308,7 @@ class ExecutionPlan:
             "steps": [item.to_dict() for item in self.steps],
             "evidence": [item.to_dict() for item in self.evidence],
             "fallback": self.fallback,
+            "reference_research": self.reference_research.to_dict(),
             "replan_attempt": self.replan_attempt,
         }
 
@@ -1039,20 +1042,40 @@ def _ordered_selected(selected: list[ResourceCandidate], requirements: list[Capa
     return sorted(selected, key=lambda item: (min((required_order.get(cap, 999) for cap in item.coverage), default=999), -item.score, item.name.casefold()))
 
 
-def execution_steps_for(selected: list[ResourceCandidate], requirements: list[CapabilityRequirement], validation: ValidationPlan) -> list[ExecutionStep]:
+def execution_steps_for(
+    selected: list[ResourceCandidate], requirements: list[CapabilityRequirement], validation: ValidationPlan,
+    reference_research: ReferenceResearchPlan | None = None,
+) -> list[ExecutionStep]:
     ordered = _ordered_selected(selected, requirements)
     requirement_by_capability = {item.capability: item for item in requirements}
     steps: list[ExecutionStep] = []
     for position, resource in enumerate(ordered, start=1):
         capabilities = [capability for capability in resource.coverage if capability in requirement_by_capability]
+        if not capabilities:
+            # The separately modeled reference-research Skill is bound to the
+            # pre-build stage below; it is not a second project capability.
+            continue
         primary = capabilities[0] if capabilities else "general"
         dependencies = sorted({dependency for capability in capabilities for dependency in requirement_by_capability[capability].dependencies})
+        if reference_research and reference_research.status in {"required", "reduced"}:
+            dependencies.append("reference-research")
         relevant_checks = [item["kind"] for item in validation.checks if primary in item["kind"] or item["kind"] == "plan_coverage"]
         steps.append(ExecutionStep(
             f"step-{position}", primary, resource.resource_id, resource.name, resource.resource_type,
             f"selected for {', '.join(capabilities)} coverage", dependencies,
             f"complete {primary} task contribution", relevant_checks,
             "use native Codex capability or return explicit blocker if the selected Skill cannot be used",
+        ))
+    if reference_research and reference_research.status in {"required", "reduced"}:
+        research_resource = next((item for item in selected if "research" in item.coverage), None)
+        steps.insert(0, ExecutionStep(
+            "reference-research", "reference_research",
+            research_resource.resource_id if research_resource else None,
+            research_resource.name if research_resource else None,
+            "research_stage",
+            "compare bounded public references and synthesize findings before implementation",
+            [], "reference intelligence brief", ["reference_research_synthesis"],
+            "if no suitable reference is found within budget, record that result, prefer official sources and verified capabilities, distinguish reference-derived ideas from Nexus-designed choices, then continue PLAN/BUILD/TEST/VERIFY",
         ))
     return steps
 
@@ -1081,6 +1104,7 @@ def plan_task(
     reader = context_reader or discover_project_context
     context = reader(project_root, task, **context_options)
     rules, conflicts = extract_rules(profile, context, user_requirements)
+    reference_research = reference_research_plan(task)
     for conflict in conflicts:
         evidence.append(DecisionEvidence("rule_conflict", "unresolved equal-priority rule conflict", conflict))
     requirements = capability_requirements(profile, rules)
@@ -1093,6 +1117,32 @@ def plan_task(
     else:
         selected, selection_evidence = greedy_select(candidates, requirements, semantic_model.required_domains)
         selected = _ordered_selected(selected, requirements)
+    if reference_research.status in {"required", "reduced"} and not conflicts:
+        # Reuse the existing trusted semantic Skill selector for the separate
+        # research stage without changing project-domain coverage.
+        research_profile, _ = task_profile_for(
+            "Research software implementation patterns using GitHub and official documentation"
+        )
+        research_requirements = [CapabilityRequirement(
+            "research", True, "default pre-build reference research stage",
+        )]
+        research_candidates, research_rejected = rank_resources(
+            index, research_profile, research_requirements, rules, excluded_resource_ids,
+        )
+        research_resource = next((item for item in research_candidates if "research" in item.coverage), None)
+        if research_resource and all(item.resource_id != research_resource.resource_id for item in selected):
+            selected.insert(0, research_resource)
+            evidence.append(DecisionEvidence(
+                "reference_research_skill",
+                "selected one compatible research Skill through the existing trusted applicability registry",
+                {"resource_id": research_resource.resource_id, "name": research_resource.name},
+            ))
+        else:
+            evidence.append(DecisionEvidence(
+                "reference_research_skill",
+                "no compatible research Skill was selected; the bounded stage remains a Host-side/native fallback",
+                {"reason_code": research_rejected[0].get("reason_code") if research_rejected else CAPABILITY_NOT_COVERED},
+            ))
     for item in selection_evidence:
         evidence.append(DecisionEvidence("selection", item["reason"], item))
     selected_ids = {item.resource_id for item in selected}
@@ -1132,13 +1182,13 @@ def plan_task(
             "reason": "selected Skills cover required semantic domains and capabilities",
         }
     validation = validation_plan_for(profile, requirements)
-    steps = execution_steps_for(selected, requirements, validation)
+    steps = execution_steps_for(selected, requirements, validation, reference_research)
     agents = _advisory_agents(index, profile, requirements)
     if agents:
         evidence.append(DecisionEvidence("advisory_agent", "Agent recommendation is advisory only and is not delegated by the Hub", {"agents": [item.name for item in agents]}))
     for expansion in context.expansions:
         evidence.append(DecisionEvidence("context_expansion", "soft context budget expanded with evidence", expansion))
-    return ExecutionPlan(str(uuid4()), utc_now(), profile, context, rules, requirements, candidates, selected, rejected, external_resources, agents, validation, steps, evidence, fallback, replan_attempt)
+    return ExecutionPlan(str(uuid4()), utc_now(), profile, context, rules, requirements, candidates, selected, rejected, external_resources, agents, validation, steps, evidence, fallback, reference_research, replan_attempt)
 
 
 def load_plan_skills(

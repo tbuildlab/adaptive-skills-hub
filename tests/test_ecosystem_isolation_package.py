@@ -214,6 +214,7 @@ class EcosystemIsolationTests(unittest.TestCase):
                 "ash/ecosystem_storage.py",
                 "config/ecosystem-source-policy.json",
                 "docs/nexus-post-r5-runtime-integration-slice3c-adr-pds.md",
+                "docs/nexus-post-g6-reference-research-workflow.md",
                 "tests/test_ecosystem_isolation_package.py",
             }
             self.assertTrue(required <= set(first_names))
