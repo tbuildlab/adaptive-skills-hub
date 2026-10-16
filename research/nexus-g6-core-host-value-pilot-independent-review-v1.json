@@ -1,0 +1,31 @@
+{
+  "schema": "nexus.g6.core-host-value-pilot-independent-review.v1",
+  "reviewer": "/root/g6_binding_independent_review",
+  "initial_decision": "HOLD_MATERIAL_FAIRNESS_FINDING",
+  "initial_source_sha256": "d8332738e2bfae6a77321d458b734db817269e884a62fba3dbd73ad3e6e46c0c",
+  "initial_finding": "Native gave each Git subprocess20seconds while Core bounds the entire action20seconds. Native could accept an aggregate overrun.",
+  "first_repair_source_sha256": "aa1df65256afd6d503803fc5a6186a8cb62a7554f7c711a6652f5649f56c3c60",
+  "first_repair_review": "Aggregate deadline is correctly composed; exact endpoint still used <= while Core requires <. Preserve excluded endpoint.",
+  "decision": "PASS_BOUNDED_PILOT_READINESS",
+  "recorded_scope": {
+    "research/nexus-g6-core-host-value-pilot-v1.py": "481353a53acb449193212cdce28950b027fe0b0fef9abb5f06dea36d8ebb1548",
+    "docs/nexus-g6-core-host-value-pilot-design-v1.md": "b38f64ea3b51e12924886fa3ff77b2d15bb410b616f7764c558c91de56bbd235"
+  },
+  "resolution": "One original task budget, whole-stage native deadline, per-subprocess remaining time and strict < final acceptance; Core unchanged.",
+  "public_qualification": {
+    "path": "output/g6-retained-functionality-readiness-v1/core-public-qualification-v4.json",
+    "sha256": "74592ae4a9c11bdc6f729205794d73e0389b20b5aba241eecde7d9ff01828641",
+    "pass": 17,
+    "scope": "PUBLIC in-process fixture dispatch; not fresh-process performance/value"
+  },
+  "unresolved_material_findings": [],
+  "admissibility": "Current explicit trusted public task/Host authorization suffices for existing read-only Core capabilities. No new signing gate, candidate adoption, capability registration or production grant.",
+  "cost_scope": "Prospective incremental attempt billing, supported dated estimates with explicit exclusions and unknown-cost STOP; not total economic cost or money savings",
+  "cost_interpretation_correction": "No accepted source requires energy/depreciation metering specifically. Earlier suggestion of that as mandatory was too strong; original expected-cost estimate rules remain authoritative.",
+  "actual_pilot_value": "NOT_OBSERVED_AT_REVIEW",
+  "G6_release": "NOT_ACCEPTED",
+  "reviewer_edits": 0,
+  "reviewer_executions": 0,
+  "reviewer_network_calls": 0,
+  "real_admission": "NO"
+}

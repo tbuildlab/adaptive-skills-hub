@@ -1,0 +1,143 @@
+{
+  "additional_runtime_human_interventions": 0,
+  "authority": "Existing explicitly authorized trusted read-only Core Host task; not old G3/native decisions or a new grant",
+  "baseline_head": "794441e03c736117046370ed82f709d16359ee1d",
+  "billing": {
+    "basis": "ESTIMATED_INCREMENTAL_ATTEMPT_BILLING",
+    "common_study_preparation_and_input_materialization": "Symmetrically excluded and disclosed; not credited to either arm",
+    "currency": "USD",
+    "date": "2026-10-16",
+    "excluded_unmeasured": [
+      "energy",
+      "depreciation",
+      "opportunity cost",
+      "total economic cost"
+    ],
+    "license_sources": [
+      "https://docs.python.org/3.12/license.html",
+      "https://git-scm.com/about"
+    ],
+    "microunits": {
+      "context": 0,
+      "execution": 0,
+      "human_recovery": 0,
+      "retries": 0,
+      "tools": 0,
+      "validation": 0
+    },
+    "not_a_total_zero_cost_or_savings_claim": true,
+    "supported_basis": "Fixed existing non-per-invocation-charged local Python/Git/file operations; no provider/service/human recovery allowed; actual operations must match reviewed closed recipe",
+    "task_specific_preflight_and_context_included": true,
+    "unknown_cost": "STOP"
+  },
+  "expected_outcomes": {
+    "clean": "completed",
+    "findings": "completed_with_findings",
+    "pending_unknown": "ambiguous_incomplete_no_redispatch",
+    "resume": "completed"
+  },
+  "future_final_protocol": "NOT_PREREGISTERED; only after pilot if justified, before new evaluation observations",
+  "g2_g3_g4": "UNCHANGED_FROZEN",
+  "g5": "DISABLED",
+  "git_counts_disclosure": {
+    "normal_recipe": 12,
+    "normal_shared_observer": 6,
+    "pending_observer": 0,
+    "pending_recipe": 4,
+    "per_actor_preflight": 1,
+    "resume_actor_count": 2,
+    "shared_input_materialization": 4
+  },
+  "input_setup": "Findings public copy materialized before observations; three cases read actual checkout; same exact worktree/bytes per pair; task execution never edits inputs. Runtime binding records exact post-registration commit and tools before dispatch.",
+  "input_sources": {
+    "README.md": "277492fd58585b8dc94ec60a9c4545ba636046759630440b17b10e932658ff14",
+    "docs/nexus-roadmap-v2.md": "12161871cff7b5de955a0d66b8caf809bae89216fe4e2d3190cf053ac0de930e"
+  },
+  "latency_tolerance_additive_ms": 250,
+  "latency_tolerance_percent": 20,
+  "max_slots": 8,
+  "metrics": [
+    "policy_violations",
+    "evidence_completeness",
+    "recovery_accuracy",
+    "acceptance",
+    "retries",
+    "cost",
+    "latency",
+    "human_intervention",
+    "transparency"
+  ],
+  "minimum_worthwhile_benefit_cases": 1,
+  "n01": "OPTIONAL_HIGH_ASSURANCE_RESEARCH_HOLD",
+  "no_changes_to_retention_pilot": true,
+  "no_new_signature_required": true,
+  "on_unexpected_failure": "STOP_AND_RETIRE_ALL_UNUSED",
+  "order": [
+    [
+      "clean",
+      "native"
+    ],
+    [
+      "clean",
+      "nexus"
+    ],
+    [
+      "findings",
+      "nexus"
+    ],
+    [
+      "findings",
+      "native"
+    ],
+    [
+      "resume",
+      "native"
+    ],
+    [
+      "resume",
+      "nexus"
+    ],
+    [
+      "pending_unknown",
+      "nexus"
+    ],
+    [
+      "pending_unknown",
+      "native"
+    ]
+  ],
+  "pilot_observations_at_registration": 0,
+  "population": [
+    "clean",
+    "findings",
+    "resume",
+    "pending_unknown"
+  ],
+  "primary_metric": "correct verified completion or safe disposition",
+  "production_adapter": "DENY",
+  "qualification": {
+    "core_host_loop_pass": 12,
+    "full_repository": "IN_PROGRESS_IN_ISOLATED_SNAPSHOT; not a final freeze claim",
+    "public_failure": 0,
+    "public_pass": 18
+  },
+  "real_admission": "NO",
+  "registered_at": 1792117847,
+  "repetitions_per_case_per_arm": 1,
+  "retained_old_subjects": "ALL_RETIRED_NOT_REPLAYED",
+  "retry": false,
+  "review_ref": "research/nexus-g6-core-host-value-pilot-independent-review-v2.json",
+  "review_sha256": "11bf2b1df4a7256525a0e1d1a5c046291178a247413c73382b675593879c0096",
+  "schema": "nexus.g6.core-host-value-pilot-registration.v2",
+  "source_scope": {
+    "docs/nexus-g6-core-host-value-pilot-design-v1.md": "b38f64ea3b51e12924886fa3ff77b2d15bb410b616f7764c558c91de56bbd235",
+    "research/nexus-g6-core-host-value-pilot-v1.py": "8d862ec7e3aa08d26982df178df2827ae2d84c5e79405932cda674971feb7459"
+  },
+  "state": "REGISTERED_PILOT_NOT_FINAL_COMPARISON",
+  "supersedes_pre_dispatch_registration_only": {
+    "path": "research/nexus-g6-core-host-value-pilot-registration-v1.json",
+    "reason": "Truthful requested/unknown tombstone metadata correction; prior record immutable, zero observations under either registration",
+    "sha256": "d73b5f9d0107f77d73cd465057f4ff9cec0dce817607b2ec5ff8b9cf77016637"
+  },
+  "task": "Inspect this local Git repository changes and whitespace checks, then return a maintenance report."
+}

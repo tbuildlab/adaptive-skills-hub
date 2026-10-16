@@ -1,0 +1,27 @@
+{
+  "schema": "nexus.g6.core-host-value-pilot-independent-review.v2",
+  "reviewer": "/root/g6_binding_independent_review",
+  "decision": "PASS_BOUNDED_PILOT_READINESS",
+  "recorded_scope": {
+    "research/nexus-g6-core-host-value-pilot-v1.py": "8d862ec7e3aa08d26982df178df2827ae2d84c5e79405932cda674971feb7459",
+    "docs/nexus-g6-core-host-value-pilot-design-v1.md": "b38f64ea3b51e12924886fa3ff77b2d15bb410b616f7764c558c91de56bbd235"
+  },
+  "additional_correction": "A requested actor with no completion metadata now remains execution_result UNKNOWN; never-requested slots remain NOT_DISPATCHED. All terminal slots retire without retry.",
+  "previous_reviews": "Original aggregate-deadline finding and excluded-endpoint correction, previous reviewed sources, qualification observations and registration v1 remain immutable historical records.",
+  "public_qualification": {
+    "path": "output/g6-retained-functionality-readiness-v1/core-public-qualification-v5.json",
+    "sha256": "b78194c1063928b539c2f2e25ee07436fa9a919bd409a6a26c0c68de338a071f",
+    "pass": 18,
+    "scope": "PUBLIC in-process recipe qualification, not fresh-process value observations"
+  },
+  "registration_v1": "Correctly binds previous 481353 source and zero observations. Preserve it; additive v2 must bind replacement source before dispatch.",
+  "unresolved_material_findings": [],
+  "new_signature_required": false,
+  "authority": "Existing trusted public read-only task authorization only; no capability registration or production grant",
+  "actual_pilot_value": "NOT_OBSERVED_AT_REVIEW",
+  "G6_release": "NOT_ACCEPTED",
+  "reviewer_edits": 0,
+  "reviewer_executions": 0,
+  "reviewer_network_calls": 0,
+  "real_admission": "NO"
+}
