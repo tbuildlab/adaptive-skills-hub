@@ -5,7 +5,32 @@ import unittest
 from ash.reference_research import reference_research_plan
 
 
+WEBSITE_TASK = (
+    "Build a polished English personal creative portfolio website with home, work, about and contact; "
+    "responsive desktop/mobile. Choose design and demo content autonomously, disclose concept projects, "
+    "implement and validate locally; do not publish."
+)
+WEBSITE_CASES = (
+    (WEBSITE_TASK, "required"),
+    ("帮我做一个好看的网站，给我拿来当作品集用。要有首页、作品、关于我和联络方式，手机和电脑都要好看。内容和风格你自己决定，先不要发布。", "required"),
+    ("帮我做一个网站", "required"),
+    ("Implement a tiny button label typo fix on the website", "skipped"),
+    (WEBSITE_TASK + " Follow this complete specification.", "reduced"),
+    (WEBSITE_TASK + " Do not search.", "skipped"),
+    ("根据完整规范帮我做一个网站", "reduced"),
+    ("帮我做一个网站，但不要搜索", "skipped"),
+    ("Create a tiny button for the website", "skipped"),
+    ("Review the website", "skipped"),
+    ("Build an app", "skipped"),
+)
+
+
 class ReferenceResearchPolicyTests(unittest.TestCase):
+    def test_website_creation_without_literal_newness_and_controls(self) -> None:
+        for task, expected in WEBSITE_CASES:
+            with self.subTest(task=task):
+                self.assertEqual(reference_research_plan(task).status, expected)
+
     def test_new_substantial_project_defaults_to_bounded_research(self) -> None:
         plan = reference_research_plan("Build a new web app")
         self.assertEqual(plan.status, "required")

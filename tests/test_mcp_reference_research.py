@@ -11,6 +11,7 @@ from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 
 from ash.reference_research import reference_research_plan
+from tests.test_reference_research import WEBSITE_CASES, WEBSITE_TASK
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -97,6 +98,24 @@ class McpReferenceResearchTests(unittest.IsolatedAsyncioTestCase):
             self.assertEqual(payload["reference_research"]["status"], "required")
             self.assertEqual(payload["status"], "fallback_needed")
             self.assertEqual(payload["fallback"]["reason_code"], "CAPABILITY_NOT_COVERED")
+            self.assertEqual(payload["selected_skills"], [])
+
+    async def test_website_creation_research_does_not_force_missing_coverage(self):
+        async with self.session(covered=False) as session:
+            for task, expected in WEBSITE_CASES:
+                with self.subTest(task=task):
+                    payload = await self.plan(session, task)
+                    self.assertEqual(payload["reference_research"]["status"], expected)
+                    self.assertEqual(payload["status"], "fallback_needed")
+                    self.assertEqual(payload["fallback"]["reason_code"], "CAPABILITY_NOT_COVERED")
+                    self.assertEqual(payload["selected_skills"], [])
+
+    async def test_website_creation_security_scope_conflict_retains_hold(self):
+        async with self.session(covered=False) as session:
+            payload = await self.plan(session, WEBSITE_TASK, constraints=("network", "no_network"))
+            self.assertEqual(payload["reference_research"]["status"], "required")
+            self.assertEqual(payload["reference_research"]["security_conflict_outcome"], "HOLD_owner_decision")
+            self.assertEqual(payload["status"], "fallback_needed")
             self.assertEqual(payload["selected_skills"], [])
 
     async def test_project_prohibition_is_not_promoted_to_planned(self):

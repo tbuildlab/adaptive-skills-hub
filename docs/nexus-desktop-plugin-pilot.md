@@ -34,6 +34,18 @@ license/budget/original-design/HOLD rules, true coverage gaps, project prohibiti
 and equal-priority security/scope constraint conflicts.
 It uses an explicitly trusted test catalog without mocking planner results.
 
+### 0.1.2 patch source: website creation research trigger (unreleased)
+
+Previous plugin/distribution version: `0.1.1`. Patch source version: `0.1.2`,
+continuing the existing SemVer stream. Website creation with a creation action
+now qualifies without extra literal `new`, `scratch`, `client` or scale tokens,
+after the existing opt-out, tiny-change and focused-repair guards. Exact specs
+remain reduced/targeted; security conflicts retain Owner HOLD. Capability
+coverage is independent: research can be required while the plan still returns
+`CAPABILITY_NOT_COVERED`. No Project Memory behavior, core contract or MCP tool
+surface changes. The accepted 0.1.1 artifacts and installed plugin are unchanged;
+0.1.2 has not been built, published or installed by this source patch.
+
 ## Architecture
 
 `plugins/nexus-desktop` is a local Plugin with a user-facing display name of

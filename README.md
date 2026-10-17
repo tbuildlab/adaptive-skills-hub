@@ -13,6 +13,10 @@ users. There is no OpenAI public plugin-directory listing or public license gran
 
 ![Official Nexus avatar](assets/brand/nexus/nexus-avatar-500.png)
 
+**Unreleased patch source: 0.1.2.** Website creation no longer requires literal
+newness/scale words to trigger Reference Research. The published installation
+below remains 0.1.1 until a separately verified patch release is built.
+
 ## Quick Start: Windows x64
 
 1. Sign in to GitHub with repository access and download the six assets from

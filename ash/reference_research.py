@@ -121,7 +121,13 @@ def reference_research_plan(task: str) -> ReferenceResearchPlan:
         return ReferenceResearchPlan("skipped", "small_change", "small presentation or copy change does not need reference research", candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
     if repair and not substantial and not (tokens & {"refactor", "restructure", "rearchitect", "redesign", "overhaul", "rewrite", "rebuild"}) and not re.search(r"重构|重做|大改|改造", text):
         return ReferenceResearchPlan("skipped", "simple_repair", "focused bug repair does not need default reference research", candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
-    if not substantial and not (tokens & {"new", "scratch", "customer", "client", "deliverable", "production"}):
+    # Website creation is project work even without a literal "new" marker.
+    # The opt-out, tiny-change and focused-repair guards above still apply.
+    website_creation = (
+        bool(tokens & {"website", "webapp"} or re.search(r"网站|网页", text))
+        and bool(actions & {"create", "build", "develop", "design", "implement"})
+    )
+    if not substantial and not website_creation and not (tokens & {"new", "scratch", "customer", "client", "deliverable", "production"}):
         # Scope is deliberately conservative when the request only mentions a
         # project noun and a generic action such as "edit" or "review".
         return SKIP
