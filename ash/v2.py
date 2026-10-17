@@ -7,7 +7,7 @@ access, no agent delegation, and no automatic command execution.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 import os
 from pathlib import Path
 import re
@@ -17,6 +17,7 @@ from uuid import uuid4
 from .common import sha256_text, tokenize, utc_now, write_json
 from .execution import load_selected_skills
 from .reference_research import ReferenceResearchPlan, reference_research_plan
+from .reusable_references import LibrarySnapshot, discover_references
 from .semantic_domains import (
     CAPABILITY_NOT_COVERED,
     DOMAIN_EVIDENCE_MISSING,
@@ -1092,6 +1093,7 @@ def plan_task(
     context_options: Mapping[str, int] | None = None,
     context_reader: Callable[..., ProjectContext] | None = None,
     sources: Iterable[Mapping[str, Any]] = (),
+    reference_library_reader: Callable[[], LibrarySnapshot] | None = None,
 ) -> ExecutionPlan:
     context_options = dict(context_options or {})
     profile, evidence = task_profile_for(task, semantic_extractor)
@@ -1105,6 +1107,9 @@ def plan_task(
     context = reader(project_root, task, **context_options)
     rules, conflicts = extract_rules(profile, context, user_requirements)
     reference_research = reference_research_plan(task)
+    reference_research = replace(reference_research, reusable_references=discover_references(
+        task, reference_research, project_root, hold=bool(conflicts), reader=reference_library_reader,
+    ))
     for conflict in conflicts:
         evidence.append(DecisionEvidence("rule_conflict", "unresolved equal-priority rule conflict", conflict))
     requirements = capability_requirements(profile, rules)

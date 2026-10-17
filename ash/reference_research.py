@@ -6,7 +6,7 @@ or execute research itself.
 """
 from __future__ import annotations
 
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, field
 import re
 
 from .common import tokenize
@@ -71,6 +71,8 @@ class ReferenceResearchPlan:
     security_conflict_outcome: str = "HOLD_owner_decision"
     implementation_gate: str = "synthesis_before_build"
     no_suitable_reference_fallback: str = "record_no_suitable_reference; prefer_official_docs_and_verified_capabilities; label_reference_derived_vs_nexus_designed; continue_plan_build_test_verify"
+    work_category: str = "none"
+    reusable_references: dict = field(default_factory=dict)
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -90,14 +92,21 @@ def _normalized(text: str) -> str:
     return " ".join(text.casefold().split())
 
 
-def reference_research_plan(task: str) -> ReferenceResearchPlan:
-    """Return the bounded default research decision for a new plan."""
+@dataclass(frozen=True)
+class SubstantialWork:
+    category: str = "none"
+    skip_reason: str = "none"
+    reduced: bool = False
+
+
+def classify_substantial_work(task: str) -> SubstantialWork:
+    """One side-effect-free eligibility boundary for research and library reuse."""
     if not isinstance(task, str) or not task.strip():
-        return SKIP
+        return SubstantialWork()
     text = _normalized(task)
     tokens = tokenize(text)
     if any(re.search(pattern, text) for pattern in OPT_OUT_PATTERNS):
-        return ReferenceResearchPlan("skipped", "user_opt_out", "the user explicitly prohibited external research", candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
+        return SubstantialWork(skip_reason="user_opt_out")
 
     actions = tokens & PROJECT_ACTIONS
     if re.search(r"\b(create|make)\b", text):
@@ -115,24 +124,56 @@ def reference_research_plan(task: str) -> ReferenceResearchPlan:
         r"错别字|拼写错误|按钮颜色|调整颜色|改颜色|小改|简单修复|小型改动|一处文案", text,
     ))
     repair = bool(tokens & {"fix", "debug", "diagnose", "bug", "error", "failure"})
+    repair = repair or bool(re.search(r"修复|排障|故障", text))
+    extension = (bool(tokens & {"extend", "expand", "add"})
+                 or bool(tokens & {"implement", "develop", "introduce"} and tokens & {"feature", "features", "functionality"})
+                 or bool(re.search(r"扩展|新增|增加", text)))
+    meaningful_extension = extension and (
+        substantial or bool(tokens & {"feature", "features", "functionality", "reporting", "integration"})
+        or bool(re.search(r"功能|模块|集成", text))
+    )
+    if (repair and substantial) or meaningful_extension:
+        actions.add("implement")
     if not project or not actions:
-        return SKIP
+        return SubstantialWork()
     if tiny and not substantial:
-        return ReferenceResearchPlan("skipped", "small_change", "small presentation or copy change does not need reference research", candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
+        return SubstantialWork(skip_reason="small_change")
     if repair and not substantial and not (tokens & {"refactor", "restructure", "rearchitect", "redesign", "overhaul", "rewrite", "rebuild"}) and not re.search(r"重构|重做|大改|改造", text):
-        return ReferenceResearchPlan("skipped", "simple_repair", "focused bug repair does not need default reference research", candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
+        return SubstantialWork(skip_reason="simple_repair")
     # Website creation is project work even without a literal "new" marker.
     # The opt-out, tiny-change and focused-repair guards above still apply.
     website_creation = (
         bool(tokens & {"website", "webapp"} or re.search(r"网站|网页", text))
         and bool(actions & {"create", "build", "develop", "design", "implement"})
     )
-    if not substantial and not website_creation and not (tokens & {"new", "scratch", "customer", "client", "deliverable", "production"}):
+    if not substantial and not website_creation and not meaningful_extension and not (tokens & {"new", "scratch", "customer", "client", "deliverable", "production"}):
         # Scope is deliberately conservative when the request only mentions a
         # project noun and a generic action such as "edit" or "review".
-        return SKIP
+        return SubstantialWork()
 
     reduced = any(re.search(pattern, text) for pattern in COMPLETE_SPEC_PATTERNS)
+    category = "creation"
+    if tokens & {"refactor", "restructure", "rearchitect"} or re.search(r"重构", text):
+        category = "refactor"
+    elif tokens & {"redesign", "overhaul", "rewrite", "rebuild", "modernize"} or re.search(r"重做|改造|重新设计", text):
+        category = "redesign"
+    elif repair:
+        category = "substantial_fix"
+    elif extension:
+        category = "meaningful_extension"
+    return SubstantialWork(category, reduced=reduced)
+
+
+def reference_research_plan(task: str) -> ReferenceResearchPlan:
+    """Consume the shared classification; never perform I/O or grant authority."""
+    work = classify_substantial_work(task)
+    if work.category == "none":
+        if work.skip_reason == "none":
+            return SKIP
+        return ReferenceResearchPlan("skipped", work.skip_reason,
+            "user opted out" if work.skip_reason == "user_opt_out" else "small change or focused repair",
+            candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
+    reduced = work.reduced
     return ReferenceResearchPlan(
         status="reduced" if reduced else "required",
         trigger="complete_spec_missing_points" if reduced else "substantial_project_work",
@@ -143,4 +184,5 @@ def reference_research_plan(task: str) -> ReferenceResearchPlan:
         stop_when_answered=("mature_patterns", "best_fit_direction", "material_pitfalls", "reuse_and_license_constraints"),
         comparison_dimensions=("relevance", "maintenance", "documentation", "release_and_tests", "license", "compatibility", "security_posture", "operational_cost"),
         synthesis_fields=("problem", "references_and_tradeoffs", "reusable_patterns", "approaches_to_avoid", "license_constraints", "technical_risks", "recommended_direction", "fit_to_user_scope", "what_will_differ", "reference_derived_vs_nexus_designed"),
+        work_category=work.category,
     )

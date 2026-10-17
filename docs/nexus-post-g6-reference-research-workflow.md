@@ -84,3 +84,83 @@ that a Host actually searched, that a reference is current, or that synthesis
 was completed. Such completion requires Host-side source observations and a
 brief in the normal execution evidence. The Nexus planner itself performs no
 network requests.
+
+## Phase B: reusable-reference discovery (0.2.0 source, not released)
+
+One shared `classify_substantial_work` boundary now feeds Reference Research
+and reusable-reference eligibility. It covers creation, redesign, refactor,
+substantial fixes and meaningful extensions in English and Chinese. The 0.1.2
+website cases, tiny/focused-repair skips, explicit opt-out and exact-spec
+reduction remain regression controls. Equal-priority security/scope conflicts
+produce HOLD before the library is read; reference matches never satisfy a
+missing execution capability.
+
+The local-data file is `<Nexus data root>/references/library.json`, normally
+`%LOCALAPPDATA%/Nexus/references/library.json`, respecting the existing trusted
+`NEXUS_DATA_ROOT` deployment override. No directory/file is created by planning.
+The library has exactly `schema_version: nexus.reusable-reference-library.v1`
+and `records`. Limits: 256 records, 1 MiB/file, 4 KiB/record; match payloads are
+bounded to 8 KiB plus the fixed decision envelope, within existing MCP limits.
+
+Each closed record contains `id`, `name`, public HTTPS `url`, `revision`, `tags`
+(categories included as tags), `use_for`, `patterns`, `avoid_for`, `roles`,
+`workspace`, `acceptance`, `approval_evidence`, `license`, `license_evidence`,
+`reuse`, `last_checked_at`, `compatibility`, and `provenance`. Fields are bounded
+plain data. Local paths, secret-like assignments and unknown fields are rejected.
+URLs reject credentials, query strings, encoded paths, local hostnames and
+non-global literal IPs. No DNS lookup occurs during planning: the Host must
+recheck public destinations and redirects with its supported research tools.
+
+`workspace` is a SHA-256 binding to the canonical workspace root, calculated
+with `workspace_binding`, not a rebindable workspace alias. `shared` requires
+explicit approval evidence. `accepted` denotes Host-accepted reference data,
+not explicit user preference; `preferred` requires an explicit approval receipt.
+Receipts are same-user provenance, not cryptographic authentication or authority.
+
+`license` is `unknown|compatible|restricted|incompatible`; the evidence URL
+identifies the license text/version to check. `reuse` is
+`patterns_only|conditional_code_reuse|no_reuse`. Conditional code reuse requires
+compatible-license evidence; stale/unknown compatibility downgrades matches
+to patterns-only. An unknown check time or a check older than 30 days requires
+revalidation; selecting a record never refreshes it. License evidence still
+requires Host review for the actual intended use, attribution and restrictions.
+
+Retrieval filters scope, rejected/incompatible/no-reuse records and conflicting
+duplicate restrictions before relevance scoring. Ranking uses deterministic
+task/tag/use-for overlap (including bounded Chinese aliases), then a small
+explicit preference and freshness bonus, with stable URL/ID tie-breaks.
+Known conflicting frontend/backend framework tags are excluded before scoring;
+unmodeled compatibility restrictions still require Host review. Patterns
+and names do not independently establish applicability. Duplicate canonical
+URLs use one slot; conflicting revision/license/reuse metadata is excluded.
+Each independent URL can fill only one comparison role: multiple labels on
+one reference cannot impersonate the required multi-source comparison.
+Exact-spec matches address official documentation or matched implementation,
+compatibility, security/risk/API questions only.
+
+Known and fresh references share the existing six slots. Retrieval reserves
+space for missing official/mature-project/alternative roles and required
+revalidation. The Host can supplement only unresolved gaps, at most three
+queries and 120 seconds, within existing permissions. Role coverage is an
+advisory sufficiency hint, not evidence of completed research. Empty, missing,
+oversized or invalid libraries expose a bounded status and safely retain the
+existing Host research/original-design fallback. No stored reference is
+mandatory; no default reference is seeded or imported from historical evidence.
+
+### Explicit Host enrollment/update
+
+Only a separately authorized Host action calls `host_upsert(record,
+authorized=True, expected_sha256=<prior snapshot digest>, data_root=<trusted
+local root>)`. Initial creation uses `expected_sha256=None`; it cannot overwrite
+an existing library. The data root must already exist. The helper validates
+the complete record/library, checks the prior digest, serializes cooperating
+writers with an exclusive lock, and atomically replaces a flushed same-directory
+temporary file. It refuses invalid/oversized libraries, conflicting updates and
+unsafe filesystem targets rather than repairing them. A failed/crashed writer's
+remaining lock is HOLD for explicit review, never automatically removed.
+
+This API has no MCP write endpoint, CLI auto-enrollment, completion hook,
+background crawler, embedding/vector dependency, or Project Memory integration.
+The same-user guard is not universal Host isolation or a new security boundary.
+Distribution 0.2.0 is an additive feature release; accepted 0.1.2 artifacts/tags
+and frozen G1–G6/N01/PREAUTH records remain unchanged.

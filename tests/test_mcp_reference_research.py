@@ -72,7 +72,9 @@ class McpReferenceResearchTests(unittest.IsolatedAsyncioTestCase):
                 with self.subTest(task=task):
                     payload = await self.plan(session, task)
                     research = payload["reference_research"]
-                    self.assertEqual(research, json.loads(json.dumps(reference_research_plan(task).to_dict())))
+                    policy = json.loads(json.dumps(reference_research_plan(task).to_dict()))
+                    self.assertEqual({k: v for k, v in research.items() if k != "reusable_references"},
+                                     {k: v for k, v in policy.items() if k != "reusable_references"})
                     self.assertEqual(research["status"], expected)
                     self.assertEqual(payload["status"], "planned")
                     self.assertEqual(payload["fallback"]["status"], "not_needed")

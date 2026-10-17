@@ -11,6 +11,7 @@ from uuid import uuid4
 from ash.discovery import build_index
 from ash.runtime_decision import RuntimeCapabilityAdapter, RuntimeDecisionError, parse_runtime_requirements
 from ash.scout import ScoutError, ScoutRuntimeAdapter, parse_scout_request
+from ash.reusable_references import LibrarySnapshot
 from ash.v2 import load_plan_skills, plan_task, validate_plan
 
 from .authorization import WorkspaceAuthorizer, guard_regular_file, verify_unchanged
@@ -61,8 +62,10 @@ class NexusMcpRuntime:
         monotonic_clock: Callable[[], float] | None = None,
         capability_adapter: RuntimeCapabilityAdapter | None = None,
         scout_adapter: ScoutRuntimeAdapter | None = None,
+        reference_library_reader: Callable[[], LibrarySnapshot] | None = None,
     ) -> None:
         self.authorizer = authorizer
+        self.reference_library_reader = reference_library_reader
         self.catalog_builder = catalog_builder or self._build_catalog
         codex_home = Path.home() / ".codex"
         self.skill_roots = skill_roots or [ROOT.parent, codex_home / "skills", codex_home / "plugins" / "cache"]
@@ -246,6 +249,7 @@ class NexusMcpRuntime:
             request.task, index, workspace.root,
             user_requirements=request.constraints,
             context_reader=SafeContextReader(workspace, request.project_context_mode),
+            reference_library_reader=self.reference_library_reader,
         )
         elapsed = time.monotonic() - started
         # The core planner is synchronous and bounded; it is intentionally not moved

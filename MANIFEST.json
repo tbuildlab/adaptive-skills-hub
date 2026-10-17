@@ -20,8 +20,8 @@
     "sha256": "177c9a1bdc3460ef7ebdf2c989402fbeadd517cd3e5717e1f4cb0692ebe9c8dd"
   },
   "README.md": {
-    "bytes": 20932,
-    "sha256": "0be431f2f61337cc0ecd6606541c17c6df2d803d1b6f673cbec3273cc20144eb"
+    "bytes": 21169,
+    "sha256": "1abd9023a5695856e6af5a91ca25835eb5b3c9cc0c6e857cced101035175be02"
   },
   "SKILL.md": {
     "bytes": 7941,
@@ -288,8 +288,8 @@
     "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
   },
   "ash/mcp/adapter.py": {
-    "bytes": 15233,
-    "sha256": "85cbd70b3bffbacacd3b91f3580cb5cbea590e2134fc1c6564ed76faa6661531"
+    "bytes": 15497,
+    "sha256": "c2c6214227a9579e439e96556e3bbbd6c8ffebf50cf14420555fccbe35de2584"
   },
   "ash/mcp/authorization.py": {
     "bytes": 6811,
@@ -360,8 +360,12 @@
     "sha256": "8a3a22ed94064d7c4f87f4d35e297f713eb12a0f4124768fa930555c1f76819d"
   },
   "ash/reference_research.py": {
-    "bytes": 8415,
-    "sha256": "e225d61a0ae1585cfcdeaaec47466448668606a4fbbc687fa32b267c3953a584"
+    "bytes": 9963,
+    "sha256": "be6564018aba7f243653471752eca52c03a8468bad1c3a3085ae4a6421747957"
+  },
+  "ash/reusable_references.py": {
+    "bytes": 17345,
+    "sha256": "9267f934e8a34e1526b2edcfa363ff670931cdf8ffee3e00693b2db8ebb34152"
   },
   "ash/router.py": {
     "bytes": 23144,
@@ -384,8 +388,8 @@
     "sha256": "fd4636807a4358cdea958040a4be6507123cb8b77ceca881db6f9dfd59020ca5"
   },
   "ash/v2.py": {
-    "bytes": 64913,
-    "sha256": "3d7e714675b85b7983d33463a321df40c8f87fa4e4b5133e02e4981bb60b53f3"
+    "bytes": 65271,
+    "sha256": "b5dfecc2b56f58f2c424aff1b088f2030966a570a2f6f1aa04e072c82989e28f"
   },
   "assets/brand/nexus/nexus-avatar-500.png": {
     "bytes": 267327,
@@ -1860,8 +1864,8 @@
     "sha256": "ff0e2b082948034cbb45e37cd331a36055117057dd1d6c25bfc295b1ff712d73"
   },
   "docs/nexus-post-g6-reference-research-workflow.md": {
-    "bytes": 4703,
-    "sha256": "ddf7ef57d320f15fd57a606eb297040c5c61754305743cc24809be3f924fe1e2"
+    "bytes": 9881,
+    "sha256": "e6881ecd127518e4fc4b2a38833abd4145fe21c45d0440dd1b2d73391d2c3434"
   },
   "docs/nexus-post-r5-runtime-integration-slice1.md": {
     "bytes": 8517,
@@ -2297,7 +2301,7 @@
   },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
     "bytes": 1618,
-    "sha256": "8179714e57d8bb18a8c4a95b6de27c4c6cf12e2c08532913058f34405943c310"
+    "sha256": "661f64020fec12ef38789e7df471b40ff85924c330433b1e1bfc18e32bb67e8b"
   },
   "plugins/nexus-desktop/.mcp.json": {
     "bytes": 540,
@@ -2312,8 +2316,8 @@
     "sha256": "517ca7f7a215f98b225f91c875675f3a6037c8bae869ab3ada68bb64874c2631"
   },
   "plugins/nexus-desktop/skills/nexus/SKILL.md": {
-    "bytes": 26959,
-    "sha256": "9b85c10ce5693154d063435f1bf28fe92d78bad1364e7816ed9f99d1235d53d4"
+    "bytes": 28764,
+    "sha256": "12f61440340395756b18759413558269676af311a26ce6baa9da4024d2dfa7c2"
   },
   "prototypes/cryptographic_attendance_v1.py": {
     "bytes": 19407,
@@ -2333,7 +2337,7 @@
   },
   "release/VERSION": {
     "bytes": 6,
-    "sha256": "297b50f08386d3521f8fdaf2f78eb8d9d0acdf452d2e61596905fba37208c792"
+    "sha256": "1f930dd1f133c1f97a94fe3acb8db34372cf4c01ffdb2b3ff4ca72f9494121e9"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -3329,7 +3333,7 @@
   },
   "tests/test_desktop_plugin_pilot.py": {
     "bytes": 21782,
-    "sha256": "fedc790d7d4b86a060f4208ba73d66b56df8b3c29ad98d12634374ed7668e19f"
+    "sha256": "5c5191cff87dd457ebdaed651832e67fc89d30c225b89287189cfeb7bec7e5aa"
   },
   "tests/test_ecosystem_compare.py": {
     "bytes": 23723,
@@ -3640,8 +3644,8 @@
     "sha256": "176f1d68cbc18253d9dbd40f218c57deee157f1c3a04b17771da68aecce48e42"
   },
   "tests/test_mcp_reference_research.py": {
-    "bytes": 7309,
-    "sha256": "8a6c1abc093381452dadcb300a1ca51b0f0ea31d05e10cfbbbd59b944d17ee61"
+    "bytes": 7496,
+    "sha256": "9d35b3e2b9d60f2f0ce8af4f2dde63b789091b0e7f32f507cdcb26af399405a3"
   },
   "tests/test_openai_hosted.py": {
     "bytes": 23572,
@@ -3682,6 +3686,10 @@
   "tests/test_reference_research.py": {
     "bytes": 5043,
     "sha256": "24bea3d65a0808d08755e28835e391d33f0db452aeb3a4ac5378911784e7e6b4"
+  },
+  "tests/test_reusable_references.py": {
+    "bytes": 21424,
+    "sha256": "fd32ed5f4f0f67485c4b274bdc83eb3fa05e8c5a05cab569acfe703445c9a1e2"
   },
   "tests/test_runtime_decision.py": {
     "bytes": 24446,
