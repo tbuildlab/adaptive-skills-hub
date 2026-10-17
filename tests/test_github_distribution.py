@@ -84,6 +84,15 @@ def write_static_manifest(root: Path) -> None:
 
 
 class GitHubDistributionTests(unittest.TestCase):
+    def test_project_memory_is_excluded_before_release_or_install(self) -> None:
+        from scripts.release_common import is_private_memory_payload
+        for name in ("config/project-memory-config.json", "project-memory/bundle.json", ".nexus-project-memory-root.json"):
+            with self.subTest(name=name), self.assertRaises(ReleaseError):
+                safe_member_name(name)
+        self.assertTrue(is_private_memory_payload(b'{"schema_version":"nexus.project-memory.bundle.v1"}'))
+        self.assertIn("scripts/project_memory.py", release_build.EXTRA_FILES)
+        self.assertIn("docs/nexus-project-memory-v1.md", release_build.EXTRA_FILES)
+
     def build_candidate(self, temporary: Path) -> tuple[Path, Path]:
         wheelhouse = temporary / "reviewed wheels"
         wheelhouse.mkdir()

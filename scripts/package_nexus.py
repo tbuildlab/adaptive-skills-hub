@@ -14,6 +14,11 @@ from typing import Any
 import unicodedata
 import zipfile
 
+if __package__:
+    from .release_common import is_private_memory_payload
+else:
+    from release_common import is_private_memory_payload
+
 
 ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED_PARTS = {".git", "state", "output", "__pycache__", ".venv", "venv", "node_modules"}
@@ -79,10 +84,10 @@ _WINDOWS_RESERVED = frozenset(
     | {f"lpt{index}" for index in range(1, 10)}
 )
 _FORBIDDEN_MANIFEST_PARTS = frozenset(
-    EXCLUDED_PARTS_CASEFOLDED | ECOSYSTEM_DATA_PARTS
+    EXCLUDED_PARTS_CASEFOLDED | ECOSYSTEM_DATA_PARTS | {"project-memory"}
 )
 _FORBIDDEN_MANIFEST_NAMES = frozenset(
-    EXCLUDED_NAMES_CASEFOLDED | {ECOSYSTEM_ROOT_MARKER.casefold()}
+    EXCLUDED_NAMES_CASEFOLDED | {ECOSYSTEM_ROOT_MARKER.casefold(), "project-memory-config.json", ".nexus-project-memory-root.json"}
 )
 # Historical release evidence deliberately remains in the private source tree,
 # but it is not a portable-install artifact.  An allowlist prevents old local
@@ -114,6 +119,7 @@ ALLOWED_DOCS = {
     "docs/nexus-agent-runtime-contract.md",
     "docs/nexus-post-g6-reference-research-workflow.md",
     "docs/nexus-visual-identity-v1.md",
+    "docs/nexus-project-memory-v1.md",
 }
 
 
@@ -146,6 +152,8 @@ def _assert_no_embedded_ecosystem_root(root: Path) -> None:
     if not root.is_dir() or _is_link_or_reparse(root):
         raise PackageBoundaryError("package source root must be a real directory")
     for path in root.rglob("*"):
+        if path.name.casefold() in {"project-memory-config.json", ".nexus-project-memory-root.json"} or "project-memory" in {p.casefold() for p in path.relative_to(root).parts}:
+            raise PackageBoundaryError("private Project Memory entered package source")
         if _is_link_or_reparse(path):
             raise PackageBoundaryError("package source must not contain links or reparse points")
         if path.name.casefold() == ECOSYSTEM_ROOT_MARKER.casefold():
@@ -154,6 +162,8 @@ def _assert_no_embedded_ecosystem_root(root: Path) -> None:
             raise PackageBoundaryError(
                 "repository-external ecosystem storage directory entered package source"
             )
+        if path.is_file() and is_private_memory_payload(path.read_bytes()):
+            raise PackageBoundaryError("private Project Memory payload entered package source")
 
 
 def _allowed_relative(relative: PurePosixPath) -> bool:

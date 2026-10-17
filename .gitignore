@@ -40,3 +40,8 @@ transactions/
 releases/
 wheelhouse/
 requirements-release.lock
+
+# Host-owned private Project Memory and machine-local root configuration
+project-memory/
+project-memory-config.json
+.nexus-project-memory-root.json

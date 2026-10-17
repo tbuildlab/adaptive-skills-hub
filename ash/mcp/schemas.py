@@ -166,6 +166,15 @@ def parse_plan_request(value: Any) -> PlanRequest:
     return PlanRequest(task.strip(), workspace_id, mode, tuple(item.strip() for item in constraints))
 
 
+def parse_memory_plan_request(value: Any) -> tuple[PlanRequest, str | None]:
+    """Add opaque project selection only to planning, not frozen handoff inputs."""
+    data = dict(_object(value, {"task", "workspace_id", "project_context_mode", "constraints", "project_id"}))
+    project_id = data.pop("project_id", None)
+    if project_id is not None and (type(project_id) is not str or not re.fullmatch(r"[a-f0-9]{32}", project_id)):
+        raise NexusMcpError("INVALID_REQUEST", "project_id is invalid")
+    return parse_plan_request(data), project_id
+
+
 def parse_discover_request(value: Any) -> tuple[str, ...]:
     if value is None:
         return ()
@@ -395,6 +404,7 @@ DISCOVER_INPUT_SCHEMA: dict[str, Any] = {
 PLAN_INPUT_SCHEMA: dict[str, Any] = {
     "type": "object", "additionalProperties": False, "required": ["task", "workspace_id"],
     "properties": {
+        "project_id": {"type": "string", "pattern": "^[a-f0-9]{32}$"},
         "task": {"type": "string", "minLength": 1, "maxLength": MAX_TASK_BYTES},
         "workspace_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"},
         "project_context_mode": {"type": "string", "enum": ["none", "governance"], "default": "governance"},

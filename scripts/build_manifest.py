@@ -8,6 +8,11 @@ from pathlib import Path, PurePosixPath
 import stat
 import unicodedata
 
+if __package__:
+    from .release_common import is_private_memory_payload
+else:
+    from release_common import is_private_memory_payload
+
 ROOT = Path(__file__).resolve().parents[1]
 # Runtime indexes and live-test packets can contain machine-specific paths,
 # generated vendor assets, and large transient artifacts.  The static manifest
@@ -165,6 +170,8 @@ def build_manifest_bytes(*, root: Path = ROOT) -> tuple[bytes, dict[str, dict[st
         key=lambda item: item.relative_to(root).as_posix().encode("utf-8"),
     ):
         relative = path.relative_to(root)
+        if path.name.casefold() in {"project-memory-config.json", ".nexus-project-memory-root.json"} or "project-memory" in {p.casefold() for p in relative.parts}:
+            raise ManifestBoundaryError("private Project Memory entered manifest source")
         if _is_link_or_reparse(path):
             raise ManifestBoundaryError("manifest source must not contain links or reparse points")
         if path.name.casefold() == ECOSYSTEM_ROOT_MARKER.casefold():
@@ -193,6 +200,8 @@ def build_manifest_bytes(*, root: Path = ROOT) -> tuple[bytes, dict[str, dict[st
             raise ManifestBoundaryError("manifest source contains colliding paths")
         collision_keys.add(collision)
         contents = _manifest_bytes(path.read_bytes())
+        if is_private_memory_payload(contents):
+            raise ManifestBoundaryError("private Project Memory payload entered manifest source")
         entries[name] = {
             "bytes": len(contents),
             "sha256": hashlib.sha256(contents).hexdigest(),

@@ -49,6 +49,7 @@ _WINDOWS_RESERVED = frozenset(
 )
 _FORBIDDEN_RELEASE_PARTS = frozenset(
     {
+        "project-memory",
         ".git",
         ".pytest_cache",
         ".venv",
@@ -77,6 +78,8 @@ _FORBIDDEN_RELEASE_PARTS = frozenset(
 )
 _FORBIDDEN_RELEASE_NAMES = frozenset(
     {
+        "project-memory-config.json",
+        ".nexus-project-memory-root.json",
         ".nexus-ecosystem-root.json",
         ".env",
         "manifest.json",
@@ -89,6 +92,18 @@ _FORBIDDEN_RELEASE_NAMES = frozenset(
 
 class ReleaseError(RuntimeError):
     """A release artifact or lifecycle invariant was violated."""
+
+
+def is_private_memory_payload(raw: bytes) -> bool:
+    """Detect renamed memory/config JSON without importing candidate runtime code."""
+    if not raw.lstrip().startswith((b"{", b"[")):
+        return False
+    try:
+        payload = json.loads(raw)
+    except (ValueError, UnicodeError, RecursionError):
+        return bool(re.search(rb'"schema_version"\s*:\s*"nexus\.project-memory\.', raw))
+    return (type(payload) is dict and type(payload.get("schema_version")) is str
+            and payload["schema_version"].startswith("nexus.project-memory."))
 
 
 def _is_link_or_reparse(path: Path) -> bool:
@@ -243,6 +258,12 @@ def verify_release_tree(root: Path) -> dict[str, Any]:
         raise ReleaseError("release tree differs from its manifest")
     for name, metadata in manifest["files"].items():
         path = root / name
+        with path.open("rb") as handle:
+            prefix = handle.read(256)
+            if prefix.lstrip().startswith((b"{", b"[")):
+                handle.seek(0)
+                if is_private_memory_payload(handle.read()):
+                    raise ReleaseError("private Project Memory payload entered release tree")
         if path.stat().st_size != metadata["size"] or sha256_file(path) != metadata["sha256"]:
             raise ReleaseError(f"release integrity check failed for {name}")
     return manifest

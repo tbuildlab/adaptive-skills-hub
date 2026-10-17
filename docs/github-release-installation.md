@@ -1,4 +1,17 @@
-# Install Nexus 0.1.1 from a private GitHub Release (Windows x64)
+# 0.3.0 source-stage notice
+
+Phase C is at C2 source verification only. The released/installed baseline is
+0.2.0; do not build, install or publish this source before separate approval.
+Historical release commands and receipts below remain historical. After source
+approval, use the existing verified release pipeline and original verified
+assets, never an edited installed cache. Project Memory setup is a separate
+explicit Host operation described in [Project Memory v1](nexus-project-memory-v1.md).
+The data primary is D: only. The machine-local root pointer, real memory,
+workspace receipts and any private summaries must not be packaged or uploaded.
+An upgrade must retain existing memory/configuration; it must not migrate the
+Reference Library or create a C: memory copy. Real installed acceptance is C3.
+
+# Install Nexus 0.1.1 from a private GitHub Release (historical, Windows x64)
 
 Use the [stable Nexus 0.1.1 release](https://github.com/tbuildlab/adaptive-skills-hub/releases/tag/nexus-0.1.1).
 Its source is the accepted plugin patch commit

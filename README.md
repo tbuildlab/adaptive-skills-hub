@@ -5,7 +5,7 @@ Codex. It selects suitable Skills, prepares bounded research and validation
 plans, and returns evidence for Host-owned work. The Host executes tools,
 creates artifacts, verifies results, and controls permissions.
 
-**Stable private release: 0.1.1.** Nexus Roadmap V2 is completed and frozen at
+**Released baseline: 0.2.0.** Nexus Roadmap V2 is completed and frozen at
 [`nexus-v2-g6-final`](https://github.com/tbuildlab/adaptive-skills-hub/tree/nexus-v2-g6-final).
 The distribution version is independent of frozen Core tags. This repository
 is private and proprietary: share these links only with authorized repository
@@ -13,12 +13,20 @@ users. There is no OpenAI public plugin-directory listing or public license gran
 
 ![Official Nexus avatar](assets/brand/nexus/nexus-avatar-500.png)
 
-**Unreleased feature source: 0.2.0.** Adds bounded reusable-reference library
-retrieval for substantial work. The released/installed 0.1.2 website-trigger
-patch remains unchanged. This source update does not build, install or publish
-0.2.0. The older 0.1.1 installation examples below are historical; use the
-[accepted 0.1.2 release](https://github.com/tbuildlab/adaptive-skills-hub/releases/tag/nexus-0.1.2)
-for the current installed release, not unreleased source.
+**Unreleased feature source: 0.3.0 (Phase C Stage C2).** Adds Host-owned local
+Project Memory and bounded automatic read-only project continuity. The
+[accepted 0.2.0 release](https://github.com/tbuildlab/adaptive-skills-hub/releases/tag/nexus-0.2.0)
+and frozen 29-record Reference Library remain unchanged. No 0.3.0 build, install
+or release has been performed. The 0.1.1 examples below are historical, not the
+recommended version for a new install; use the accepted release's original
+verified assets. See [Project Memory boundaries and Host workflow](docs/nexus-project-memory-v1.md).
+
+Project Memory uses a separately configured D-drive primary, preferably
+`D:\NexusData\project-memory`; no C: fallback or user memory enters GitHub.
+`nexus.plan_task` remains read-only and returns advisory context only. Completion
+writes require explicit Host consent, privacy review and verification evidence;
+missing memory does not force HOLD or suppress real capability gaps. Installed
+fresh-session acceptance remains a later stage, not a C2 source claim.
 
 ## Quick Start: Windows x64
 

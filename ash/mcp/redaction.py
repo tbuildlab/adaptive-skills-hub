@@ -98,7 +98,10 @@ def safe_catalog(records: list[Mapping[str, Any]], tags: tuple[str, ...]) -> dic
     })
 
 
-def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str, Any], request_id: str) -> dict[str, Any]:
+def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str, Any], request_id: str,
+              *, project_memory: Mapping[str, Any] | None = None) -> dict[str, Any]:
+    # Project Memory is attached separately after this unchanged authority and
+    # capability projection; it is never fed back into planner rules or coverage.
     load_by_path: dict[str, list[Mapping[str, Any]]] = {}
     for item in loads:
         path = item.get("path")
@@ -120,7 +123,7 @@ def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str
             "content_sha256": item["sha256"], "characters": item["characters"], "load_status": "loaded",
         })
     status = "planned" if validation.get("status") == "passed" else "fallback_needed"
-    return ensure_response_limit({
+    payload = ensure_response_limit({
         "schema_version": SCHEMA_VERSION, "request_id": request_id, "product": PRODUCT, "status": status,
         "task_summary": {"task_type": plan.task_profile.task_type, "required_capabilities": list(plan.task_profile.required_capabilities)},
         "reference_research": plan.reference_research.to_dict(),
@@ -132,6 +135,10 @@ def safe_plan(plan: Any, loads: list[Mapping[str, Any]], validation: Mapping[str
         "applied_rules": [{"rule_id": item.rule_id, "effect": item.enforcement, "target": item.target} for item in plan.rules if item.source in {"system", "current_user"} or item.scope == "project"],
         "warnings": ["project_context_items_excluded" for _ in plan.project_context.skipped[:1]],
     })
+    if project_memory is not None:
+        from ash.project_memory_context import attach_context
+        return ensure_response_limit(attach_context(payload, project_memory))
+    return payload
 
 
 def safe_host_inventory_ticket(ticket: HostCapabilityTicket) -> dict[str, Any]:

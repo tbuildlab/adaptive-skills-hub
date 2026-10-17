@@ -12,6 +12,7 @@ sys.path.insert(0, str(ROOT))
 from ash.mcp.adapter import NexusMcpRuntime  # noqa: E402
 from ash.mcp.authorization import WorkspaceAuthorizer  # noqa: E402
 from ash.mcp.server import run_stdio  # noqa: E402
+from ash.project_memory_context import ProjectMemoryReader  # noqa: E402
 
 
 def main() -> int:
@@ -19,7 +20,9 @@ def main() -> int:
     parser.add_argument("--workspace-config", required=True, help="Trusted local workspace allowlist JSON; never supplied through MCP tool input")
     args = parser.parse_args()
     try:
-        runtime = NexusMcpRuntime(WorkspaceAuthorizer.from_file(Path(args.workspace_config)))
+        workspace_config = Path(args.workspace_config)
+        runtime = NexusMcpRuntime(WorkspaceAuthorizer.from_file(workspace_config),
+                                  project_memory_reader=ProjectMemoryReader(workspace_config))
         asyncio.run(run_stdio(runtime))
         return 0
     except Exception:

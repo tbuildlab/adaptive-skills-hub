@@ -1,7 +1,7 @@
 {
   "name": "nexus-desktop",
-  "version": "0.2.0",
-  "description": "Local Nexus planning, bounded reference research, capability routing, server-issued short-lived Host inventory tickets, and Host-owned execution handoff for ChatGPT Desktop and Codex.",
+  "version": "0.3.0",
+  "description": "Local Nexus planning, bounded reference research, read-only project continuity, capability routing, server-issued short-lived Host inventory tickets, and Host-owned execution handoff for ChatGPT Desktop and Codex.",
   "author": {
     "name": "Nexus Project"
   },

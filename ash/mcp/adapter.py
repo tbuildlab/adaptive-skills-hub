@@ -38,6 +38,7 @@ from .schemas import (
     parse_host_capability_ticket_request,
     parse_host_inventory_ticket_id,
     parse_plan_request,
+    parse_memory_plan_request,
     parse_prepare_enhancement_handoff_request,
     parse_prepare_host_handoff_request,
     parse_runtime_requirements_request,
@@ -63,9 +64,11 @@ class NexusMcpRuntime:
         capability_adapter: RuntimeCapabilityAdapter | None = None,
         scout_adapter: ScoutRuntimeAdapter | None = None,
         reference_library_reader: Callable[[], LibrarySnapshot] | None = None,
+        project_memory_reader: Callable[..., dict[str, Any]] | None = None,
     ) -> None:
         self.authorizer = authorizer
         self.reference_library_reader = reference_library_reader
+        self.project_memory_reader = project_memory_reader
         self.catalog_builder = catalog_builder or self._build_catalog
         codex_home = Path.home() / ".codex"
         self.skill_roots = skill_roots or [ROOT.parent, codex_home / "skills", codex_home / "plugins" / "cache"]
@@ -275,8 +278,17 @@ class NexusMcpRuntime:
         return tuple(sorted(evidence))
 
     def plan(self, arguments: Any) -> dict[str, Any]:
-        plan, loads, validation = self._plan_and_load(parse_plan_request(arguments))
-        return safe_plan(plan, loads, validation, str(uuid4()))
+        from ash.project_memory_context import unavailable
+        request, project_id = parse_memory_plan_request(arguments)
+        plan, loads, validation = self._plan_and_load(request)
+        memory = unavailable("project_memory_disabled" if request.project_context_mode == "none" else "project_memory_unavailable")
+        if request.project_context_mode != "none" and self.project_memory_reader is not None:
+            try:
+                memory = self.project_memory_reader(self.authorizer.resolve(request.workspace_id), request.task, project_id)
+            except Exception:
+                # Memory availability is never planner authorization or a HOLD.
+                memory = unavailable("project_memory_unavailable")
+        return safe_plan(plan, loads, validation, str(uuid4()), project_memory=memory)
 
     def prepare_host_handoff(self, arguments: Any) -> dict[str, Any]:
         """Issue a read-only R4 intent after an independent plan/load recheck."""

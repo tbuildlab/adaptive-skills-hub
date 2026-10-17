@@ -55,6 +55,8 @@ RUNTIME_SPEC_FILE = ROOT / "release" / "windows-runtime.json"
 ROOT_FILES = {"requirements-r2-mcp.txt"}
 DIRECTORIES = {"ash", "config", "plugins/nexus-desktop"}
 EXTRA_FILES = {
+    "scripts/project_memory.py",
+    "docs/nexus-project-memory-v1.md",
     ".agents/plugins/marketplace.json",
     "scripts/nexus_mcp.py",
     "scripts/setup_nexus.py",
