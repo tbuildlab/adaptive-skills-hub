@@ -1,9 +1,12 @@
 """Deterministic public composition tests; no native candidate execution."""
 from pathlib import Path
+import ast
+import hashlib
 import json
 import os
 import tempfile
 import unittest
+import subprocess
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -258,6 +261,65 @@ class FixedNativeBindingTests(unittest.TestCase):
                 with self.assertRaisesRegex(binding.BindingHold,'ATTEMPT_RESERVED_NO_REPLAY'):
                     binding.public_attempt('success')
                 launch.assert_not_called()
+
+
+class G6PathRemediationTests(unittest.TestCase):
+    """Source-only compatibility checks; no qualification or signing-key I/O."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.baseline_commit='cff5f0799d02ebb1a3c1e41e0bd82821d117600b'
+        cls.baseline=subprocess.check_output(['git','show',cls.baseline_commit+':ash/g6_native_binding.py'],cwd=binding.ROOT).decode().replace('\r\n','\n')
+        cls.current=(binding.ROOT/'ash/g6_native_binding.py').read_text(encoding='utf-8')
+
+    @staticmethod
+    def expression(source, name):
+        return next(n.value for n in ast.walk(ast.parse(source)) if isinstance(n,ast.Assign)
+                    and any(isinstance(t,ast.Name) and t.id==name for t in n.targets))
+
+    def test_current_owner_paths_are_exactly_equivalent_and_suffixes_fixed(self):
+        for name,suffix in (('PYTHON','AppData/Local/Programs/Python/Python312/python.exe'),
+                            ('public','NexusG3OwnerSigning/nexus_g3_ed25519.pub')):
+            old=Path(ast.literal_eval(self.expression(self.baseline,name).args[0]))
+            expression=self.expression(self.current,name)
+            current=eval(compile(ast.Expression(expression),'<path-construction>','eval'),{'Path':Path})
+            self.assertEqual(current,old)
+            self.assertEqual(current,Path.home()/suffix)
+            with patch.object(Path,'home',return_value=Path('D:/controlled-owner-profile')):
+                controlled=eval(compile(ast.Expression(expression),'<path-construction>','eval'),{'Path':Path})
+                self.assertEqual(controlled,Path('D:/controlled-owner-profile')/suffix)
+        self.assertEqual(binding.PYTHON,Path.home()/'AppData/Local/Programs/Python/Python312/python.exe')
+
+    def test_only_two_path_expressions_changed_all_security_code_unchanged(self):
+        expected=self.baseline
+        for name,suffix in (('PYTHON','AppData/Local/Programs/Python/Python312/python.exe'),
+                            ('public','NexusG3OwnerSigning/nexus_g3_ed25519.pub')):
+            old=ast.get_source_segment(self.baseline,self.expression(self.baseline,name))
+            self.assertEqual(expected.count(old),1)
+            expected=expected.replace(old,"Path.home() / "+repr(suffix),1)
+        self.assertEqual(self.current,expected)
+
+    def test_changed_material_derives_new_subject_and_old_subject_is_refused(self):
+        from scripts import verify_g3_owner_signature as issuer
+        current=binding.owner_intent()
+        old_hashes={name:hashlib.sha256(subprocess.check_output(['git','show',self.baseline_commit+':'+name],cwd=binding.ROOT).replace(b'\r\n',b'\n')).hexdigest()
+                    for name in current['material']}
+        with patch.object(binding,'normalized_sha',side_effect=lambda p:old_hashes[Path(p).relative_to(binding.ROOT).as_posix()]):
+            old=binding.owner_intent()
+        self.assertNotEqual(current['material'],old['material'])
+        self.assertNotEqual(current['subject']['content_sha256'],old['subject']['content_sha256'])
+        self.assertNotEqual(current['subject_id'],old['subject_id'])
+        self.assertEqual(current['config'],old['config'])
+        self.assertEqual(current['issuer'],old['issuer'])
+        body={**old,'effective_at':100,'expires_at':200,'review_sha256':'a'*64}
+        with patch.object(binding,'owner_intent',return_value=current), \
+             patch.object(binding,'stable_read_bytes',return_value=json.dumps(body).encode()) as read, \
+             patch.object(issuer,'public_key') as key,patch.object(issuer,'github') as network, \
+             patch.object(binding.subprocess,'run') as launch:
+            with self.assertRaisesRegex(binding.BindingHold,'OWNER_EXACT_SUBJECT'):
+                binding._verify_native_owner()
+            read.assert_called_once_with(binding.ROOT/binding.OWNER_PACKET,maximum_bytes=65536)
+            key.assert_not_called();network.assert_not_called();launch.assert_not_called()
 
 
 if __name__=='__main__': unittest.main()

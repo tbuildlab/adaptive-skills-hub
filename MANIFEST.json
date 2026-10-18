@@ -260,8 +260,8 @@
     "sha256": "73fda090b3d90d9dd9424977478f6afd52d473a99467f6f4436a27fb02e4f40f"
   },
   "ash/g6_native_binding.py": {
-    "bytes": 49576,
-    "sha256": "37d14f5914a5927c2e71c3e0267bd5bac5c1fb47858a255b0979f8075800b939"
+    "bytes": 49558,
+    "sha256": "0d2e575e50954043df623db7ae28e42652fbe56762b8fae4fc0a78bfd7ce28d1"
   },
   "ash/g6_private_completion.py": {
     "bytes": 9830,
@@ -2321,7 +2321,7 @@
   },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
     "bytes": 1648,
-    "sha256": "ae05e2103f54cdb2bb33eee5322d6369c30d0e9f701456f2a5f6755c6a958386"
+    "sha256": "6fe513ceb9facf794df436bde4cffb9ad85c14609ed5721213c291f7c41755d0"
   },
   "plugins/nexus-desktop/.mcp.json": {
     "bytes": 540,
@@ -2357,7 +2357,7 @@
   },
   "release/VERSION": {
     "bytes": 6,
-    "sha256": "d915cc95d6ca8f47ae297713ed46d4e5c5d99ddd29fc3c61e263bdf305f2b5b0"
+    "sha256": "79e3f22ca37c7fdf4c29ae3648d6b008c3cb6547260a453409275470919dc674"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -3357,7 +3357,7 @@
   },
   "tests/test_desktop_plugin_pilot.py": {
     "bytes": 21782,
-    "sha256": "b5eb7522c96116e683d5a7923f6d9ab53541b21e54000aaeb3602b7097d55bc9"
+    "sha256": "b19c146e4c91124ec7d074fa8bd31e2af3cd1c96ba5b62079b9ad0e53958e170"
   },
   "tests/test_ecosystem_compare.py": {
     "bytes": 23723,
@@ -3596,8 +3596,8 @@
     "sha256": "ddeadadf5df25e430545f945d438588c5bbe97dac43abb7f0188d1e683fded5b"
   },
   "tests/test_g6_native_binding.py": {
-    "bytes": 17074,
-    "sha256": "f309e8598793d9500f3f5407827500dabc558b13fff00d4c96a18ad49cc93eb5"
+    "bytes": 21065,
+    "sha256": "c6187b1f9349d1da6f666da0fd38f6a158825138eacfe398a8fb68a551d9a423"
   },
   "tests/test_g6_private_completion.py": {
     "bytes": 12932,
@@ -3612,8 +3612,8 @@
     "sha256": "5766749a209b1918c5c1173cf92db78dac96cb089b8cbaf6755b38f822cfa1dd"
   },
   "tests/test_github_distribution.py": {
-    "bytes": 71644,
-    "sha256": "629dc3019dd5bfab184337dd75f1d015da54370111989b740670a536c8ad7861"
+    "bytes": 73290,
+    "sha256": "77db924c11d0789fbd3bf01714004e865e6543c8860ef98c0d6c321835bf3754"
   },
   "tests/test_governance_advisory_caller.py": {
     "bytes": 15117,

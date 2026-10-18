@@ -38,7 +38,7 @@ class NexusDesktopPluginPilotTests(unittest.IsolatedAsyncioTestCase):
         marketplace = json.loads((ROOT / ".agents" / "plugins" / "marketplace.json").read_text(encoding="utf-8"))
         skill = (PLUGIN_ROOT / "skills" / "nexus" / "SKILL.md").read_text(encoding="utf-8")
         self.assertEqual(manifest["name"], "nexus-desktop")
-        self.assertEqual(manifest["version"], "0.3.0")
+        self.assertEqual(manifest["version"], "0.3.1")
         self.assertEqual(manifest["interface"]["displayName"], "Nexus")
         self.assertIn("bounded reference research", manifest["description"])
         self.assertIn("server-issued short-lived Host inventory tickets", manifest["description"])

@@ -29,7 +29,7 @@ HOST = ROOT / 'output/g6-fixed-host-snapshot-v1/bin/codex.exe'
 HOST_SHA = 'e98c516f1c8935789aabe9122ee7e05ec4c3efd1ba6acf179242e031c495b99e'
 RUNNER=HOST.parent/'codex-command-runner.exe'
 RUNNER_SHA='bdf5160289bc4d64bc2fa38c43f9679558b3a4386226adc66a0af741e41424b7'
-PYTHON = Path('C:/Users/De Yong/AppData/Local/Programs/Python/Python312/python.exe')
+PYTHON = Path.home() / 'AppData/Local/Programs/Python/Python312/python.exe'
 NATIVE = frozenset({'ggml-base.dll', 'ggml-cpu-x64.dll', 'ggml.dll', 'libomp.dll',
                     'llama-common.dll', 'llama-completion-impl.dll',
                     'llama-completion.exe', 'llama.dll'})
@@ -265,7 +265,7 @@ def _verify_native_owner(role='native'):
     reviewed=codec.parse_input(review)
     require(reviewed.get('decision')=='PASS_SIGNING_READINESS'
             and reviewed.get('binding_sha256')==normalized_sha(Path(__file__)),'REVIEW_READINESS')
-    public=Path('C:/Users/De Yong/NexusG3OwnerSigning/nexus_g3_ed25519.pub')
+    public=Path.home() / 'NexusG3OwnerSigning/nexus_g3_ed25519.pub'
     key,fingerprint=issuer.public_key(stable_read_bytes(public,maximum_bytes=4096))
     require(fingerprint=='SHA256:5FV4/OvvMPzivK/4YIolW2kPQBGoik/llHbviTDpf98','OWNER_KEY')
     fresh=time.monotonic(); profile=issuer.github(''); keys=issuer.github('/ssh_signing_keys?per_page=100')

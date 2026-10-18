@@ -84,6 +84,29 @@ def write_static_manifest(root: Path) -> None:
 
 
 class GitHubDistributionTests(unittest.TestCase):
+    def test_g6_remediation_sources_preserve_membership_and_exclude_personal_literals(self) -> None:
+        import ast
+        from scripts.package_nexus import reviewed_members
+        from scripts.build_manifest import build_manifest_bytes
+        baseline=json.loads(subprocess.check_output(['git','show','cff5f0799d02ebb1a3c1e41e0bd82821d117600b:MANIFEST.json'],cwd=ROOT))
+        payloads={p.relative_to(ROOT).as_posix():raw for p,raw in release_build.source_payloads()}
+        self.assertEqual(set(payloads),{name for name in baseline if release_build._release_manifest_member(name)})
+        self.assertIn('ash/g6_native_binding.py',{p.relative_to(ROOT).as_posix() for p in reviewed_members(root=ROOT)})
+        source=payloads['ash/g6_native_binding.py'].decode('utf-8')
+        self.assertEqual(source.count('Path.home()'),2)
+        for node in ast.walk(ast.parse(source)):
+            if isinstance(node,ast.Constant) and isinstance(node.value,str):
+                self.assertFalse(node.value.lower().startswith('c:/users/'))
+                self.assertFalse(node.value.lower().startswith('c:\\users\\'))
+        profile=Path.home().as_posix().encode()
+        for name,raw in payloads.items():
+            self.assertNotIn(profile,raw,name)
+            self.assertNotIn(profile.replace(b'/',b'\\'),raw,name)
+        serialized,_=build_manifest_bytes(root=ROOT)
+        self.assertEqual(serialized,(ROOT/'MANIFEST.json').read_bytes())
+        self.assertEqual((ROOT/'release/VERSION').read_text().strip(),'0.3.1')
+        self.assertEqual(json.loads(payloads['plugins/nexus-desktop/.codex-plugin/plugin.json'])['version'],'0.3.1')
+
     def test_project_memory_is_excluded_before_release_or_install(self) -> None:
         from scripts.release_common import is_private_memory_payload
         for name in ("config/project-memory-config.json", "project-memory/bundle.json", ".nexus-project-memory-root.json"):
