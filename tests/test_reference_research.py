@@ -91,6 +91,47 @@ class ReferenceResearchPolicyTests(unittest.TestCase):
     def test_simple_non_project_question_has_no_research_overhead(self) -> None:
         self.assertEqual(reference_research_plan("What is an API?").status, "skipped")
 
+    def test_frozen_new_website_content_size_does_not_skip_research(self) -> None:
+        task = (
+            "Create a new website for a fictional neighbourhood repair cafe called Second Saturday: "
+            "explain how volunteer repair sessions work, display a small catalogue of repair categories "
+            "and sample upcoming events, and provide accessible mobile navigation. This is a new "
+            "content-focused informational website, with no accounts, payments, booking backend "
+            "or real contact collection."
+        )
+        plan = reference_research_plan(task)
+        self.assertEqual((plan.status, plan.work_category), ("required", "creation"))
+        self.assertEqual(plan.implementation_gate, "synthesis_before_build")
+        self.assertEqual(plan.candidate_limit, 6)
+
+    def test_whole_website_creation_survives_incidental_tiny_markers(self) -> None:
+        for task in (
+            "Build a new website for a community observatory with a simple event list.",
+            "Create a simple website with small cards and button labels.",
+            "Create a small new website.",
+        ):
+            with self.subTest(task=task):
+                self.assertEqual(reference_research_plan(task).status, "required")
+
+    def test_tiny_edits_and_website_component_objects_still_skip(self) -> None:
+        for task in (
+            "Fix a tiny typo in the website button label.",
+            "Create a tiny button for the website.",
+            "Build a small website header.",
+            "Create a small component inside the new website.",
+            "Implement a small fix to the website.",
+            "Create a small button for the website; do not create a new website.",
+            'Create a small button for the website. The note "Create a new website" is quoted background.',
+        ):
+            with self.subTest(task=task):
+                self.assertEqual(reference_research_plan(task).status, "skipped")
+
+    def test_whole_website_override_preserves_optout_and_spec_reduction(self) -> None:
+        task = "Create a new website with a small gallery."
+        self.assertEqual(reference_research_plan(task + " Do not research.").trigger, "user_opt_out")
+        self.assertEqual(reference_research_plan(task, constraints=["Skip reference research."]).trigger, "user_opt_out")
+        self.assertEqual(reference_research_plan(task + " Follow a complete specification.").status, "reduced")
+
 
 if __name__ == "__main__":
     unittest.main()

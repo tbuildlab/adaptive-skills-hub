@@ -781,8 +781,13 @@ def _eligible_skill(record: Mapping[str, Any], profile: TaskProfile, rules: list
             return False, f"prohibited by {rule.source}"
     if name == "excel-live-control" and "live" not in tokenize(profile.original_task):
         return False, "excel-live-control requires an explicit live Excel-session task"
-    if name.startswith("gsap-") and not (tokenize(profile.original_task) & {"animation", "animate", "motion", "scroll", "transition", "timeline", "tween"}):
-        return False, "GSAP requires an explicit frontend animation/motion task"
+    if name.startswith("gsap-"):
+        from .semantic_domains import task_intent_text
+        intent_tokens = tokenize(task_intent_text(profile.original_task))
+        if not (intent_tokens & {"animation", "animate", "motion", "scroll", "transition", "timeline", "tween", "scrolltrigger"}):
+            return False, "GSAP requires an explicit frontend animation/motion task"
+        if "scrolltrigger" in intent_tokens and name != "gsap-scrolltrigger":
+            return False, "explicit ScrollTrigger operations require the dedicated trusted workflow"
     if name.startswith("artifact-template-") and "template" not in tokenize(profile.original_task):
         return False, "artifact template requires an explicit template request"
     output_constraints = set(profile.output_format_constraints)
@@ -812,7 +817,8 @@ def rank_resources(
     excluded_ids = excluded_ids or set()
     candidates: list[ResourceCandidate] = []
     rejected: list[dict[str, Any]] = []
-    task_tokens = tokenize(profile.original_task)
+    from .semantic_domains import task_intent_text
+    task_tokens = tokenize(task_intent_text(profile.original_task))
     registry_error = False
     if applicability_registry is None:
         try:
@@ -1095,6 +1101,7 @@ def plan_task(
     sources: Iterable[Mapping[str, Any]] = (),
     reference_library_reader: Callable[[], LibrarySnapshot] | None = None,
 ) -> ExecutionPlan:
+    user_requirements = tuple(user_requirements)
     context_options = dict(context_options or {})
     profile, evidence = task_profile_for(task, semantic_extractor)
     semantic_model = semantic_task_model(profile.original_task)
@@ -1106,7 +1113,7 @@ def plan_task(
     reader = context_reader or discover_project_context
     context = reader(project_root, task, **context_options)
     rules, conflicts = extract_rules(profile, context, user_requirements)
-    reference_research = reference_research_plan(task)
+    reference_research = reference_research_plan(task, constraints=user_requirements)
     reference_research = replace(reference_research, reusable_references=discover_references(
         task, reference_research, project_root, hold=bool(conflicts), reader=reference_library_reader,
     ))

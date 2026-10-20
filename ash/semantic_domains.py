@@ -277,6 +277,33 @@ def _normalized_text(task: str) -> str:
     return " ".join(unicodedata.normalize("NFKC", task).casefold().split())
 
 
+def task_intent_text(task: str) -> str:
+    """Return bounded affirmative routing evidence, excluding quoted data.
+
+    Negative clauses end at a sentence, semicolon or explicit contrast. They
+    are not evidence that the excluded operation was requested. This is only
+    a relevance filter; it never changes trust, permissions or user rules.
+    """
+    text = _normalized_text(task)
+    text = re.sub(r"```.*?```|`[^`]*`|\"[^\"]*\"|(?<!\w)'[^']*'(?!\w)|“[^”]*”|‘[^’]*’", " ", text)
+    text = CONTROL_PLANE_FIELD_RE.sub(" ", text)
+    # Postposed negation excludes the subject too: retaining the operator in
+    # "operator is not required" would turn a negative clause into evidence
+    # for that operator. Keep separate/contrasting affirmative clauses intact.
+    text = re.sub(
+        r"\b[\w-]+\s+(?:(?:is|are|was|were)\s+(?:not(?!\s+(?:only|just)\b)|never)\b|"
+        r"(?:isn|aren|wasn|weren)['’]t\b(?!\s+(?:only|just)\b)|"
+        r"(?:is|are|was|were)\s+(?:unnecessary|unneeded)\b).*?"
+        r"(?=[,.;!?]|\b(?:but|instead|however)\b|$)",
+        " ", text,
+    )
+    text = re.sub(
+        r"\b(?:do not|don['’]t|never|without|no|avoid|not(?!\s+(?:only|just)\b))\b.*?(?=[.;!?]|\b(?:but|instead|however)\b|$)",
+        " ", text,
+    )
+    return " ".join(text.split())
+
+
 def semantic_task_model(task: str) -> SemanticTaskModel:
     """Classify a task with bounded, reusable semantic constraints.
 
@@ -284,7 +311,7 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
     such as ``document``, ``research``, ``review``, and ``design`` never grant
     a Skill match by themselves.
     """
-    text = _normalized_text(task)
+    text = task_intent_text(task)
     # Treat serialized applicability claims inside the user task as data, not
     # routing authority.  This covers common prompt-injection/protocol-shaping
     # forms while leaving ordinary natural-language intent intact.
@@ -330,7 +357,13 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
     )
     architecture_intent = bool(tokens & {"architecture", "architectural", "protocol", "interoperability"}) or "system design" in text or "security boundaries" in text
     source_code_context = bool(tokens & {"code", "python", "javascript", "typescript", "implementation", "diff", "commit", "function", "class", "repository", "repositories", "codebase"})
-    visual_context = bool(tokens & {"visual", "rendered", "screenshot", "pixel", "layout", "mockup", "prototype"}) or "approved design" in text or "design qa" in text
+    source_visual = bool(re.search(
+        r"\bmockup\b|\b(?:approved|source|supplied)\b.{0,32}\b(?:design|visual|image)\b|\bdesign image\b",
+        text,
+    ))
+    rendered_target = bool(tokens & {"rendered", "screenshot", "prototype", "implementation"})
+    visual_comparison = bool(re.search(r"\b(?:compare|comparison|against|versus|vs|fidelity)\b|design-to-implementation", text))
+    visual_context = source_visual and rendered_target and visual_comparison
     ux_context = (
         bool(tokens & {"ux", "onboarding", "friction", "journey", "usability"})
         or "user pain" in text
@@ -340,7 +373,10 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
     software_context = bool(tokens & {"github", "repository", "repositories", "codebase", "library", "libraries", "framework", "frameworks", "package", "packages", "dependency", "dependencies", "mcp", "runtime", "software"})
     backend_repair = bool(tokens & {"fix", "debug", "diagnose", "failure", "failed", "exception", "error", "500"}) and bool(tokens & {"backend", "api", "endpoint", "server", "service", "http", "database"})
     testing_intent = bool(tokens & {"test", "tests", "testing", "regression", "reproduce", "reproduction"})
-    frontend_implementation = bool(tokens & {"frontend", "react", "css", "html", "ui"}) and bool(re.search(r"\b(build|implement|fix|create|improve)\b", text)) and not research_intent
+    animation_intent = bool(tokens & {"animation", "animate", "motion", "scroll", "transition", "timeline", "tween", "scrolltrigger"})
+    frontend_context = bool(tokens & {"frontend", "react", "css", "html", "ui", "dom"}) or bool(re.search(r"\b(?:vanilla|plain) javascript\b", text))
+    frontend_action = bool(re.search(r"\b(build|implement|fix|create|improve)\b", text)) or (animation_intent and bool(re.search(r"\b(plan|draft|design|recommend)\b", text)))
+    frontend_implementation = frontend_context and frontend_action and not research_intent
 
     domains: list[str] = []
     if research_intent and ux_context:
@@ -396,7 +432,7 @@ def semantic_task_model(task: str) -> SemanticTaskModel:
         task_kinds.append("software_test")
     if frontend_implementation:
         task_kinds.append("implementation")
-    if tokens & {"animation", "animate", "motion", "scroll", "transition", "timeline", "tween"}:
+    if animation_intent:
         task_kinds.append("animation")
     if code_documentation:
         task_kinds.append("code_documentation")

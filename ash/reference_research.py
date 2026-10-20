@@ -8,8 +8,10 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
 import re
+from typing import Iterable
 
 from .common import tokenize
+from .semantic_domains import task_intent_text
 
 
 PROJECT_TYPES = frozenset({
@@ -34,6 +36,7 @@ SIMPLE_TASK_MARKERS = frozenset({
     "copy", "one-line", "small", "tiny", "simple", "minor", "quick",
 })
 OPT_OUT_PATTERNS = (
+    r"\b(?:do not|don['’]t|never|skip|omit|without|no)\s+(?:(?:perform|conduct|carry out|use)\s+)?(?:(?:the|any)\s+)?(?:(?:external|public|github|reference)\s+)*(?:research|search|browsing)\b",
     r"\bdo not (?:search|research|browse)\b",
     r"\bdon['’]t (?:search|research|browse|reference)\b",
     r"\bdo not (?:use )?(?:github|external|other|public)? ?references?\b",
@@ -92,6 +95,20 @@ def _normalized(text: str) -> str:
     return " ".join(text.casefold().split())
 
 
+def _research_opt_out(text: str) -> bool:
+    text = _normalized(text)
+    for pattern in OPT_OUT_PATTERNS:
+        for match in re.finditer(pattern, text):
+            # A prohibition on skipping/omitting research requests the positive
+            # research path; the embedded opt-out verb is not itself an opt-out.
+            if re.match(r"(?:skip|omit)\b", match.group()) and re.search(
+                r"\b(?:do not|don['’]t|never)\s+$", text[:match.start()],
+            ):
+                continue
+            return True
+    return False
+
+
 @dataclass(frozen=True)
 class SubstantialWork:
     category: str = "none"
@@ -105,7 +122,7 @@ def classify_substantial_work(task: str) -> SubstantialWork:
         return SubstantialWork()
     text = _normalized(task)
     tokens = tokenize(text)
-    if any(re.search(pattern, text) for pattern in OPT_OUT_PATTERNS):
+    if _research_opt_out(text):
         return SubstantialWork(skip_reason="user_opt_out")
 
     actions = tokens & PROJECT_ACTIONS
@@ -136,7 +153,16 @@ def classify_substantial_work(task: str) -> SubstantialWork:
         actions.add("implement")
     if not project or not actions:
         return SubstantialWork()
-    if tiny and not substantial:
+    # A content-size adjective does not make whole-website creation a tiny edit.
+    # Require the website itself as the creation object, not a component for it
+    # or a compound component name such as "website header".
+    whole_website_creation = tiny and not substantial and bool(re.search(
+        r"\b(?:create|make|build|develop|design|implement)\s+"
+        r"(?:(?!(?:for|on|in|of|to|with|inside|within|from|and|or|without)\b)[\w-]+\s+){0,8}"
+        r"(?:website|webapp)(?=$|[.,;:!?]|\s+(?:for|with|from|using|that|which|where|to|and)\b)",
+        task_intent_text(text),
+    ))
+    if tiny and not substantial and not whole_website_creation:
         return SubstantialWork(skip_reason="small_change")
     if repair and not substantial and not (tokens & {"refactor", "restructure", "rearchitect", "redesign", "overhaul", "rewrite", "rebuild"}) and not re.search(r"重构|重做|大改|改造", text):
         return SubstantialWork(skip_reason="simple_repair")
@@ -164,8 +190,11 @@ def classify_substantial_work(task: str) -> SubstantialWork:
     return SubstantialWork(category, reduced=reduced)
 
 
-def reference_research_plan(task: str) -> ReferenceResearchPlan:
+def reference_research_plan(task: str, *, constraints: Iterable[str] = ()) -> ReferenceResearchPlan:
     """Consume the shared classification; never perform I/O or grant authority."""
+    if any(_research_opt_out(item) for item in constraints if isinstance(item, str)):
+        return ReferenceResearchPlan("skipped", "user_opt_out", "user opted out",
+            candidate_limit=0, single_repository_policy="not_applicable", implementation_gate="not_applicable")
     work = classify_substantial_work(task)
     if work.category == "none":
         if work.skip_reason == "none":

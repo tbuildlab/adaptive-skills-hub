@@ -145,6 +145,11 @@ def _object(value: Any, allowed: set[str]) -> Mapping[str, Any]:
     return value
 
 
+def parse_health_request(value: Any, *, arguments_provided: bool = True) -> None:
+    # MCP permits omitted arguments (represented as None by the SDK).
+    _object({} if value is None and not arguments_provided else value, set())
+
+
 def parse_plan_request(value: Any) -> PlanRequest:
     data = _object(value, {"task", "workspace_id", "project_context_mode", "constraints"})
     task = data.get("task")

@@ -23,6 +23,7 @@ from .schemas import (
     RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA,
     SCOUT_CANDIDATES_INPUT_SCHEMA,
     NexusMcpError,
+    parse_health_request,
 )
 from .telemetry import emit
 
@@ -147,6 +148,7 @@ def create_server(runtime: NexusMcpRuntime) -> Server[Any]:
         started = time.monotonic()
         try:
             if params.name == "nexus.health":
+                parse_health_request(params.arguments, arguments_provided="arguments" in params.model_fields_set)
                 payload = runtime.health()
             elif params.name == "nexus.discover_capabilities":
                 payload = runtime.discover_capabilities(params.arguments)
