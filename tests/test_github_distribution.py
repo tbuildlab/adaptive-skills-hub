@@ -104,8 +104,8 @@ class GitHubDistributionTests(unittest.TestCase):
             self.assertNotIn(profile.replace(b'/',b'\\'),raw,name)
         serialized,_=build_manifest_bytes(root=ROOT)
         self.assertEqual(serialized,(ROOT/'MANIFEST.json').read_bytes())
-        self.assertEqual((ROOT/'release/VERSION').read_text().strip(),'0.3.1')
-        self.assertEqual(json.loads(payloads['plugins/nexus-desktop/.codex-plugin/plugin.json'])['version'],'0.3.1')
+        self.assertEqual((ROOT/'release/VERSION').read_text().strip(),'0.3.2')
+        self.assertEqual(json.loads(payloads['plugins/nexus-desktop/.codex-plugin/plugin.json'])['version'],'0.3.2')
 
     def test_project_memory_is_excluded_before_release_or_install(self) -> None:
         from scripts.release_common import is_private_memory_payload

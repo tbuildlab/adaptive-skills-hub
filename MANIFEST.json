@@ -320,12 +320,12 @@
     "sha256": "56c93e61181a0a3c6c3a80f059e8bd4dc9e1739ef2870f6be3262e57ea644c44"
   },
   "ash/mcp/schemas.py": {
-    "bytes": 31050,
-    "sha256": "816e6061a2be7094ea41a80b01e13c1135f8dc6f7f2c1c165fc8bb20fc5c5fdc"
+    "bytes": 31282,
+    "sha256": "387fb7512e952cb8a56af0e8660b1c4bfcbf65a3c9e38834c244ead3caac74f4"
   },
   "ash/mcp/server.py": {
-    "bytes": 10810,
-    "sha256": "ea0559dc9c327d3ff0e63c7e4371b4c583c0fc460274e8d9becea269bd736487"
+    "bytes": 10950,
+    "sha256": "18e916fec5e66eb7f6cb99341f86c80d3517aede15b7da94afeb387cfad1a863"
   },
   "ash/mcp/telemetry.py": {
     "bytes": 549,
@@ -372,8 +372,8 @@
     "sha256": "8a3a22ed94064d7c4f87f4d35e297f713eb12a0f4124768fa930555c1f76819d"
   },
   "ash/reference_research.py": {
-    "bytes": 9963,
-    "sha256": "be6564018aba7f243653471752eca52c03a8468bad1c3a3085ae4a6421747957"
+    "bytes": 11684,
+    "sha256": "3f3c6367c9751abfe4936aa3b5d2200c6e63227cbe63060645413251e37965a1"
   },
   "ash/reusable_references.py": {
     "bytes": 17345,
@@ -392,16 +392,16 @@
     "sha256": "f86b79da0f3cecd71639c3b7537178c348feb1391ee8260cfaea57f2e1813bfb"
   },
   "ash/semantic_domains.py": {
-    "bytes": 29163,
-    "sha256": "fb26095bb7c326dc91c38106b4f51111a8276cb355dab2793b5ab53e6131cdf4"
+    "bytes": 31061,
+    "sha256": "ee968f0eb69625e8845c0cd1082daeed87a6e1167803ab3fd53fef169be19174"
   },
   "ash/upstream.py": {
     "bytes": 9199,
     "sha256": "fd4636807a4358cdea958040a4be6507123cb8b77ceca881db6f9dfd59020ca5"
   },
   "ash/v2.py": {
-    "bytes": 65271,
-    "sha256": "b5dfecc2b56f58f2c424aff1b088f2030966a570a2f6f1aa04e072c82989e28f"
+    "bytes": 65739,
+    "sha256": "7c8cc0e61092a920f9fbd0014cae46210a8bd1e5c130fc43cd87c3d99bf7691d"
   },
   "assets/brand/nexus/nexus-avatar-500.png": {
     "bytes": 267327,
@@ -2321,7 +2321,7 @@
   },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
     "bytes": 1648,
-    "sha256": "6fe513ceb9facf794df436bde4cffb9ad85c14609ed5721213c291f7c41755d0"
+    "sha256": "2c7d4b5a6a3d6881d5b6a0f5d3d35538fc8b1f05bc3cdd1b1b4297024b2c6db0"
   },
   "plugins/nexus-desktop/.mcp.json": {
     "bytes": 540,
@@ -2357,7 +2357,7 @@
   },
   "release/VERSION": {
     "bytes": 6,
-    "sha256": "79e3f22ca37c7fdf4c29ae3648d6b008c3cb6547260a453409275470919dc674"
+    "sha256": "511a100eedfb9ea66441e5d506392dba2d8aa290f98c4c544c70ae75ec3c3396"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -3339,6 +3339,10 @@
     "bytes": 11436,
     "sha256": "a858d85e18ac3e5f1488c952a60f09b12243ab2afed7ca7a87c93fe474d3d3a8"
   },
+  "tests/test_capability_lab_repairs.py": {
+    "bytes": 10293,
+    "sha256": "4fb4ac06dbf66872cde9aba28481eb1efa47564e2b75bea6f2e98b83d17897a1"
+  },
   "tests/test_core.py": {
     "bytes": 18761,
     "sha256": "035264a31ec3cdb780bd57bd45c3f8fe0fc8437b1fe341f3beba356498de2c47"
@@ -3357,7 +3361,7 @@
   },
   "tests/test_desktop_plugin_pilot.py": {
     "bytes": 21782,
-    "sha256": "b19c146e4c91124ec7d074fa8bd31e2af3cd1c96ba5b62079b9ad0e53958e170"
+    "sha256": "65c643a1ed597e8596be6ba7a1671a7195abc59fd2d8882b6331e3babf03a6a4"
   },
   "tests/test_ecosystem_compare.py": {
     "bytes": 23723,
@@ -3613,7 +3617,7 @@
   },
   "tests/test_github_distribution.py": {
     "bytes": 73290,
-    "sha256": "77db924c11d0789fbd3bf01714004e865e6543c8860ef98c0d6c321835bf3754"
+    "sha256": "ab5b1f422f2099667c41667fe72bd7ae05029c0a6207efb14a109674ea3024ee"
   },
   "tests/test_governance_advisory_caller.py": {
     "bytes": 15117,
@@ -3724,8 +3728,8 @@
     "sha256": "a5c2ce7fd5c63d338f48f81d517e88e01238de4551c169823d7c1c738ca7b20c"
   },
   "tests/test_reference_research.py": {
-    "bytes": 5043,
-    "sha256": "24bea3d65a0808d08755e28835e391d33f0db452aeb3a4ac5378911784e7e6b4"
+    "bytes": 7497,
+    "sha256": "ebc98904e2576c6c8d5c177a4e9c657dbfcf4f348b926a434cd9b9f39e3eee66"
   },
   "tests/test_reusable_references.py": {
     "bytes": 21424,
