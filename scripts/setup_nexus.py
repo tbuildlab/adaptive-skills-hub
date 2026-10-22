@@ -161,6 +161,23 @@ def load_workspaces(path: Path) -> dict[str, Any]:
     return payload
 
 
+def prepare_workspace_registration(
+    data_root: Path, workspace_id: str, workspace_root: str,
+) -> tuple[Path, dict[str, Any]]:
+    """Validate an additive registration before any installer mutation."""
+    root = require_directory(workspace_root, "workspace root")
+    if not workspace_id.replace("-", "").replace("_", "").isalnum():
+        raise SetupError("workspace ID must contain only letters, numbers, hyphens, or underscores")
+    workspaces = load_workspaces(data_root / "workspaces.json")
+    if workspace_id in workspaces["workspaces"]:
+        existing = workspaces["workspaces"][workspace_id]
+        if not isinstance(existing, dict) or not isinstance(existing.get("root"), str):
+            raise SetupError("existing workspace registration is invalid")
+        if require_directory(existing["root"], "registered workspace root") != root:
+            raise SetupError("workspace ID already belongs to a different root; existing mapping preserved")
+    return root, workspaces
+
+
 def run_plugin_install(codex_command: str) -> None:
     # The official CLI owns config mutation and marketplace identity; no TOML is
     # parsed or rewritten by this installer.
@@ -195,19 +212,18 @@ def run_plugin_uninstall(codex_command: str) -> None:
 
 def install(args: argparse.Namespace) -> int:
     data_root = Path(args.data_root).expanduser().resolve()
-    workspace_root = require_directory(args.workspace_root, "workspace root")
-    if not args.workspace_id.replace("-", "").replace("_", "").isalnum():
-        raise SetupError("workspace ID must contain only letters, numbers, hyphens, or underscores")
+    workspace_root, _ = prepare_workspace_registration(data_root, args.workspace_id, args.workspace_root)
     runtime_python = require_file(args.runtime_python, "runtime Python") if args.runtime_python else create_runtime(data_root)
     if args.runtime_python:
         subprocess.run([str(runtime_python), "-c", "import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)"], check=True)
     config_path = data_root / CONFIG_FILENAME
     workspace_path = data_root / "workspaces.json"
     backups = data_root / "backups"
+    _, workspaces = prepare_workspace_registration(data_root, args.workspace_id, args.workspace_root)
     backup(config_path, backups)
     backup(workspace_path, backups)
-    workspaces = load_workspaces(workspace_path)
-    workspaces["workspaces"][args.workspace_id] = {"root": str(workspace_root)}
+    if args.workspace_id not in workspaces["workspaces"]:
+        workspaces["workspaces"][args.workspace_id] = {"root": str(workspace_root)}
     atomic_json_write(workspace_path, workspaces)
     atomic_json_write(config_path, {
         "schema_version": SCHEMA_VERSION,

@@ -146,6 +146,7 @@ def install(args: argparse.Namespace) -> int:
     prior = current_install(local)
     config = local / setup.CONFIG_FILENAME
     workspaces = local / "workspaces.json"
+    setup.prepare_workspace_registration(local, args.workspace_id, args.workspace_root)
     # Re-applying the exact same release is an idempotent repair/refresh, not
     # a new upgrade layer.  Retain its original rollback boundary so rollback
     # cannot restore a state record after removing the corresponding source.

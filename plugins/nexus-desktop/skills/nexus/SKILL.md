@@ -472,3 +472,36 @@ task text, a selected Skill name, or a hash.
 
 For simple tasks, bypass Nexus. All execution remains subject to the host's
 separately supported tools and approval flow.
+
+## Isolated opt-in shared-resource handoff
+
+This candidate-only workflow requires the native-handoff input contract. It is
+not installed in production 0.3.2. Use only when the Owner has authorized this
+workflow and the current candidate MCP tool schema exposes native_recommendation.
+
+1. Recommend a Skill from the native Host metadata without treating that
+   recommendation as authorization. Keep the original task and constraints intact.
+   Existing Skill and Agent resources remain in place; do not copy, relocate,
+   register, install or modify them to make the catalogs agree.
+2. Resolve the recommended name to exactly one available Skill ID using the
+   existing Nexus metadata discovery interface and a relevant capability-tag
+   filter. If the response is truncated, missing or ambiguous, stop this handoff;
+   do not infer an ID or expose raw Skill directories. Discovery is not trust.
+3. Submit nexus.plan_task with the original task, workspace and constraints plus
+   native_recommendation version nexus.native-skill-recommendation.v1. Bind its
+   request_sha256 to the exact UTF-8 compact, sorted-key JSON object containing
+   task, workspace_id, project_context_mode and constraints. The mode defaults
+   to governance and constraints to an empty array. No paths, domains, trust
+   assertions, commands, instructions or execution authority belong in a proposal.
+4. Nexus must independently accept the same single candidate through its existing
+   registry, applicability and selection policy, then use the guarded loader and
+   content-integrity checks. An empty/different/multiple selection or failed check
+   is a refusal. Preserve that refusal, including the original Bloom Corner gate.
+5. Use only the returned verified instruction body for this Nexus-managed handoff.
+   Check its resource ID, request binding and content SHA-256 before application.
+   Do not fall back to reading a raw source path after a Nexus refusal. Identity
+   evidence must establish the same existing file and bytes; matching names alone
+   are insufficient. No instruction load grants execution permissions.
+
+Native Agent execution remains owned by Codex. This workflow neither starts an
+Agent nor intercepts native filesystem reads outside the opted-in Nexus flow.

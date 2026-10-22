@@ -288,8 +288,8 @@
     "sha256": "15cefbbef26f1f3e1f2b56cb5b27686c4c1811e4a3eb35a4c0e6ed10827bcefd"
   },
   "ash/mcp/adapter.py": {
-    "bytes": 16335,
-    "sha256": "a63b024c4d3ef584d3b0d513ed756fd70492ed788c29f64bac5b5425d313a01f"
+    "bytes": 18421,
+    "sha256": "37fa1305135acf201e2821e789c8a5904f8bc66d5db6608c814a5fd16d8212cd"
   },
   "ash/mcp/authorization.py": {
     "bytes": 6811,
@@ -316,12 +316,12 @@
     "sha256": "e7ed400ac3d61e25942c1954e5b5e2e3626c6520276623dfea41c9d21ac19101"
   },
   "ash/mcp/redaction.py": {
-    "bytes": 18477,
-    "sha256": "56c93e61181a0a3c6c3a80f059e8bd4dc9e1739ef2870f6be3262e57ea644c44"
+    "bytes": 20975,
+    "sha256": "352793b7baba3387862fca83593523908f17f0808668d3e839b0659a998a23de"
   },
   "ash/mcp/schemas.py": {
-    "bytes": 31282,
-    "sha256": "387fb7512e952cb8a56af0e8660b1c4bfcbf65a3c9e38834c244ead3caac74f4"
+    "bytes": 33437,
+    "sha256": "2332301d92a6b65744398bc42f5f65cb4d2f981d3db0767a0cd31cadfe539ee4"
   },
   "ash/mcp/server.py": {
     "bytes": 10950,
@@ -930,6 +930,10 @@
   "docs/nexus-capability-state-model-v1.md": {
     "bytes": 8071,
     "sha256": "636af91f0f2bae536cfbaf784d791e73d0e97610d31a2d2beae2a12b7354cbe1"
+  },
+  "docs/nexus-catalog-metadata.md": {
+    "bytes": 3399,
+    "sha256": "58b38910507251d30f3fcec7b7fe7a49b5338ba1efaa7f14fada64398721e78a"
   },
   "docs/nexus-core-alpha2-local-use-v1.md": {
     "bytes": 9574,
@@ -2283,6 +2287,14 @@
     "bytes": 13151,
     "sha256": "ffef98d9e4afb678912152b536aae7b6251b60f6db8d82bae30c918556f3135a"
   },
+  "docs/nexus-v0.4.0-rc.1.md": {
+    "bytes": 2989,
+    "sha256": "4d21c89811a881d8e6032e8fe02b46e904c5b6f69847fc2aa9e0af02c96bf98c"
+  },
+  "docs/nexus-v0.4.0.md": {
+    "bytes": 5348,
+    "sha256": "0cb8f5d4ac51cb116fd5305042e8acfe991c630b0b07a0b84e2765da0c2e711d"
+  },
   "docs/nexus-v2-g1.md": {
     "bytes": 18443,
     "sha256": "fa51f6d36ae7afb9431d092f5d3fe4f1d1ee378f7b5adea8ebf10fe72495cede"
@@ -2321,7 +2333,7 @@
   },
   "plugins/nexus-desktop/.codex-plugin/plugin.json": {
     "bytes": 1648,
-    "sha256": "2c7d4b5a6a3d6881d5b6a0f5d3d35538fc8b1f05bc3cdd1b1b4297024b2c6db0"
+    "sha256": "9042500e8352fcd6aaef62b87c72c6b2be5f7831c04e0ab2c740047fa762de11"
   },
   "plugins/nexus-desktop/.mcp.json": {
     "bytes": 540,
@@ -2336,8 +2348,8 @@
     "sha256": "517ca7f7a215f98b225f91c875675f3a6037c8bae869ab3ada68bb64874c2631"
   },
   "plugins/nexus-desktop/skills/nexus/SKILL.md": {
-    "bytes": 30954,
-    "sha256": "607f44de10c38b4c1b7dd86bba890c9af489cabb8e7056bde59989b6f6bd9ae4"
+    "bytes": 33217,
+    "sha256": "45fd62b5ac6bf669a6584d10d5b1c42e0af9b0f1f5e25e5aad8409480d6808cd"
   },
   "prototypes/cryptographic_attendance_v1.py": {
     "bytes": 19407,
@@ -2357,7 +2369,7 @@
   },
   "release/VERSION": {
     "bytes": 6,
-    "sha256": "511a100eedfb9ea66441e5d506392dba2d8aa290f98c4c544c70ae75ec3c3396"
+    "sha256": "40b8eb4000a913a7791090535f291d3d369874162a89ef3c9e3d4e887a1b9e79"
   },
   "release/windows-runtime.json": {
     "bytes": 490,
@@ -3112,8 +3124,8 @@
     "sha256": "029d1197b17ebd9241141a5cc30fd6b2627aaabdd9a099e145e44c4be4b13180"
   },
   "scripts/Install-Nexus.ps1": {
-    "bytes": 5010,
-    "sha256": "37d82101a917030e6441abb8e711c57f6bbaa83779561fa2b4997a080d98608f"
+    "bytes": 8651,
+    "sha256": "a41ee5f53a6b1ddf41e4d30d8e249f0b63ad54d937c6b0cc91ebde58457ac3b0"
   },
   "scripts/build_g3_n01_controller_bootstrap.py": {
     "bytes": 4265,
@@ -3280,12 +3292,12 @@
     "sha256": "2d7334d54cfee97e41b348c932d023f1c5f81dbfb8f320be709c54a40f9420e3"
   },
   "scripts/release_install.py": {
-    "bytes": 12522,
-    "sha256": "bfe7c43fe6bd191697463f484fc286327fe151d2013007d00467f7833dfdf3fe"
+    "bytes": 12610,
+    "sha256": "5a05025f7f7fe668c886ec29d9325f634b5032e73cd4ca5114f7a3642c6be83c"
   },
   "scripts/setup_nexus.py": {
-    "bytes": 13322,
-    "sha256": "8729086b6002fdbdc7afc2ba5dee555029788e8e819e4d6d7c0970a4c551604b"
+    "bytes": 14287,
+    "sha256": "cbec55f6ef4f09167f00884de800d816137b5a6a55f7b4105dd9aa4c33cac212"
   },
   "scripts/verify_g3_owner_signature.py": {
     "bytes": 7787,
@@ -3343,6 +3355,10 @@
     "bytes": 10293,
     "sha256": "4fb4ac06dbf66872cde9aba28481eb1efa47564e2b75bea6f2e98b83d17897a1"
   },
+  "tests/test_catalog_metadata.py": {
+    "bytes": 7106,
+    "sha256": "e0cf36573a8d00ac79d762ae3f897b63e8c6fba5a63c09e07299a77b22ee9cbf"
+  },
   "tests/test_core.py": {
     "bytes": 18761,
     "sha256": "035264a31ec3cdb780bd57bd45c3f8fe0fc8437b1fe341f3beba356498de2c47"
@@ -3361,7 +3377,7 @@
   },
   "tests/test_desktop_plugin_pilot.py": {
     "bytes": 21782,
-    "sha256": "65c643a1ed597e8596be6ba7a1671a7195abc59fd2d8882b6331e3babf03a6a4"
+    "sha256": "fae058cbd42e8c3993e9a09dbe6b16ed979e8af4801cb7b9cd0e9fd13c08457b"
   },
   "tests/test_ecosystem_compare.py": {
     "bytes": 23723,
@@ -3617,7 +3633,7 @@
   },
   "tests/test_github_distribution.py": {
     "bytes": 73290,
-    "sha256": "ab5b1f422f2099667c41667fe72bd7ae05029c0a6207efb14a109674ea3024ee"
+    "sha256": "0fabbff76977bc8970b17a81c6833180b6e105506f8762aa3508188bdadb7282"
   },
   "tests/test_governance_advisory_caller.py": {
     "bytes": 15117,
@@ -3674,6 +3690,10 @@
   "tests/test_mcp_reference_research.py": {
     "bytes": 7496,
     "sha256": "9d35b3e2b9d60f2f0ce8af4f2dde63b789091b0e7f32f507cdcb26af399405a3"
+  },
+  "tests/test_native_skill_handoff.py": {
+    "bytes": 10286,
+    "sha256": "3db4ba9fc8f5bc0cd87f865de495bf6310b4b62698b0bd3f4828a1ccc72ac37f"
   },
   "tests/test_openai_hosted.py": {
     "bytes": 23572,
@@ -3754,5 +3774,9 @@
   "tests/test_v2.py": {
     "bytes": 40091,
     "sha256": "1cf99cc78b177e1d6f85278e528e1e675830c45f9d2ccca302f739ed1d5c9645"
+  },
+  "tests/test_workspace_alias_preservation.py": {
+    "bytes": 13426,
+    "sha256": "6c684dac45db5d17afc709b65ee175afcf7c01310bbca867d56135c5e4d36aab"
   }
 }

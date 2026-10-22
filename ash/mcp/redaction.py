@@ -2,10 +2,16 @@
 from __future__ import annotations
 
 from datetime import datetime
+from collections import Counter
+from pathlib import Path
+import re
 from typing import Any, Mapping
 from uuid import uuid4
 
 from ash.runtime_decision import RuntimeDecisionError, host_runtime_decision
+from ash.common import stable_id
+from ash.semantic_domains import SemanticRoutingError, load_trusted_applicability_registry
+from .context import SECRET_VALUE_RE
 
 from .handoff import (
     HANDOFF_SCHEMA_VERSION,
@@ -53,18 +59,56 @@ def safe_health() -> dict[str, Any]:
     })
 
 
+MAX_CATALOG_DESCRIPTION_CHARS = 1024
+_PRIVATE_DESCRIPTION_RE = re.compile(r"[A-Za-z]:[\\/]|\\\\|file://|(?<![\w:/])(?:/|~/)\S|https?://[^\s/]+:[^\s/]+@", re.I)
+
+
+def _catalog_description(record: Mapping[str, Any]) -> tuple[str | None, str]:
+    value = record.get("description")
+    if not isinstance(value, str) or not value.strip():
+        return None, "missing"
+    value = value.strip()
+    if (SECRET_VALUE_RE.search(value) or _PRIVATE_DESCRIPTION_RE.search(value)
+            or any(ord(char) < 32 and char not in "\n\t\r" for char in value)):
+        return None, "redacted"
+    return value[:MAX_CATALOG_DESCRIPTION_CHARS], (
+        "truncated" if len(value) > MAX_CATALOG_DESCRIPTION_CHARS else "available"
+    )
+
+
 def safe_catalog(records: list[Mapping[str, Any]], tags: tuple[str, ...]) -> dict[str, Any]:
+    # Registry identity metadata only: never task applicability or permission.
+    # Deliberately do not use the Nexus-owned in-memory applicability shortcut.
+    try:
+        registry = load_trusted_applicability_registry()
+    except SemanticRoutingError:
+        registry = None
+    identities = Counter(str(record.get("id", "")) for record in records)
     filtered: list[dict[str, Any]] = []
     for record in records[:1024]:
         record_tags = sorted({str(tag) for tag in record.get("tags", []) if isinstance(tag, str)})
         if tags and not set(tags).intersection(record_tags):
             continue
+        description, description_status = _catalog_description(record)
+        trust_status = "unknown" if registry is None else "unverified"
+        if (registry is not None and record.get("kind") == "skill"
+                and record.get("status") == "available"
+                and identities[str(record.get("id", ""))] == 1
+                and isinstance(record.get("skill_md_path"), str)):
+            try:
+                if (record.get("id") == stable_id("skill", Path(record["skill_md_path"]))
+                        and registry.resolve(record) is not None):
+                    trust_status = "verified_trusted"
+            except (SemanticRoutingError, TypeError, ValueError):
+                pass
         filtered.append({
             "resource_id": str(record.get("id", "")), "display_name": str(record.get("name", "")),
             "resource_kind": str(record.get("kind", "skill")), "capability_tags": record_tags,
             "availability": str(record.get("status", "unknown")),
             "source_scope": str(record.get("provenance", {}).get("source_scope", record.get("scope", "unknown"))),
             "runtime_compatibility": str(record.get("runtime_compatibility", "directly_usable_by_codex")),
+            "description": description, "description_status": description_status,
+            "trust_status": trust_status,
         })
     available = len(filtered)
     # The catalog is metadata-only, but it can still be large. Return the largest
@@ -76,6 +120,9 @@ def safe_catalog(records: list[Mapping[str, Any]], tags: tuple[str, ...]) -> dic
             "status": "ready",
             "catalog_scope": "nexus_local_skill_metadata",
             "host_inventory_authority": "none",
+            "metadata_authority": "none",
+            "description_trust": "untrusted_resource_metadata",
+            "trust_scope": "validated_applicability_registry_identity_only",
             "capability_count": len(filtered),
             "available_capability_count": available,
             "truncated": len(filtered) < available,
@@ -91,6 +138,9 @@ def safe_catalog(records: list[Mapping[str, Any]], tags: tuple[str, ...]) -> dic
         "status": "ready",
         "catalog_scope": "nexus_local_skill_metadata",
         "host_inventory_authority": "none",
+        "metadata_authority": "none",
+        "description_trust": "untrusted_resource_metadata",
+        "trust_scope": "validated_applicability_registry_identity_only",
         "capability_count": 0,
         "available_capability_count": available,
         "truncated": bool(available),

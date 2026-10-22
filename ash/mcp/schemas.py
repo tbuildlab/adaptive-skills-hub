@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import hashlib
 import json
 import re
 from typing import Any, Mapping
@@ -188,6 +189,26 @@ def parse_discover_request(value: Any) -> tuple[str, ...]:
     if not isinstance(tags, list) or len(tags) > 8 or not all(isinstance(item, str) and re.fullmatch(r"[a-z0-9_-]{1,64}", item) for item in tags):
         raise NexusMcpError("INVALID_REQUEST", "capability_tags are invalid")
     return tuple(sorted(set(tags)))
+
+
+def parse_native_recommendation(value: Any) -> tuple[PlanRequest, str, str]:
+    """A bound recommendation is untrusted input, never semantic authority."""
+    data = dict(_object(value, {"task", "workspace_id", "project_context_mode", "constraints", "native_recommendation"}))
+    proposal = _object(data.pop("native_recommendation", None), {"schema_version", "resource_id", "request_sha256"})
+    if proposal.get("schema_version") != "nexus.native-skill-recommendation.v1":
+        raise NexusMcpError("INVALID_REQUEST", "native recommendation version is unsupported")
+    candidate = proposal.get("resource_id")
+    if not isinstance(candidate, str) or not re.fullmatch(r"skill:[a-f0-9]{16}", candidate):
+        raise NexusMcpError("INVALID_REQUEST", "native candidate identity is invalid")
+    request = parse_plan_request(data)
+    # Bind the exact original input, before the legacy parser trims strings.
+    original = {"task": data["task"], "workspace_id": data["workspace_id"],
+                "project_context_mode": data.get("project_context_mode", "governance"),
+                "constraints": data.get("constraints", [])}
+    binding = hashlib.sha256(json.dumps(original, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")).hexdigest()
+    if proposal.get("request_sha256") != binding:
+        raise NexusMcpError("NATIVE_RECOMMENDATION_BINDING_FAILED", "native recommendation does not match this request")
+    return request, candidate, binding
 
 
 def parse_runtime_requirements_request(value: Any) -> RuntimeRequirements:
@@ -415,6 +436,16 @@ PLAN_INPUT_SCHEMA: dict[str, Any] = {
         "project_context_mode": {"type": "string", "enum": ["none", "governance"], "default": "governance"},
         "constraints": {"type": "array", "maxItems": MAX_CONSTRAINTS, "items": {"type": "string", "minLength": 1, "maxLength": 512}},
     },
+}
+PLAN_INPUT_SCHEMA["properties"]["native_recommendation"] = {
+    "type": "object", "additionalProperties": False,
+    "required": ["schema_version", "resource_id", "request_sha256"],
+    "properties": {
+        "schema_version": {"const": "nexus.native-skill-recommendation.v1"},
+        "resource_id": {"type": "string", "pattern": "^skill:[a-f0-9]{16}$"},
+        "request_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    },
+    "description": "Optional untrusted native Skill candidate. Existing independent applicability must accept the same single Skill before guarded instruction delivery; otherwise refuse. No execution authority.",
 }
 RUNTIME_CAPABILITY_DECISION_INPUT_SCHEMA: dict[str, Any] = {
     "type": "object",

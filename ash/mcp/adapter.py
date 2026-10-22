@@ -39,6 +39,7 @@ from .schemas import (
     parse_host_inventory_ticket_id,
     parse_plan_request,
     parse_memory_plan_request,
+    parse_native_recommendation,
     parse_prepare_enhancement_handoff_request,
     parse_prepare_host_handoff_request,
     parse_runtime_requirements_request,
@@ -241,11 +242,15 @@ class NexusMcpRuntime:
             raise NexusMcpError("INVALID_REQUEST", "R4 host capability constraint is unsupported")
         return NexusMcpRuntime._r4_presentations_catalog(index)
 
-    def _plan_and_load(self, request: Any) -> tuple[Any, list[dict[str, Any]], dict[str, Any]]:
+    def _plan_and_load(self, request: Any, *, native_candidate: str | None = None) -> tuple[Any, list[dict[str, Any]], dict[str, Any]]:
         workspace = self.authorizer.resolve(request.workspace_id)
         index = self.catalog_builder()
         if not isinstance(index.get("skills"), list) or len(index["skills"]) > 1024:
             raise NexusMcpError("NEXUS_UNAVAILABLE", "capability catalog is unavailable")
+        if native_candidate is not None:
+            matches = [item for item in index["skills"] if item.get("id") == native_candidate]
+            if len(matches) != 1 or matches[0].get("status") != "available":
+                raise NexusMcpError("NATIVE_CANDIDATE_UNAVAILABLE", "native candidate identity is unavailable or ambiguous")
         index = self._catalog_for_request(index, request)
         started = time.monotonic()
         plan = plan_task(
@@ -259,6 +264,13 @@ class NexusMcpRuntime:
         # to a background worker because a timed-out worker would retain request data.
         if elapsed > SOFT_PLANNING_SECONDS:
             raise NexusMcpError("TIMEOUT", "planning exceeded the configured time limit")
+        if native_candidate is not None and (
+            len(plan.selected) != 1 or plan.selected[0].resource_type != "skill"
+            or plan.selected[0].resource_id != native_candidate
+        ):
+            # Do not restrict the catalog or inject the candidate into selection.
+            # Refuse before any instruction read, even if another Skill would fit.
+            raise NexusMcpError("NATIVE_APPLICABILITY_NOT_ESTABLISHED", "existing trusted applicability and selection did not accept this candidate alone")
         loads = load_plan_skills(
             plan, read_guard=self._read_selected_skill,
             max_file_bytes=MAX_SELECTED_SKILL_BYTES, max_total_bytes=MAX_SELECTED_SKILLS_BYTES,
@@ -279,6 +291,21 @@ class NexusMcpRuntime:
 
     def plan(self, arguments: Any) -> dict[str, Any]:
         from ash.project_memory_context import unavailable
+        if isinstance(arguments, dict) and "native_recommendation" in arguments:
+            request, candidate, binding = parse_native_recommendation(arguments)
+            plan, loads, validation = self._plan_and_load(request, native_candidate=candidate)
+            if validation.get("status") != "passed" or len(loads) != 1 or "load_error" in loads[0]:
+                raise NexusMcpError("NATIVE_SKILL_LOAD_REFUSED", "guarded loading or plan validation failed")
+            receipt = safe_plan(plan, loads, validation, str(uuid4()))
+            # This opt-in contract delivers only the verified selected instructions,
+            # never a directory/path, command, token, or execution permission.
+            receipt["native_handoff"] = {
+                "schema_version": "nexus.native-skill-handoff.v1", "status": "loaded_verified",
+                "recommendation_authority": "none", "execution_authority": "none",
+                "request_sha256": binding, "resource_id": candidate,
+                "content_sha256": loads[0]["sha256"], "instructions": loads[0]["instructions"],
+            }
+            return ensure_response_limit(receipt)
         request, project_id = parse_memory_plan_request(arguments)
         plan, loads, validation = self._plan_and_load(request)
         memory = unavailable("project_memory_disabled" if request.project_context_mode == "none" else "project_memory_unavailable")

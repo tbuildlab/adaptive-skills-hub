@@ -29,6 +29,58 @@ if ($expected -notmatch '^[a-fA-F0-9]{64}$') { Fail 'checksum receipt is invalid
 $actual = (Get-FileHash -LiteralPath $ArchivePath -Algorithm SHA256).Hash.ToLowerInvariant()
 if ($actual -ne $expected.ToLowerInvariant()) { Fail 'archive checksum mismatch' }
 
+# Read-only bootstrap equivalent of setup_nexus.prepare_workspace_registration.
+# The bootstrap always registers nexus-default; Python repeats the check before
+# configuration writes. Resolve directory handles so junctions and case/path
+# spelling compare like pathlib.resolve(), without requiring system Python.
+Add-Type -TypeDefinition @'
+using System;
+using System.Text;
+using System.Runtime.InteropServices;
+using Microsoft.Win32.SafeHandles;
+public static class NexusWorkspacePath {
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern SafeFileHandle CreateFile(string path, uint access, uint share, IntPtr security, uint creation, uint flags, IntPtr template);
+    [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+    private static extern uint GetFinalPathNameByHandle(SafeFileHandle handle, StringBuilder path, uint size, uint flags);
+    public static string Resolve(string path) {
+        using (var handle = CreateFile(path, 0, 7, IntPtr.Zero, 3, 0x02000000, IntPtr.Zero)) {
+            if (handle.IsInvalid) throw new System.ComponentModel.Win32Exception();
+            var buffer = new StringBuilder(32768);
+            uint length = GetFinalPathNameByHandle(handle, buffer, (uint)buffer.Capacity, 0);
+            if (length == 0 || length >= buffer.Capacity) throw new System.ComponentModel.Win32Exception();
+            return buffer.ToString().TrimEnd('\\');
+        }
+    }
+}
+'@
+function WorkspaceDirectory([string]$Value) {
+    if ($Value -eq '~' -or $Value.StartsWith('~\') -or $Value.StartsWith('~/')) {
+        $Value = $HOME + $Value.Substring(1)
+    }
+    if ($Value -notmatch '^(?:[A-Za-z]:[\\/]|\\\\)') { Fail 'workspace root must be an absolute non-root directory' }
+    $full = [IO.Path]::GetFullPath($Value)
+    if ($full.TrimEnd('\', '/') -eq [IO.Path]::GetPathRoot($full).TrimEnd('\', '/')) { Fail 'workspace root must be an absolute non-root directory' }
+    if (-not (Test-Path -LiteralPath $full -PathType Container)) { Fail 'workspace root must be an existing directory' }
+    return [NexusWorkspacePath]::Resolve((ExtendedPath $full))
+}
+$workspacePath = WorkspaceDirectory $WorkspaceRoot
+$local = if ($DataRoot) { $DataRoot } elseif ($env:LOCALAPPDATA) { Join-Path $env:LOCALAPPDATA 'Nexus' } else { Join-Path $HOME '.nexus' }
+if ($local -eq '~' -or $local.StartsWith('~\') -or $local.StartsWith('~/')) { $local = $HOME + $local.Substring(1) }
+$local = [IO.Path]::GetFullPath($local)
+$workspaceConfig = Join-Path $local 'workspaces.json'
+if (Test-Path -LiteralPath $workspaceConfig) {
+    $config = Get-Content -LiteralPath $workspaceConfig -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($config -isnot [System.Management.Automation.PSCustomObject] -or $config.PSObject.Properties.Name -cnotcontains 'schema_version' -or $config.PSObject.Properties.Name -cnotcontains 'workspaces' -or $config.schema_version -cne 'nexus.mcp.workspace.v1' -or $config.workspaces -isnot [System.Management.Automation.PSCustomObject]) { Fail 'existing workspace configuration is invalid' }
+    # JSON IDs, unlike PowerShell property lookup, are case-sensitive.
+    $registration = @($config.workspaces.PSObject.Properties | Where-Object { $_.Name -ceq 'nexus-default' })
+    if ($registration.Count -gt 0) {
+        $existing = $registration[0].Value
+        if ($existing -isnot [System.Management.Automation.PSCustomObject] -or $existing.PSObject.Properties.Name -cnotcontains 'root' -or $existing.root -isnot [string]) { Fail 'existing workspace registration is invalid' }
+        if (-not [StringComparer]::OrdinalIgnoreCase.Equals((WorkspaceDirectory $existing.root), $workspacePath)) { Fail 'workspace ID already belongs to a different root; existing mapping preserved' }
+    }
+}
+
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path -LiteralPath $ArchivePath))
 try {
@@ -43,7 +95,7 @@ try {
     }
     if ($roots.Count -ne 1) { Fail 'archive must have exactly one top-level directory' }
     $top = @($roots.Keys)[0]
-    $base = if ($DataRoot) { Join-Path $DataRoot 'releases' } elseif ($env:LOCALAPPDATA) { Join-Path $env:LOCALAPPDATA 'Nexus\releases' } else { Join-Path $HOME '.nexus\releases' }
+    $base = Join-Path $local 'releases'
     $target = Join-Path $base $top
     if (Test-Path -LiteralPath $target) { Fail 'this release is already extracted; use release_install.py upgrade or rollback' }
     [IO.Directory]::CreateDirectory((ExtendedPath $base)) | Out-Null
